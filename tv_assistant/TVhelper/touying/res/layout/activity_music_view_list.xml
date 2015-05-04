@@ -1,0 +1,103 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@drawable/touying_bg"
+                tools:context=".TVRemoteControlActivity" >
+
+    <LinearLayout
+            android:background="@drawable/title_banner"
+            android:layout_height="67.6dip"
+            android:layout_width="fill_parent"
+            android:focusable="false"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+        <TextView
+                android:gravity="center_vertical"
+                android:id="@+id/title"
+                android:text="未连接"
+                android:textSize="20sp"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:layout_width="80dip"
+                android:layout_height="64.3dip"
+                />
+
+        <ImageView
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/title_ip_select"
+                android:layout_width="16.7dip"
+                android:layout_height="10.7dip"
+                />
+    </LinearLayout>
+
+    <Button
+            android:id="@+id/btn_back"
+            android:background="@drawable/title_btn_back_selector"
+            android:layout_width="80.5dip"
+            android:layout_height="77.3dip"
+            android:layout_marginLeft="0dip"
+            />
+
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:focusable="false"
+            android:layout_marginTop="67.6dip"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+        <TextView
+                android:focusable="true"
+                android:clickable="true"
+                android:layout_weight="1"
+                android:id="@+id/music_singer"
+                android:text="音    乐"
+                android:textSize="18sp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="107.6dip"
+            android:focusable="false"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            >
+        <ListView
+                android:id="@+id/music_list_view"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:divider="@null"
+                />
+    </LinearLayout>
+
+    <ListView
+            android:id="@+id/clients"
+            android:background="@drawable/title_ip_list_bg"
+            android:layout_marginTop="67.6dip"
+            android:layout_width="match_parent"
+            android:layout_height="500dip"
+            android:listSelector="@drawable/title_ip_list"
+            android:visibility="gone"
+            ></ListView>
+
+    <Button
+            android:id="@+id/btn_list"
+            android:background="@drawable/title_btn_list_selector"
+            android:layout_width="204dip"
+            android:layout_height="49.8dip"
+            android:layout_marginLeft="70dip"
+            android:layout_marginTop="10dip"
+            />
+
+</RelativeLayout>
+
