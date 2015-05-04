@@ -1,0 +1,28 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.changhong.touying"
+          android:versionCode="1"
+          android:versionName="1.0" >
+
+    <uses-sdk
+            android:minSdkVersion="16"
+            android:targetSdkVersion="17" />
+
+    <application
+            android:icon="@drawable/ic_launcher"
+            android:label="touying part" >
+
+        <!--问投影部分-->
+        <activity android:name="com.changhong.touying.activity.TouYingCategoryActivity"/>
+        <activity android:name=".activity.PictureCategoryActivity"/>
+        <activity android:name="com.changhong.touying.activity.PictureViewActivity"/>
+        <activity android:name="com.changhong.touying.activity.PictureDetailsActivity"/>
+        <activity android:name="com.changhong.touying.activity.VedioCategoryActivity"/>
+        <activity android:name="com.changhong.touying.activity.VedioViewActivity"/>
+        <activity android:name="com.changhong.touying.activity.VedioDetailsActivity"/>
+        <activity android:name="com.changhong.touying.activity.MusicCategoryActivity"/>
+        <activity android:name="com.changhong.touying.activity.MusicViewActivity"/>
+
+        <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService"/>
+    </application>
+
+</manifest>
