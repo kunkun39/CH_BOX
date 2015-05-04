@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+        >
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dip"
+            android:orientation="horizontal"
+            android:background="@drawable/tvback02"
+            >
+        <!--第一部分，台标和频道名-->
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="65dip"
+                >
+            <TextView
+                    android:id="@+id/program_play_info"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dip"
+                    android:layout_marginTop="1dip"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@android:color/white"
+                    android:text="无节目信息"
+                    android:textSize="14sp"
+                    android:focusable="false"
+                    android:gravity="left|center_vertical"/>
+
+            <TextView
+                    android:id="@+id/program_status"
+                    android:text=""
+                    android:textSize="14sp"
+                    android:textColor="@android:color/white"
+                    android:clickable="true"
+                    android:layout_width="60dp"
+                    android:layout_height="40dip"
+                    android:layout_marginTop="10dip"
+                    android:layout_alignParentRight="true"
+                    />
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
