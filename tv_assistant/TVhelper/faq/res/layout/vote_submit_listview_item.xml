@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <CheckBox
+        android:id="@+id/vote_submit_select_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="您给出的回答选项"
+        android:textSize="@dimen/FONT_SIZE_SMALL"
+        android:textColor="@color/black"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"/>
+    <TextView
+            android:id="@+id/vote_questiontype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            >
+
+    </TextView>
+    <TextView
+        android:id="@+id/vote_question_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+       >
+    </TextView>
+    
+     
+</LinearLayout>

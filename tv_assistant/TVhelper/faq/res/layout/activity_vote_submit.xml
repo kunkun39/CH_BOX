@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <TextView
+            android:id="@+id/vote_submit_tabbar_title"
+            android:layout_width="fill_parent"
+            android:layout_height="100dip"
+            android:background="@color/orange"
+            android:gravity="center"
+            android:textColor="#000000"
+            android:textSize="@dimen/FONT_SIZE_NORMAL"/>
+    <RelativeLayout
+            android:id="@+id/vote_submit_relative"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="#ffffff" >
+
+        <com.changhong.faq.view.VoteSubmitViewPager
+                android:id="@+id/vote_submit_viewpager"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        <LinearLayout
+                android:id="@+id/vote_submit_linear_dot"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:orientation="horizontal" />
+    </RelativeLayout>
+
+</LinearLayout>
