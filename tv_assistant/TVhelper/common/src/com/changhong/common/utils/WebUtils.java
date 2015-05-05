@@ -14,8 +14,8 @@ public class WebUtils {
     public static String httpPostRequest(String url) {
         PostMethod postMethod = new PostMethod(url);
         HttpClient client = new HttpClient();
-        client.setConnectionTimeout(5000);
-        client.setTimeout(8000);
+        client.setConnectionTimeout(10000);
+        client.setTimeout(10000);
         client.getParams().setContentCharset("UTF-8");
 
         int status = 0;
@@ -41,8 +41,8 @@ public class WebUtils {
     public static InputStream httpGetRequest(String url) {
         PostMethod postMethod = new PostMethod(url);
         HttpClient client = new HttpClient();
-        client.setConnectionTimeout(5000);
-        client.setTimeout(8000);
+        client.setConnectionTimeout(10000);
+        client.setTimeout(10000);
         client.getParams().setContentCharset("UTF-8");
 
         int status = 0;
@@ -63,8 +63,8 @@ public class WebUtils {
 
     public static String httpPostRequest(PostMethod postMethod) {
         HttpClient client = new HttpClient();
-        client.setConnectionTimeout(5000);
-        client.setTimeout(8000);
+        client.setConnectionTimeout(10000);
+        client.setTimeout(10000);
         client.getParams().setContentCharset("UTF-8");
 
         int status = 0;
