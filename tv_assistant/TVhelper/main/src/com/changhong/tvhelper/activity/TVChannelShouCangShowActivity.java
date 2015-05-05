@@ -139,7 +139,9 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
         });
 
-
+        /**
+         * 消息处理部分
+         */
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -300,7 +302,7 @@ public class TVChannelShouCangShowActivity extends Activity {
         }
 
         public int getCount() {
-            return allShouChangChannel.size();
+            return allShouChangChannel.size() == channelShowData.size() ? allShouChangChannel.size() : 0;
         }
 
         public Object getItem(int position) {
@@ -440,7 +442,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 
         @Override
         public int getCount() {
-            return orderProgramList.size();
+            return orderProgramList.size() == orderProgramShowData.size() ? orderProgramList.size() : 0;
         }
 
         @Override
