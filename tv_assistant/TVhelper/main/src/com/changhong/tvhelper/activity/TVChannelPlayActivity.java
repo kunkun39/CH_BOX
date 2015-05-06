@@ -181,24 +181,10 @@ public class TVChannelPlayActivity extends Activity {
             @Override
             public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
                 Log.e("ysharp", "" + arg1);
-//                if(arg1==0){
-//                	//缓冲开始，初始化缓冲开始时间
-//                	time = System.currentTimeMillis();
-//                }
-//                if(!arg0.isBuffering()){
-//                	//没有数据，并且超过8S，退出播放页面
-//                	if((System.currentTimeMillis() - time) > 8000 && time != 0l){
-//                		finish();
-//                	}
-//                }
                 if (arg0.isBuffering()) {
                     if (!dd.isShowing()) {
                         dd.show();
                     }
-                    //有数据，但是超过8s，没有播放，退出播放页面
-//                    if((System.currentTimeMillis() - time) > 8000 && time != 0l&&!mVideoView.isPlaying()){
-//                		finish();
-//                	}
                 }
                 if (arg1 >= 25) {
                     if (dd.isShowing()) {
@@ -285,15 +271,18 @@ public class TVChannelPlayActivity extends Activity {
     private class MyGestureListener extends SimpleOnGestureListener {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            /**
             Log.e("dddd", "onSingleTapUp>>>" + ((int) (e.getRawX() / (float) width * 10000) / 100f) + "  " + (int) (e.getRawY() / (float) height * 10000) / 100f);
             ClientSendCommandService.msgXpointYpoint = "xPoint=" + ((int) (e.getRawX() / (float) width * 10000) / 100f) + "%|yPoint=" + (int) (e.getRawY() / (float) height * 10000) / 100f + "%";
             Log.e("dddd", "msgXpointYpoint>>>" + ClientSendCommandService.msgXpointYpoint);
             ClientSendCommandService.handler.sendEmptyMessage(5);
+            **/
             return super.onSingleTapUp(e);
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+            /**
             int w = mVideoView.getVideoWidth();
             int h = mVideoView.getVideoHeight();
             Log.i("ysharp", "w is %d" + w);
@@ -306,6 +295,7 @@ public class TVChannelPlayActivity extends Activity {
             if (mVideoView != null) {
                 mVideoView.setVideoLayout(mm, 0);
             }
+            **/
             return true;
         }
 
