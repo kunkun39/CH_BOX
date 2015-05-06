@@ -93,10 +93,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
     private int nextImagePosistion = 0;
 
     /*********************************************按钮部分*************************************************************/
-    /**
-     * 向上滑动开始投影
-     */
-    private TextView imageFlipperShow;
 
     /**
      * 取消左右投影
@@ -155,7 +151,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         flipper = (ViewFlipper) findViewById(R.id.image_flipper);
         flipper.setDrawingCacheEnabled(false);
 
-        imageFlipperShow = (TextView) findViewById(R.id.pic_show);
         imageContinueShow = (TextView) findViewById(R.id.pic_continue_show);
         imageContinueShow.setVisibility(View.GONE);
         relativeLayout = (RelativeLayout) findViewById(R.id.gesture_layout);
@@ -246,7 +241,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
                 currentShow = false;
                 isImageContinueShow = false;
                 imageContinueShow.setVisibility(View.GONE);
-                imageFlipperShow.setVisibility(View.VISIBLE);
 
                 flipper.setInAnimation(AnimationUtils.loadAnimation(PictureDetailsActivity.this, R.anim.push_bottom_in));
                 flipper.setOutAnimation(AnimationUtils.loadAnimation(PictureDetailsActivity.this, R.anim.push_bottom_out));
@@ -377,7 +371,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             if (!ClientSendCommandService.serverIpList.isEmpty()) {
                 isImageContinueShow = true;
                 isImageContinueMove = false;
-                imageFlipperShow.setVisibility(View.GONE);
                 imageContinueShow.setVisibility(View.VISIBLE);
 
                 /**
@@ -405,7 +398,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
          currentShow = false;
          isImageContinueShow = false;
          imageContinueShow.setVisibility(View.GONE);
-         imageFlipperShow.setVisibility(View.VISIBLE);
 
          flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.drawable.push_bottom_in));
          flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.drawable.push_bottom_out));
