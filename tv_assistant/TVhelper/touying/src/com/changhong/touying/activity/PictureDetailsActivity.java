@@ -17,10 +17,7 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
+import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.MobilePerformanceUtils;
@@ -55,11 +52,13 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      * 手势动作
      */
     private GestureDetector detector;
+    private RelativeLayout relativeLayout;
 
     /**
      * 图片预览效果
      */
     private ViewFlipper flipper;
+
 
     /**
      * IP地址
@@ -129,7 +128,9 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     private float currentRotationPosition = 0f;
 
-    /*********************************************压缩图片部分***********************************************************/
+    /**
+     * ******************************************压缩图片部分**********************************************************
+     */
 
     private File compressImagePath;
 
@@ -151,12 +152,13 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         currentShow = false;
 
         detector = new GestureDetector(this);
-        flipper = (ViewFlipper)findViewById(R.id.image_flipper);
+        flipper = (ViewFlipper) findViewById(R.id.image_flipper);
         flipper.setDrawingCacheEnabled(false);
 
         imageFlipperShow = (TextView) findViewById(R.id.pic_show);
         imageContinueShow = (TextView) findViewById(R.id.pic_continue_show);
         imageContinueShow.setVisibility(View.GONE);
+        relativeLayout = (RelativeLayout) findViewById(R.id.gesture_layout);
 
         rotationLeft = (ImageView) findViewById(R.id.rotation_left);
         rotationRight = (ImageView) findViewById(R.id.rotation_right);
@@ -253,7 +255,9 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         });
     }
 
-    /*****************************************************图片处理部分*************************************************/
+    /**
+     * **************************************************图片处理部分************************************************
+     */
 
     private View getImageView(String imagePath) {
         DragImageView view = new DragImageView(this, this);
@@ -301,7 +305,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             DragImageView imageView = (DragImageView) flipper.getChildAt(i);
             Drawable drawable = imageView.getDrawable();
 
-            if (i == currentImagePosistion || i == previousImagePosistion || i == nextImagePosistion ) {
+            if (i == currentImagePosistion || i == previousImagePosistion || i == nextImagePosistion) {
                 if (drawable == null) {
                     displayImage(imageView, imagePaths.get(i));
                 }
@@ -345,7 +349,9 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
     }
 
 
-    /**************************************************滑动效果部分****************************************************/
+    /**
+     * ***********************************************滑动效果部分***************************************************
+     */
 
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         /**
@@ -527,13 +533,18 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         );
     }
 
-    /*************************************************手势部分, 图片缩放*************************************************/
+    /**
+     * **********************************************手势部分, 图片缩放************************************************
+     */
 
     public boolean onTouchEvent(MotionEvent event) {
-        boolean touch =  detector.onTouchEvent(event);
+        boolean touch = detector.onTouchEvent(event);
 
         DragImageView imageView = (DragImageView) flipper.getChildAt(currentImagePosistion);
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                relativeLayout.setVisibility(View.INVISIBLE);
+                break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (currentShow && !isImageContinueMove && event.getPointerCount() == 2) {
                     float x = event.getX(0) - event.getX(1);
@@ -541,7 +552,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
                     ClientSendCommandService.msg = "room_pointer_down:" + event.getPointerCount() + ":" + x + ":" + y;
                     ClientSendCommandService.handler.sendEmptyMessage(4);
                 }
-
                 imageView.onPointerDown(event);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -571,7 +581,9 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         return true;
     }
 
-    /*************************************************投影部分**********************************************************/
+    /**
+     * **********************************************投影部分*********************************************************
+     */
 
     private void touYing(String imagePath) {
         /**
@@ -718,7 +730,9 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         }
     }
 
-    /*************************************************系统重载*********************************************************/
+    /**
+     * **********************************************系统重载********************************************************
+     */
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
