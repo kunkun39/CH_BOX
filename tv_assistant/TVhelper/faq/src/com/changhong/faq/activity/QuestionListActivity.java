@@ -1,7 +1,10 @@
 package com.changhong.faq.activity;
 
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,11 +29,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.faq.R;
 import com.changhong.faq.assember.FaqAssember;
 import com.changhong.faq.domain.AppDescription;
 import com.changhong.faq.domain.Category;
 import com.changhong.faq.service.HttpClientService;
-import com.changhong.faq.R;
 
 
 public class QuestionListActivity extends Activity {
