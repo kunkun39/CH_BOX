@@ -1,9 +1,12 @@
 package com.changhong.common.system;
 
+import java.io.File;
+
 import android.app.Application;
 import android.app.Service;
 import android.graphics.Bitmap;
 import android.os.Vibrator;
+
 import com.changhong.common.R;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.utils.PathGenerateUtils;
@@ -57,15 +60,18 @@ public class MyApplication extends Application {
     /**
      * epg db cache path
      */
+    public static MyApplication instance;
     public static File epgDBCachePath;
 
-
+    public static MyApplication getContext(){  
+        return instance;  
+    }  
+    
     @Override
     public void onCreate() {
         super.onCreate();
-
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-
+        instance=this;
         viewOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.ic_empty)
                 .showImageOnFail(R.drawable.ic_error)

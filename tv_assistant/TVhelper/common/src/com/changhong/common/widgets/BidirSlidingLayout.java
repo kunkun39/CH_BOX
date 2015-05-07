@@ -154,7 +154,7 @@ public class BidirSlidingLayout extends RelativeLayout implements
 	/**
 	 * 内容布局的参数。
 	 */
-	private LayoutParams contentLayoutParams;
+	private RelativeLayout.LayoutParams contentLayoutParams;
 
 	/**
 	 * 用于计算手指滑动的速度。
@@ -254,7 +254,7 @@ public class BidirSlidingLayout extends RelativeLayout implements
 					.getLayoutParams();
 			// 获取内容布局对象左侧布局
 			contentLayout = getChildAt(1);
-			contentLayoutParams = (LayoutParams) contentLayout
+			contentLayoutParams = (RelativeLayout.LayoutParams) contentLayout
 					.getLayoutParams();
 			contentLayoutParams.width = screenWidth;
 			contentLayout.setLayoutParams(contentLayoutParams);
