@@ -7,12 +7,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
@@ -30,7 +33,7 @@ import java.util.Map;
 public class TVChannelShouCangShowActivity extends Activity {
 
     private static final String TAG = "TVChannelShouCangShowActivity";
-
+    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * message handler
      */
@@ -93,8 +96,27 @@ public class TVChannelShouCangShowActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         channelText = (TextView) findViewById(R.id.text_channel_shoucang);
         orderProgramText = (TextView) findViewById(R.id.text_channel_program_yuyue);
+        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+        ImageButton collection_smb = (ImageButton) findViewById(R.id.collection_sidemunubutton);
 
+        collection_smb.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bidirSlidingLayout.clickSideMenu();
+			}
+		});
+		
+		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bidirSlidingLayout.closeRightMenu();
+			}
+		});
+		
         /**
          * IP part
          */
@@ -574,4 +596,16 @@ public class TVChannelShouCangShowActivity extends Activity {
         //重新加载预约节目数据以更新预约节目UI
         new OrderProgramThread().start();
     }
+    
+    @Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_MENU:
+			bidirSlidingLayout.clickSideMenu();
+			return true;
+		default:
+			break;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }
