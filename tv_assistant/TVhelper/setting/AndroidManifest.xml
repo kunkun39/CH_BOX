@@ -12,7 +12,7 @@
         android:label="setting part" >
 
         <!--设置部分-->
-        <activity android:name="com.changhong.setting.activity.SettingActivity"/>
+        <activity android:name="com.changhong.setting.activity.SettingActivity" />
     </application>
 
 </manifest>
