@@ -40,7 +40,6 @@
             android:layout_height="77.3dip"
             android:layout_marginLeft="0dip"
             />
-
     <!--内容部分-->
 
     <LinearLayout

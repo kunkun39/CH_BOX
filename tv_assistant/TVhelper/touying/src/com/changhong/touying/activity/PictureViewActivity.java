@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.touying.R;
@@ -69,6 +71,7 @@ public class PictureViewActivity extends Activity {
          */
         listViewlocal = (GridView) findViewById(R.id.select_picture);
         listViewlocal.setAdapter(imageAdapter);
+        
     }
 
     private void initEvent() {

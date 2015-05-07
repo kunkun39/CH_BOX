@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.touying.R;
@@ -78,6 +80,7 @@ public class MusicCategoryActivity extends Activity {
     }
 
     private void initEvent() {
+    	
         /**
          * IP连接部分
          */

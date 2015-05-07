@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
@@ -20,6 +21,7 @@ import com.changhong.touying.music.MusicLrc;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -95,6 +97,7 @@ public class MusicViewActivity extends Activity {
     }
 
     private void initEvents() {
+    	
         /**
          * IP part
          */

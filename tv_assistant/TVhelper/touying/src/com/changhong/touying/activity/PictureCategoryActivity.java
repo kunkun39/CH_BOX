@@ -14,7 +14,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
@@ -39,6 +41,7 @@ public class PictureCategoryActivity extends Activity {
     private Button back;
     private ListView clients = null;
     private ArrayAdapter<String> IpAdapter;
+    
 
     /**************************************************图片部分*********************************************************/
 
@@ -85,6 +88,7 @@ public class PictureCategoryActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         clients = (ListView) findViewById(R.id.clients);
         listClients = (Button) findViewById(R.id.btn_list);
+        
 
         /**
          * 图片部分

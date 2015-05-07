@@ -9,7 +9,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.*;
+import android.view.View.OnClickListener;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
@@ -80,7 +82,7 @@ public class VedioViewActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         clients = (ListView) findViewById(R.id.clients);
         listClients = (Button) findViewById(R.id.btn_list);
-
+        
         IpAdapter = new ArrayAdapter<String>(VedioViewActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
         clients.setAdapter(IpAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
