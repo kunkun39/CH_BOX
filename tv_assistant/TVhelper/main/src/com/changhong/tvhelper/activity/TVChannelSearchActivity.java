@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.ThumbnailUtils;
@@ -17,8 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,15 +33,18 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.touying.activity.MusicDetailsActivity;
 import com.changhong.touying.activity.VedioDetailsActivity;
 import com.changhong.touying.music.Music;
@@ -50,305 +60,347 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class TVChannelSearchActivity extends Activity {
 
-    private static final String TAG = "tvplayer";
+	private static final String TAG = "tvplayer";
+	private BidirSlidingLayout bidirSlidingLayout;
 
+	/**
+	 * message handler
+	 */
+	public static Handler mHandler = null;
 
-    /**
-     * message handler
-     */
-    public static Handler mHandler = null;
+	/**
+	 * *****************************************Server IP Part
+	 * ******************************************************
+	 */
+	public static ArrayAdapter<String> adapterString = null;
+	public static TextView title = null;
+	private ListView clients = null;
+	private Button list = null;
+	private Button back = null;
 
-    /**
-     * *****************************************Server IP Part ******************************************************
-     */
-    public static ArrayAdapter<String> adapterString = null;
-    public static TextView title = null;
-    private ListView clients = null;
-    private Button list = null;
-    private Button back = null;
+	/**
+	 * *****************************************Channel Part
+	 * ********************************************************
+	 */
+	private ListView searchList;
+	private ChannelAdapter channelAdapter = null;
+	private List<Map<String, Object>> searchChannel = new ArrayList<Map<String, Object>>();
+	private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
+	private ChannelService channelService;
+	/**
+	 * channel data and its logo
+	 */
+	private HashMap<String, Integer> hs = new HashMap<String, Integer>();
+	private TextView channelText;
 
-    /**
-     * *****************************************Channel Part ********************************************************
-     */
-    private ListView searchList;
-    private ChannelAdapter channelAdapter = null;
-    private List<Map<String, Object>> searchChannel = new ArrayList<Map<String, Object>>();
-    private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
-    private ChannelService channelService;
-    /**
-     * channel data and its logo
-     */
-    private HashMap<String, Integer> hs = new HashMap<String, Integer>();
-    private TextView channelText;
+	/**
+	 * *****************************************Music Part
+	 * *********************************************************
+	 */
+	private MusicAdapter musicAdapter;
+	private List<Music> searchMusics = new ArrayList<Music>();
+	private MusicProvider musicProvider;
+	private List<Music> musics;
+	private TextView musicText;
 
-    /**
-     * *****************************************Music  Part *********************************************************
-     */
-    private MusicAdapter musicAdapter;
-    private List<Music> searchMusics = new ArrayList<Music>();
-    private MusicProvider musicProvider;
-    private List<Music> musics;
-    private TextView musicText;
+	/**
+	 * **********************************************Vedio
+	 * Part******************************************************
+	 */
+	private VedioProvider vedioProvider;
+	private VideoAdapter videoAdapter;
+	private List<Vedio> videos;
+	private List<Vedio> searchVideos = new ArrayList<Vedio>();
+	private TextView videoText;
 
-    /**
-     * **********************************************Vedio Part******************************************************
-     */
-    private VedioProvider vedioProvider;
-    private VideoAdapter videoAdapter;
-    private List<Vedio> videos;
-    private List<Vedio> searchVideos = new ArrayList<Vedio>();
-    private TextView videoText;
+	/**
+	 * ***********************************************搜索框***********************
+	 * ***********************************
+	 */
+	private InputMethodManager imm = null;
+	private EditText searchEditText = null;
+	private Button searchButton;
+	private String searchString = null;
+	private int selectedTabIndex = 0;
 
-    /**
-     * ***********************************************搜索框**********************************************************
-     */
-    private InputMethodManager imm = null;
-    private EditText searchEditText = null;
-    private Button searchButton;
-    private String searchString = null;
-    private int selectedTabIndex = 0;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_channel_search);
+		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_search);
-        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		initData();
 
-        initData();
+		initTVchannel();
 
-        initTVchannel();
+		initViewAndEvent();
+	}
 
-        initViewAndEvent();
-    }
-
-    private void initData() {
-        searchChannel.clear();
-        searchMusics.clear();
-        searchVideos.clear();
-        //channel
-        channelService = new ChannelService();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 初始化DB
-                 */
-                if (MyApplication.databaseContainer == null) {
+	private void initData() {
+		searchChannel.clear();
+		searchMusics.clear();
+		searchVideos.clear();
+		// channel
+		channelService = new ChannelService();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				/**
+				 * 初始化DB
+				 */
+				if (MyApplication.databaseContainer == null) {
                     MyApplication.databaseContainer = new DatabaseContainer(TVChannelSearchActivity.this);
-                }
+						
+				}
 
-                try {
-                    currentChannelPlayData = channelService.searchCurrentChannelPlay();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-        int channelSum = ClientSendCommandService.channelData.size();
-        for (int j = 0; j < channelSum; j++) {
-            searchChannel.add(ClientSendCommandService.channelData.get(j));
-        }
+				try {
+					currentChannelPlayData = channelService
+							.searchCurrentChannelPlay();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+		int channelSum = ClientSendCommandService.channelData.size();
+		for (int j = 0; j < channelSum; j++) {
+			searchChannel.add(ClientSendCommandService.channelData.get(j));
+		}
 
-        //music
-        musicProvider = new MusicProvider(TVChannelSearchActivity.this);
-        musics = (List<Music>) musicProvider.getList();
-        searchMusics = new ArrayList<Music>();
-        for (Music music : musics) {
-            searchMusics.add(music);
-        }
+		// music
+		musicProvider = new MusicProvider(TVChannelSearchActivity.this);
+		musics = (List<Music>) musicProvider.getList();
+		searchMusics = new ArrayList<Music>();
+		for (Music music : musics) {
+			searchMusics.add(music);
+		}
 
-        //video
-        vedioProvider = new VedioProvider(TVChannelSearchActivity.this);
-        videos = (List<Vedio>) vedioProvider.getList();
-        searchVideos = new ArrayList<Vedio>();
-        for (Vedio vedio : videos) {
-            searchVideos.add(vedio);
-        }
-    }
+		// video
+		vedioProvider = new VedioProvider(TVChannelSearchActivity.this);
+		videos = (List<Vedio>) vedioProvider.getList();
+		searchVideos = new ArrayList<Vedio>();
+		for (Vedio vedio : videos) {
+			searchVideos.add(vedio);
+		}
+	}
 
-    private void initViewAndEvent() {
-        title = (TextView) findViewById(R.id.title);
-        clients = (ListView) findViewById(R.id.clients);
-        back = (Button) findViewById(R.id.btn_back);
-        list = (Button) findViewById(R.id.btn_list);
+	private void initViewAndEvent() {
+		title = (TextView) findViewById(R.id.title);
+		clients = (ListView) findViewById(R.id.clients);
+		back = (Button) findViewById(R.id.btn_back);
+		list = (Button) findViewById(R.id.btn_list);
+		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 
-        searchEditText = (EditText) findViewById(R.id.searchstring);
-        searchButton = (Button) findViewById(R.id.btn_search);
+		searchEditText = (EditText) findViewById(R.id.searchstring);
+		searchButton = (Button) findViewById(R.id.btn_search);
 
-        //channel
-        channelText = (TextView) findViewById(R.id.text_channel);
-        channelAdapter = new ChannelAdapter(TVChannelSearchActivity.this);
-        channelText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
+		ImageButton search_smb = (ImageButton) findViewById(R.id.search_sidemunubutton);
 
-                channelText.setTextColor(getResources().getColor(R.color.orange));
-                musicText.setTextColor(Color.WHITE);
-                videoText.setTextColor(Color.WHITE);
+		search_smb.setOnClickListener(new OnClickListener() {
 
-                selectedTabIndex = 0;
-                searchList.clearDisappearingChildren();
-                searchList.setAdapter(channelAdapter);
-                channelAdapter.notifyDataSetChanged();
-            }
-        });
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bidirSlidingLayout.clickSideMenu();
+			}
+		});
 
+		// channel
+		channelText = (TextView) findViewById(R.id.text_channel);
+		channelAdapter = new ChannelAdapter(TVChannelSearchActivity.this);
+		channelText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
 
-        //music
-        musicText = (TextView) findViewById(R.id.text_music);
-        searchList = (ListView) findViewById(R.id.list_channels);
-        musicAdapter = new MusicAdapter(TVChannelSearchActivity.this);
-        musicText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
+				channelText.setTextColor(getResources()
+						.getColor(R.color.orange));
+				musicText.setTextColor(Color.WHITE);
+				videoText.setTextColor(Color.WHITE);
 
-                musicText.setTextColor(getResources().getColor(R.color.orange));
-                videoText.setTextColor(Color.WHITE);
-                channelText.setTextColor(Color.WHITE);
+				selectedTabIndex = 0;
+				searchList.clearDisappearingChildren();
+				searchList.setAdapter(channelAdapter);
+				channelAdapter.notifyDataSetChanged();
+			}
+		});
 
-                selectedTabIndex = 1;
-                searchList.clearDisappearingChildren();
-                searchList.setAdapter(musicAdapter);
-                musicAdapter.notifyDataSetChanged();
-            }
-        });
+		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 
-        //video
-        videoText = (TextView) findViewById(R.id.text_video);
-        videoAdapter = new VideoAdapter(TVChannelSearchActivity.this);
-        videoText.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bidirSlidingLayout.closeRightMenu();
+			}
+		});
 
-                videoText.setTextColor(getResources().getColor(R.color.orange));
-                musicText.setTextColor(Color.WHITE);
-                channelText.setTextColor(Color.WHITE);
+		// music
+		musicText = (TextView) findViewById(R.id.text_music);
+		searchList = (ListView) findViewById(R.id.list_channels);
+		musicAdapter = new MusicAdapter(TVChannelSearchActivity.this);
+		musicText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
 
-                selectedTabIndex = 2;
-                searchList.clearDisappearingChildren();
-                searchList.setAdapter(videoAdapter);
-                videoAdapter.notifyDataSetChanged();
-            }
-        });
+				musicText.setTextColor(getResources().getColor(R.color.orange));
+				videoText.setTextColor(Color.WHITE);
+				channelText.setTextColor(Color.WHITE);
 
-        searchButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                searchString = searchEditText.getText().toString();
-                Log.i("TVChannelSearchActivity", "searchstring>>" + searchString);
-                mHandler.sendEmptyMessage(0);
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-        });
+				selectedTabIndex = 1;
+				searchList.clearDisappearingChildren();
+				searchList.setAdapter(musicAdapter);
+				musicAdapter.notifyDataSetChanged();
+			}
+		});
 
-        /**
-         * 转到播放界面
-         */
-        searchList.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (selectedTabIndex) {
-                    case 0:
-                        TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
-                        Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
-                        String name = (String) searchChannel.get(position).get("service_name");
-                        intent.putExtra("channelname", name);
-                        startActivity(intent);
-                        break;
-                    case 1:
-                        Intent intentMusic = new Intent();
-                        Music music = searchMusics.get(position);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("selectedMusic", music);
-                        intentMusic.putExtras(bundle);
-                        intentMusic.setClass(TVChannelSearchActivity.this, MusicDetailsActivity.class);
-                        startActivity(intentMusic);
-                        break;
-                    case 2:
-                        Intent intentVideo = new Intent();
-                        Vedio vedio = searchVideos.get(position);
-                        Bundle bundleVideo = new Bundle();
-                        bundleVideo.putSerializable("selectedVedio", vedio);
-                        intentVideo.putExtras(bundleVideo);
-                        intentVideo.setClass(TVChannelSearchActivity.this, VedioDetailsActivity.class);
-                        startActivity(intentVideo);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+		// video
+		videoText = (TextView) findViewById(R.id.text_video);
+		videoAdapter = new VideoAdapter(TVChannelSearchActivity.this);
+		videoText.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
 
-        /**
-         * Ip Part
-         */
-        back.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
-        adapterString = new ArrayAdapter<String>(TVChannelSearchActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
-        clients.setAdapter(adapterString);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                adapterString.notifyDataSetChanged();
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
-        list.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(TVChannelSearchActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+				videoText.setTextColor(getResources().getColor(R.color.orange));
+				musicText.setTextColor(Color.WHITE);
+				channelText.setTextColor(Color.WHITE);
 
-        /**
-         * Handler
-         */
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case 0:
-                        searchChannel.clear();
-                        searchMusics.clear();
-                        searchVideos.clear();
+				selectedTabIndex = 2;
+				searchList.clearDisappearingChildren();
+				searchList.setAdapter(videoAdapter);
+				videoAdapter.notifyDataSetChanged();
+			}
+		});
 
-                        if (StringUtils.hasLength(searchString)) {
-                            searchString = YuYingWordsUtils.normalChannelSearchWordsConvert(searchString);
+		searchButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+				searchString = searchEditText.getText().toString();
+				Log.i("TVChannelSearchActivity", "searchstring>>"
+						+ searchString);
+				mHandler.sendEmptyMessage(0);
+				imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+		});
 
-                            /**
-                             * 匹配频道
-                             */
+		/**
+		 * 转到播放界面
+		 */
+		searchList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				switch (selectedTabIndex) {
+				case 0:
+					TVChannelPlayActivity.name = (String) searchChannel.get(
+							position).get("service_name");
+					Intent intent = new Intent(TVChannelSearchActivity.this,
+							TVChannelPlayActivity.class);
+					String name = (String) searchChannel.get(position).get(
+							"service_name");
+					intent.putExtra("channelname", name);
+					startActivity(intent);
+					break;
+				case 1:
+					Intent intentMusic = new Intent();
+					Music music = searchMusics.get(position);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("selectedMusic", music);
+					intentMusic.putExtras(bundle);
+					intentMusic.setClass(TVChannelSearchActivity.this,
+							MusicDetailsActivity.class);
+					startActivity(intentMusic);
+					break;
+				case 2:
+					Intent intentVideo = new Intent();
+					Vedio vedio = searchVideos.get(position);
+					Bundle bundleVideo = new Bundle();
+					bundleVideo.putSerializable("selectedVedio", vedio);
+					intentVideo.putExtras(bundleVideo);
+					intentVideo.setClass(TVChannelSearchActivity.this,
+							VedioDetailsActivity.class);
+					startActivity(intentVideo);
+					break;
+				default:
+					break;
+				}
+			}
+		});
+
+		/**
+		 * Ip Part
+		 */
+		back.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+				finish();
+			}
+		});
+		adapterString = new ArrayAdapter<String>(TVChannelSearchActivity.this,
+				android.R.layout.simple_list_item_1,
+				ClientSendCommandService.serverIpList);
+		clients.setAdapter(adapterString);
+		clients.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				clients.setVisibility(View.GONE);
+				return false;
+			}
+		});
+		clients.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				adapterString.notifyDataSetChanged();
+				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList
+						.get(arg2);
+				title.setText("CHBOX");
+				ClientSendCommandService.handler.sendEmptyMessage(2);
+				clients.setVisibility(View.GONE);
+			}
+		});
+		list.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (ClientSendCommandService.serverIpList.isEmpty()) {
+					Toast.makeText(TVChannelSearchActivity.this,
+							"没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					clients.setVisibility(View.VISIBLE);
+				}
+			}
+		});
+
+		/**
+		 * Handler
+		 */
+		mHandler = new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				switch (msg.what) {
+				case 0:
+					searchChannel.clear();
+					searchMusics.clear();
+					searchVideos.clear();
+
+					if (StringUtils.hasLength(searchString)) {
+						searchString = YuYingWordsUtils
+								.normalChannelSearchWordsConvert(searchString);
+
+						/**
+						 * 匹配频道
+						 */
                             for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
                                 if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
                                     searchChannel.add(ClientSendCommandService.channelData.get(i));
                                 }
                             }
-                            /**
-                             * 匹配音乐
-                             */
+						/**
+						 * 匹配音乐
+						 */
                             int musicSum = musics.size();
                             for (int i = 0; i < musicSum; i++) {
                                 if ((musics.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0||(musics.get(i).getArtist().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
@@ -356,9 +408,9 @@ public class TVChannelSearchActivity extends Activity {
                                 }
 
                             }
-                            /**
-                             * 匹配视频
-                             */
+						/**
+						 * 匹配视频
+						 */
                             int videoSum = videos.size();
                             for (int i = 0; i < videoSum; i++) {
                                 if ((videos.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
@@ -367,9 +419,9 @@ public class TVChannelSearchActivity extends Activity {
                             }
                         }
 
-                        /**
-                         * 先显示频道
-                         */
+					/**
+					 * 先显示频道
+					 */
                         channelText.setTextColor(getResources().getColor(R.color.orange));
                         musicText.setTextColor(getResources().getColor(R.color.white));
                         videoText.setTextColor(getResources().getColor(R.color.white));
@@ -377,44 +429,43 @@ public class TVChannelSearchActivity extends Activity {
                         searchList.setAdapter(channelAdapter);
                         channelAdapter.notifyDataSetChanged();
                         break;
-                    default:
-                        break;
-                }
-                super.handleMessage(msg);
-            }
+				default:
+					break;
+				}
+				super.handleMessage(msg);
+			}
 
-        };
-    }
+		};
+	}
 
+	class MusicAdapter extends BaseAdapter {
+		private Context context;
+		private LayoutInflater layoutInflater;
 
-    class MusicAdapter extends BaseAdapter {
-        private Context context;
-        private LayoutInflater layoutInflater;
+		public MusicAdapter(Context context) {
+			this.context = context;
+			this.layoutInflater = LayoutInflater.from(context);
+		}
 
-        public MusicAdapter(Context context) {
-            this.context = context;
-            this.layoutInflater = LayoutInflater.from(context);
-        }
+		@Override
+		public int getCount() {
+			return searchMusics.size();
+		}
 
-        @Override
-        public int getCount() {
-            return searchMusics.size();
-        }
+		@Override
+		public Object getItem(int position) {
+			return searchMusics.get(position);
+		}
 
-        @Override
-        public Object getItem(int position) {
-            return searchMusics.get(position);
-        }
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
-            if (convertView == null) {
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder viewHolder = null;
+			if (convertView == null) {
                 viewHolder = new ViewHolder();
                 convertView = layoutInflater.inflate(R.layout.music_search_item, null);
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.music_image);
@@ -480,33 +531,33 @@ public class TVChannelSearchActivity extends Activity {
                     break;
             }
         }
-    }
+	}
 
-    class VideoAdapter extends BaseAdapter {
-        LayoutInflater layoutInflater;
+	class VideoAdapter extends BaseAdapter {
+		LayoutInflater layoutInflater;
 
-        public VideoAdapter(Context context) {
-            this.layoutInflater = LayoutInflater.from(context);
-        }
+		public VideoAdapter(Context context) {
+			this.layoutInflater = LayoutInflater.from(context);
+		}
 
-        @Override
-        public int getCount() {
-            return searchVideos.size();
-        }
+		@Override
+		public int getCount() {
+			return searchVideos.size();
+		}
 
-        @Override
-        public Object getItem(int position) {
-            return searchVideos.get(position);
-        }
+		@Override
+		public Object getItem(int position) {
+			return searchVideos.get(position);
+		}
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+		@Override
+		public long getItemId(int position) {
+			return position;
+		}
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder = null;
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder viewHolder = null;
             if (convertView == null) {
                 viewHolder = new ViewHolder();
                 convertView = layoutInflater.inflate(R.layout.video_search_item, null);
@@ -564,38 +615,38 @@ public class TVChannelSearchActivity extends Activity {
                 }
             }
 
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null && imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                }
-            }
-        }
-    }
+			@Override
+			protected void onPostExecute(Bitmap bitmap) {
+				if (bitmap != null && imageView != null) {
+					imageView.setImageBitmap(bitmap);
+					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+				}
+			}
+		}
+	}
 
-    class ChannelAdapter extends BaseAdapter {
-        private LayoutInflater minflater;
+	class ChannelAdapter extends BaseAdapter {
+		private LayoutInflater minflater;
 
-        public ChannelAdapter(Context context) {
-            this.minflater = LayoutInflater.from(context);
-        }
+		public ChannelAdapter(Context context) {
+			this.minflater = LayoutInflater.from(context);
+		}
 
-        public int getCount() {
-            return searchChannel.size();
-        }
+		public int getCount() {
+			return searchChannel.size();
+		}
 
-        public Object getItem(int position) {
-            return position;
-        }
+		public Object getItem(int position) {
+			return position;
+		}
 
-        public long getItemId(int position) {
-            return position;
-        }
+		public long getItemId(int position) {
+			return position;
+		}
 
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder vh = null;
-            if (convertView == null) {
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder vh = null;
+			if (convertView == null) {
                 vh = new ViewHolder();
                 convertView = minflater.inflate(R.layout.channel_search_item, null);
                 vh.channelLogo = (ImageView) convertView.findViewById(R.id.channel_logo);
@@ -613,13 +664,13 @@ public class TVChannelSearchActivity extends Activity {
             } else {
                 vh.channelLogo.setImageResource(R.drawable.logotv);
             }
-            /**
-             * 观看直播
-             */
-            final String serviceName = (String) map.get("service_name");
-            vh.channelLogo.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
+			/**
+			 * 观看直播
+			 */
+			final String serviceName = (String) map.get("service_name");
+			vh.channelLogo.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
                     TVChannelPlayActivity.name = serviceName;
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
@@ -627,11 +678,11 @@ public class TVChannelSearchActivity extends Activity {
                     Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
                     intent.putExtra("channelname", serviceName);
                     startActivity(intent);
-                }
-            });
+				}
+			});
 
-            //设置频道名
-            vh.channelName.setText(serviceName);
+			// 设置频道名
+			vh.channelName.setText(serviceName);
 
             //设置PLAYINFO
             String channelIndex= (String) map.get("channel_index");
@@ -643,121 +694,122 @@ public class TVChannelSearchActivity extends Activity {
                 vh.channelPlayInfo.setText("无节目信息");
             }
 
-            return convertView;
-        }
+			return convertView;
+		}
 
-        public final class ViewHolder {
-            public ImageView channelLogo;
-            public TextView channelName;
-            public TextView channelPlayInfo;
-        }
-    }
+		public final class ViewHolder {
+			public ImageView channelLogo;
+			public TextView channelName;
+			public TextView channelPlayInfo;
+		}
+	}
 
-    /**
-     * **********************************************系统方法重载*****************************************************
-     */
+	/**
+	 * **********************************************系统方法重载*********************
+	 * ********************************
+	 */
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (ClientSendCommandService.titletxt != null) {
+			title.setText(ClientSendCommandService.titletxt);
+		}
+	}
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+	}
 
-    /* tangchao */
-    private void initTVchannel() {
-        hs.clear();
+	/* tangchao */
+	private void initTVchannel() {
+		hs.clear();
 
-        hs.put(getResources().getString(R.string.cctv1_1), R.drawable.cctv1);
-        hs.put(getResources().getString(R.string.cctv1_2), R.drawable.cctv1);
-        hs.put(getResources().getString(R.string.cctv1_3), R.drawable.cctv1);
-        hs.put(getResources().getString(R.string.cctv1_4), R.drawable.cctv1);
-        hs.put(getResources().getString(R.string.cctv1hd_1), R.drawable.cctv1);
-        hs.put(getResources().getString(R.string.cctv1hd_2), R.drawable.cctv1);
-//		channelLogoMapping.put("CCTV-1����", R.drawable.cctv1hd);
-//		channelLogoMapping.put("�ããԣ֣���(����)", R.drawable.cctv1hd);
-        hs.put(getResources().getString(R.string.cctv2_1), R.drawable.cctv2);
-        hs.put(getResources().getString(R.string.cctv2_2), R.drawable.cctv2);
-        hs.put(getResources().getString(R.string.cctv2_3), R.drawable.cctv2);
-        hs.put(getResources().getString(R.string.cctv2_4), R.drawable.cctv2);
-        hs.put(getResources().getString(R.string.cctv3_1), R.drawable.cctv3);
-        hs.put(getResources().getString(R.string.cctv3_2), R.drawable.cctv3);
-        hs.put(getResources().getString(R.string.cctv3_3), R.drawable.cctv3);
-        hs.put(getResources().getString(R.string.cctv3_4), R.drawable.cctv3);
-        hs.put(getResources().getString(R.string.cctv3hd), R.drawable.cctv3);
-//		channelLogoMapping.put("CCTV-3����", R.drawable.cctv3hd);
-        hs.put(getResources().getString(R.string.cctv4_1), R.drawable.cctv4);
-        hs.put(getResources().getString(R.string.cctv4_2), R.drawable.cctv4);
-        hs.put(getResources().getString(R.string.cctv4_3), R.drawable.cctv4);
-        hs.put(getResources().getString(R.string.cctv4_4), R.drawable.cctv4);
-        hs.put(getResources().getString(R.string.cctv5hd), R.drawable.cctv5);
-        hs.put(getResources().getString(R.string.cctv5hd_1), R.drawable.cctv5hd);
-//		channelLogoMapping.put("CCTV5-�������¸���", R.drawable.cctv5hd1);
-        hs.put(getResources().getString(R.string.cctv5_1), R.drawable.cctv5);
-        hs.put(getResources().getString(R.string.cctv5_2), R.drawable.cctv5);
-        hs.put(getResources().getString(R.string.cctv5_3), R.drawable.cctv5);
-        hs.put(getResources().getString(R.string.cctv5_4), R.drawable.cctv5);
-        hs.put(getResources().getString(R.string.cctv6_1), R.drawable.cctv6);
-        hs.put(getResources().getString(R.string.cctv6_2), R.drawable.cctv6);
-        hs.put(getResources().getString(R.string.cctv6_3), R.drawable.cctv6);
-        hs.put(getResources().getString(R.string.cctv6_4), R.drawable.cctv6);
-        hs.put(getResources().getString(R.string.cctv6hd), R.drawable.cctv6);
-//		channelLogoMapping.put("CCTV-6����", R.drawable.cctv6hd);
-        hs.put(getResources().getString(R.string.cctv7_1), R.drawable.cctv7);
-        hs.put(getResources().getString(R.string.cctv7_2), R.drawable.cctv7);
-        hs.put(getResources().getString(R.string.cctv7_3), R.drawable.cctv7);
-        hs.put(getResources().getString(R.string.cctv7_4), R.drawable.cctv7);
-        hs.put(getResources().getString(R.string.cctv8_1), R.drawable.cctv8);
-        hs.put(getResources().getString(R.string.cctv8_2), R.drawable.cctv8);
-        hs.put(getResources().getString(R.string.cctv8_3), R.drawable.cctv8);
-        hs.put(getResources().getString(R.string.cctv8_4), R.drawable.cctv8);
-        hs.put(getResources().getString(R.string.cctv8hd), R.drawable.cctv8);
-//		channelLogoMapping.put("CCTV-8����", R.drawable.cctv8hd);
-        hs.put(getResources().getString(R.string.cctv9_1), R.drawable.cctv9);
-        hs.put(getResources().getString(R.string.cctv9_2), R.drawable.cctv9);
-        hs.put(getResources().getString(R.string.cctv9_3), R.drawable.cctv9);
-        hs.put(getResources().getString(R.string.cctv10_1), R.drawable.cctv10);
-        hs.put(getResources().getString(R.string.cctv10_2), R.drawable.cctv10);
-        hs.put(getResources().getString(R.string.cctv10_3), R.drawable.cctv10);
-        hs.put(getResources().getString(R.string.cctv10_4), R.drawable.cctv10);
-        hs.put(getResources().getString(R.string.cctv11_1), R.drawable.cctv11);
-        hs.put(getResources().getString(R.string.cctv11_2), R.drawable.cctv11);
-        hs.put(getResources().getString(R.string.cctv11_3), R.drawable.cctv11);
-        hs.put(getResources().getString(R.string.cctv11_4), R.drawable.cctv11);
-        hs.put(getResources().getString(R.string.cctv12_1), R.drawable.cctv12);
-        hs.put(getResources().getString(R.string.cctv12_2), R.drawable.cctv12);
-        hs.put(getResources().getString(R.string.cctv12_3), R.drawable.cctv12);
-        hs.put(getResources().getString(R.string.cctv12_4), R.drawable.cctv12);
-        hs.put(getResources().getString(R.string.cctv13_1), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_2), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_3), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_4), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_5), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_6), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_7), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_8), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv13_9), R.drawable.cctvnews);
-        hs.put(getResources().getString(R.string.cctv14_1), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_2), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_3), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_4), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_5), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_6), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv14_7), R.drawable.cctv14);
-        hs.put(getResources().getString(R.string.cctv15_1), R.drawable.cctv15);
-        hs.put(getResources().getString(R.string.cctv15_2), R.drawable.cctv15);
-        hs.put(getResources().getString(R.string.cctv15_3), R.drawable.cctv15);
+		hs.put(getResources().getString(R.string.cctv1_1), R.drawable.cctv1);
+		hs.put(getResources().getString(R.string.cctv1_2), R.drawable.cctv1);
+		hs.put(getResources().getString(R.string.cctv1_3), R.drawable.cctv1);
+		hs.put(getResources().getString(R.string.cctv1_4), R.drawable.cctv1);
+		hs.put(getResources().getString(R.string.cctv1hd_1), R.drawable.cctv1);
+		hs.put(getResources().getString(R.string.cctv1hd_2), R.drawable.cctv1);
+		// channelLogoMapping.put("CCTV-1����", R.drawable.cctv1hd);
+		// channelLogoMapping.put("�ããԣ֣���(����)", R.drawable.cctv1hd);
+		hs.put(getResources().getString(R.string.cctv2_1), R.drawable.cctv2);
+		hs.put(getResources().getString(R.string.cctv2_2), R.drawable.cctv2);
+		hs.put(getResources().getString(R.string.cctv2_3), R.drawable.cctv2);
+		hs.put(getResources().getString(R.string.cctv2_4), R.drawable.cctv2);
+		hs.put(getResources().getString(R.string.cctv3_1), R.drawable.cctv3);
+		hs.put(getResources().getString(R.string.cctv3_2), R.drawable.cctv3);
+		hs.put(getResources().getString(R.string.cctv3_3), R.drawable.cctv3);
+		hs.put(getResources().getString(R.string.cctv3_4), R.drawable.cctv3);
+		hs.put(getResources().getString(R.string.cctv3hd), R.drawable.cctv3);
+		// channelLogoMapping.put("CCTV-3����", R.drawable.cctv3hd);
+		hs.put(getResources().getString(R.string.cctv4_1), R.drawable.cctv4);
+		hs.put(getResources().getString(R.string.cctv4_2), R.drawable.cctv4);
+		hs.put(getResources().getString(R.string.cctv4_3), R.drawable.cctv4);
+		hs.put(getResources().getString(R.string.cctv4_4), R.drawable.cctv4);
+		hs.put(getResources().getString(R.string.cctv5hd), R.drawable.cctv5);
+		hs.put(getResources().getString(R.string.cctv5hd_1), R.drawable.cctv5hd);
+		// channelLogoMapping.put("CCTV5-�������¸���", R.drawable.cctv5hd1);
+		hs.put(getResources().getString(R.string.cctv5_1), R.drawable.cctv5);
+		hs.put(getResources().getString(R.string.cctv5_2), R.drawable.cctv5);
+		hs.put(getResources().getString(R.string.cctv5_3), R.drawable.cctv5);
+		hs.put(getResources().getString(R.string.cctv5_4), R.drawable.cctv5);
+		hs.put(getResources().getString(R.string.cctv6_1), R.drawable.cctv6);
+		hs.put(getResources().getString(R.string.cctv6_2), R.drawable.cctv6);
+		hs.put(getResources().getString(R.string.cctv6_3), R.drawable.cctv6);
+		hs.put(getResources().getString(R.string.cctv6_4), R.drawable.cctv6);
+		hs.put(getResources().getString(R.string.cctv6hd), R.drawable.cctv6);
+		// channelLogoMapping.put("CCTV-6����", R.drawable.cctv6hd);
+		hs.put(getResources().getString(R.string.cctv7_1), R.drawable.cctv7);
+		hs.put(getResources().getString(R.string.cctv7_2), R.drawable.cctv7);
+		hs.put(getResources().getString(R.string.cctv7_3), R.drawable.cctv7);
+		hs.put(getResources().getString(R.string.cctv7_4), R.drawable.cctv7);
+		hs.put(getResources().getString(R.string.cctv8_1), R.drawable.cctv8);
+		hs.put(getResources().getString(R.string.cctv8_2), R.drawable.cctv8);
+		hs.put(getResources().getString(R.string.cctv8_3), R.drawable.cctv8);
+		hs.put(getResources().getString(R.string.cctv8_4), R.drawable.cctv8);
+		hs.put(getResources().getString(R.string.cctv8hd), R.drawable.cctv8);
+		// channelLogoMapping.put("CCTV-8����", R.drawable.cctv8hd);
+		hs.put(getResources().getString(R.string.cctv9_1), R.drawable.cctv9);
+		hs.put(getResources().getString(R.string.cctv9_2), R.drawable.cctv9);
+		hs.put(getResources().getString(R.string.cctv9_3), R.drawable.cctv9);
+		hs.put(getResources().getString(R.string.cctv10_1), R.drawable.cctv10);
+		hs.put(getResources().getString(R.string.cctv10_2), R.drawable.cctv10);
+		hs.put(getResources().getString(R.string.cctv10_3), R.drawable.cctv10);
+		hs.put(getResources().getString(R.string.cctv10_4), R.drawable.cctv10);
+		hs.put(getResources().getString(R.string.cctv11_1), R.drawable.cctv11);
+		hs.put(getResources().getString(R.string.cctv11_2), R.drawable.cctv11);
+		hs.put(getResources().getString(R.string.cctv11_3), R.drawable.cctv11);
+		hs.put(getResources().getString(R.string.cctv11_4), R.drawable.cctv11);
+		hs.put(getResources().getString(R.string.cctv12_1), R.drawable.cctv12);
+		hs.put(getResources().getString(R.string.cctv12_2), R.drawable.cctv12);
+		hs.put(getResources().getString(R.string.cctv12_3), R.drawable.cctv12);
+		hs.put(getResources().getString(R.string.cctv12_4), R.drawable.cctv12);
+		hs.put(getResources().getString(R.string.cctv13_1), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_2), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_3), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_4), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_5), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_6), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_7), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_8), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv13_9), R.drawable.cctvnews);
+		hs.put(getResources().getString(R.string.cctv14_1), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_2), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_3), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_4), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_5), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_6), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv14_7), R.drawable.cctv14);
+		hs.put(getResources().getString(R.string.cctv15_1), R.drawable.cctv15);
+		hs.put(getResources().getString(R.string.cctv15_2), R.drawable.cctv15);
+		hs.put(getResources().getString(R.string.cctv15_3), R.drawable.cctv15);
         hs.put(getResources().getString(R.string.cctveyu), R.drawable.logotv);
         hs.put(getResources().getString(R.string.cctvalaboyu), R.drawable.logotv);
         hs.put(getResources().getString(R.string.cctvguide), R.drawable.logotv);
@@ -1029,6 +1081,17 @@ public class TVChannelSearchActivity extends Activity {
         hs.put(getResources().getString(R.string.zhongxuesheng), R.drawable.logotv);
         // channelLogoMapping.put("NHK", R.drawable.logotv);
 
-    }
+	}
 
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		switch (keyCode) {
+		case KeyEvent.KEYCODE_MENU:
+			bidirSlidingLayout.clickSideMenu();
+			return true;
+		default:
+			break;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

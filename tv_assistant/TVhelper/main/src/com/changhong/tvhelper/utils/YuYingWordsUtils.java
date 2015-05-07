@@ -170,12 +170,34 @@ public class YuYingWordsUtils {
         return needConvert;
     }
 
+    private final static Map<String, String> TV_CHANNEL_SEARCH_KEYWORDS = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_SEARCH_KEYWORDS.put("中央", "CCTV-");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("四川", "SCTV-");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("成都", "CDTV-");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("一", "1");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("二", "2");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("三", "3");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("四", "4");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("五", "5");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("六", "6");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("七", "7");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("八", "8");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("九", "9");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("十", "10");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("十一", "11");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("十二", "12");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("十三", "13");
+    }
+
     /**
      * 该方法主要用于手机上搜索频道的词语转化
      */
     public static String normalChannelSearchWordsConvert(String needConvert) {
-        for (String key : TV_CHANNEL_REPLACE_KEYWORDS.keySet()) {
-            String value = TV_CHANNEL_REPLACE_KEYWORDS.get(key);
+        for (String key : TV_CHANNEL_SEARCH_KEYWORDS.keySet()) {
+            String value = TV_CHANNEL_SEARCH_KEYWORDS.get(key);
             needConvert = needConvert.replace(key, value);
         }
         return needConvert;

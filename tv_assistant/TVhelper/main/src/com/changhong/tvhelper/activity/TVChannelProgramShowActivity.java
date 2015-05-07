@@ -366,7 +366,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                         vh.programStatus.setVisibility(View.INVISIBLE);
                     } else {
                         vh.programStatus.setText("可预约");
-                        vh.programStatus.setTextColor(getResources().getColor(R.color.white));
+                        vh.programStatus.setTextColor(getResources().getColor(R.color.white));       
                     }
 
                     vh.programStatus.setOnClickListener(new View.OnClickListener() {
@@ -398,8 +398,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                                     if (channelService.saveOrderProgram(orderProgramReplace)) {
                                                         orderProgramKeys.add(program.getProgramName() + "-" + program.getProgramStartTime() + "-" + weekIndexName);
                                                         vh.programStatus.setText("已预约");
-                                                        vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
-
+                                                        vh.programStatus.setTextColor(getResources().getColor(R.color.orange));                                                   
                                                         Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
                                                     } else {
                                                         Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
@@ -433,7 +432,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                         orderProgramKeys.add(program.getProgramName() + "-" + program.getProgramStartTime() + "-" + weekIndexName);
                                         vh.programStatus.setText("已预约");
                                         vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
-
+                                        
                                         Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
                                     } else {
                                         vh.programStatus.setText("可预约");
@@ -444,8 +443,8 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 
                             } else if (channelService.deleteOrderProgramByWeek(program.getProgramName(), weekIndexName)) {
                                 orderProgramKeys.remove(program.getProgramName() + "-" + program.getProgramStartTime() + "-" + weekIndexName);
-                                vh.programStatus.setText("可预约");
-                                vh.programStatus.setTextColor(getResources().getColor(R.color.white));
+                                vh.programStatus.setText("可预约"); 
+                                    vh.programStatus.setTextColor(getResources().getColor(R.color.white));
 
                             } else {
                                 Toast.makeText(TVChannelProgramShowActivity.this, "取消预约失败", Toast.LENGTH_SHORT).show();

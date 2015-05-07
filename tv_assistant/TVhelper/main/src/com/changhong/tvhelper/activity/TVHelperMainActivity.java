@@ -1,6 +1,9 @@
 package com.changhong.tvhelper.activity;
 
 import java.io.*;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -63,6 +66,55 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.JsonReader;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.NetworkUtils;
+import com.changhong.faq.activity.QuestionListActivity;
+import com.changhong.setting.activity.SettingActivity;
+import com.changhong.setting.service.UpdateLogService;
+import com.changhong.setting.service.UserUpdateService;
+import com.changhong.setting.view.AppHelpDialog;
+import com.changhong.touying.activity.TouYingCategoryActivity;
+import com.changhong.tvhelper.R;
+import com.changhong.tvhelper.service.AppLogService;
+import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.tvhelper.service.ClientLocalThreadRunningService;
+
 public class TVHelperMainActivity extends Activity {
 
     private static final String TAG = "TVhelper";
@@ -73,7 +125,6 @@ public class TVHelperMainActivity extends Activity {
     private ArrayAdapter<String> adapter = null;
     private ListView clients = null;
     private Button list;
-
     /**
      * message handler
      */
@@ -118,7 +169,7 @@ public class TVHelperMainActivity extends Activity {
         /**
          * init all views
          */
-        title = (TextView) findViewById(R.id.title);
+    	title = (TextView) findViewById(R.id.title);
         clients = (ListView) findViewById(R.id.clients);
         img = (ImageView) findViewById(R.id.img);
         list = (Button) findViewById(R.id.btn_list);
@@ -130,7 +181,6 @@ public class TVHelperMainActivity extends Activity {
         Button shoucang = (Button) findViewById(R.id.btn_shoucang);
         Button touying = (Button) findViewById(R.id.btn_touying);
         Button sousuo = (Button) findViewById(R.id.btn_sousuo);
-
         /**
          * init all event for every view
          */
@@ -321,6 +371,8 @@ public class TVHelperMainActivity extends Activity {
                         });
                 builder.create().show();
                 return true;
+            case KeyEvent.KEYCODE_MENU:
+    			return true;
             default:
                 break;
         }

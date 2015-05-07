@@ -1,194 +1,220 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/main_bk">
-    <LinearLayout
-            android:background="@drawable/title_banner"
-            android:layout_height="67.6dip"
+<com.changhong.common.widgets.BidirSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bidir_sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/right_menu"
+        android:layout_width="150dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="#00ffcc"
+        android:visibility="visible" >
+
+        <include layout="@layout/sidemenu" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_bk"
+        android:orientation="vertical" >
+
+        <LinearLayout
             android:layout_width="fill_parent"
+            android:layout_height="67.6dip"
+            android:background="@drawable/title_banner"
             android:focusable="false"
-            android:orientation="horizontal"
             android:gravity="center"
-            >
-        <TextView
-                android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
                 android:id="@+id/title"
-                android:text="未连接"
-                android:textSize="46px"
-                android:singleLine="true"
-                android:ellipsize="marquee"
                 android:layout_width="80dip"
                 android:layout_height="64.3dip"
-                />
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="未连接"
+                android:textSize="46px" />
 
-        <ImageView
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/title_ip_select"
+            <ImageView
                 android:layout_width="16.7dip"
                 android:layout_height="10.7dip"
-                />
-    </LinearLayout>
-    <Button
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/title_ip_select" />
+        </LinearLayout>
+
+        <Button
             android:id="@+id/btn_back"
-            android:background="@drawable/title_btn_back_selector"
             android:layout_width="80.5dip"
             android:layout_height="77.3dip"
             android:layout_marginLeft="0dip"
-            />
+            android:background="@drawable/title_btn_back_selector" />
+        <ImageButton
+            android:id="@+id/search_sidemunubutton"
+            android:layout_width="40dip"
+            android:layout_height="50dip"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="310dip"
+            android:background="@drawable/sidemenubutton" />
 
-    <ListView
+        <ListView
             android:id="@+id/clients"
-            android:background="@drawable/title_ip_list_bg"
-            android:layout_marginTop="67.6dip"
             android:layout_width="match_parent"
             android:layout_height="558dip"
+            android:layout_marginTop="67.6dip"
+            android:background="@drawable/title_ip_list_bg"
             android:listSelector="@drawable/title_ip_list"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
-    <Button
+        <Button
             android:id="@+id/btn_list"
-            android:background="@drawable/title_btn_list_selector"
             android:layout_width="204dip"
             android:layout_height="49.8dip"
             android:layout_marginLeft="70dip"
             android:layout_marginTop="10dip"
-            />
+            android:background="@drawable/title_btn_list_selector" />
 
-    <LinearLayout
+        <LinearLayout
             android:id="@+id/search_linear_layout"
             android:layout_width="fill_parent"
             android:layout_height="49.8dip"
-            android:focusable="false"
-            android:orientation="horizontal"
             android:layout_marginLeft="25dip"
             android:layout_marginTop="67.6dip"
-            >
-        <LinearLayout
+            android:focusable="false"
+            android:orientation="horizontal" >
+
+            <LinearLayout
                 android:layout_width="200dip"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
-            <EditText
+                android:orientation="vertical" >
+
+                <EditText
                     android:id="@+id/searchstring"
                     android:layout_width="fill_parent"
                     android:layout_height="48.8dip"
-                    android:textColor="@android:color/white"
-                    android:textSize="21sp"
-                    android:gravity="bottom"
                     android:background="@android:color/transparent"
-                    />
-            <LinearLayout
+                    android:gravity="bottom"
+                    android:textColor="@android:color/white"
+                    android:textSize="21sp" />
+
+                <LinearLayout
                     android:layout_width="324dp"
                     android:layout_height="1dip"
-                    android:orientation="horizontal"
                     android:background="@android:color/white"
-                    />
-        </LinearLayout>
+                    android:orientation="horizontal" />
+            </LinearLayout>
 
-        <Button
-                android:layout_marginLeft="15dip"
+            <Button
                 android:id="@+id/btn_search"
-                android:layout_gravity="bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/search_button"
-                />
-    </LinearLayout>
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="15dip"
+                android:background="@drawable/search_button" />
+        </LinearLayout>
 
-    <LinearLayout
+        <LinearLayout
             android:id="@+id/white_head"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:background="@android:color/white"
-            android:orientation="horizontal"
+            android:layout_alignRight="@+id/search_linear_layout"
             android:layout_alignTop="@+id/layout_catogory"
-            android:layout_alignRight="@+id/search_linear_layout">
-    </LinearLayout>
-
-    <LinearLayout
-            android:id="@+id/layout_catogory"
-            android:layout_width="fill_parent"
-            android:orientation="horizontal"
-            android:layout_height="30dp"
-            android:layout_marginTop="130dp">
+            android:background="@android:color/white"
+            android:orientation="horizontal" >
+        </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layout_catogory"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="130dp"
+            android:orientation="horizontal" >
+
+            <LinearLayout
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
                 android:background="@android:color/white"
-                android:orientation="vertical">
-        </LinearLayout>
-        <TextView
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/text_channel"
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
-                android:text="频道"
-                android:textSize="15sp"
-                android:singleLine="true"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_weight="1"/>
-        <LinearLayout
+                android:singleLine="true"
+                android:text="频道"
+                android:textSize="15sp" />
+
+            <LinearLayout
                 android:layout_width="1dip"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal"
                 android:background="@android:color/white"
-                />
-        <TextView
+                android:orientation="horizontal" />
+
+            <TextView
                 android:id="@+id/text_music"
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
-                android:text="音乐"
-                android:textSize="15sp"
-                android:singleLine="true"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_weight="1"/>
-        <LinearLayout
+                android:singleLine="true"
+                android:text="音乐"
+                android:textSize="15sp" />
+
+            <LinearLayout
                 android:layout_width="1dip"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal"
                 android:background="@android:color/white"
-                />
-        <TextView
+                android:orientation="horizontal" />
+
+            <TextView
                 android:id="@+id/text_video"
                 android:layout_width="100dp"
                 android:layout_height="fill_parent"
-                android:text="视频"
-                android:textSize="15sp"
-                android:singleLine="true"
+                android:layout_weight="1"
                 android:gravity="center"
-                android:layout_weight="1"/>
-        <LinearLayout
+                android:singleLine="true"
+                android:text="视频"
+                android:textSize="15sp" />
+
+            <LinearLayout
                 android:layout_width="1dip"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal"
                 android:background="@android:color/white"
-                />
+                android:orientation="horizontal" />
+        </LinearLayout>
 
-    </LinearLayout>
-    <LinearLayout
+        <LinearLayout
             android:id="@+id/layout_white"
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="1dip"
-            android:background="@android:color/white"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/layout_catogory"
-            android:layout_alignParentRight="true">
-    </LinearLayout>
-    <RelativeLayout
+            android:background="@android:color/white"
+            android:orientation="horizontal" >
+        </LinearLayout>
+
+        <RelativeLayout
             android:id="@+id/layout_list"
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@id/layout_white"
-            android:layout_height="wrap_content">
-        <ListView
+            android:orientation="horizontal" >
+
+            <ListView
                 android:id="@+id/list_channels"
-                android:divider="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true">
-        </ListView>
+                android:layout_alignParentTop="true"
+                android:divider="@null" >
+            </ListView>
+        </RelativeLayout>
     </RelativeLayout>
 
-</RelativeLayout>
+</com.changhong.common.widgets.BidirSlidingLayout>

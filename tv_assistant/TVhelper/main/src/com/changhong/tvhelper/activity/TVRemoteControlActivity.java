@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.SystemClock;
+
 import com.baidu.voicerecognition.android.Candidate;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
@@ -14,6 +15,7 @@ import com.changhong.common.domain.AppInfo;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.remotecontrol.TVInputDialogActivity;
 
 import android.os.Bundle;
@@ -41,6 +43,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
 import com.changhong.tvhelper.view.TVChannelSwitchDialog;
@@ -53,7 +56,7 @@ import java.util.Map;
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
     private static final String TAG = "TVhelper";
-
+    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * control part
      */
@@ -109,7 +112,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）
         int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
         detector = new GestureDetector(this);
-
+        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         img_d = findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
         title = (TextView) findViewById(R.id.title);
@@ -256,6 +259,15 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 }
             }
         });
+        
+        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				bidirSlidingLayout.closeRightMenu();
+			}
+		});
 
         if (numInputDialog == null) {
             numInputDialog = new TVNumInputDialog(TVRemoteControlActivity.this);
@@ -731,6 +743,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 break;
+            case KeyEvent.KEYCODE_MENU:
+            	bidirSlidingLayout.clickSideMenu();
+    			return true;
             default:
                 break;
         }
