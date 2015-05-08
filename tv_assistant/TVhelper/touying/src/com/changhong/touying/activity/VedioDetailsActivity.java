@@ -160,14 +160,14 @@ public class VedioDetailsActivity extends Activity {
         String displayName = StringUtils.hasLength(selectedVedio.getDisplayName()) ? selectedVedio.getDisplayName() : selectedVedio.getTitle();
         vedioName.setText(displayName);
 
-        vedioTime = (TextView) findViewById(R.id.vedio_time);
-        vedioTime.setText("时间 ： " + DateUtils.getMedioAddDate(selectedVedio.getCreateTime()));
+//        vedioTime = (TextView) findViewById(R.id.vedio_time);
+//        vedioTime.setText("时间 ： " + DateUtils.getMedioAddDate(selectedVedio.getCreateTime()));
 
         vedioDuring = (TextView) findViewById(R.id.vedio_during);
         vedioDuring.setText("时长 ： " + vedioTotalTime);
 
-        vedioType = (TextView) findViewById(R.id.vedio_type);
-        vedioType.setText("类型 ： " + selectedVedio.getMimeType());
+//        vedioType = (TextView) findViewById(R.id.vedio_type);
+//        vedioType.setText("类型 ： " + selectedVedio.getMimeType());
 
         returnImage = (ImageView) findViewById(R.id.d_btn_return);
         playImage = (ImageView) findViewById(R.id.d_btn_play);

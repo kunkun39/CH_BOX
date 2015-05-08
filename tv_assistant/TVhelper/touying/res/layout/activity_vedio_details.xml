@@ -1,220 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/touying_details_bg">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/touying_details_bg"
+    android:orientation="vertical" >
 
-    <ImageView
-            android:id="@+id/details_image"
-            android:layout_width="fill_parent"
-            android:layout_height="220dp"
-            android:scaleType="fitXY"/>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="#000000"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-    <TableLayout
-            android:id="@+id/table_video"
-            android:layout_below="@id/details_image"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:padding="10dp">
+        <ImageButton
+            android:id="@+id/d_btn_return"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/title_btn_back_selector" />
+    </LinearLayout>
 
-        <TableRow
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <TextView
-                    android:id="@+id/vedio_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/white"
-                    android:layout_column="0"
-                    />
-        </TableRow>
+    <TextView
+        android:id="@+id/vedio_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
-        <TableRow
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/vedio_during"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/vedio_name"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="14sp" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical" >
 
-            <TextView
-                    android:id="@+id/vedio_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/white"
-                    android:layout_marginTop="20dp"
-                    android:layout_column="0"
-                    />
-        </TableRow>
-
-        <TableRow
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                    android:id="@+id/vedio_during"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/white"
-                    android:layout_marginTop="20dp"
-                    android:layout_column="0"
-                    />
-        </TableRow>
-
-        <TableRow
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                    android:id="@+id/vedio_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@android:color/white"
-                    android:layout_marginTop="20dp"
-                    android:layout_column="0"
-                    />
-        </TableRow>
-
-        <TableRow
-                android:paddingLeft="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                    android:id="@+id/vedio_description"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:text="@string/vedio_description"
-                    android:textColor="@android:color/white"
-                    android:layout_marginTop="20dp"
-                    android:layout_column="0"
-                    />
-        </TableRow>
-
-        <TableRow
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            <TextView
-                    android:id="@+id/vedio_details_in"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
+        <FrameLayout
+            android:layout_width="260dp"
+            android:layout_height="260dp"
+            android:background="@drawable/ablumlayout_bg" >
 
             <ImageView
-                    android:id="@+id/d_btn_return"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/btn_return"
-                    android:layout_column="0"
-                    />
+                android:id="@+id/details_image"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_gravity="center"
+                android:src="@drawable/defaultalbum" />
 
             <ImageView
-                    android:id="@+id/d_btn_play"
-                    android:layout_width="45dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:background="@drawable/btn_vedio_play"
-                    android:layout_column="0"
-                    />
-        </TableRow>
-    </TableLayout>
+                android:id="@+id/d_btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/music_details_play" />
+        </FrameLayout>
+    </LinearLayout>
 
-    <!--歌曲播放控制部分-->
+    <!-- 歌曲播放控制部分 -->
 
     <RelativeLayout
-            android:id="@+id/vedio_seek_layout"
-            android:layout_height="100dp"
-            android:layout_width="match_parent"
-            android:background="#25000000"
-            android:visibility="invisible"
-            android:layout_alignParentBottom="true">
+        android:id="@+id/vedio_seek_layout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="#25000000"
+        android:visibility="invisible" >
 
         <LinearLayout
-                android:id="@+id/vedio_time_info"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:orientation="horizontal">
+            android:id="@+id/vedio_time_info"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal" >
 
             <TextView
-                    android:id="@+id/vedio_showtime_going"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="5dp"/>
+                android:id="@+id/vedio_showtime_going"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="16dp" />
 
             <SeekBar
-                    android:id="@+id/play_seekbar"
-                    android:layout_width="260dp"
-                    android:layout_height="40dp"
-                    android:paddingTop="14dp"
-                    android:paddingLeft="5dp"
-                    android:progressDrawable="@drawable/progress_holo_light"
-                    android:thumb="@drawable/detail_icon_schedule_ball"/>
+                android:id="@+id/play_seekbar"
+                android:layout_width="260dp"
+                android:layout_height="40dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="14dp"
+                android:progressDrawable="@drawable/progress_holo_light"
+                android:thumb="@drawable/detail_icon_schedule_ball" />
 
             <TextView
-                    android:id="@+id/vedio_showtime_total"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="5dp"/>
-
+                android:id="@+id/vedio_showtime_total"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="16dp" />
         </LinearLayout>
 
         <LinearLayout
-                android:layout_width="fill_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_below="@+id/vedio_time_info"
+            android:orientation="horizontal"
+            android:paddingTop="10dp" >
+
+            <LinearLayout
+                android:layout_width="80dp"
                 android:layout_height="60dp"
-                android:paddingTop="10dp"
-                android:orientation="horizontal"
-                android:layout_below="@+id/vedio_time_info">
-
-            <LinearLayout
-                    android:layout_width="80dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal">
+                android:orientation="horizontal" >
             </LinearLayout>
 
             <ImageView
-                    android:id="@+id/control_volume_small"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/control_volume_small"/>
+                android:id="@+id/control_volume_small"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/control_volume_small" />
 
             <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal">
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:orientation="horizontal" >
             </LinearLayout>
 
             <ImageView
-                    android:id="@+id/vedio_control_button"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:background="@drawable/control_pause"/>
+                android:id="@+id/vedio_control_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/control_pause" />
 
             <LinearLayout
-                    android:layout_width="50dp"
-                    android:layout_height="60dp"
-                    android:orientation="horizontal">
+                android:layout_width="50dp"
+                android:layout_height="60dp"
+                android:orientation="horizontal" >
             </LinearLayout>
 
             <ImageView
-                    android:id="@+id/control_volume_bigger"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/control_volume_bigger"/>
+                android:id="@+id/control_volume_bigger"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/control_volume_bigger" />
         </LinearLayout>
-
     </RelativeLayout>
 
 </RelativeLayout>
