@@ -248,6 +248,8 @@ public class TVChannelPlayActivity extends Activity {
                 mm++;
                 break;
             case KeyEvent.KEYCODE_BACK:
+                mDismissHandler = null;
+                finish();
                 break;
             default:
                 break;
@@ -463,8 +465,10 @@ public class TVChannelPlayActivity extends Activity {
                 }
                 if ((System.currentTimeMillis() - time) > 8000 && time != 0l) {
                     //超过8秒一直没有播放，退出播放界面
-                    mDismissHandler.sendEmptyMessage(1);
-                    finish();
+                    if (mDismissHandler != null) {
+                        mDismissHandler.sendEmptyMessage(1);
+                        finish();
+                    }
                     break;
                 }
                 SystemClock.sleep(1000);

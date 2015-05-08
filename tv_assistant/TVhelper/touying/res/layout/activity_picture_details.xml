@@ -63,11 +63,10 @@
             android:layout_above="@id/bottom_linear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
             >
 
         <ImageView
-                android:id="@+id/img_up"
+                android:id="@+id/gesture_up"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@drawable/gesture_up"
@@ -76,19 +75,17 @@
                 />
         <TextView
                 android:id="@+id/text_up"
-                android:text="上滑投影"
+                android:text="上滑开始投影"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="160dp"
-                android:layout_below="@id/img_up"
+                android:layout_below="@id/gesture_up"
                 />
-
-
         <ImageView
-                android:id="@+id/img_left"
+                android:id="@+id/gesture_left"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
@@ -97,7 +94,7 @@
                 android:layout_gravity="left"/>
         <TextView
                 android:id="@+id/text_left"
-                android:layout_below="@id/img_left"
+                android:layout_below="@id/gesture_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="上一张"
@@ -107,7 +104,7 @@
                 android:layout_gravity="left"/>
 
         <ImageView
-                android:id="@+id/img_right"
+                android:id="@+id/gesture_right"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_centerVertical="true"
@@ -119,7 +116,7 @@
                 android:id="@+id/text_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/img_right"
+                android:layout_below="@id/gesture_right"
                 android:text="下一张"
                 android:textSize="12sp"
                 android:layout_alignParentRight="true"
@@ -140,15 +137,13 @@
                 />
 
         <ImageView
-                android:id="@+id/img_scale"
+                android:id="@+id/gesture_scale"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:background="@drawable/gesture_room"
                 android:layout_centerHorizontal="true"
                 android:layout_above="@id/text_scale"
                 />
-
-
     </RelativeLayout>
 
 

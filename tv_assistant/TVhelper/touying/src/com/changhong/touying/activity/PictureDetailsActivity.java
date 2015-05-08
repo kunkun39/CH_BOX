@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.*;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.animation.Animation;
@@ -20,7 +19,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.touying.images.DragImageView;
 import com.changhong.common.utils.NetworkUtils;
@@ -124,12 +122,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     private float currentRotationPosition = 0f;
 
-    /**
-     * ******************************************压缩图片部分**********************************************************
-     */
-
-    private File compressImagePath;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -163,8 +155,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         Intent intent = getIntent();
         int position = intent.getIntExtra("position", 0);
         imagePaths = getIntent().getStringArrayListExtra("imagePaths");
-
-        compressImagePath = StorageUtils.getIndividualCacheDirectory(PictureDetailsActivity.this);
 
         /**
          * 设置图片需要显示的位置
@@ -417,7 +407,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         /**
          * 横向滑动, 如果是投影状态，需要持续推图片数据到盒子，如果不是投影状态就不管，只滑动
          */
-        if (e1.getX() - e2.getX() > 350) {
+        if (e1.getX() - e2.getX() > 300) {
             /**
              * 向右滑动
              */
@@ -447,7 +437,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
              */
             currentRotationPosition = 0f;
             return true;
-        } else if (e2.getX() - e1.getX() > 350) {
+        } else if (e2.getX() - e1.getX() > 300) {
             /**
              * 向左滑动
              */

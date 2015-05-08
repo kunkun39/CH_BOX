@@ -376,7 +376,7 @@ public class ClientLocalThreadRunningService extends Service {
                     JSONObject version = (JSONObject) allVersions.getJSONArray("EPG_DATABASE").get(0);
                     int serverVersion = version.getInt("epg_db_version");
                     int mobileVersion = service.getEPGVersion();
-                    if (serverVersion == 0 || (serverVersion >= mobileVersion)) {
+                    if (serverVersion == 0 || (serverVersion > mobileVersion)) {
                         shouldUpdateDB = true;
                     }
 
