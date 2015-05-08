@@ -12,7 +12,7 @@
         android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:background="#00ffcc"
-        android:visibility="visible" >
+        android:visibility="gone" >
 
         <include layout="@layout/sidemenu" />
     </RelativeLayout>
@@ -54,6 +54,7 @@
             android:layout_height="50dip"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="310dip"
+            android:visibility="gone"
             android:background="@drawable/sidemenubutton" />
 
         <LinearLayout

@@ -35,7 +35,7 @@ public class SettingActivity extends Activity {
 	 * 返回到主菜单按钮
 	 */
 	private Button settingReturn;
-	private BidirSlidingLayout bidirSlidingLayout;
+//	private BidirSlidingLayout bidirSlidingLayout;
 	private ImageButton setting_smb;
 	/**
 	 * 升级按钮, 下载的进度条, 系统升级的服务
@@ -73,14 +73,14 @@ public class SettingActivity extends Activity {
 		// 初始化主界面
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_setting);
-		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 		// 初始化按钮和事件
 		settingReturn = (Button) findViewById(R.id.btn_back);
 		updateInfo = (TextView) findViewById(R.id.update_info);
 		updateBtn = (LinearLayout) findViewById(R.id.update_info_btn);
 		scoreBtn = (LinearLayout) findViewById(R.id.btn_sys_score);
 		helpBtn = (LinearLayout) findViewById(R.id.btn_sys_helop);
-		setting_smb = (ImageButton) findViewById(R.id.setting_sidemunubutton);
+//		setting_smb = (ImageButton) findViewById(R.id.setting_sidemunubutton);
 
 		
 
@@ -135,14 +135,14 @@ public class SettingActivity extends Activity {
 			}
 		};
 		
-		setting_smb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.clickSideMenu();
-			}
-		});
+//		setting_smb.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.clickSideMenu();
+//			}
+//		});
 
 		settingReturn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -180,14 +180,14 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
 	}
 
 	private void initData() {
@@ -237,16 +237,16 @@ public class SettingActivity extends Activity {
 		}
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_MENU:
-			bidirSlidingLayout.clickSideMenu();
-			return true;
-		default:
-			break;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		switch (keyCode) {
+//		case KeyEvent.KEYCODE_MENU:
+//			bidirSlidingLayout.clickSideMenu();
+//			return true;
+//		default:
+//			break;
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 
 }
