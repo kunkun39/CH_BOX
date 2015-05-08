@@ -17,23 +17,24 @@
             android:layout_height="50dip"
             android:layout_marginTop="4dp"
             android:background="@drawable/title_btn_back_selector" />
-
-        <TextView
-            android:id="@+id/music_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="歌曲详情"
-            android:textSize="16sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/music_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/music_author"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="80dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/music_name"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -52,25 +53,16 @@
                 android:layout_height="180dp"
                 android:layout_gravity="center"
                 android:src="@drawable/default_album" />
+
+            <ImageView
+                android:id="@+id/d_btn_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/play" />
         </FrameLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/music_details_image"
-        android:layout_width="fill_parent"
-        android:layout_height="220dp"
-        android:layout_marginTop="160dp"
-        android:background="@drawable/music_play_back"
-        android:scaleType="centerInside"
-        android:visibility="gone" />
-
-    <ImageView
-        android:id="@+id/d_btn_play"
-        android:layout_width="45dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="400dp"
-        android:background="@drawable/btn_vedio_play" />
     <!-- 歌曲播放控制部分 -->
 
     <RelativeLayout
