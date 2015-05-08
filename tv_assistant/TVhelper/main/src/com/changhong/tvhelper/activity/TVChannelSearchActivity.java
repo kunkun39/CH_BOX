@@ -170,17 +170,12 @@ public class TVChannelSearchActivity extends Activity {
 		musicProvider = new MusicProvider(TVChannelSearchActivity.this);
 		musics = (List<Music>) musicProvider.getList();
 		searchMusics = new ArrayList<Music>();
-		for (Music music : musics) {
-			searchMusics.add(music);
-		}
-
+		
 		// video
 		vedioProvider = new VedioProvider(TVChannelSearchActivity.this);
 		videos = (List<Vedio>) vedioProvider.getList();
 		searchVideos = new ArrayList<Vedio>();
-		for (Vedio vedio : videos) {
-			searchVideos.add(vedio);
-		}
+
 	}
 
 	private void initViewAndEvent() {
