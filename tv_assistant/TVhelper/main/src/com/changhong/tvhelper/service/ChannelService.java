@@ -55,6 +55,30 @@ public class ChannelService {
         return currentPlaying;
     }
 
+
+    public List<Program> searchCurrentChannelPlayByIndex(String channelIndex) {
+        List<Program> programList = new ArrayList<Program>();
+        SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+        if (database != null) {
+            String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
+            String currentTime = DateUtils.getCurrentTimeStamp();
+            Cursor cursor = database.rawQuery("select  str_eventName, str_startTime, str_endTime from epg_information  where  i_weekIndex = ? AND i_ChannelIndex = ? AND str_endTime > ? AND str_eventName !='无节目信息'",
+                    new String[]{weekIndex,channelIndex,currentTime});
+
+
+            while (cursor.moveToNext()) {
+                String eventName = cursor.getString(0);
+                String startTime = cursor.getString(1);
+                String endTime = cursor.getString(2);
+                Program program = new Program(channelIndex, eventName, startTime, endTime);
+                programList.add(program);
+            }
+            cursor.close();
+        }
+
+        return programList;
+    }
+
     /**
      * 获得频道节目详情
      */
