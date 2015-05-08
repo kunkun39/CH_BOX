@@ -589,7 +589,7 @@ public class TVChannelPlayActivity extends Activity {
             ViewHolder vh = null;
             if (convertView == null) {
                 vh = new ViewHolder();
-                convertView = minflater.inflate(R.layout.channel_item, null);
+                convertView = minflater.inflate(R.layout.tv_play_channel_item, null);
                 vh.channelName = (TextView) convertView.findViewById(R.id.channel_name);
                 convertView.setTag(vh);
             } else {
