@@ -3,7 +3,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/touying_bg">
+                android:background="@drawable/touying_details_bg">
 
     <ImageView
             android:id="@+id/details_image"
