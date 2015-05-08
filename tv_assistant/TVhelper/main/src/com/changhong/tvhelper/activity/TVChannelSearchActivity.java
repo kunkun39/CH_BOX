@@ -61,7 +61,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 public class TVChannelSearchActivity extends Activity {
 
 	private static final String TAG = "tvplayer";
-	private BidirSlidingLayout bidirSlidingLayout;
+//	private BidirSlidingLayout bidirSlidingLayout;
 
 	/**
 	 * message handler
@@ -188,21 +188,21 @@ public class TVChannelSearchActivity extends Activity {
 		clients = (ListView) findViewById(R.id.clients);
 		back = (Button) findViewById(R.id.btn_back);
 		list = (Button) findViewById(R.id.btn_list);
-		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
 
-		ImageButton search_smb = (ImageButton) findViewById(R.id.search_sidemunubutton);
-
-		search_smb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.clickSideMenu();
-			}
-		});
+//		ImageButton search_smb = (ImageButton) findViewById(R.id.search_sidemunubutton);
+//
+//		search_smb.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.clickSideMenu();
+//			}
+//		});
 
 		// channel
 		channelText = (TextView) findViewById(R.id.text_channel);
@@ -224,14 +224,14 @@ public class TVChannelSearchActivity extends Activity {
 			}
 		});
 
-		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
 
 		// music
 		musicText = (TextView) findViewById(R.id.text_music);
@@ -1083,15 +1083,15 @@ public class TVChannelSearchActivity extends Activity {
 
 	}
 
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_MENU:
-			bidirSlidingLayout.clickSideMenu();
-			return true;
-		default:
-			break;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		switch (keyCode) {
+//		case KeyEvent.KEYCODE_MENU:
+//			bidirSlidingLayout.clickSideMenu();
+//			return true;
+//		default:
+//			break;
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 }

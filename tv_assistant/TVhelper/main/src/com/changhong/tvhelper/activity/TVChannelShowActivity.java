@@ -39,7 +39,7 @@ import com.changhong.tvhelper.service.ClientGetCommandService;
 public class TVChannelShowActivity extends Activity {
 
     private static final String TAG = "TVChannelShowActivity";
-    private BidirSlidingLayout bidirSlidingLayout;
+//    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * message handler
      */
@@ -99,7 +99,7 @@ public class TVChannelShowActivity extends Activity {
     }
 
     private void initViewAndEvent() {
-    	bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//    	bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         channels = (ListView) findViewById(R.id.channellist);
         title = (TextView) findViewById(R.id.title);
         clients = (ListView) findViewById(R.id.clients);
@@ -112,25 +112,25 @@ public class TVChannelShowActivity extends Activity {
         SE = (TextView) findViewById(R.id.se);
         YS = (TextView) findViewById(R.id.ys);
         TS = (TextView) findViewById(R.id.ts);
-        ImageButton tv_smb=(ImageButton)findViewById(R.id.tv_sidemunubutton);
-        
-        tv_smb.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.clickSideMenu();
-			}
-		});
+//        ImageButton tv_smb=(ImageButton)findViewById(R.id.tv_sidemunubutton);
+//        
+//        tv_smb.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.clickSideMenu();
+//			}
+//		});
 
-        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
         
         ALL.setOnClickListener(new OnClickListener() {
             @Override
@@ -408,9 +408,9 @@ public class TVChannelShowActivity extends Activity {
             case KeyEvent.KEYCODE_BACK:
                 finish();
                 break;
-            case KeyEvent.KEYCODE_MENU:
-            	bidirSlidingLayout.clickSideMenu();
-    			return true;
+//            case KeyEvent.KEYCODE_MENU:
+//            	bidirSlidingLayout.clickSideMenu();
+//    			return true;
             default:
                 break;
         }

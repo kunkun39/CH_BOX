@@ -56,7 +56,7 @@ import java.util.Map;
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
     private static final String TAG = "TVhelper";
-    private BidirSlidingLayout bidirSlidingLayout;
+//    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * control part
      */
@@ -112,7 +112,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）
         int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
         detector = new GestureDetector(this);
-        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         img_d = findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
         title = (TextView) findViewById(R.id.title);
@@ -260,14 +260,14 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             }
         });
         
-        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
 
         if (numInputDialog == null) {
             numInputDialog = new TVNumInputDialog(TVRemoteControlActivity.this);
@@ -743,9 +743,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 break;
-            case KeyEvent.KEYCODE_MENU:
-            	bidirSlidingLayout.clickSideMenu();
-    			return true;
+//            case KeyEvent.KEYCODE_MENU:
+//            	bidirSlidingLayout.clickSideMenu();
+//    			return true;
             default:
                 break;
         }

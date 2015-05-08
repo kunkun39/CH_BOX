@@ -33,7 +33,7 @@ import java.util.Map;
 public class TVChannelShouCangShowActivity extends Activity {
 
     private static final String TAG = "TVChannelShouCangShowActivity";
-    private BidirSlidingLayout bidirSlidingLayout;
+//    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * message handler
      */
@@ -96,26 +96,26 @@ public class TVChannelShouCangShowActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         channelText = (TextView) findViewById(R.id.text_channel_shoucang);
         orderProgramText = (TextView) findViewById(R.id.text_channel_program_yuyue);
-        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
-        ImageButton collection_smb = (ImageButton) findViewById(R.id.collection_sidemunubutton);
-
-        collection_smb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.clickSideMenu();
-			}
-		});
-		
-		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//        ImageButton collection_smb = (ImageButton) findViewById(R.id.collection_sidemunubutton);
+//
+//        collection_smb.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.clickSideMenu();
+//			}
+//		});
+//		
+//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
 		
         /**
          * IP part
@@ -597,15 +597,15 @@ public class TVChannelShouCangShowActivity extends Activity {
         new OrderProgramThread().start();
     }
     
-    @Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		switch (keyCode) {
-		case KeyEvent.KEYCODE_MENU:
-			bidirSlidingLayout.clickSideMenu();
-			return true;
-		default:
-			break;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//    @Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		switch (keyCode) {
+//		case KeyEvent.KEYCODE_MENU:
+//			bidirSlidingLayout.clickSideMenu();
+//			return true;
+//		default:
+//			break;
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 }
