@@ -7,19 +7,19 @@ import java.io.Serializable;
  */
 public class Music implements Serializable {
 
-    private int id;
+    private int id;// 歌曲ID
 
-    private String title;
+    private String title; // 歌曲名称
 
-    private String path;
+    private String path;// 歌曲路径
 
-    private int albumId;
+    private int albumId;//专辑ID 
 
-    private String artist;
+    private String artist;// 歌手名称
 
     private int artistId;
 
-    private int duration;
+    private int duration;// 歌曲时长
 
     private long createTime;
 
@@ -34,6 +34,9 @@ public class Music implements Serializable {
         this.createTime = createTime;
     }
 
+    public Music(){
+    	
+    }
     public int getId() {
         return id;
     }

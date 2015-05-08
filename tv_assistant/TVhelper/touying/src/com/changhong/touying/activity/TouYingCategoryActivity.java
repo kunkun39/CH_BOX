@@ -43,7 +43,7 @@ public class TouYingCategoryActivity extends Activity {
 	private ImageView musicTouYing;
 	private ImageView otherTouYing;
 	private ImageButton touying_smb;
-	private BidirSlidingLayout bidirSlidingLayout;
+//	private BidirSlidingLayout bidirSlidingLayout;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class TouYingCategoryActivity extends Activity {
 
 	private void initView() {
 		setContentView(R.layout.activity_touying_category);
-		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 		/**
 		 * IP连接部分
 		 */
@@ -90,15 +90,15 @@ public class TouYingCategoryActivity extends Activity {
 		musicTouYing = (ImageView) findViewById(R.id.button_music_touying);
 		otherTouYing = (ImageView) findViewById(R.id.button_other_touying);
 
-		touying_smb = (ImageButton) findViewById(R.id.touying_sidemunubutton);
-		touying_smb.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.clickSideMenu();
-			}
-		});
+//		touying_smb = (ImageButton) findViewById(R.id.touying_sidemunubutton);
+//		touying_smb.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.clickSideMenu();
+//			}
+//		});
 	}
 
 	private void initEvent() {
@@ -182,14 +182,14 @@ public class TouYingCategoryActivity extends Activity {
             }
         });
 
-		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				bidirSlidingLayout.closeRightMenu();
-			}
-		});
+//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				// TODO Auto-generated method stub
+//				bidirSlidingLayout.closeRightMenu();
+//			}
+//		});
 	}
 
 	/********************************************** 系统发发重载 *********************************************************/
@@ -208,9 +208,9 @@ public class TouYingCategoryActivity extends Activity {
 		case KeyEvent.KEYCODE_BACK:
 			finish();
 			break;
-		case KeyEvent.KEYCODE_MENU:
-			bidirSlidingLayout.clickSideMenu();
-			return true;
+//		case KeyEvent.KEYCODE_MENU:
+//			bidirSlidingLayout.clickSideMenu();
+//			return true;
 		default:
 			break;
 		}
