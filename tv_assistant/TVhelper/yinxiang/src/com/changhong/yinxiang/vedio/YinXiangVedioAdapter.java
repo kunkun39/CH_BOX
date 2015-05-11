@@ -15,8 +15,10 @@ import android.widget.TextView;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.yinxiang.R;
+import com.changhong.yinxiang.activity.YinXiangVedioViewActivity;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,11 +30,15 @@ public class YinXiangVedioAdapter extends BaseAdapter {
 
     private List<?> vedios;
 
+    public static List<String> selectVedioPaths = new ArrayList<String>();
+
     public YinXiangVedioAdapter(Context context) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         YinXaingVedioProvider provider = new YinXaingVedioProvider(context);
         vedios = provider.getList();
+
+        selectVedioPaths.clear();
     }
 
     public int getCount() {
@@ -69,7 +75,7 @@ public class YinXiangVedioAdapter extends BaseAdapter {
         YinXiangVedio yinXiangVedio = (YinXiangVedio) vedios.get(position);
 
         String displayName = yinXiangVedio.getDisplayName();
-        String vedioPath = yinXiangVedio.getPath();
+        final String vedioPath = yinXiangVedio.getPath();
 
         wapper.vedioName.setText(displayName);
         wapper.fullPath.setText(vedioPath);
@@ -81,6 +87,18 @@ public class YinXiangVedioAdapter extends BaseAdapter {
         } else {
             synchronizImageLoad(wapper.vedioImage, vedioPath);
         }
+
+        wapper.vedioChecked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(selectVedioPaths.contains(vedioPath)) {
+                    selectVedioPaths.remove(vedioPath);
+                } else {
+                    selectVedioPaths.add(vedioPath);
+                }
+                YinXiangVedioViewActivity.vedioSelectedInfo.setText("你共选择了" + selectVedioPaths.size() + "部视频");
+            }
+        });
 
         return convertView;
     }

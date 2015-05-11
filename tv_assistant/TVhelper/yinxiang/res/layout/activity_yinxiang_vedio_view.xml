@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/white" >
+                android:background="@drawable/yinxiang_bg">
 
     <!--IP选择-->
 
@@ -14,6 +14,22 @@
             android:focusable="false"
             android:orientation="horizontal"
             android:gravity="center">
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="80dip"
+                android:layout_height="64.3dip"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="未连接"
+                android:textSize="20sp" />
+
+        <ImageView
+                android:layout_width="16.7dip"
+                android:layout_height="10.7dip"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/title_ip_select" />
     </LinearLayout>
 
     <Button
@@ -43,16 +59,42 @@
     </LinearLayout>
 
     <LinearLayout
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:layout_width="fill_parent"
-            android:layout_marginTop="67.6dip"
-            android:focusable="false"
-            android:orientation="horizontal"
-            android:gravity="center|bottom">
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:gravity="center">
 
         <Button
+                android:id="@+id/yinxing_vedio_tuisong"
                 android:layout_width="80dp"
-                android:layout_height="30dp"/>
-
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="推送"/>
+        <TextView
+                android:id="@+id/yinxing_vedio_tuisong_info"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:gravity="center"
+                android:text="你选择了0部视频"/>
             </LinearLayout>
+
+    <!-- IP选择 -->
+
+    <ListView
+            android:id="@+id/clients"
+            android:layout_width="match_parent"
+            android:layout_height="558dip"
+            android:layout_marginTop="67.6dip"
+            android:background="@drawable/title_ip_list_bg"
+            android:listSelector="@drawable/title_ip_list"
+            android:visibility="gone" />
+
+    <Button
+            android:id="@+id/btn_list"
+            android:layout_width="204dip"
+            android:layout_height="49.8dip"
+            android:layout_marginLeft="70dip"
+            android:layout_marginTop="10dip"
+            android:background="@drawable/title_btn_list_selector" />
 </RelativeLayout>
