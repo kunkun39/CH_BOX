@@ -19,7 +19,7 @@
 
     <RelativeLayout
             android:id="@+id/channel_list_layout"
-            android:layout_width="150dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:background="@drawable/tv_play_stroke"
             android:visibility="invisible"
