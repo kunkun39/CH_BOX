@@ -13,7 +13,9 @@
 
         <!--问投影部分-->
 
-        <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
+        <activity android:name="com.changhong.yinxiang.activity.YinXiangCategoryActivity" android:exported="true"
+        android:screenOrientation="portrait"/>
+        <service android:name="com.changhong.yinxiang.nanohttpd.HTTPDService" />
     </application>
 
 </manifest>

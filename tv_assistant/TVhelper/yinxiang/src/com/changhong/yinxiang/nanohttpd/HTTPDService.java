@@ -1,14 +1,12 @@
-package com.changhong.touying.nanohttpd;
+package com.changhong.yinxiang.nanohttpd;
 
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.os.storage.StorageManager;
 import android.util.Log;
-import com.changhong.common.utils.MobilePerformanceUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,9 +16,9 @@ import java.util.List;
 /**
  * Created by Jack Wang
  */
-public class NanoHTTPDService extends Service {
+public class HTTPDService extends Service {
 
-    public final static int HTTP_PORT = 9999;
+    public final static int HTTP_PORT = 8888;
 
     /**
      * 默认的手机存储目录
@@ -32,7 +30,7 @@ public class NanoHTTPDService extends Service {
      */
     public static List<String> otherHttpServerPaths = new ArrayList<String>();
 
-    public static NanoHTTPD httpServer;
+    public static HTTPD httpServer;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -74,7 +72,7 @@ public class NanoHTTPDService extends Service {
         }
 
         try {
-            httpServer = new NanoHTTPD(HTTP_PORT, wwwroot, otherHttpdPaths);
+            httpServer = new HTTPD(HTTP_PORT, wwwroot, otherHttpdPaths);
             Log.e("HTTPD", "start http server");
         } catch (IOException ioe) {
             Log.e("HTTPD", "Couldn't start server:\n" + ioe);

@@ -1,4 +1,4 @@
-package com.changhong.touying.nanohttpd;
+package com.changhong.yinxiang.nanohttpd;
 
 import android.util.Log;
 
@@ -52,7 +52,7 @@ import java.util.*;
  * See the end of the source file for distribution license
  * (Modified BSD licence)
  */
-public class NanoHTTPD {
+public class HTTPD {
     // ==================================================
     // API parts
     // ==================================================
@@ -190,7 +190,7 @@ public class NanoHTTPD {
      * Starts a HTTP server to given port.<p>
      * Throws an IOException if the socket is already in use
      */
-    public NanoHTTPD(int port, File wwwroot, List<File> otherHttpdPaths) throws IOException {
+    public HTTPD(int port, File wwwroot, List<File> otherHttpdPaths) throws IOException {
         myTcpPort = port;
         this.myRootDir = wwwroot;
         this.myAnotherRootDirs = otherHttpdPaths;
