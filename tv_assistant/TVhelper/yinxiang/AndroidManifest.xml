@@ -1,0 +1,19 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.changhong.yinxiang"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="yinxiang part" >
+
+        <!--问投影部分-->
+
+        <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
+    </application>
+
+</manifest>
