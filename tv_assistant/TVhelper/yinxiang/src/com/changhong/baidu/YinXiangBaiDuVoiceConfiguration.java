@@ -6,7 +6,7 @@ import com.changhong.yinxiang.R;
 /**
  * Created by Jack Wang
  */
-public class BaiDuVoiceConfiguration {
+public class YinXiangBaiDuVoiceConfiguration {
 
     public static final String API_KEY = "q9G0hzYK4I0VmmDRpS8PlHWo";
 
@@ -42,15 +42,15 @@ public class BaiDuVoiceConfiguration {
      */
     public static VoiceRecognitionConfig getVoiceRecognitionConfig() {
         VoiceRecognitionConfig config = new VoiceRecognitionConfig();
-        config.setProp(BaiDuVoiceConfiguration.CURRENT_PROP);
-        config.setLanguage(BaiDuVoiceConfiguration.CURRENT_LANGUAGE);
+        config.setProp(YinXiangBaiDuVoiceConfiguration.CURRENT_PROP);
+        config.setLanguage(YinXiangBaiDuVoiceConfiguration.CURRENT_LANGUAGE);
         config.enableContacts(); // 启用通讯录
-        config.enableVoicePower(BaiDuVoiceConfiguration.SHOW_VOL); // 音量反馈。
+        config.enableVoicePower(YinXiangBaiDuVoiceConfiguration.SHOW_VOL); // 音量反馈。
 
-        if (BaiDuVoiceConfiguration.PLAY_START_SOUND) {
+        if (YinXiangBaiDuVoiceConfiguration.PLAY_START_SOUND) {
             config.enableBeginSoundEffect(R.raw.bdspeech_recognition_start); // 设置识别开始提示音
         }
-        if (BaiDuVoiceConfiguration.PLAY_END_SOUND) {
+        if (YinXiangBaiDuVoiceConfiguration.PLAY_END_SOUND) {
             config.enableEndSoundEffect(R.raw.bdspeech_speech_end); // 设置识别结束提示音
         }
 

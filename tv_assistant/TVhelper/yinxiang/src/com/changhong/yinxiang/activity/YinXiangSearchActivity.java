@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,12 +19,14 @@ import android.widget.Toast;
 import com.baidu.voicerecognition.android.Candidate;
 import com.baidu.voicerecognition.android.VoiceRecognitionClient;
 import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
-import com.changhong.baidu.BaiDuVoiceConfiguration;
+import com.changhong.baidu.YinXiangBaiDuVoiceConfiguration;
 import com.changhong.yinxiang.R;
 
-public class SearchActivity extends Activity {
+public class YinXiangSearchActivity extends Activity {
 
 	private EditText recognitionWord;
+	private ImageView back,power,colection;
+	private Button confirm;
 	
 	/**********************************************语音部分代码*********************************************************/
 
@@ -42,20 +45,27 @@ public class SearchActivity extends Activity {
      */
     private void initBaiduConfiguration() {
         if (recognitionClient == null) {
-            recognitionClient = VoiceRecognitionClient.getInstance(SearchActivity.this);
-            recognitionClient.setTokenApis(BaiDuVoiceConfiguration.API_KEY, BaiDuVoiceConfiguration.SECRET_KEY);
+            recognitionClient = VoiceRecognitionClient.getInstance(YinXiangSearchActivity.this);
+            recognitionClient.setTokenApis(YinXiangBaiDuVoiceConfiguration.API_KEY, YinXiangBaiDuVoiceConfiguration.SECRET_KEY);
         }
     }
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search);
+		setContentView(R.layout.yinxiangsearch);
 		initBaiduConfiguration();
         
-        ImageView colection=(ImageView)findViewById(R.id.voice);
-        recognitionWord=(EditText)findViewById(R.id.tv1);
+		initView();
         colection.setOnTouchListener(myClick);
+	}
+	
+	private void initView(){
+		back=(ImageView)findViewById(R.id.back);
+		power=(ImageView)findViewById(R.id.power);
+		colection=(ImageView)findViewById(R.id.voice);
+		recognitionWord=(EditText)findViewById(R.id.result);
+		confirm=(Button)findViewById(R.id.confirm);
 	}
 
 	private OnTouchListener myClick=new OnTouchListener() {
@@ -86,13 +96,13 @@ public class SearchActivity extends Activity {
        /**
         * 语音的配置
         */
-       VoiceRecognitionConfig config = BaiDuVoiceConfiguration.getVoiceRecognitionConfig();
+       VoiceRecognitionConfig config = YinXiangBaiDuVoiceConfiguration.getVoiceRecognitionConfig();
        /**
         * 下面发起识别
         */
        int code = recognitionClient.startVoiceRecognition(recogListener, config);
        if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-           Toast.makeText(SearchActivity.this, "网络连接出错，请重新尝试" , Toast.LENGTH_LONG).show();
+           Toast.makeText(YinXiangSearchActivity.this, "网络连接出错，请重新尝试" , Toast.LENGTH_LONG).show();
        }
 	}
 	
@@ -145,7 +155,7 @@ public class SearchActivity extends Activity {
 
         @Override
         public void onError(int errorType, int errorCode) {
-            Toast.makeText(SearchActivity.this, "抱歉哟，我们不能识别空指令" , Toast.LENGTH_LONG).show();
+            Toast.makeText(YinXiangSearchActivity.this, "抱歉哟，我们不能识别空指令" , Toast.LENGTH_LONG).show();
             isRecognitioning = false;
             recognitionClient.stopVoiceRecognition();
         }
