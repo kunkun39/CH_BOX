@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">智能音响</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    <!-- SmartAcoustics -->
+
+    <!-- External Storage State Messages -->
+
+
+    <string name="dialog_baidu_voice_help">欢迎您使用智能音响语音指令。</string>
+</resources>
