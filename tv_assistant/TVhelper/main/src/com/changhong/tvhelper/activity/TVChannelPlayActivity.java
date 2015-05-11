@@ -26,6 +26,7 @@ import com.changhong.tvhelper.R;
 
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
+import com.changhong.tvhelper.service.ClientGetCommandService;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnCompletionListener;
@@ -60,7 +61,7 @@ public class TVChannelPlayActivity extends Activity {
      * video play view
      */
     public static VideoView mVideoView;
-//    private MediaController controller;
+    //    private MediaController controller;
     private int width, height;
 
     /**
@@ -118,6 +119,8 @@ public class TVChannelPlayActivity extends Activity {
     private TextView textNextProgramInfo;
     private TextView textChannelName;
     private String channelIndex;
+    private ImageView imageViewChannelLogo;
+    private final String ILLEGAL_PROGRAM_NAME = "无节目信息";
 
 
     @Override
@@ -164,7 +167,8 @@ public class TVChannelPlayActivity extends Activity {
         textCurrentProgramInfo = (TextView) findViewById(R.id.text_current_program_info);
         textNextProgramInfo = (TextView) findViewById(R.id.text_next_program_info);
         textChannelName = (TextView) findViewById(R.id.text_channel_name);
-        programInfoLayout= (RelativeLayout) findViewById(R.id.program_info_layout);
+        programInfoLayout = (RelativeLayout) findViewById(R.id.program_info_layout);
+        imageViewChannelLogo = (ImageView) findViewById(R.id.play_channel_logo);
 
 
         IntentFilter intentfilter = new IntentFilter();
@@ -180,9 +184,9 @@ public class TVChannelPlayActivity extends Activity {
         mVideoView.setKeepScreenOn(true);
         mVideoView.setHardwareDecoder(true);
         mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_STRETCH, 0);
-        if (path != null && name != null) {
-            setPath(name);
-//          mVideoView.setVideoPath(path);
+        if (path != null) {
+            mVideoView.setVideoPath(path);
+            initProgramInfo(name);
         }
         final ProgressDialog dd = new ProgressDialog(TVChannelPlayActivity.this);
         dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -283,18 +287,21 @@ public class TVChannelPlayActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
-                if (mm == 4) {
-                    mm = 0;
-                }
+//                if (mm == 4) {
+//                    mm = 0;
+//                }
+//                mVideoView.setVideoLayout(mm, 0);
+//                mm++;
+
                 if (!menuKey) {
                     relativeLayout.setVisibility(View.VISIBLE);
+                    initProgramInfo(name);
                     menuKey = true;
                 } else {
                     relativeLayout.setVisibility(View.GONE);
+                    programInfoLayout.setVisibility(View.GONE);
                     menuKey = false;
                 }
-                mVideoView.setVideoLayout(mm, 0);
-                mm++;
                 break;
             case KeyEvent.KEYCODE_BACK:
                 mDismissHandler = null;
@@ -402,11 +409,14 @@ public class TVChannelPlayActivity extends Activity {
                     Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000).show();
                     break;
                 case 3:
-                    if(programList.size()>0){
+                    if (programList.size() > 0) {
                         Program currentProgram = programList.get(0);
                         textCurrentProgramInfo.setText("当前节目" + ":" + currentProgram.getProgramName() + "  " + currentProgram.getProgramStartTime() + "-" + currentProgram.getProgramEndTime());
                         Program nextProgram = programList.get(1);
                         textNextProgramInfo.setText("下一节目" + ":" + nextProgram.getProgramName() + "  " + nextProgram.getProgramStartTime() + "-" + nextProgram.getProgramEndTime());
+                    } else {
+                        textCurrentProgramInfo.setText("当前节目" + ":" + "无节目信息");
+                        textNextProgramInfo.setText("下一节目" + ":" + "无节目信息");
                     }
                     break;
                 case 4:
@@ -480,17 +490,23 @@ public class TVChannelPlayActivity extends Activity {
         mOperationPercent.setLayoutParams(lp);
     }
 
-    private void setPath(final String channelName) {
+    //根据频道名称获得节目信息
+    private void initProgramInfo(String channelPlayName) {
         if (!ClientSendCommandService.channelData.isEmpty()) {
             for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
                 Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                if (channelName.equals((String) map.get("service_name"))) {
+                if (channelPlayName.equals((String) map.get("service_name"))) {
+                    //获得节目信息
                     name = (String) map.get("service_name");
-                    path = ChannelService.obtainChannlPlayURL(map);
-                    //节目信息
                     channelIndex = (String) map.get("channel_index");
                     programInfoLayout.setVisibility(View.VISIBLE);
-                    textChannelName.setText(channelName);
+                    textChannelName.setText(channelPlayName);
+                    //设置台标
+                    try {
+                        imageViewChannelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(channelPlayName));
+                    } catch (Exception e) {
+                        imageViewChannelLogo.setImageResource(R.drawable.logotv);
+                    }
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -514,8 +530,22 @@ public class TVChannelPlayActivity extends Activity {
                             }
                         }
                     }).start();
+                }
+            }
+        }
 
-                    if (mVideoView != null&&name!=null&&name.equals("无节目信息")) {
+
+    }
+
+    //换台
+    private void setPath(final String channelName) {
+        if (!ClientSendCommandService.channelData.isEmpty()) {
+            for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                if (channelName.equals((String) map.get("service_name"))) {
+                    name = (String) map.get("service_name");
+                    path = ChannelService.obtainChannlPlayURL(map);
+                    if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
                         mVideoView.setVideoPath(path);
                     }
 //                    if (name != null && controller != null) {
@@ -601,6 +631,7 @@ public class TVChannelPlayActivity extends Activity {
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
                     setPath(channelNames.get(position));
+                    initProgramInfo(channelNames.get(position));
                 }
             });
             return convertView;
