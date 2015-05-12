@@ -182,9 +182,8 @@ public class YinXiangVedioViewActivity extends Activity {
                         o.put("vedios", array.toString());
 
                         //发送播放地址
-//                        ClientSendCommandService.msg = o.toString();
-//                        ClientSendCommandService.handler.sendEmptyMessage(4);
-                        Toast.makeText(YinXiangVedioViewActivity.this, o.toString(), Toast.LENGTH_LONG).show();
+                        ClientSendCommandService.msg = o.toString();
+                        ClientSendCommandService.handler.sendEmptyMessage(4);
                     } else {
                         Toast.makeText(YinXiangVedioViewActivity.this, "请链接无线网络", Toast.LENGTH_SHORT).show();
                     }
