@@ -47,7 +47,11 @@
             </intent-filter>
         </activity>
 
+        <activity 
+            android:name="com.changhong.yinxiang.activity.YinXiangSearchActivity"
+            ></activity>
 
+        <activity android:name="com.changhong.yinxiang.activity.YinXiangMusicViewActivity"></activity>
         <activity
                 android:name="com.changhong.yinxiang.activity.YinXiangVedioViewActivity"
                 android:screenOrientation="portrait" />

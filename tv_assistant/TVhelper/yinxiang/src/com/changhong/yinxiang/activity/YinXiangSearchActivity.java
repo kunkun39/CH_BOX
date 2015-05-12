@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -99,7 +101,9 @@ public class YinXiangSearchActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				Intent intent =new  Intent(YinXiangSearchActivity.this,YinXiangMusicViewActivity.class);
+				intent.putExtra("KeyWords", recognitionWord.getText().toString());
+				startActivity(intent);
 			}
 		});
 	}

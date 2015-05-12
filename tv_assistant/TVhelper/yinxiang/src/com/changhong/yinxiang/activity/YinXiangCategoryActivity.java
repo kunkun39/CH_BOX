@@ -159,6 +159,8 @@ public class YinXiangCategoryActivity extends Activity {
                 MyApplication.vibrator.vibrate(100);
                 Intent intent = new Intent(YinXiangCategoryActivity.this, YinXiangSettingActivity.class);
                 startActivity(intent);
+                Intent intent2 =new Intent(YinXiangCategoryActivity.this,YinXiangSearchActivity.class);
+                startActivity(intent2);
             }
         });
 

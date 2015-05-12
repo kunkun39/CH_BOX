@@ -10,8 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.yinxiang.R;
@@ -90,17 +93,20 @@ public class YinXiangVedioAdapter extends BaseAdapter {
 
         final boolean isChecked = selectVedioPaths.contains(vedioPath);
         wapper.vedioChecked.setChecked(isChecked);
-        wapper.vedioChecked.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isChecked) {
-                    selectVedioPaths.remove(vedioPath);
-                } else {
+        wapper.vedioChecked.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				// TODO Auto-generated method stub
+				if(isChecked) {
                     selectVedioPaths.add(vedioPath);
+                } else {
+                    selectVedioPaths.remove(vedioPath);
                 }
                 YinXiangVedioViewActivity.vedioSelectedInfo.setText("你共选择了" + selectVedioPaths.size() + "部视频");
-            }
-        });
+			}
+		});
+
 
         return convertView;
     }
