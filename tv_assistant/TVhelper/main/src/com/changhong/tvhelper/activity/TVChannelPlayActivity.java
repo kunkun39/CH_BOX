@@ -77,7 +77,11 @@ public class TVChannelPlayActivity extends Activity {
 
     public GestureDetector mGestureDetector = null;
 
-    private long time = 0l;
+    /**
+     * 播放和退出时间戳
+     */
+    private long playTimestamp = 0l;
+    private long backTimestamp = 0l;
 
     private View mVolumeBrightnessLayout;
     private ImageView mOperationBg;
@@ -246,7 +250,7 @@ public class TVChannelPlayActivity extends Activity {
 //        mVideoView.setMediaController(controller);
         mVideoView.requestFocus();
         mGestureDetector = new GestureDetector(this, new MyGestureListener());
-        time = System.currentTimeMillis();
+        playTimestamp = System.currentTimeMillis();
         new PlayerIsPlayingMinitorThread().start();
     }
 
@@ -304,6 +308,7 @@ public class TVChannelPlayActivity extends Activity {
             case KeyEvent.KEYCODE_BACK:
                 if (returnConfirm == 1) {
                     returnConfirm = 0;
+                    backTimestamp = System.currentTimeMillis();
                     Toast.makeText(TVChannelPlayActivity.this, "再按一次退出", 1000).show();
                 } else {
                     mDismissHandler = null;
@@ -578,11 +583,16 @@ public class TVChannelPlayActivity extends Activity {
     private class PlayerIsPlayingMinitorThread extends Thread {
         public void run() {
             while (true) {
+                //用户在10秒钟之内连续返回则退出，反则技术器归一
+                if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
+                    returnConfirm = 1;
+                }
+
                 if (mVideoView != null && mVideoView.isPlaying()) {
                     //播放中更新时间
-                    time = System.currentTimeMillis();
+                    playTimestamp = System.currentTimeMillis();
                 }
-                if ((System.currentTimeMillis() - time) > 8000 && time != 0l) {
+                if ((System.currentTimeMillis() - playTimestamp) > 8000 && playTimestamp != 0l) {
                     //超过8秒一直没有播放，退出播放界面
                     if (mDismissHandler != null) {
                         mDismissHandler.sendEmptyMessage(1);
