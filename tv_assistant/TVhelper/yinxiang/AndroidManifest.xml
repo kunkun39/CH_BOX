@@ -51,6 +51,18 @@
         <activity
                 android:name="com.changhong.yinxiang.activity.YinXiangVedioViewActivity"
                 android:screenOrientation="portrait" />
+        <activity
+                android:name="com.changhong.yinxiang.activity.YinXiangPictureCategoryActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name="com.changhong.yinxiang.activity.YinXiangPictureViewActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name="com.changhong.yinxiang.activity.YinXiangPictureDetailsActivity"
+                android:screenOrientation="portrait" />
+        <activity
+                android:name="com.changhong.yinxiang.activity.YinXiangSettingActivity"
+                android:screenOrientation="portrait" />
 
         <service android:name="com.changhong.yinxiang.nanohttpd.HTTPDService" />
 

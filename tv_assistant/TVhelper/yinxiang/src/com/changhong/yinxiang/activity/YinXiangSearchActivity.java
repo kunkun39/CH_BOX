@@ -56,7 +56,7 @@ public class YinXiangSearchActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.yinxiangsearch);
+		setContentView(R.layout.activity_yinxiang_music_search);
 		initBaiduConfiguration();
 
 		initView();

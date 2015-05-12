@@ -129,14 +129,14 @@ public class YinXiangCategoryActivity extends Activity {
 		/**
 		 * 菜单部分
 		 */
-//		imageTouYing.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                MyApplication.vibrator.vibrate(100);
-//                Intent intent = new Intent(TouYingCategoryActivity.this, PictureCategoryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+		imageTouYing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(YinXiangCategoryActivity.this, YinXiangPictureCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
         vedioTouYing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +156,9 @@ public class YinXiangCategoryActivity extends Activity {
         otherTouYing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(YinXiangCategoryActivity.this, "敬请期待中...", Toast.LENGTH_LONG).show();
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(YinXiangCategoryActivity.this, YinXiangSettingActivity.class);
+                startActivity(intent);
             }
         });
 

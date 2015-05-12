@@ -5,7 +5,8 @@
      fromXDelta ： 动画开始时 X坐标位置
      toXDelta ：动画结束时 X坐标位置
      duration ：动画持续时间-->
-    <translate android:fromXDelta="0" android:toXDelta="0" android:fromYDelta="0" android:toYDelta="-100%p" android:duration="800"/>
+    <translate android:fromYDelta="0" android:toYDelta="-100%p"
+        android:duration="800" />
     <!-- 渐变透明的动画效果 -->
     <alpha android:fromAlpha="0.1" android:toAlpha="1.0"
         android:duration="800"/>
