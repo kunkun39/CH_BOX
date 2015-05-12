@@ -210,7 +210,6 @@ public class TVChannelShouCangShowActivity extends Activity {
                     case 3:
                         //重新加载预约节目数据并刷新Adapter
                         orderProgramAdapter = new OrderProgramAdapter(TVChannelShouCangShowActivity.this);
-                        channelOrProgramList.setAdapter(orderProgramAdapter);
                         orderProgramAdapter.notifyDataSetChanged();
 
                         orderProgramText.setOnClickListener(new View.OnClickListener() {
