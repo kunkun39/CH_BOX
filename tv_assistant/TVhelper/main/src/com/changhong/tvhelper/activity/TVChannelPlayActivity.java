@@ -295,7 +295,7 @@ public class TVChannelPlayActivity extends Activity {
 
                 if (!menuKey) {
                     relativeLayout.setVisibility(View.VISIBLE);
-                    initProgramInfo(name);
+                    programInfoLayout.setVisibility(View.VISIBLE);
                     menuKey = true;
                 } else {
                     relativeLayout.setVisibility(View.GONE);
