@@ -21,21 +21,21 @@
             android:id="@+id/channel_list_layout"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/tv_play_stroke"
             android:visibility="invisible"
            >
         <TextView
                 android:text="全部频道"
                 android:id="@+id/text_all"
                 android:textSize="15sp"
+                android:background="@drawable/tv_play_stroke"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"/>
         <ListView
                 android:id="@+id/channel_list"
                 android:layout_below="@id/text_all"
-                android:divider="@color/white"
                 android:background="@drawable/tv_play_stroke"
+                android:divider="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
