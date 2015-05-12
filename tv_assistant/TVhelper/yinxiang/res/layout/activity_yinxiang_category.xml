@@ -81,6 +81,19 @@
             android:layout_marginTop="312dip"
             android:scaleType="fitXY"
             android:src="@drawable/yinxiang_other" />
+        <TextView 
+            android:id="@+id/button_search_touying"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginLeft="56dip"
+            android:layout_marginTop="442dip"
+            android:scaleType="fitXY"
+            android:gravity="center"
+            android:text="搜索"
+            android:textSize="40sp"
+            android:background="@color/grey"
+            android:textColor="@color/black"
+            />
 
         <!-- IP选择 -->
 

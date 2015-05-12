@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.changhong.common.service.ClientSendCommandService;
@@ -77,6 +78,21 @@ public class YinXiangCategoryActivity extends Activity {
 		vedioTouYing = (ImageView) findViewById(R.id.button_vedio_touying);
 		musicTouYing = (ImageView) findViewById(R.id.button_music_touying);
 		otherTouYing = (ImageView) findViewById(R.id.button_other_touying);
+		
+		/**
+		 * 搜索临时入口
+		 */
+		TextView tv=(TextView)findViewById(R.id.button_search_touying);
+		tv.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent =new Intent(YinXiangCategoryActivity.this,YinXiangSearchActivity.class);
+                startActivity(intent);
+			}
+		});
+		
 	}
 
 	private void initEvent() {
@@ -159,8 +175,7 @@ public class YinXiangCategoryActivity extends Activity {
                 MyApplication.vibrator.vibrate(100);
                 Intent intent = new Intent(YinXiangCategoryActivity.this, YinXiangSettingActivity.class);
                 startActivity(intent);
-                Intent intent2 =new Intent(YinXiangCategoryActivity.this,YinXiangSearchActivity.class);
-                startActivity(intent2);
+                
             }
         });
 
