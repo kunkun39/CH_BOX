@@ -21,13 +21,13 @@
             android:layout_height="80dp"
             android:paddingLeft="5dp"
             android:textSize="11sp"
-            android:textColor="@color/black">
+            android:textColor="@color/white">
     </TextView>
 
     <CheckBox
             android:id="@+id/yinxiang_vedio_item_checked"
             android:layout_width="35dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:paddingRight="2dp"/>
 
     <TextView

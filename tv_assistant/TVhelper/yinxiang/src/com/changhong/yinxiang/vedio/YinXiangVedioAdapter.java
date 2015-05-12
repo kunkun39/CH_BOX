@@ -88,10 +88,12 @@ public class YinXiangVedioAdapter extends BaseAdapter {
             synchronizImageLoad(wapper.vedioImage, vedioPath);
         }
 
+        final boolean isChecked = selectVedioPaths.contains(vedioPath);
+        wapper.vedioChecked.setChecked(isChecked);
         wapper.vedioChecked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectVedioPaths.contains(vedioPath)) {
+                if(isChecked) {
                     selectVedioPaths.remove(vedioPath);
                 } else {
                     selectVedioPaths.add(vedioPath);

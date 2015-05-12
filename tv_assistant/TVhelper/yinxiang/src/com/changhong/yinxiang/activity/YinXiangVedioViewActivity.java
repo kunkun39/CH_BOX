@@ -1,15 +1,28 @@
 package com.changhong.yinxiang.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.*;
+import com.alibaba.fastjson.JSONObject;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.MobilePerformanceUtils;
+import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.StringUtils;
 import com.changhong.yinxiang.R;
+import com.changhong.yinxiang.nanohttpd.HTTPDService;
 import com.changhong.yinxiang.vedio.YinXiangVedioAdapter;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 15-5-11.
@@ -130,7 +143,55 @@ public class YinXiangVedioViewActivity extends Activity {
         vedioSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    if (NetworkUtils.isWifiConnected(YinXiangVedioViewActivity.this)) {
+                        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                            Toast.makeText(YinXiangVedioViewActivity.this, "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        MyApplication.vibrator.vibrate(100);
 
+                        /**
+                         * 转换投影图片的路径
+                         */
+                        List<String> convertSelectedVedioPaths = new ArrayList<String>();
+                        for (String selectVedioPath : YinXiangVedioAdapter.selectVedioPaths) {
+                            String tempPath = "";
+                            if (selectVedioPath.startsWith(HTTPDService.defaultHttpServerPath)) {
+                                tempPath = selectVedioPath.replace(HTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+                            } else {
+                                for (String otherHttpServerPath : HTTPDService.otherHttpServerPaths) {
+                                    if (selectVedioPath.startsWith(otherHttpServerPath)) {
+                                        tempPath = selectVedioPath.replace(otherHttpServerPath, "").replace(" ", "%20");
+                                    }
+                                }
+                            }
+                            convertSelectedVedioPaths.add(tempPath);
+                        }
+
+                        /**
+                         * 准备发送投影的数据
+                         */
+                        String ipAddress = NetworkUtils.getLocalHostIp();
+                        String httpAddress = "http://" + ipAddress + ":" + HTTPDService.HTTP_PORT;
+                        JSONObject o = new JSONObject();
+                        JSONArray array = new JSONArray();
+                        for (String convertSelectedVedioPath : convertSelectedVedioPaths) {
+                            array.put(httpAddress + convertSelectedVedioPath);
+                        }
+                        o.put("vedios", array.toString());
+
+                        //发送播放地址
+                        //ClientSendCommandService.msg = o.toString();
+                        //ClientSendCommandService.handler.sendEmptyMessage(4);
+                        Toast.makeText(YinXiangVedioViewActivity.this, o.toString(), Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(YinXiangVedioViewActivity.this, "请链接无线网络", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(YinXiangVedioViewActivity.this, "视频获取失败", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

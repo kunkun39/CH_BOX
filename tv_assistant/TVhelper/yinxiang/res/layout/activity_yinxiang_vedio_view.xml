@@ -67,7 +67,7 @@
 
         <Button
                 android:id="@+id/yinxing_vedio_tuisong"
-                android:layout_width="80dp"
+                android:layout_width="140dp"
                 android:layout_height="40dp"
                 android:gravity="center"
                 android:text="推送"/>

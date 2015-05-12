@@ -83,7 +83,6 @@
             android:src="@drawable/yinxiang_other" />
 
         <!-- IP选择 -->
-        <!-- IP选择 -->
 
         <ListView
                 android:id="@+id/clients"
