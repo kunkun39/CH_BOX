@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.*;
@@ -209,6 +210,7 @@ public class TVChannelShouCangShowActivity extends Activity {
                     case 3:
                         //重新加载预约节目数据并刷新Adapter
                         orderProgramAdapter = new OrderProgramAdapter(TVChannelShouCangShowActivity.this);
+                        channelOrProgramList.setAdapter(orderProgramAdapter);
                         orderProgramAdapter.notifyDataSetChanged();
 
                         orderProgramText.setOnClickListener(new View.OnClickListener() {
@@ -277,6 +279,8 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
         }).start();
 
+
+
     }
 
     class OrderProgramThread extends Thread {
@@ -288,6 +292,7 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
             try {
                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+
                     orderProgramList = channelService.findAllOrderPrograms();
                     int channelSize = ClientSendCommandService.channelData.size();
 
@@ -590,11 +595,15 @@ public class TVChannelShouCangShowActivity extends Activity {
         }
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         //重新加载预约节目数据以更新预约节目UI
+        orderProgramList.clear();
+        orderProgramShowData.clear();
         new OrderProgramThread().start();
+
     }
     
 //    @Override

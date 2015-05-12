@@ -103,7 +103,6 @@ public class TVChannelPlayActivity extends Activity {
      */
     private ListView channelList;
     private ChannelAdapter channelAdapter;
-    private HashMap<String, Integer> hs = new HashMap<String, Integer>();
     private List<String> channelNames;
     private boolean menuKey = false;
     private RelativeLayout relativeLayout;
@@ -313,9 +312,6 @@ public class TVChannelPlayActivity extends Activity {
         }
         // 处理手势结束
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_DOWN:
-                relativeLayout.setVisibility(View.GONE);
-                break;
             case MotionEvent.ACTION_UP:
                 endGesture();
                 break;
