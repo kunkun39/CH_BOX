@@ -14,7 +14,6 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.*;
 
 import com.changhong.common.service.ClientSendCommandService;
@@ -266,7 +265,7 @@ public class PictureCategoryActivity extends Activity {
             View view = convertView;
 
             if (view == null || ((PackageViewHolder)(view.getTag())).index != position) {
-                view = getLayoutInflater().inflate(R.layout.activity_package_row, parent, false);
+                view = getLayoutInflater().inflate(R.layout.activity_picture_category_item, parent, false);
                 holder = new PackageViewHolder();
 
                 holder.packageName = (TextView) view.findViewById(R.id.package_name);
