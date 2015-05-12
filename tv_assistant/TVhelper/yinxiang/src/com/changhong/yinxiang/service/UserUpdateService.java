@@ -78,8 +78,8 @@ public class UserUpdateService {
      */
 //   public final static String JSON_URL = "http://192.168.0.101:8080/update/download/yxupdate.json";
 //   public final static String UPDATE_URL = "http://192.168.0.101:8080/update/download/yinxiang.apk";
-    public final static String JSON_URL = "http://www.ottserver.com:8080/update/download/yxupdate.json";
-    public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/download/yinxiang.apk";
+    public final static String JSON_URL = "http://www.ottserver.com:8080/update/yinxiang/yxupdate.json";
+    public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/yinxiang/yinxiang.apk";
 
     /**
      * 更新信息和版本
