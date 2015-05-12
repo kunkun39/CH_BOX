@@ -121,6 +121,11 @@ public class TVChannelPlayActivity extends Activity {
     private ImageView imageViewChannelLogo;
     private final String ILLEGAL_PROGRAM_NAME = "无节目信息";
 
+    /**
+     * 再按返回确认退出标志爱
+     */
+    private int returnConfirm = 1;
+
 
     @Override
     public void onCreate(Bundle icicle) {
@@ -295,11 +300,16 @@ public class TVChannelPlayActivity extends Activity {
                     programInfoLayout.setVisibility(View.GONE);
                     menuKey = false;
                 }
-                break;
+                return true;
             case KeyEvent.KEYCODE_BACK:
-                mDismissHandler = null;
-                finish();
-                break;
+                if (returnConfirm == 1) {
+                    returnConfirm = 0;
+                    Toast.makeText(TVChannelPlayActivity.this, "再按一次退出", 1000).show();
+                } else {
+                    mDismissHandler = null;
+                    finish();
+                }
+                return true;
             default:
                 break;
         }
