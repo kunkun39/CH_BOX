@@ -291,15 +291,13 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
             try {
                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-
                     orderProgramList = channelService.findAllOrderPrograms();
                     int channelSize = ClientSendCommandService.channelData.size();
-
-                    for (int i = 0; i < channelSize; i++) {
-                        Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                        String channelIndex = (String) map.get("channel_index");
-                        for (OrderProgram orderProgram : orderProgramList) {
-                            if (orderProgram.getChannelIndex().equals(channelIndex)) {
+                    for (OrderProgram orderProgram:orderProgramList) {
+                        String channelIndex=orderProgram.getChannelIndex();
+                        for (int i=0;i<channelSize;i++) {
+                            Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                            if (channelIndex.equals(map.get("channel_index"))) {
                                 orderProgramShowData.add(map);
                             }
 
@@ -498,7 +496,6 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
 
             final OrderProgram orderProgram = orderProgramList.get(position);
-            final int index = position;
             vh.channelName.setText(orderProgram.getChannelName());
             vh.channelPlayInfo.setText(orderProgram.getWeekIndex() + "  " + orderProgram.getProgramStartTime() + "-" + orderProgram.getProgramEndTime() + "\n" + StringUtils.getShortString(orderProgram.getProgramName(), 12));
             //捕获异常，代表没有这个频道
@@ -511,13 +508,15 @@ public class TVChannelShouCangShowActivity extends Activity {
             /**
              * 观看直播
              */
+            final Map<String, Object> map = orderProgramShowData.get(position);
             vh.channelLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
+
                     TVChannelPlayActivity.name = orderProgram.getChannelName();
-                    Map<String, Object> map = orderProgramShowData.get(index);
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
+
                     Intent intent = new Intent(TVChannelShouCangShowActivity.this, TVChannelPlayActivity.class);
                     String name = orderProgram.getChannelName();
                     intent.putExtra("channelname", name);
