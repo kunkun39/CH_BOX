@@ -327,6 +327,17 @@ public class TVChannelPlayActivity extends Activity {
         }
         // 处理手势结束
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                if (!menuKey) {
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    programInfoLayout.setVisibility(View.VISIBLE);
+                    menuKey = true;
+                } else {
+                    relativeLayout.setVisibility(View.GONE);
+                    programInfoLayout.setVisibility(View.GONE);
+                    menuKey = false;
+                }
+                break;
             case MotionEvent.ACTION_UP:
                 endGesture();
                 break;
