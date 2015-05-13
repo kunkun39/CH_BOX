@@ -569,4 +569,5 @@ public class TVChannelShowActivity extends Activity {
             public TextView channelPlayButton;
         }
     }
+
 }
