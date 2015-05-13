@@ -597,6 +597,7 @@ public class TVChannelPlayActivity extends Activity {
                 //用户在10秒钟之内连续返回则退出，反则技术器归一
                 if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
                     returnConfirm = 1;
+                    backTimestamp = 0l;
                 }
 
                 if (mVideoView != null && mVideoView.isPlaying()) {
