@@ -150,7 +150,7 @@ public class TVChannelSearchActivity extends Activity {
 				 */
 				if (MyApplication.databaseContainer == null) {
                     MyApplication.databaseContainer = new DatabaseContainer(TVChannelSearchActivity.this);
-						
+
 				}
 
 				try {

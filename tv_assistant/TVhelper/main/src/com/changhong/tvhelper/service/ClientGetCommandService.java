@@ -29,11 +29,9 @@ import android.util.Log;
 import com.changhong.common.system.AppConfig;
 import com.changhong.setting.utils.NetEstimateUtils;
 import com.changhong.touying.activity.*;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.*;
 import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
-import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 public class ClientGetCommandService extends Service implements ClientSocketInterface {
 
