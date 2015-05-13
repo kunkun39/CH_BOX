@@ -74,9 +74,7 @@
         <activity android:name=".activity.TVChannelShowActivity" 
 	android:theme="@android:style/Theme.NoTitleBar" 
 	android:screenOrientation="portrait"/>
-        <activity android:name=".activity.TVChannelSearchActivity" 
-	android:theme="@android:style/Theme.NoTitleBar" 
-	android:screenOrientation="portrait"/>
+        <activity android:name=".activity.TVChannelSearchActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.TVChannelShouCangShowActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.TVChannelProgramShowActivity" android:screenOrientation="portrait"/>
         <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"

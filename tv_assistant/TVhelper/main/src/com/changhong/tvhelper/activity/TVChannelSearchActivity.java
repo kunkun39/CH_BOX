@@ -64,8 +64,7 @@ public class TVChannelSearchActivity extends Activity {
 	public static Handler mHandler = null;
 
 	/**
-	 * *****************************************Server IP Part
-	 * ******************************************************
+	 * *****************************************Server IP Part ******************************************************
 	 */
 	public static ArrayAdapter<String> adapterString = null;
 	public static TextView title = null;
@@ -74,10 +73,12 @@ public class TVChannelSearchActivity extends Activity {
 	private Button back = null;
 
 	/**
-	 * *****************************************Channel Part
-	 * ********************************************************
+	 * *****************************************Channel Part ********************************************************
 	 */
-	private ListView searchList;
+	private ListView channelSearchList;
+	private ListView musicSearchList;
+	private ListView vedioSearchList;
+
 	private ChannelAdapter channelAdapter = null;
 	private List<Map<String, Object>> searchChannel = new ArrayList<Map<String, Object>>();
 	private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
@@ -113,12 +114,12 @@ public class TVChannelSearchActivity extends Activity {
 	private EditText searchEditText = null;
 	private Button searchButton;
 	private String searchString = null;
-	private int selectedTabIndex = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_channel_search);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.activity_channel_search);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
@@ -133,6 +134,7 @@ public class TVChannelSearchActivity extends Activity {
 		searchChannel.clear();
 		searchMusics.clear();
 		searchVideos.clear();
+
 		// channel
 		channelService = new ChannelService();
 		new Thread(new Runnable() {
@@ -174,6 +176,10 @@ public class TVChannelSearchActivity extends Activity {
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
 
+        channelSearchList = (ListView) findViewById(R.id.list_channels);
+        musicSearchList = (ListView) findViewById(R.id.list_musics);
+        vedioSearchList = (ListView) findViewById(R.id.list_vedios);
+
 		// channel
 		channelText = (TextView) findViewById(R.id.text_channel);
 		channelAdapter = new ChannelAdapter(TVChannelSearchActivity.this);
@@ -186,16 +192,18 @@ public class TVChannelSearchActivity extends Activity {
 				musicText.setTextColor(Color.WHITE);
 				videoText.setTextColor(Color.WHITE);
 
-				selectedTabIndex = 0;
-				searchList.clearDisappearingChildren();
-				searchList.setAdapter(channelAdapter);
+                channelSearchList.clearDisappearingChildren();
+                channelSearchList.setAdapter(channelAdapter);
 				channelAdapter.notifyDataSetChanged();
+
+                channelSearchList.setVisibility(View.VISIBLE);
+                musicSearchList.setVisibility(View.GONE);
+                vedioSearchList.setVisibility(View.GONE);
 			}
 		});
 
-		// music
-		musicText = (TextView) findViewById(R.id.text_music);
-		searchList = (ListView) findViewById(R.id.list_channels);
+        // music
+        musicText = (TextView) findViewById(R.id.text_music);
 		musicAdapter = new MusicAdapter(TVChannelSearchActivity.this);
 		musicText.setOnClickListener(new OnClickListener() {
 			@Override
@@ -206,11 +214,14 @@ public class TVChannelSearchActivity extends Activity {
 				videoText.setTextColor(Color.WHITE);
 				channelText.setTextColor(Color.WHITE);
 
-				selectedTabIndex = 1;
-				searchList.clearDisappearingChildren();
-				searchList.setAdapter(musicAdapter);
+                musicSearchList.clearDisappearingChildren();
+                musicSearchList.setAdapter(musicAdapter);
 				musicAdapter.notifyDataSetChanged();
-			}
+
+                channelSearchList.setVisibility(View.GONE);
+                musicSearchList.setVisibility(View.VISIBLE);
+                vedioSearchList.setVisibility(View.GONE);
+            }
 		});
 
 		// video
@@ -225,10 +236,13 @@ public class TVChannelSearchActivity extends Activity {
 				musicText.setTextColor(Color.WHITE);
 				channelText.setTextColor(Color.WHITE);
 
-				selectedTabIndex = 2;
-				searchList.clearDisappearingChildren();
-				searchList.setAdapter(videoAdapter);
+                vedioSearchList.clearDisappearingChildren();
+                vedioSearchList.setAdapter(videoAdapter);
 				videoAdapter.notifyDataSetChanged();
+
+                channelSearchList.setVisibility(View.GONE);
+                musicSearchList.setVisibility(View.GONE);
+                vedioSearchList.setVisibility(View.VISIBLE);
 			}
 		});
 
@@ -245,40 +259,43 @@ public class TVChannelSearchActivity extends Activity {
 		/**
 		 * 转到播放界面
 		 */
-		searchList.setOnItemClickListener(new OnItemClickListener() {
+		channelSearchList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				switch (selectedTabIndex) {
-				case 0:
-					TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
-					Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
-					String name = (String) searchChannel.get(position).get("service_name");
-					intent.putExtra("channelname", name);
-					startActivity(intent);
-					break;
-				case 1:
-					Intent intentMusic = new Intent();
-					Music music = searchMusics.get(position);
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("selectedMusic", music);
-					intentMusic.putExtras(bundle);
-					intentMusic.setClass(TVChannelSearchActivity.this, MusicDetailsActivity.class);
-					startActivity(intentMusic);
-					break;
-				case 2:
-					Intent intentVideo = new Intent();
-					Vedio vedio = searchVideos.get(position);
-					Bundle bundleVideo = new Bundle();
-					bundleVideo.putSerializable("selectedVedio", vedio);
-					intentVideo.putExtras(bundleVideo);
-					intentVideo.setClass(TVChannelSearchActivity.this, VedioDetailsActivity.class);
-					startActivity(intentVideo);
-					break;
-				default:
-					break;
-				}
+                TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
+                Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
+                String name = (String) searchChannel.get(position).get("service_name");
+                intent.putExtra("channelname", name);
+                startActivity(intent);
 			}
 		});
+
+        musicSearchList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intentMusic = new Intent();
+                Music music = searchMusics.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selectedMusic", music);
+                intentMusic.putExtras(bundle);
+                intentMusic.setClass(TVChannelSearchActivity.this, MusicDetailsActivity.class);
+                startActivity(intentMusic);
+
+            }
+        });
+
+        vedioSearchList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intentVideo = new Intent();
+                Vedio vedio = searchVideos.get(position);
+                Bundle bundleVideo = new Bundle();
+                bundleVideo.putSerializable("selectedVedio", vedio);
+                intentVideo.putExtras(bundleVideo);
+                intentVideo.setClass(TVChannelSearchActivity.this, VedioDetailsActivity.class);
+                startActivity(intentVideo);
+            }
+        });
 
 		/**
 		 * Ip Part
@@ -373,8 +390,12 @@ public class TVChannelSearchActivity extends Activity {
                     channelText.setTextColor(getResources().getColor(R.color.orange));
                     musicText.setTextColor(getResources().getColor(R.color.white));
                     videoText.setTextColor(getResources().getColor(R.color.white));
-                    searchList.clearDisappearingChildren();
-                    searchList.setAdapter(channelAdapter);
+                    channelSearchList.setVisibility(View.VISIBLE);
+                    musicSearchList.setVisibility(View.GONE);
+                    vedioSearchList.setVisibility(View.GONE);
+
+                    channelSearchList.clearDisappearingChildren();
+                    channelSearchList.setAdapter(channelAdapter);
                     channelAdapter.notifyDataSetChanged();
                     break;
 				default:
