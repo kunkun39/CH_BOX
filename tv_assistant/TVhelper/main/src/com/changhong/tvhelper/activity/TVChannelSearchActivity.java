@@ -20,12 +20,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,7 +57,6 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 public class TVChannelSearchActivity extends Activity {
 
 	private static final String TAG = "tvplayer";
-//	private BidirSlidingLayout bidirSlidingLayout;
 
 	/**
 	 * message handler
@@ -112,8 +107,7 @@ public class TVChannelSearchActivity extends Activity {
 	private TextView videoText;
 
 	/**
-	 * ***********************************************搜索框***********************
-	 * ***********************************
+	 * ***********************************************搜索框**********************************************************
 	 */
 	private InputMethodManager imm = null;
 	private EditText searchEditText = null;
@@ -125,6 +119,7 @@ public class TVChannelSearchActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_search);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 		initData();
@@ -151,8 +146,7 @@ public class TVChannelSearchActivity extends Activity {
 				}
 
 				try {
-					currentChannelPlayData = channelService
-							.searchCurrentChannelPlay();
+					currentChannelPlayData = channelService.searchCurrentChannelPlay();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -244,8 +238,8 @@ public class TVChannelSearchActivity extends Activity {
 				MyApplication.vibrator.vibrate(100);
 				searchString = searchEditText.getText().toString();
 				mHandler.sendEmptyMessage(0);
-				imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-			}
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            }
 		});
 
 		/**
@@ -253,8 +247,7 @@ public class TVChannelSearchActivity extends Activity {
 		 */
 		searchList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				switch (selectedTabIndex) {
 				case 0:
 					TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
