@@ -94,8 +94,7 @@ public class TVChannelSearchActivity extends Activity {
 	private TextView channelText;
 
 	/**
-	 * *****************************************Music Part
-	 * *********************************************************
+	 * *****************************************Music Part *********************************************************
 	 */
 	private MusicAdapter musicAdapter;
 	private List<Music> searchMusics = new ArrayList<Music>();
@@ -104,8 +103,7 @@ public class TVChannelSearchActivity extends Activity {
 	private TextView musicText;
 
 	/**
-	 * **********************************************Vedio
-	 * Part******************************************************
+	 * **********************************************Vedio Part******************************************************
 	 */
 	private VedioProvider vedioProvider;
 	private VideoAdapter videoAdapter;
@@ -150,7 +148,6 @@ public class TVChannelSearchActivity extends Activity {
 				 */
 				if (MyApplication.databaseContainer == null) {
                     MyApplication.databaseContainer = new DatabaseContainer(TVChannelSearchActivity.this);
-
 				}
 
 				try {
@@ -161,10 +158,6 @@ public class TVChannelSearchActivity extends Activity {
 				}
 			}
 		}).start();
-		int channelSum = ClientSendCommandService.channelData.size();
-		for (int j = 0; j < channelSum; j++) {
-			searchChannel.add(ClientSendCommandService.channelData.get(j));
-		}
 
 		// music
 		musicProvider = new MusicProvider(TVChannelSearchActivity.this);
@@ -183,21 +176,9 @@ public class TVChannelSearchActivity extends Activity {
 		clients = (ListView) findViewById(R.id.clients);
 		back = (Button) findViewById(R.id.btn_back);
 		list = (Button) findViewById(R.id.btn_list);
-//		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
-
-//		ImageButton search_smb = (ImageButton) findViewById(R.id.search_sidemunubutton);
-//
-//		search_smb.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				bidirSlidingLayout.clickSideMenu();
-//			}
-//		});
 
 		// channel
 		channelText = (TextView) findViewById(R.id.text_channel);
@@ -207,8 +188,7 @@ public class TVChannelSearchActivity extends Activity {
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 
-				channelText.setTextColor(getResources()
-						.getColor(R.color.orange));
+				channelText.setTextColor(getResources().getColor(R.color.orange));
 				musicText.setTextColor(Color.WHITE);
 				videoText.setTextColor(Color.WHITE);
 
@@ -218,15 +198,6 @@ public class TVChannelSearchActivity extends Activity {
 				channelAdapter.notifyDataSetChanged();
 			}
 		});
-
-//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				bidirSlidingLayout.closeRightMenu();
-//			}
-//		});
 
 		// music
 		musicText = (TextView) findViewById(R.id.text_music);
@@ -272,8 +243,6 @@ public class TVChannelSearchActivity extends Activity {
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				searchString = searchEditText.getText().toString();
-				Log.i("TVChannelSearchActivity", "searchstring>>"
-						+ searchString);
 				mHandler.sendEmptyMessage(0);
 				imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 			}
@@ -288,12 +257,9 @@ public class TVChannelSearchActivity extends Activity {
 					int position, long id) {
 				switch (selectedTabIndex) {
 				case 0:
-					TVChannelPlayActivity.name = (String) searchChannel.get(
-							position).get("service_name");
-					Intent intent = new Intent(TVChannelSearchActivity.this,
-							TVChannelPlayActivity.class);
-					String name = (String) searchChannel.get(position).get(
-							"service_name");
+					TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
+					Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
+					String name = (String) searchChannel.get(position).get("service_name");
 					intent.putExtra("channelname", name);
 					startActivity(intent);
 					break;
@@ -303,8 +269,7 @@ public class TVChannelSearchActivity extends Activity {
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("selectedMusic", music);
 					intentMusic.putExtras(bundle);
-					intentMusic.setClass(TVChannelSearchActivity.this,
-							MusicDetailsActivity.class);
+					intentMusic.setClass(TVChannelSearchActivity.this, MusicDetailsActivity.class);
 					startActivity(intentMusic);
 					break;
 				case 2:
@@ -313,8 +278,7 @@ public class TVChannelSearchActivity extends Activity {
 					Bundle bundleVideo = new Bundle();
 					bundleVideo.putSerializable("selectedVedio", vedio);
 					intentVideo.putExtras(bundleVideo);
-					intentVideo.setClass(TVChannelSearchActivity.this,
-							VedioDetailsActivity.class);
+					intentVideo.setClass(TVChannelSearchActivity.this, VedioDetailsActivity.class);
 					startActivity(intentVideo);
 					break;
 				default:
@@ -346,11 +310,9 @@ public class TVChannelSearchActivity extends Activity {
 		});
 		clients.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				adapterString.notifyDataSetChanged();
-				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList
-						.get(arg2);
+				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
 				title.setText("CHBOX");
 				ClientSendCommandService.handler.sendEmptyMessage(2);
 				clients.setVisibility(View.GONE);
@@ -382,48 +344,46 @@ public class TVChannelSearchActivity extends Activity {
 					searchVideos.clear();
 
 					if (StringUtils.hasLength(searchString)) {
-						searchString = YuYingWordsUtils
-								.normalChannelSearchWordsConvert(searchString);
+						searchString = YuYingWordsUtils.normalChannelSearchWordsConvert(searchString);
 
 						/**
 						 * 匹配频道
 						 */
-                            for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
-                                    searchChannel.add(ClientSendCommandService.channelData.get(i));
-                                }
+                        for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                            if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+                                searchChannel.add(ClientSendCommandService.channelData.get(i));
                             }
+                        }
 						/**
 						 * 匹配音乐
 						 */
-                            int musicSum = musics.size();
-                            for (int i = 0; i < musicSum; i++) {
-                                if ((musics.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0||(musics.get(i).getArtist().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
-                                    searchMusics.add(musics.get(i));
-                                }
-
+                        int musicSum = musics.size();
+                        for (int i = 0; i < musicSum; i++) {
+                            if ((musics.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0||(musics.get(i).getArtist().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
+                                searchMusics.add(musics.get(i));
                             }
+                        }
 						/**
 						 * 匹配视频
 						 */
-                            int videoSum = videos.size();
-                            for (int i = 0; i < videoSum; i++) {
-                                if ((videos.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
-                                    searchVideos.add(videos.get(i));
-                                }
+                        int videoSum = videos.size();
+                        for (int i = 0; i < videoSum; i++) {
+                            if ((videos.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
+                                searchVideos.add(videos.get(i));
                             }
                         }
+                    }
 
-					/**
-					 * 先显示频道
-					 */
-                        channelText.setTextColor(getResources().getColor(R.color.orange));
-                        musicText.setTextColor(getResources().getColor(R.color.white));
-                        videoText.setTextColor(getResources().getColor(R.color.white));
-                        searchList.clearDisappearingChildren();
-                        searchList.setAdapter(channelAdapter);
-                        channelAdapter.notifyDataSetChanged();
-                        break;
+                    /**
+                     * 先显示频道
+                     */
+                    channelText.setTextColor(getResources().getColor(R.color.orange));
+                    musicText.setTextColor(getResources().getColor(R.color.white));
+                    videoText.setTextColor(getResources().getColor(R.color.white));
+                    searchList.clearDisappearingChildren();
+                    searchList.setAdapter(channelAdapter);
+                    channelAdapter.notifyDataSetChanged();
+                    break;
 				default:
 					break;
 				}

@@ -26,7 +26,6 @@
             android:layout_width="fill_parent"
             android:layout_height="67.6dip"
             android:background="@drawable/title_banner"
-            android:focusable="false"
             android:gravity="center"
             android:orientation="horizontal" >
 
@@ -85,7 +84,6 @@
             android:layout_height="49.8dip"
             android:layout_marginLeft="25dip"
             android:layout_marginTop="67.6dip"
-            android:focusable="false"
             android:orientation="horizontal" >
 
             <LinearLayout
