@@ -161,14 +161,14 @@ public class YinXiangCategoryActivity extends Activity {
                 startActivity(intent);
             }
         });
-//		musicTouYing.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//                MyApplication.vibrator.vibrate(100);
-//                Intent intent = new Intent(TouYingCategoryActivity.this, MusicCategoryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+		musicTouYing.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(YinXiangCategoryActivity.this, YinXiangMusicViewActivity.class);
+                startActivity(intent);
+            }
+        });
         otherTouYing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

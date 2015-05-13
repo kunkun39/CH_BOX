@@ -100,10 +100,10 @@ public class YinXiangMusicViewActivity extends Activity{
         musicListView = (ListView) findViewById(R.id.yinxiang_vedio_list_view);
         Intent intent =getIntent();
         String keyStr=intent.getStringExtra("KeyWords");
-        
+        Log.i("mmmm", "YinXiangMusicViewActivity1");
         musicAdapter = new YinXiangMusicAdapter(this,keyStr);
         musicListView.setAdapter(musicAdapter);
-
+        Log.i("mmmm", "YinXiangMusicViewActivity2");
         musicSend = (Button)findViewById(R.id.yinxing_vedio_tuisong);
         musicSelectedInfo = (TextView)findViewById(R.id.yinxing_vedio_tuisong_info);
     }

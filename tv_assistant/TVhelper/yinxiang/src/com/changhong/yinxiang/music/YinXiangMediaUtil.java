@@ -1,5 +1,6 @@
 package com.changhong.yinxiang.music;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -166,6 +167,9 @@ public class YinXiangMediaUtil {
 				}
 			} else {
 				Uri uri = ContentUris.withAppendedId(albumArtUri, albumid);
+//				File file=new File(uri.toString());
+//				
+//				if(file.exists()){
 				ParcelFileDescriptor pfd = context.getContentResolver().openFileDescriptor(uri, "r");
 				if(pfd != null) {
 					fd = pfd.getFileDescriptor();

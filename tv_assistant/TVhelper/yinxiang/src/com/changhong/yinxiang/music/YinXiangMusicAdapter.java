@@ -9,6 +9,7 @@ import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.changhong.common.system.MyApplication;
 import com.changhong.yinxiang.R;
 import com.changhong.yinxiang.activity.YinXiangMusicViewActivity;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
@@ -31,7 +33,7 @@ public class YinXiangMusicAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 
 	private List<YinXiangMusic> musicsAll;
-	private List<YinXiangMusic> musicsAct=new ArrayList<YinXiangMusic>();
+	private List<YinXiangMusic> musicsAct = new ArrayList<YinXiangMusic>();
 
 	public static List<String> selectMusicPaths = new ArrayList<String>();
 	private Context context;
@@ -94,19 +96,17 @@ public class YinXiangMusicAdapter extends BaseAdapter {
 		wapper.musicName.setText(displayName);
 		wapper.fullPath.setText(musicPath);
 
-		// String musicImagePath =
-		// DiskCacheFileManager.isSmallImageExist(musicPath);
-		// if (!musicImagePath.equals("")) {
-		// MyApplication.imageLoader.displayImage("file://" +
-		// musicImagePath,
-		// wapper.musicImage, MyApplication.viewOptions);
-		// wapper.musicImage.setScaleType(ImageView.ScaleType.FIT_XY);
-		// } else {
-		// synchronizImageLoad(wapper.musicImage, musicPath);
-		// }
-		wapper.musicImage.setImageBitmap(YinXiangMediaUtil.getArtwork(context,
-				yinXiangMusic.getId(), yinXiangMusic.getAlbumId(), true, true));
-
+		String musicImagePath = DiskCacheFileManager
+				.isSmallImageExist(musicPath);
+		if (!musicImagePath.equals("")) {
+			MyApplication.imageLoader.displayImage("file://" + musicImagePath,
+					wapper.musicImage, MyApplication.viewOptions);
+			wapper.musicImage.setScaleType(ImageView.ScaleType.FIT_XY);
+		} else {
+			synchronizImageLoad(wapper.musicImage, yinXiangMusic);
+		}
+//		wapper.musicImage.setImageBitmap(YinXiangMediaUtil.getArtwork(context,
+//				yinXiangMusic.getId(), yinXiangMusic.getAlbumId(), true, true));
 		final boolean isChecked = selectMusicPaths.contains(musicPath);
 		wapper.musicChecked.setChecked(isChecked);
 		wapper.musicChecked
@@ -129,26 +129,26 @@ public class YinXiangMusicAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private void musicFilter(){
-		for(int i=0;i<musicsAll.size();i++){
-			YinXiangMusic music=musicsAll.get(i);
-			if(TextUtils.isEmpty(keyStr)){
-				musicsAct=musicsAll;
+	private void musicFilter() {
+		for (int i = 0; i < musicsAll.size(); i++) {
+			YinXiangMusic music = musicsAll.get(i);
+			if (TextUtils.isEmpty(keyStr)) {
+				musicsAct = musicsAll;
 				break;
-			}else if(music.getTitle().contains(keyStr)){
+			} else if (music.getTitle().contains(keyStr)) {
 				musicsAct.add(music);
 			}
 		}
 	}
-	
+
 	private void synchronizImageLoad(final ImageView imageView,
-			final String path) {
+			final YinXiangMusic yinXiangMusic) {
 		ImageAsyncTask task = new ImageAsyncTask(imageView);
-		task.execute(path);
+		task.execute(yinXiangMusic);
 	}
 
 	private final class ImageAsyncTask extends
-			AsyncTask<String, Integer, Bitmap> {
+			AsyncTask<YinXiangMusic, Integer, Bitmap> {
 		ImageView imageView;
 
 		private ImageAsyncTask(ImageView imageView) {
@@ -156,13 +156,13 @@ public class YinXiangMusicAdapter extends BaseAdapter {
 		}
 
 		@Override
-		protected Bitmap doInBackground(String... params) {
+		protected Bitmap doInBackground(YinXiangMusic... params) {
 			Bitmap bitmap = null;
 			try {
-				String path = params[0];
-				bitmap = ThumbnailUtils.createVideoThumbnail(path,
-						MediaStore.Images.Thumbnails.MINI_KIND);
-				DiskCacheFileManager.saveSmallImage(bitmap, path);
+				YinXiangMusic yinXiangMusic = params[0];
+				bitmap = YinXiangMediaUtil.getArtwork(context,
+						yinXiangMusic.getId(), yinXiangMusic.getAlbumId(), true, true);
+				DiskCacheFileManager.saveSmallImage(bitmap, yinXiangMusic.getPath());
 				return bitmap;
 			} catch (Exception e) {
 				e.printStackTrace();
