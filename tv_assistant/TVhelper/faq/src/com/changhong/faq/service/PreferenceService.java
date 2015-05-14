@@ -196,9 +196,4 @@ public class PreferenceService {
         return buffer.toString();
     }
 
-	
-
-	
-
-	
 }

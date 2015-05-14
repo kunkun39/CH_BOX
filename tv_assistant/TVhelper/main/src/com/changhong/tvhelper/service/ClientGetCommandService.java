@@ -165,10 +165,10 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                  * 更细所有的频道TITLE
                                  */
                                 mHandler.sendEmptyMessage(0);
-                                Log.e("COMMAND_CLEAN_1", serverAddress + "-" + ClientSendCommandService.serverIP);
+//                                Log.e("COMMAND_CLEAN_1", serverAddress + "-" + ClientSendCommandService.serverIP);
 
                             } else if (ClientSendCommandService.serverIP != null && serverAddress.equals(ClientSendCommandService.serverIP)) {
-                                Log.e("COMMAND_CLEAN_2", serverAddress + "-" + ClientSendCommandService.serverIP);
+//                                Log.e("COMMAND_CLEAN_2", serverAddress + "-" + ClientSendCommandService.serverIP);
                                 /**
                                  * 更新当前server的活动时间
                                  */
@@ -256,7 +256,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                     MobilePerformanceUtils.httpServerUsing = false;
                                 }
                             } else {
-                                Log.e("COMMAND_CLEAN_3", serverAddress + "-" + ClientSendCommandService.serverIP);
+//                                Log.e("COMMAND_CLEAN_3", serverAddress + "-" + ClientSendCommandService.serverIP);
                             }
                         }
                         if (exit) {
