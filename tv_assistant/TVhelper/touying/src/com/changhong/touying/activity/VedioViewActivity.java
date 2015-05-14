@@ -115,7 +115,7 @@ public class VedioViewActivity extends Activity {
         });
 
         vedioGridView = (GridView) findViewById(R.id.vedio_grid_view);
-        pictureAdapter = new PictureAdapter(this, R.layout.vedio_category_item, vedios);
+        pictureAdapter = new PictureAdapter(this, vedios);
         vedioGridView.setAdapter(pictureAdapter);
     }
 
@@ -153,11 +153,8 @@ public class VedioViewActivity extends Activity {
 
         private List<Vedio> vedios;
 
-        private int item_image;
-
-        public PictureAdapter(Context context, int item_image, List<Vedio> vedios) {
+        public PictureAdapter(Context context, List<Vedio> vedios) {
             this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.item_image = item_image;
             this.vedios = vedios;
         }
 
@@ -184,7 +181,7 @@ public class VedioViewActivity extends Activity {
 
             if (convertView == null) {
                 //获得view
-                convertView = inflater.inflate(item_image, null);
+                convertView = inflater.inflate(R.layout.vedio_category_item, null);
                 vedioImage = (ImageView) convertView.findViewById(R.id.vedio_item_image);
                 vedioName = (TextView) convertView.findViewById(R.id.vedio_item_name);
                 fullPath = (TextView) convertView.findViewById(R.id.vedio_item_path);
