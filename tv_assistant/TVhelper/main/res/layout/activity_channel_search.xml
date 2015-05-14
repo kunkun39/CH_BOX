@@ -61,23 +61,6 @@
             android:visibility="gone"
             android:background="@drawable/sidemenubutton" />
 
-        <ListView
-            android:id="@+id/clients"
-            android:layout_width="match_parent"
-            android:layout_height="558dip"
-            android:layout_marginTop="67.6dip"
-            android:background="@drawable/title_ip_list_bg"
-            android:listSelector="@drawable/title_ip_list"
-            android:visibility="gone" />
-
-        <Button
-            android:id="@+id/btn_list"
-            android:layout_width="204dip"
-            android:layout_height="49.8dip"
-            android:layout_marginLeft="70dip"
-            android:layout_marginTop="10dip"
-            android:background="@drawable/title_btn_list_selector" />
-
         <LinearLayout
             android:id="@+id/search_linear_layout"
             android:layout_width="fill_parent"
@@ -231,6 +214,23 @@
                     android:visibility="gone">
             </ListView>
         </RelativeLayout>
+
+        <ListView
+                android:id="@+id/clients"
+                android:layout_width="match_parent"
+                android:layout_height="558dip"
+                android:layout_marginTop="67.6dip"
+                android:background="@drawable/title_ip_list_bg"
+                android:listSelector="@drawable/title_ip_list"
+                android:visibility="gone" />
+
+        <Button
+                android:id="@+id/btn_list"
+                android:layout_width="204dip"
+                android:layout_height="49.8dip"
+                android:layout_marginLeft="70dip"
+                android:layout_marginTop="10dip"
+                android:background="@drawable/title_btn_list_selector" />
     </RelativeLayout>
 
 </com.changhong.common.widgets.BidirSlidingLayout>
