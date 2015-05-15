@@ -196,18 +196,22 @@ public class VedioViewActivity extends Activity {
                 fullPath = wapper.getFullPath();
             }
 
-            Vedio vedio = vedios.get(position);
-            String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
-            vedioName.setText(displayName);
-            fullPath.setText(String.valueOf(position));
+            try {
+                Vedio vedio = vedios.get(position);
+                String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
+                vedioName.setText(displayName);
+                fullPath.setText(String.valueOf(position));
 
-            String vedioPath = vedio.getPath();
-            String vedioImagePath = DiskCacheFileManager.isSmallImageExist(vedioPath);
-            if (!vedioImagePath.equals("")) {
-                MyApplication.imageLoader.displayImage("file://" + vedioImagePath, vedioImage, MyApplication.viewOptions);
-                vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
-            } else {
-                synchronizImageLoad(vedioImage, vedioPath);
+                String vedioPath = vedio.getPath();
+                String vedioImagePath = DiskCacheFileManager.isSmallImageExist(vedioPath);
+                if (!vedioImagePath.equals("")) {
+                    MyApplication.imageLoader.displayImage("file://" + vedioImagePath, vedioImage, MyApplication.viewOptions);
+                    vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                } else {
+                    synchronizImageLoad(vedioImage, vedioPath);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             return convertView;
@@ -242,8 +246,12 @@ public class VedioViewActivity extends Activity {
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 if (bitmap != null && imageView != null) {
-                    imageView.setImageBitmap(bitmap);
-                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    try {
+                        imageView.setImageBitmap(bitmap);
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

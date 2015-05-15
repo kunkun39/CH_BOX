@@ -105,65 +105,73 @@ public class ClientLocalThreadRunningService extends Service {
                         final OrderProgram program = (OrderProgram) msg.obj;
                         //判断是否锁屏
                         if (!powerManager.isScreenOn()) {
-                            Intent intent = new Intent();
-                            Bundle bundle = new Bundle();
-                            bundle.putString("channelname", program.getChannelName());
-                            String index = program.getChannelIndex();
-                            int channelSize = ClientSendCommandService.channelData.size();
-                            for (int i = 0; i < channelSize; i++) {
-                                Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                String channelIndex = (String) map.get("channel_index");
-                                if (index.equals(channelIndex)) {
-                                    TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
-                                    Log.e("TVChannelPlayActivity.path",TVChannelPlayActivity.path);
+                            try {
+                                Intent intent = new Intent();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("channelname", program.getChannelName());
+                                String index = program.getChannelIndex();
+                                int channelSize = ClientSendCommandService.channelData.size();
+                                for (int i = 0; i < channelSize; i++) {
+                                    Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                                    String channelIndex = (String) map.get("channel_index");
+                                    if (index.equals(channelIndex)) {
+                                        TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
+                                        Log.e("TVChannelPlayActivity.path",TVChannelPlayActivity.path);
+                                    }
                                 }
+                                intent.putExtras(bundle);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
+                                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                pendingIntent = PendingIntent.getActivity(ClientLocalThreadRunningService.this, 0, intent, 0);
+                                notification = new Notification();
+                                notification.icon = R.drawable.applogo;
+                                notification.tickerText = "电视助手：您有预约节目已经开始";
+                                notification.defaults = Notification.DEFAULT_SOUND;
+                                notification.setLatestEventInfo(ClientLocalThreadRunningService.this, "电视助手：您有预约节目已经开始", program.getProgramName(), pendingIntent);
+                                notificationManager.notify(0, notification);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                            intent.putExtras(bundle);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                            intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
-                            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                            pendingIntent = PendingIntent.getActivity(ClientLocalThreadRunningService.this, 0, intent, 0);
-                            notification = new Notification();
-                            notification.icon = R.drawable.applogo;
-                            notification.tickerText = "电视助手：您有预约节目已经开始";
-                            notification.defaults = Notification.DEFAULT_SOUND;
-                            notification.setLatestEventInfo(ClientLocalThreadRunningService.this, "电视助手：您有预约节目已经开始", program.getProgramName(), pendingIntent);
-                            notificationManager.notify(0, notification);
-                            Log.e("notification", intent.toString());
-                        } else {
-                            Dialog dialog = new AlertDialog.Builder(ClientLocalThreadRunningService.this)
-                                    .setTitle("电视助手：预约节目已开始")
-                                    .setMessage(program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime())
-                                    .setPositiveButton("播放", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            Intent intent = new Intent();
-                                            Bundle bundle = new Bundle();
-                                            bundle.putString("channelname", program.getChannelName());
-                                            String index = program.getChannelIndex();
-                                            int channelSize = ClientSendCommandService.channelData.size();
-                                            for (int i = 0; i < channelSize; i++) {
-                                                Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                                String channelIndex = (String) map.get("channel_index");
-                                                if (index.equals(channelIndex)) {
-                                                    TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
-                                                }
-                                            }
 
-                                            intent.putExtras(bundle);
-                                            intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            startActivity(intent);
-                                        }
-                                    })
-                                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.cancel();
-                                        }
-                                    }).create();
-                            dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                            dialog.show();
+                        } else {
+                            try {
+                                Dialog dialog = new AlertDialog.Builder(ClientLocalThreadRunningService.this)
+                                        .setTitle("电视助手：预约节目已开始")
+                                        .setMessage(program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime())
+                                        .setPositiveButton("播放", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                Intent intent = new Intent();
+                                                Bundle bundle = new Bundle();
+                                                bundle.putString("channelname", program.getChannelName());
+                                                String index = program.getChannelIndex();
+                                                int channelSize = ClientSendCommandService.channelData.size();
+                                                for (int i = 0; i < channelSize; i++) {
+                                                    Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                                                    String channelIndex = (String) map.get("channel_index");
+                                                    if (index.equals(channelIndex)) {
+                                                        TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
+                                                    }
+                                                }
+
+                                                intent.putExtras(bundle);
+                                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                                startActivity(intent);
+                                            }
+                                        })
+                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        }).create();
+                                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                                dialog.show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case 1:

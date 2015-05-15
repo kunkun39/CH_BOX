@@ -37,6 +37,17 @@
         android:largeHeap="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         <activity
+                android:name=".activity.TVHelperWelcomeActivity"
+                android:label="@string/app_name"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Black.NoTitleBar" >
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.TVRemoteControlActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" 
@@ -61,11 +72,6 @@
             android:name=".activity.TVHelperMainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity 
 	android:name=".activity.TVChannelPlayActivity" 
@@ -74,7 +80,9 @@
         <activity android:name=".activity.TVChannelShowActivity" 
 	android:theme="@android:style/Theme.NoTitleBar" 
 	android:screenOrientation="portrait"/>
+
         <activity android:name=".activity.TVChannelSearchActivity" android:screenOrientation="portrait"/>
+
         <activity android:name=".activity.TVChannelShouCangShowActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.TVChannelProgramShowActivity" android:screenOrientation="portrait"/>
         <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"

@@ -609,6 +609,7 @@ public class TVChannelPlayActivity extends Activity {
         // 隐藏
         mDismissHandler.removeMessages(0);
         mDismissHandler.sendEmptyMessageDelayed(0, 500);
+
     }
 
     /***********************************************系统方法重载********************************************************/

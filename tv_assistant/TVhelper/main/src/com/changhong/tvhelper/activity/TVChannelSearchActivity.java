@@ -209,7 +209,6 @@ public class TVChannelSearchActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
-
 				musicText.setTextColor(getResources().getColor(R.color.orange));
 				videoText.setTextColor(Color.WHITE);
 				channelText.setTextColor(Color.WHITE);
@@ -354,35 +353,39 @@ public class TVChannelSearchActivity extends Activity {
 					searchVideos.clear();
 
 					if (StringUtils.hasLength(searchString)) {
-						searchString = YuYingWordsUtils.normalChannelSearchWordsConvert(searchString);
+						try {
+							searchString = YuYingWordsUtils.normalChannelSearchWordsConvert(searchString);
 
-						/**
-						 * 匹配频道
-						 */
-                        for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                            if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
-                                searchChannel.add(ClientSendCommandService.channelData.get(i));
+							/**
+                             * 匹配频道
+                             */
+							for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+                                    searchChannel.add(ClientSendCommandService.channelData.get(i));
+                                }
                             }
-                        }
-						/**
-						 * 匹配音乐
-						 */
-                        int musicSum = musics.size();
-                        for (int i = 0; i < musicSum; i++) {
-                            if ((musics.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0||(musics.get(i).getArtist().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
-                                searchMusics.add(musics.get(i));
+							/**
+                             * 匹配音乐
+                             */
+							int musicSum = musics.size();
+							for (int i = 0; i < musicSum; i++) {
+                                if ((musics.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0||(musics.get(i).getArtist().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
+                                    searchMusics.add(musics.get(i));
+                                }
                             }
-                        }
-						/**
-						 * 匹配视频
-						 */
-                        int videoSum = videos.size();
-                        for (int i = 0; i < videoSum; i++) {
-                            if ((videos.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
-                                searchVideos.add(videos.get(i));
+							/**
+                             * 匹配视频
+                             */
+							int videoSum = videos.size();
+							for (int i = 0; i < videoSum; i++) {
+                                if ((videos.get(i).getTitle().toLowerCase().indexOf(searchString.toLowerCase())) >= 0) {
+                                    searchVideos.add(videos.get(i));
+                                }
                             }
-                        }
-                    }
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 
                     /**
                      * 先显示频道
