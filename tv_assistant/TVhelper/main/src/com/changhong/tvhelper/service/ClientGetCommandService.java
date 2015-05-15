@@ -217,19 +217,16 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
                                     //音乐播放
                                     if (tokens[2].equals("music_play")) {
-                                    /*if ("com.changhong.touying.dialog".equals(shortClassName)) */{
-                                            try {
+                                        try {
                                             if (MusicPlayer.handler != null) {
                                                 Message message = new Message();
                                                 message.what = 0;
                                                 message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
                                                 MusicPlayer.handler.sendMessage(message);
-                                                }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
                                             }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
                                         }
-
                                     }
                                 }
 

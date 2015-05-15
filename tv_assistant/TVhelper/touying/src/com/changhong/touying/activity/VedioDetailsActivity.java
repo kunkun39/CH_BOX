@@ -16,10 +16,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.*;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.vedio.Vedio;
 import com.changhong.touying.R;
@@ -160,14 +157,8 @@ public class VedioDetailsActivity extends Activity {
         String displayName = StringUtils.hasLength(selectedVedio.getDisplayName()) ? selectedVedio.getDisplayName() : selectedVedio.getTitle();
         vedioName.setText(displayName);
 
-//        vedioTime = (TextView) findViewById(R.id.vedio_time);
-//        vedioTime.setText("时间 ： " + DateUtils.getMedioAddDate(selectedVedio.getCreateTime()));
-
         vedioDuring = (TextView) findViewById(R.id.vedio_during);
         vedioDuring.setText("时长 ： " + vedioTotalTime);
-
-//        vedioType = (TextView) findViewById(R.id.vedio_type);
-//        vedioType.setText("类型 ： " + selectedVedio.getMimeType());
 
         returnImage = (ImageView) findViewById(R.id.d_btn_return);
         playImage = (ImageView) findViewById(R.id.d_btn_play);
@@ -193,7 +184,7 @@ public class VedioDetailsActivity extends Activity {
                     MobilePerformanceUtils.httpServerUsing = true;
 
                     String[] content = StringUtils.delimitedListToStringArray(((String) msg.obj), "|");
-                    if (selectedVedio.getDisplayName().equals(content[0].replace("%20", " "))) {
+                    if (selectedVedio.getDisplayName().equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
                         /**
                          * set the play ui and play process
                          */
@@ -310,7 +301,7 @@ public class VedioDetailsActivity extends Activity {
 
                         String ipAddress = NetworkUtils.getLocalHostIp();
                         String httpAddress = "http://" + ipAddress + ":" + NanoHTTPDService.HTTP_PORT;
-                        httpAddress = httpAddress + vedioSelectedPath.replace(" ", "%20");
+                        httpAddress = httpAddress + WebUtils.convertLocalFileToHttpURL(vedioSelectedPath);
 
                         /**
                          * 有时候用户在进入投影页面，但是确没有投影动作，http服务关闭，但是用户现在点击投影，所以这里需要先检查有没有HTTP服务

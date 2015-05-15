@@ -86,4 +86,18 @@ public class WebUtils {
 
         return response;
     }
+
+    public static String convertLocalFileToHttpURL(String url) {
+        if (StringUtils.hasLength(url)) {
+            return url.replace(" ", "%20").replace("+", "%2B");
+        }
+        return url;
+    }
+
+    public static String convertHttpURLToLocalFile(String url) {
+        if (StringUtils.hasLength(url)) {
+            return url.replace("%20", " ").replace("%2B", "+");
+        }
+        return url;
+    }
 }
