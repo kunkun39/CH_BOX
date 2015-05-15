@@ -28,14 +28,19 @@ import java.util.regex.Pattern;
  */
 public class LycView extends View {
 
-    private static ArrayList<LyricSentence> mLyricSentences = new ArrayList<LyricSentence>();
+    
 
     private final static Pattern mBracketPattern = Pattern.compile("(?<=\\[).*?(?=\\])");
     private final static Pattern mTimePattern = Pattern.compile("(?<=\\[)(\\d{2}:\\d{2}\\.?\\d{0,3})(?=\\])");
+    
+    private static final int VIEW_WIDTH = 4000;
+    private static final int VIEW_HEIGHT =500;
+    
+    private static final String TAG = "LycView";
+    
+    private static ArrayList<LyricSentence> mLyricSentences = new ArrayList<LyricSentence>();
 
-    private static final String TAG = null;
-
-    private float mX;       //灞忓箷X杞寸殑涓偣锛屾鍊煎浐瀹氾紝淇濇寔姝岃瘝鍦╔涓棿鏄剧ず
+    private float mX = 0.0f;       //灞忓箷X杞寸殑涓偣锛屾鍊煎浐瀹氾紝淇濇寔姝岃瘝鍦╔涓棿鏄剧ず      ;       //灞忓箷X杞寸殑涓偣锛屾鍊煎浐瀹氾紝淇濇寔姝岃瘝鍦╔涓棿鏄剧ず
     private float offsetY;      //姝岃瘝鍦╕杞翠笂鐨勫亸绉婚噺锛屾鍊间細鏍规嵁姝岃瘝鐨勬粴鍔ㄥ彉灏�
     public boolean blLrc = false;
     private int curlrcIndex = 0; //淇濆瓨姝岃瘝鐨刴LyricSentences涓嬫爣
@@ -48,8 +53,6 @@ public class LycView extends View {
     //双缓冲抗抖动
     Bitmap cacheBitmap = null;
     Canvas cacheCanvas = null;
-    final int VIEW_WIDTH = 4000;
-    final int VIEW_HEIGHT = 500;
 
     //娓叉煋 娓愬彉鏁堟灉
     private Shader shaders;
@@ -70,6 +73,11 @@ public class LycView extends View {
 
         if (blLrc) {
 
+        	if (mLyricSentences == null
+        			|| curlrcIndex > mLyricSentences.size()) {
+        		super.onDraw(canvas);
+        		return ;
+			}
             paintHL.setTextSize(SIZEWORD);
             paint.setTextSize(SIZEWORD);
 
@@ -122,7 +130,7 @@ public class LycView extends View {
         paintHL.setColor(Color.GREEN);
         paintHL.setAntiAlias(true);
         paintHL.setAlpha(145);
-
+        initDATAAndUI();
        /* cacheBitmap = Bitmap.createBitmap(VIEW_WIDTH
     			, VIEW_HEIGHT, Config.ARGB_8888);
         cacheCanvas = new Canvas();
@@ -168,6 +176,14 @@ public class LycView extends View {
         invalidate();
 
     }
+    public void initDATAAndUI()
+    {
+    	mLyricSentences.clear();         
+        blLrc = false;
+        curlrcIndex = 0; //淇濆瓨姝岃瘝鐨刴LyricSentences涓嬫爣
+        SIZEWORD = 0;//鏄剧ず姝岃瘝鏂囧瓧鐨勫ぇ灏忓�
+        INTERVAL = 20;//姝岃瘝姣忚鐨勯棿闅�
+    }
 
 
     /**
@@ -181,6 +197,7 @@ public class LycView extends View {
 
     }
 
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mX = w * 0.5f;
         super.onSizeChanged(w, h, oldw, oldh);

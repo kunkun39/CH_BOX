@@ -154,25 +154,19 @@ public class TVSocketControllerService extends Service {
                             } else if (msg1.contains("music_play")) {
                                 Log.e(TAG, msg1);
                                 Intent intent = new Intent(TVSocketControllerService.this, MusicViewPlayingActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.setData(Uri.parse(msg1));
                                 startActivity(intent);
-                            } else if (msg1.equals("music:start")) {
-                                if (MusicViewPlayingActivity.mEventHandler != null) {
+                            }else if (msg1.contains(MusicViewPlayingActivity.CMD_TAG)) {
+                            	
+                            	if (MusicViewPlayingActivity.mEventHandler != null) {
                                     Log.e(TAG, msg1);
-                                    MusicViewPlayingActivity.mEventHandler.sendEmptyMessage(1);
-                                }
-                            } else if (msg1.equals("music:stop")) {
-                                if (MusicViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
-                                    MusicViewPlayingActivity.mEventHandler.sendEmptyMessage(2);
-                                }
-                            } else if (msg1.startsWith("music:seekto:")) {
-                                if (MusicViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
+                                    
                                     Message message = new Message();
-                                    message.what = 3;
+                                    message.what = 0;
                                     message.obj = msg1;
                                     MusicViewPlayingActivity.mEventHandler.sendMessage(message);
                                 }
