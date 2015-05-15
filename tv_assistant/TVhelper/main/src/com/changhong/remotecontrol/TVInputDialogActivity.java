@@ -157,7 +157,13 @@ public class TVInputDialogActivity extends Activity {
                     Message tempMsg = msg;
                     switch (tempMsg.what) {
                         case ClientSocketInterface.EVENT_IMSHOW: {
-                            mTextIputType = Integer.parseInt((String) tempMsg.obj);
+                        	try {
+                        		mTextIputType = Integer.parseInt((String) tempMsg.obj);
+							} catch (Exception e) {
+								e.printStackTrace();
+								mTextIputType = InputType.TYPE_NULL;
+							}
+                            
                             CreateDialogView();
                             sendEmptyMessage(POPINPUT_METHOD);
                             showToast();

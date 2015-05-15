@@ -1,29 +1,32 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.touying.R;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicDataAdapter;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
-
-import java.io.Serializable;
-import java.util.List;
+import com.changhong.touying.tab.MusicCategoryPlaylistTab;
+import com.changhong.touying.tab.MusicCategorySpecialTab;
 
 /**
  * Created by Jack Wang
  */
-public class MusicCategoryActivity extends Activity {
+public class MusicCategoryActivity extends FragmentActivity {
 
     /**************************************************IP连接部分*******************************************************/
 
@@ -31,18 +34,7 @@ public class MusicCategoryActivity extends Activity {
     private Button listClients;
     private Button back;
     private ListView clients = null;
-    private ArrayAdapter<String> IpAdapter;
-
-    /**************************************************歌曲部分*******************************************************/
-
-    /**
-     * Image List adapter
-     */
-    private MusicDataAdapter musicAdapter;
-    /**
-     * 视频浏览部分
-     */
-    private GridView musicGridView;
+    private ArrayAdapter<String> IpAdapter;        
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,13 +62,41 @@ public class MusicCategoryActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         clients = (ListView) findViewById(R.id.clients);
         listClients = (Button) findViewById(R.id.btn_list);
+        
+        Fragment fragment = new MusicCategoryPlaylistTab();
+        getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent,fragment, MusicCategoryPlaylistTab.TAG).hide(fragment).commitAllowingStateLoss();
+        fragment = new MusicCategorySpecialTab();
+        getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragment, MusicCategorySpecialTab.TAG).show(fragment).commitAllowingStateLoss();
+        
+        TextView specialBtn = (TextView)findViewById(R.id.music_category_specail);
+        specialBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
 
-        /**
-         * 歌曲部分
-         */
-        musicGridView = (GridView) findViewById(R.id.music_grid_view);
-        musicAdapter = new MusicDataAdapter(this);
-        musicGridView.setAdapter(musicAdapter);
+				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
+				getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+
+			}
+		});
+        
+        TextView playlistBtn = (TextView)findViewById(R.id.music_category_playlist);
+        playlistBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
+				getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+				
+
+			}
+		});
+
     }
 
     private void initEvent() {
@@ -125,23 +145,6 @@ public class MusicCategoryActivity extends Activity {
             }
         });
 
-        /**
-         * 歌曲部分
-         */
-        musicGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent();
-                intent.setClass(MusicCategoryActivity.this, MusicViewActivity.class);
-                Bundle bundle = new Bundle();
-                List<Music> musics = MusicDataAdapter.getPositionMusics(position);
-                bundle.putSerializable("musics", (Serializable) musics);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-
     }
 
     /**********************************************系统发发重载*********************************************************/
@@ -164,5 +167,8 @@ public class MusicCategoryActivity extends Activity {
                 break;
         }
         return super.onKeyDown(keyCode, event);
-    }
+    } 
+    
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {}
 }

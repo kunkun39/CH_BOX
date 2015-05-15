@@ -1,5 +1,6 @@
 package com.changhong.common.utils;
 
+import android.R.integer;
 import android.content.Context;
 import android.os.PowerManager;
 import android.provider.Settings;
@@ -11,6 +12,9 @@ import android.util.Log;
 public class MobilePerformanceUtils {
 
     private static String TAG = "MobilePerformance";
+    
+    public static final int PERFORMANCE_FULL = 0;
+    public static final int PERFORMANCE_CPU = 1;
 
     public static boolean isPowerFully = false;
 
@@ -44,6 +48,34 @@ public class MobilePerformanceUtils {
             Log.i("Performance_M", "start power");
         }
     }
+    
+    public static void openPerformance(Context context,int type)
+    {
+    	switch (type) {
+		case PERFORMANCE_FULL:
+			openPerformance(context);	    	
+			break;
+		case PERFORMANCE_CPU:
+			acquireCPUWakeLock(context);
+            acquireWifiAlwaysOn(context);	    	
+			break;
+		}
+    }
+    
+    public static void closePerformance(Context context,int type)
+    {
+    	switch (type) {
+		case PERFORMANCE_FULL:
+			closePerformance(context);	    	
+			break;
+		case PERFORMANCE_CPU:
+			releaseCPUWakeLock();	
+			releaseWifiOn(context);
+			break;
+		}
+    	
+    	
+    }
 
     /**
      * 这个方法是用于管理我们工程省电，当我们没有在下面几种情况下，Wake Lock不需要，WIFI设置可以SLEEP
@@ -62,6 +94,7 @@ public class MobilePerformanceUtils {
     }
 
     private static PowerManager.WakeLock wakeLock;
+    private static PowerManager.WakeLock cpuWakeLock;
 
     //申请设备电源锁
     private static void acquireWakeLock(Context context) {
@@ -72,6 +105,24 @@ public class MobilePerformanceUtils {
                 wakeLock.acquire();
             }
         }
+    }
+    
+    private static void acquireCPUWakeLock(Context context) {
+    	if (null == cpuWakeLock) {
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            cpuWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+            if (null != cpuWakeLock) {
+            	cpuWakeLock.acquire();
+            }
+        }
+    }
+    
+    private static void releaseCPUWakeLock()
+    {
+    	if (null != cpuWakeLock) {
+			cpuWakeLock.release();
+			cpuWakeLock = null;
+		}
     }
 
     //释放设备电源锁
@@ -86,6 +137,7 @@ public class MobilePerformanceUtils {
      * 申请设备WIFI火力全开
      */
     private static void acquireWifiAlwaysOn(Context context) {
+    	if(null == wakeLock && null == cpuWakeLock)
         Settings.System.putInt(context.getContentResolver(), Settings.System.WIFI_SLEEP_POLICY, Settings.System.WIFI_SLEEP_POLICY_NEVER);
     }
 
@@ -93,6 +145,7 @@ public class MobilePerformanceUtils {
      * 申请设备WIFI可以休息
      */
     private static void releaseWifiOn(Context context) {
+    	if((null == wakeLock && null == cpuWakeLock))
         Settings.System.putInt(context.getContentResolver(), Settings.System.WIFI_SLEEP_POLICY, Settings.System.WIFI_SLEEP_POLICY_DEFAULT);
     }
 }

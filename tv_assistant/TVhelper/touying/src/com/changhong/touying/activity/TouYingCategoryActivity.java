@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.touying.R;
@@ -69,6 +70,7 @@ public class TouYingCategoryActivity extends Activity {
         String[] types = {"video/3gpp", "video/x-msvideo", "video/mp4", "video/mpeg", "video/quicktime",
                 "audio/x-wav", "audio/x-pn-realaudio", "audio/x-ms-wma", "audio/x-ms-wmv", "audio/x-mpeg", "image/jpeg", "image/png"};
         MediaScannerConnection.scanFile(this, new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()}, types, null);
+        startService(new Intent(this, M3UListProviderService.class));
     }
 
 	private void initView() {

@@ -48,23 +48,48 @@
             android:layout_width="fill_parent"
             android:layout_marginTop="67.6dip"
             android:focusable="false"
-            android:orientation="horizontal"
-            android:gravity="center_vertical|center_horizontal">
-
-        <GridView
-                android:id="@+id/music_grid_view"
-                android:layout_width="fill_parent"
-                android:layout_height="558dp"
-                android:numColumns="3"
-                android:verticalSpacing="1dp"
-                android:horizontalSpacing="1dp"
-                android:columnWidth="90dp"
-                android:stretchMode="columnWidth"
-                android:gravity="center"
-                android:background="@android:color/transparent"
-                />
+            android:orientation="vertical"
+            android:gravity="center_vertical|center_horizontal">         
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/music_category_specail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" 
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="按专辑"            
+            />
+        <View
+            android:layout_width="1px" 
+            android:layout_height="match_parent"
+            android:background="#FFFFFFFF"
+            />
+        <TextView
+            android:id="@+id/music_category_playlist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_weight="1"
+            android:gravity="center"            
+            android:text="按播放列表"             
+            />        
     </LinearLayout>
-
+    <View
+            android:layout_width="match_parent" 
+            android:layout_height="1px"
+            android:background="#FFFFFFFF"
+            />
+	<FrameLayout 
+		    android:id="@+id/realtabcontent"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"		    
+		    /> 
+	</LinearLayout>
     <!--IP选择-->
 
     <ListView

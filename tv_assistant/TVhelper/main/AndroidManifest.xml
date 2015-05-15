@@ -116,7 +116,23 @@
             android:name="com.changhong.touying.activity.MusicDetailsActivity"
             android:screenOrientation="portrait" />
 
+        <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />                
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
         <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
+        <service android:name="com.changhong.touying.service.M3UListProviderService">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+            </intent-filter>
+        </service>
 
         <!-- 问卷部分 -->
         <activity

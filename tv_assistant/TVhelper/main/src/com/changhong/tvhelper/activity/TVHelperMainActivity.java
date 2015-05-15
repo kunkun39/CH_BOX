@@ -22,6 +22,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.TouYingCategoryActivity;
+import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
@@ -163,6 +164,12 @@ public class TVHelperMainActivity extends Activity {
          */
         Intent service3 = new Intent(TVHelperMainActivity.this, ClientLocalThreadRunningService.class);
         startService(service3);
+		
+		/**
+         * 启动播放了列表收索服务
+         */
+        Intent service4 = new Intent(TVHelperMainActivity.this, M3UListProviderService.class);
+        startService(service4);
     }
 
     private void initViewAndEvent() {

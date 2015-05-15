@@ -4,6 +4,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="@drawable/touying_bg"
+                android:descendantFocusability="blocksDescendants"
                 tools:context=".TVRemoteControlActivity" >
 
     <LinearLayout
@@ -48,9 +49,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             >
-        <TextView
-                android:focusable="true"
-                android:clickable="true"
+        <TextView                
                 android:layout_weight="1"
                 android:id="@+id/music_singer"
                 android:text="音    乐"
@@ -73,9 +72,8 @@
         <ListView
                 android:id="@+id/music_list_view"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:divider="@null"
+                android:layout_height="wrap_content"                
+                android:background="@android:color/transparent"		
                 />
     </LinearLayout>
 
@@ -88,6 +86,12 @@
             android:listSelector="@drawable/title_ip_list"
             android:visibility="gone"
             ></ListView>
+    <LinearLayout	           
+            android:id="@+id/music_seek_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"                  
+            android:layout_alignParentBottom="true"/>
 
     <Button
             android:id="@+id/btn_list"

@@ -29,9 +29,12 @@ import android.util.Log;
 import com.changhong.common.system.AppConfig;
 import com.changhong.setting.utils.NetEstimateUtils;
 import com.changhong.touying.activity.*;
+import com.changhong.touying.dialog.MusicPlayer;
+import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.*;
 import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
+import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 public class ClientGetCommandService extends Service implements ClientSocketInterface {
 
@@ -214,13 +217,13 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
                                     //音乐播放
                                     if (tokens[2].equals("music_play")) {
-                                        if ("com.changhong.touying.activity.MusicDetailsActivity".equals(shortClassName)) {
+                                    /*if ("com.changhong.touying.dialog".equals(shortClassName)) */{
                                             try {
-                                                if (MusicDetailsActivity.handler != null) {
-                                                    Message message = new Message();
-                                                    message.what = 0;
-                                                    message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
-                                                    MusicDetailsActivity.handler.sendMessage(message);
+                                            if (MusicPlayer.handler != null) {
+                                                Message message = new Message();
+                                                message.what = 0;
+                                                message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
+                                                MusicPlayer.handler.sendMessage(message);
                                                 }
                                             } catch (Exception e) {
                                                 e.printStackTrace();
@@ -242,8 +245,8 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                             VedioDetailsActivity.handler.sendEmptyMessage(1);
                                         }
                                     } else if (stopTag == 2) {
-                                        if (MusicDetailsActivity.handler != null) {
-                                            MusicDetailsActivity.handler.sendEmptyMessage(1);
+                                        if (MusicPlayer.handler != null) {
+                                            MusicPlayer.handler.sendEmptyMessage(1);
                                         }
                                     }
                                 }
