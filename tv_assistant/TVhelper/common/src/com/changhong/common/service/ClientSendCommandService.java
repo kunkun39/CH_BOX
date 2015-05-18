@@ -39,6 +39,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
      * server ip list
      */
     public static ArrayList<String> serverIpList = new ArrayList<String>();
+    public static Map<String, String> serverIpListMap = new HashMap<String, String>();
 
     /********************************************channel part********************************************************/
 
@@ -62,8 +63,6 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
      */
     public static String serverIP = null;
 
-    public static Socket client = null;
-
     public static String msg = null;
 
     public static String msgSwitchChannel = null;
@@ -82,6 +81,22 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
         super.onCreate();
 
         new SendCommend().start();
+    }
+
+    public static String getCurrentConnectBoxName() {
+        String name = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
+        if (StringUtils.hasLength(name)) {
+            return name;
+        }
+        return ClientSendCommandService.serverIP;
+    }
+
+    public static String getConnectBoxName(String serverIP) {
+        String name = ClientSendCommandService.serverIpListMap.get(serverIP);
+        if (StringUtils.hasLength(name)) {
+            return name;
+        }
+        return serverIP;
     }
 
     private class SendCommend extends Thread {

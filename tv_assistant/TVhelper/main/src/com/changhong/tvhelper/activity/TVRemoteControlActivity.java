@@ -16,6 +16,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
 
 import android.os.Bundle;
@@ -68,7 +69,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     /**
      * server ip part
      */
-    private ArrayAdapter<String> adapter = null;
+    private BoxSelectAdapter ipAdapter = null;
     public static TextView title = null;
     private ListView clients = null;
 
@@ -226,8 +227,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             }
         });
 
-        adapter = new ArrayAdapter<String>(TVRemoteControlActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
-        clients.setAdapter(adapter);
+        ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this);
+        clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -239,9 +240,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
-                adapter.notifyDataSetChanged();
+                ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
+                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 onUpdate();
                 clients.setVisibility(View.GONE);

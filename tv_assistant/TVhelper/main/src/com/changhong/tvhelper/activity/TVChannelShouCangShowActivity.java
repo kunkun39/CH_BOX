@@ -18,6 +18,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
@@ -45,7 +46,7 @@ public class TVChannelShouCangShowActivity extends Activity {
      * ***********************************************IP连接部分******************************************************
      */
 
-    private ArrayAdapter<String> adapterString = null;
+    private BoxSelectAdapter ipAdapter = null;
     public static TextView title = null;
     private ListView clients = null;
     private Button list = null;
@@ -122,8 +123,8 @@ public class TVChannelShouCangShowActivity extends Activity {
         /**
          * IP part
          */
-        adapterString = new ArrayAdapter<String>(TVChannelShouCangShowActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
-        clients.setAdapter(adapterString);
+        ipAdapter = new BoxSelectAdapter(TVChannelShouCangShowActivity.this);
+        clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -134,9 +135,9 @@ public class TVChannelShouCangShowActivity extends Activity {
         clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                adapterString.notifyDataSetChanged();
+                ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
+                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
 

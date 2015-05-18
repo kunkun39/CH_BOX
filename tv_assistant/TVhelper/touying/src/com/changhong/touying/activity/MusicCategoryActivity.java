@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
@@ -34,7 +35,7 @@ public class MusicCategoryActivity extends FragmentActivity {
     private Button listClients;
     private Button back;
     private ListView clients = null;
-    private ArrayAdapter<String> IpAdapter;        
+    private BoxSelectAdapter ipAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +105,8 @@ public class MusicCategoryActivity extends FragmentActivity {
         /**
          * IP连接部分
          */
-        IpAdapter = new ArrayAdapter<String>(MusicCategoryActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
-        clients.setAdapter(IpAdapter);
+        ipAdapter = new BoxSelectAdapter(MusicCategoryActivity.this);
+        clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -117,7 +118,7 @@ public class MusicCategoryActivity extends FragmentActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
+                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
             }

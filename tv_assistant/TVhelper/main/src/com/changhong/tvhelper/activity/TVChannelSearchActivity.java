@@ -41,6 +41,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.activity.MusicDetailsActivity;
 import com.changhong.touying.activity.VedioDetailsActivity;
 import com.changhong.touying.music.Music;
@@ -66,7 +67,7 @@ public class TVChannelSearchActivity extends Activity {
 	/**
 	 * *****************************************Server IP Part ******************************************************
 	 */
-	public static ArrayAdapter<String> adapterString = null;
+	public static BoxSelectAdapter ipAdapter = null;
 	public static TextView title = null;
 	private ListView clients = null;
 	private Button list = null;
@@ -306,10 +307,8 @@ public class TVChannelSearchActivity extends Activity {
 				finish();
 			}
 		});
-		adapterString = new ArrayAdapter<String>(TVChannelSearchActivity.this,
-				android.R.layout.simple_list_item_1,
-				ClientSendCommandService.serverIpList);
-		clients.setAdapter(adapterString);
+		ipAdapter = new BoxSelectAdapter(TVChannelSearchActivity.this);
+		clients.setAdapter(ipAdapter);
 		clients.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -320,9 +319,9 @@ public class TVChannelSearchActivity extends Activity {
 		clients.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				adapterString.notifyDataSetChanged();
+                ipAdapter.notifyDataSetChanged();
 				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-				title.setText("CHBOX");
+				title.setText(ClientSendCommandService.getCurrentConnectBoxName());
 				ClientSendCommandService.handler.sendEmptyMessage(2);
 				clients.setVisibility(View.GONE);
 			}

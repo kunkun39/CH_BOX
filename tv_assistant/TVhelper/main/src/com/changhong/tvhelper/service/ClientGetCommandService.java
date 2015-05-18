@@ -17,6 +17,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.ClientSocketInterface;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.MobilePerformanceUtils;
+import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
 
 import android.app.Service;
@@ -125,6 +126,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
         public void run() {
             ClientSendCommandService.serverIpList.clear();
+            ClientSendCommandService.serverIpListMap.clear();
             DatagramSocket dgSocket = null;
 
             try {
@@ -144,11 +146,16 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                          * 处理Socket
                          */
                         String serverAddress = dgPacket.getAddress().getHostAddress();
+                        String content = new String(by, 0, dgPacket.getLength());
+                        String[] tokens = StringUtils.delimitedListToStringArray(content, "|");
+                        String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
+
                         if (StringUtils.hasLength(serverAddress)) {
                             Log.w(TAG, serverAddress);
 
                             if (!ClientSendCommandService.serverIpList.contains(serverAddress)) {
                                 ClientSendCommandService.serverIpList.add(serverAddress);
+                                ClientSendCommandService.serverIpListMap.put(serverAddress, boxName);
                                 /**
                                  * 如果用户已经选择了IP，就不用选择了，如果为空，就按照系统自动分配
                                  */
@@ -160,7 +167,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                      */
                                     ClientSendCommandService.handler.sendEmptyMessage(2);
                                 }
-                                ClientSendCommandService.titletxt = "CHBOX";
+                                ClientSendCommandService.titletxt = boxName;
                                 time = System.currentTimeMillis();
                                 ClientSendCommandService.handler.sendEmptyMessage(2);
 
@@ -168,20 +175,12 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                  * 更细所有的频道TITLE
                                  */
                                 mHandler.sendEmptyMessage(0);
-//                                Log.e("COMMAND_CLEAN_1", serverAddress + "-" + ClientSendCommandService.serverIP);
 
                             } else if (ClientSendCommandService.serverIP != null && serverAddress.equals(ClientSendCommandService.serverIP)) {
-//                                Log.e("COMMAND_CLEAN_2", serverAddress + "-" + ClientSendCommandService.serverIP);
                                 /**
                                  * 更新当前server的活动时间
                                  */
                                 time = System.currentTimeMillis();
-
-                                /**
-                                 * 获得服务器的状态
-                                 */
-                                String content = new String(by, 0, dgPacket.getLength());
-                                String[] tokens = StringUtils.delimitedListToStringArray(content, "|");
 
                                 /**
                                  * 设置服务端网络状态
@@ -256,7 +255,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                     MobilePerformanceUtils.httpServerUsing = false;
                                 }
                             } else {
-//                                Log.e("COMMAND_CLEAN_3", serverAddress + "-" + ClientSendCommandService.serverIP);
+                                //不做处理
                             }
                         }
                         if (exit) {
@@ -300,6 +299,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
     private void clearIpList() {
         ClientSendCommandService.serverIpList.clear();
+        ClientSendCommandService.serverIpListMap.clear();
         ClientSendCommandService.serverIP = null;
         ClientSendCommandService.titletxt = "未连接";
         mHandler.sendEmptyMessage(0);

@@ -10,6 +10,8 @@ import android.widget.*;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class PictureViewActivity extends Activity {
     public Button back;
     public Button listClients;
     private ListView clients = null;
-    private ArrayAdapter<String> ipAdapter;
+    private BoxSelectAdapter ipAdapter;
 
     /************************************************图片加载部分*******************************************************/
 
@@ -78,7 +80,7 @@ public class PictureViewActivity extends Activity {
         /**
         * IP连接部分
          */
-        ipAdapter = new ArrayAdapter<String>(PictureViewActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
+        ipAdapter = new BoxSelectAdapter(PictureViewActivity.this);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -91,7 +93,7 @@ public class PictureViewActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
+                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
             }
@@ -100,9 +102,8 @@ public class PictureViewActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(PictureViewActivity.this, "未获取到服务器IP",
-                            Toast.LENGTH_LONG).show();
+                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                    Toast.makeText(PictureViewActivity.this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
                 } else {
                     clients.setVisibility(View.VISIBLE);
                 }

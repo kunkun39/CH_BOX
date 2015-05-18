@@ -160,7 +160,7 @@ public class TVSocketControllerService extends Service {
                                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.setData(Uri.parse(msg1));
                                 startActivity(intent);
-                            }else if (msg1.contains(MusicViewPlayingActivity.CMD_TAG)) {
+                            } else if (msg1.contains(MusicViewPlayingActivity.CMD_TAG)) {
                             	
                             	if (MusicViewPlayingActivity.mEventHandler != null) {
                                     Log.e(TAG, msg1);
@@ -320,7 +320,7 @@ public class TVSocketControllerService extends Service {
                         ip = NetworkUtils.getLocalIpAddress();
 
                         if (StringUtils.hasLength(ip) && !ip.equals("0.0.0.0")) {
-                            serverInfo = ip;
+                            serverInfo = MainActivity.CH_BOX_NAME;
 
                             /**
                              * 添加服务端网络信息到心跳

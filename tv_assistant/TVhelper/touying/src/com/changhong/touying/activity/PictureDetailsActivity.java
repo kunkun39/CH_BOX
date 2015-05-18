@@ -358,7 +358,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             /**
              * 竖上滑动, 投影
              */
-            if (!ClientSendCommandService.serverIpList.isEmpty()) {
+            if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                 isImageContinueShow = true;
                 isImageContinueMove = false;
                 imageContinueShow.setVisibility(View.VISIBLE);
@@ -579,7 +579,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         /**
          * second check the mobile is connect to box
          */
-        if (ClientSendCommandService.serverIpList.isEmpty()) {
+        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
             Toast.makeText(PictureDetailsActivity.this, "手机未连接机顶盒，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }

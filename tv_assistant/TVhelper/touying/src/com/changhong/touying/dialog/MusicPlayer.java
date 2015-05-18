@@ -693,7 +693,7 @@ public class MusicPlayer extends DialogFragment{
     	
     	try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
+                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                     Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -797,7 +797,7 @@ public class MusicPlayer extends DialogFragment{
     private void touYing(String musicPath, String musicName, String artist) {
         try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
+                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                     Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
                     return;
                 }

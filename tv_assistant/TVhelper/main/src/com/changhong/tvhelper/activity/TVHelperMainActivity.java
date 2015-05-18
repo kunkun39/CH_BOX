@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.TouYingCategoryActivity;
 import com.changhong.touying.service.M3UListProviderService;
@@ -123,15 +124,13 @@ public class TVHelperMainActivity extends Activity {
     /**************************************************IP连接部分*******************************************************/
 
     public static TextView title = null;
-    private ArrayAdapter<String> adapter = null;
+    private BoxSelectAdapter ipAdapter = null;
     private ListView clients = null;
     private Button list;
     /**
      * message handler
      */
     private Handler mhandler = null;
-
-    private ImageView img = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,6 @@ public class TVHelperMainActivity extends Activity {
         initViewAndEvent();
 
         initUpdateThread();
-
     }
 
     private void initService() {
@@ -178,7 +176,6 @@ public class TVHelperMainActivity extends Activity {
          */
     	title = (TextView) findViewById(R.id.title);
         clients = (ListView) findViewById(R.id.clients);
-        img = (ImageView) findViewById(R.id.img);
         list = (Button) findViewById(R.id.btn_list);
 
         Button controller = (Button) findViewById(R.id.btn_controller);
@@ -257,8 +254,8 @@ public class TVHelperMainActivity extends Activity {
         /**
          * Ip部分
          */
-        adapter = new ArrayAdapter<String>(TVHelperMainActivity.this, android.R.layout.simple_list_item_1, ClientSendCommandService.serverIpList);
-        clients.setAdapter(adapter);
+        ipAdapter = new BoxSelectAdapter(TVHelperMainActivity.this);
+        clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -267,13 +264,11 @@ public class TVHelperMainActivity extends Activity {
             }
         });
         clients.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                adapter.notifyDataSetChanged();
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText("CHBOX");
+                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
             }
@@ -334,13 +329,7 @@ public class TVHelperMainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (ClientSendCommandService.client != null) {
-            try {
-                ClientSendCommandService.client.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+
         if (updateReceiver != null) {
             unregisterReceiver(updateReceiver);
             updateReceiver = null;
