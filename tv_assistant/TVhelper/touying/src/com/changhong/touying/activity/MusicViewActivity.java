@@ -124,6 +124,9 @@ public class MusicViewActivity extends FragmentActivity {
 				if (musics.get(musics.size() -1).getPath().equals(path)) {
 					isLastSong = true;
 				}
+				else {
+					isLastSong = false;
+				}
 				
 			}
 		});

@@ -47,6 +47,7 @@ import com.changhong.touying.music.MusicLrc;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+import com.changhong.common.service.ClientSendCommandService;
 
 
 
@@ -224,8 +225,10 @@ public class MusicPlayer extends DialogFragment{
 						//playMusic(music);
 					}
 				}	
+								
 				autoPlayRunnable = null;
 			}
+			
 		};
 		
     	if (handler != null) {
@@ -355,10 +358,10 @@ public class MusicPlayer extends DialogFragment{
     	
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			sendMessage("key:volumedown");			
+			ClientSendCommandService.sendMessage("key:volumedown");				
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			sendMessage("key:volumeup");		
+			ClientSendCommandService.sendMessage("key:volumeup");		
 			return true;
 
 		default:
@@ -386,7 +389,7 @@ public class MusicPlayer extends DialogFragment{
     public void stopTVPlayer()
     {
     	
-    	sendMessage(CMD_STOP);
+    	//ClientSendCommandService.sendMessage(CMD_STOP);
     	Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
         view.startAnimation(animation);
         view.setVisibility(View.INVISIBLE);
@@ -423,14 +426,14 @@ public class MusicPlayer extends DialogFragment{
     	super.onHiddenChanged(hidden);
     	if (view != null) {
     		if (hidden) {  
-    			//sendMessage(CMD_AUTO + ":" + "1"); 	
+    			//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1"); 	
     			if (isAutoPlaying && handler != null) {
 					handler.removeCallbacks(autoPlayRunnable);
 				}
 			}
     		else {
     			autoPlaying(isAutoPlaying);
-    			//sendMessage(CMD_AUTO + ":" + "0"); 	        
+    			//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "0"); 	        
 			}			
 		}
     }
@@ -438,10 +441,10 @@ public class MusicPlayer extends DialogFragment{
 	@Override
 	public void onPause() {
 		super.onPause();
-		//sendMessage(CMD_AUTO + ":" + "1"); 	
+		//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1"); 	
 		if (view.getVisibility() == View.VISIBLE) {
-			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
-	        view.startAnimation(animation);
+			//Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
+	        //view.startAnimation(animation);
 	        view.setVisibility(View.INVISIBLE);
 		}
 		
@@ -465,16 +468,21 @@ public class MusicPlayer extends DialogFragment{
 	                    MobilePerformanceUtils.httpServerUsing = true;
 	
 	                    String key = null;
+	                    playingMusic = content[0];
 	                    if(playlistName == null)
                     	{
 	                    	key = (music != null) ? music.getTitle() + "-" +music.getArtist() : null;
                     		                    	
                     	}
 	                    else {
+	                    	// 当finish UDP包掉了后，实现自动检测歌曲播放，切换到正确的进度
+	                    	if (music == null && playingMusic.startsWith(playlistName + "-")) {
+	                    		handler.post(autoPlayRunnable);
+							}
 	                    	key = (music != null) ? playlistName + "-" + music.getTitle() + "-" +music.getArtist() : null;
 						}
 	                    
-	                    playingMusic = content[0];
+	                    
 	                    if (isAutoPlaying) {
 	                    	if(autoPlayRunnable != null)	              
 	                    	{
@@ -528,7 +536,7 @@ public class MusicPlayer extends DialogFragment{
 	public void onDestroy() {
 
 		super.onDestroy();
-		//sendMessage(CMD_AUTO + ":" + "1");
+		//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1");
 
 	}   
 
@@ -594,7 +602,7 @@ public class MusicPlayer extends DialogFragment{
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             	int progress = seekBar.getProgress();            	
-            		sendMessage(CMD_SEEK + ":" + progress);
+            		ClientSendCommandService.sendMessage(CMD_SEEK + ":" + progress);
                                     	
                     isPlaying = true;
                     isPausing = false;
@@ -608,12 +616,12 @@ public class MusicPlayer extends DialogFragment{
                 MyApplication.vibrator.vibrate(100);
                 if (isPausing) {
                 	controlButton.setBackgroundResource(R.drawable.control_pause);
-                	sendMessage(CMD_PLAY);
+                	ClientSendCommandService.sendMessage(CMD_PLAY);
                     isPausing = false;
                     isPlaying = true;
                 } else {
                 	controlButton.setBackgroundResource(R.drawable.control_play);
-                	sendMessage(CMD_PAUSE);
+                	ClientSendCommandService.sendMessage(CMD_PAUSE);
                     isPausing = true;
                     isPlaying = false;
                 }
@@ -629,7 +637,7 @@ public class MusicPlayer extends DialogFragment{
 	            @Override
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
-	                sendMessage("key:volumeup");
+	                ClientSendCommandService.sendMessage("key:volumeup");
 	            }
 	        });
 		}
@@ -639,7 +647,7 @@ public class MusicPlayer extends DialogFragment{
 	            @Override
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
-	                sendMessage("key:volumedown");	                
+	                ClientSendCommandService.sendMessage("key:volumedown");	                
 	            }
 	        }); 
 		} 
@@ -677,15 +685,7 @@ public class MusicPlayer extends DialogFragment{
         isPausing = false;
 
         seekBar.setProgress(0);
-    }    
-    
-    private static void sendMessage(String message)
-    {
-    	ClientSendCommandService.msg = message;
-    	if (ClientSendCommandService.handler != null) {
-    		ClientSendCommandService.handler.sendEmptyMessage(4);
-		}        
-    }   
+    }               
     
     private void touYing(List<Music> musics,String playlistName)
     {
@@ -700,11 +700,11 @@ public class MusicPlayer extends DialogFragment{
   				/**
                  * 设置播放滚动条的状态
                  */
-                if (view.getVisibility() == View.INVISIBLE) {
-                	view.setVisibility(View.VISIBLE);
-                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
-                    view.startAnimation(animation);
-                }
+                //if (view.getVisibility() == View.INVISIBLE) {
+                //	view.setVisibility(View.VISIBLE);
+                //    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
+                //    view.startAnimation(animation);
+                //}
 
                 int  totalTime = music.getDuration() / 1000;
                 seekBar.setMax(totalTime);
@@ -776,13 +776,13 @@ public class MusicPlayer extends DialogFragment{
                 
                 JSONObject o = new JSONObject();
                 o.put("music_play", "music_play");                
-                o.put("objects_list", JSON.toJSONString(objectsList));
-                
+                o.put("objects_list", JSON.toJSONString(objectsList));                
+
                 if(playlistName != null)
                 	o.put("playlistName", playlistName);
                 
                 //发送播放地址
-                sendMessage(o.toString());                
+                ClientSendCommandService.sendMessageNew(o.toString());                
 
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
@@ -804,11 +804,11 @@ public class MusicPlayer extends DialogFragment{
   				/**
                  * 设置播放滚动条的状态
                  */
-                if (view.getVisibility() == View.INVISIBLE) {
-                	view.setVisibility(View.VISIBLE);
-                    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
-                    view.startAnimation(animation);
-                }
+                //if (view.getVisibility() == View.INVISIBLE) {
+                //	view.setVisibility(View.VISIBLE);
+                //    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
+                //    view.startAnimation(animation);
+                //}
 
                 int  totalTime = music.getDuration() / 1000;
                 seekBar.setMax(totalTime);
@@ -876,7 +876,7 @@ public class MusicPlayer extends DialogFragment{
                 }                
 
                 //发送播放地址
-                sendMessage(o.toString());                
+                ClientSendCommandService.sendMessage(o.toString());                
 
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
