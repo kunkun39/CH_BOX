@@ -261,13 +261,12 @@ public class MusicCategoryPlaylistTab extends Fragment{
 			public void onClick(DialogInterface dialog, int which) {	
 				String playListName = editText.getText().toString();
 				if (playListName == null
-						|| playListName.isEmpty()) {
-					Toast.makeText(getActivity(), R.string.playlist_nameexist, Toast.LENGTH_SHORT).show();						
+						|| playListName.isEmpty()) {											
 					return ; 
 				}
 				MusicPlayList list = M3UPlayList.generalplaylist(editText.getText().toString());					
 				if (list == null) {
-					Toast.makeText(getActivity(), R.string.playlist_nameexist, Toast.LENGTH_SHORT).show();						
+					Toast.makeText(getActivity(), R.string.playlist_createfile_failed, Toast.LENGTH_SHORT).show();						
 					return ;
 				}
 				musicPlayLists.add(list);

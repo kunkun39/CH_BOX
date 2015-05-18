@@ -185,6 +185,22 @@ public class M3UPlayList {
     	if (f.exists())
     		return null;
     	
+    	//判断文件是否能建立
+    	try {
+    		
+			if(f.createNewFile())
+			{
+				f.delete();
+			}
+			else {
+				return null;
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+    	
     	list.setName(name);
     	list.setPath(path);
 
