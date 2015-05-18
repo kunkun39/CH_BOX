@@ -85,124 +85,125 @@ public class TVSocketControllerService extends Service {
             @Override
             public void handleMessage(Message msg) {
                 try {
+                	String msgCpy = (String)msg.obj;
                     switch (msg.what) {
                         case 1:
-                            if (msg1.equals("key:up")) {
+                            if (msgCpy.equals("key:up")) {
                                 Log.e(TAG, "key:up");
                                 t.vkey_input(103, 1);
-                            } else if (msg1.equals("key:down")) {
+                            } else if (msgCpy.equals("key:down")) {
                                 Log.e(TAG, "key:down");
                                 t.vkey_input(108, 1);
-                            } else if (msg1.equals("key:left")) {
+                            } else if (msgCpy.equals("key:left")) {
                                 Log.e(TAG, "key:left");
                                 t.vkey_input(105, 1);
-                            } else if (msg1.equals("key:right")) {
+                            } else if (msgCpy.equals("key:right")) {
                                 Log.e(TAG, "key:right");
                                 t.vkey_input(106, 1);
-                            } else if (msg1.equals("key:ok")) {
+                            } else if (msgCpy.equals("key:ok")) {
                                 Log.e(TAG, "key:ok");
                                 t.vkey_input(28, 1);
-                            } else if (msg1.equals("key:back")) {
+                            } else if (msgCpy.equals("key:back")) {
                                 Log.e(TAG, "key:back");
                                 t.vkey_input(158, 1);
-                            } else if (msg1.equals("key:menu")) {
+                            } else if (msgCpy.equals("key:menu")) {
                                 Log.e(TAG, "key:menu");
                                 t.vkey_input(139, 1);
-                            } else if (msg1.equals("key:home")) {
+                            } else if (msgCpy.equals("key:home")) {
                                 Log.e(TAG, "key:home");
                                 t.vkey_input(102, 1);
-                            } else if (msg1.equals("key:volumeup")) {
+                            } else if (msgCpy.equals("key:volumeup")) {
                                 Log.e(TAG, "key:volumeup");
                                 t.vkey_input(115, 1);
-                            } else if (msg1.equals("key:volumedown")) {
+                            } else if (msgCpy.equals("key:volumedown")) {
                                 Log.e(TAG, "key:volumedown");
                                 t.vkey_input(114, 1);
-                            } else if (msg1.equals("key:power")) {
+                            } else if (msgCpy.equals("key:power")) {
                                 Log.e(TAG, "key:power");
                                 t.vkey_input(0x7f01, 1);
-                            } else if (msg1.equals("key:0")) {
+                            } else if (msgCpy.equals("key:0")) {
                                 Log.e(TAG, "key:0");
                                 t.vkey_input(11, 1);
-                            } else if (msg1.equals("key:1")) {
+                            } else if (msgCpy.equals("key:1")) {
                                 Log.e(TAG, "key:");
                                 t.vkey_input(2, 1);
-                            } else if (msg1.equals("key:2")) {
+                            } else if (msgCpy.equals("key:2")) {
                                 Log.e(TAG, "key:2");
                                 t.vkey_input(3, 1);
-                            } else if (msg1.equals("key:3")) {
+                            } else if (msgCpy.equals("key:3")) {
                                 Log.e(TAG, "key:3");
                                 t.vkey_input(4, 1);
-                            } else if (msg1.equals("key:4")) {
+                            } else if (msgCpy.equals("key:4")) {
                                 Log.e(TAG, "key:4");
                                 t.vkey_input(5, 1);
-                            } else if (msg1.equals("key:5")) {
+                            } else if (msgCpy.equals("key:5")) {
                                 Log.e(TAG, "key:5");
                                 t.vkey_input(6, 1);
-                            } else if (msg1.equals("key:6")) {
+                            } else if (msgCpy.equals("key:6")) {
                                 Log.e(TAG, "key:6");
                                 t.vkey_input(7, 1);
-                            } else if (msg1.equals("key:7")) {
+                            } else if (msgCpy.equals("key:7")) {
                                 Log.e(TAG, "key:7");
                                 t.vkey_input(8, 1);
-                            } else if (msg1.equals("key:8")) {
+                            } else if (msgCpy.equals("key:8")) {
                                 Log.e(TAG, "key:8");
                                 t.vkey_input(9, 1);
-                            } else if (msg1.equals("key:9")) {
+                            } else if (msgCpy.equals("key:9")) {
                                 Log.e(TAG, "key:9");
                                 t.vkey_input(10, 1);
                                 //投影歌曲部分
-                            } else if (msg1.contains("music_play")) {
-                                Log.e(TAG, msg1);
+                            } else if (msgCpy.contains("music_play")) {
+                                Log.e(TAG, msgCpy);
                                 Intent intent = new Intent(TVSocketControllerService.this, MusicViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent.setData(Uri.parse(msg1));
+                                intent.setData(Uri.parse(msgCpy));
                                 startActivity(intent);
-                            } else if (msg1.contains(MusicViewPlayingActivity.CMD_TAG)) {
+                            }else if (msgCpy.contains(MusicViewPlayingActivity.CMD_TAG)) {
                             	
                             	if (MusicViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     
                                     Message message = new Message();
                                     message.what = 0;
-                                    message.obj = msg1;
+                                    message.obj = msgCpy;
                                     MusicViewPlayingActivity.mEventHandler.sendMessage(message);
                                 }
                                 //投影视屏部分
-                            } else if (msg1.substring(0, 4).equals("http")) {
-                                Log.e(TAG, msg1);
+                            } else if (msgCpy.substring(0, 4).equals("http")) {
+                                Log.e(TAG, msgCpy);
                                 Intent intent = new Intent(TVSocketControllerService.this, VideoViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                intent.setData(Uri.parse(msg1));
+                                intent.setData(Uri.parse(msgCpy));
                                 startActivity(intent);
-                            } else if (msg1.equals("vedio:start")) {
+                            } else if (msgCpy.equals("vedio:start")) {
                                 if (VideoViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     VideoViewPlayingActivity.mEventHandler.sendEmptyMessage(1);
                                 }
-                            } else if (msg1.equals("vedio:stop")) {
+                            } else if (msgCpy.equals("vedio:stop")) {
                                 if (VideoViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     VideoViewPlayingActivity.mEventHandler.sendEmptyMessage(2);
                                 }
-                            } else if (msg1.startsWith("vedio:seekto:")) {
+                            } else if (msgCpy.startsWith("vedio:seekto:")) {
                                 if (VideoViewPlayingActivity.mEventHandler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     Message message = new Message();
                                     message.what = 3;
-                                    message.obj = msg1;
+                                    message.obj = msgCpy;
                                     VideoViewPlayingActivity.mEventHandler.sendMessage(message);
                                 }
                                 //投影图片部分
-                            } else if (msg1.contains("urls")) {
-                                Log.e(TAG, msg1);
-                                handleTouYingPicMsg(msg1);
-                            } else if (msg1.equals("rotation:left")) {
+                            } else if (msgCpy.contains("urls")) {
+                                Log.e(TAG, msgCpy);
+                                handleTouYingPicMsg(msgCpy);
+                            } else if (msgCpy.equals("rotation:left")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
@@ -210,9 +211,9 @@ public class TVSocketControllerService extends Service {
                                         ImageShowPlayingActivity.handler.sendEmptyMessage(2);
                                     }
                                 }
-                            } else if (msg1.equals("rotation:right")) {
+                            } else if (msgCpy.equals("rotation:right")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, msg1);
+                                    Log.e(TAG, msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
@@ -221,35 +222,35 @@ public class TVSocketControllerService extends Service {
                                         ImageShowPlayingActivity.handler.sendEmptyMessage(3);
                                     }
                                 }
-                            } else if (msg1.startsWith("room_pointer_down:")) {
+                            } else if (msgCpy.startsWith("room_pointer_down:")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, "Location:" + msg1);
+                                    Log.e(TAG, "Location:" + msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
                                     if ("com.changhong.tvserver.touying.image.ImageShowPlayingActivity".equals(shortClassName)) {
                                         Message message = new Message();
                                         message.what = 4;
-                                        message.obj = msg1;
+                                        message.obj = msgCpy;
                                         ImageShowPlayingActivity.handler.sendMessage(message);
                                     }
                                 }
-                            } else if (msg1.startsWith("room_action_move:")) {
+                            } else if (msgCpy.startsWith("room_action_move:")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, "Location:" + msg1);
+                                    Log.e(TAG, "Location:" + msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
                                     if ("com.changhong.tvserver.touying.image.ImageShowPlayingActivity".equals(shortClassName)) {
                                         Message message = new Message();
                                         message.what = 5;
-                                        message.obj = msg1;
+                                        message.obj = msgCpy;
                                         ImageShowPlayingActivity.handler.sendMessage(message);
                                     }
                                 }
-                            } else if (msg1.startsWith("room_action_up:")) {
+                            } else if (msgCpy.startsWith("room_action_up:")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, "Location:" + msg1);
+                                    Log.e(TAG, "Location:" + msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
@@ -257,9 +258,9 @@ public class TVSocketControllerService extends Service {
                                         ImageShowPlayingActivity.handler.sendEmptyMessage(6);
                                     }
                                 }
-                            } else if (msg1.startsWith("room_pointer_up:")) {
+                            } else if (msgCpy.startsWith("room_pointer_up:")) {
                                 if (ImageShowPlayingActivity.handler != null) {
-                                    Log.e(TAG, "Location:" + msg1);
+                                    Log.e(TAG, "Location:" + msgCpy);
                                     ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
                                     ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                     String shortClassName = info.topActivity.getClassName();    //类名
@@ -267,7 +268,7 @@ public class TVSocketControllerService extends Service {
                                         ImageShowPlayingActivity.handler.sendEmptyMessage(7);
                                     }
                                 }
-                            } else if(msg1.equals("key:dtv")){
+                            } else if(msgCpy.equals("key:dtv")){
                                 Intent mIntent = getPackageManager().getLaunchIntentForPackage("Com.smarttv_doggle_newui");
                                 mIntent.putExtra("forceresume", true);
                                 try {
@@ -275,10 +276,10 @@ public class TVSocketControllerService extends Service {
                                 } catch (Exception e) {
                                     Log.i(TAG, "startActivity Com.smarttv_doggle_newui  err ! ");
                                 }
-                            } else if(msg1.startsWith("app_open:")){
-                                Log.e(TAG, "Location:" + msg1);
-                                openYuYingApplication(msg1);
-                            } else if (msg1.equals("finish")) {
+                            } else if(msgCpy.startsWith("app_open:")){
+                                Log.e(TAG, "Location:" + msgCpy);
+                                openYuYingApplication(msgCpy);
+                            } else if (msgCpy.equals("finish")) {
                                 Intent intent = new Intent("FinishActivity");
                                 sendBroadcast(intent);
                             }
@@ -298,6 +299,7 @@ public class TVSocketControllerService extends Service {
 
         new send_heart_thread().start();
         new get_command().start();
+        new get_command_new().start();
     }
 
     /*************************************************send heart part **************************************************/
@@ -419,17 +421,19 @@ public class TVSocketControllerService extends Service {
                 dgSocket = new DatagramSocket(9002);
                 DatagramPacket dgPacket = null;
 
+                
+                
                 while (true) {
                     try {
-                        byte[] by = new byte[1024];
+                    	byte[] by = new byte[1024];
                         dgPacket =  new DatagramPacket(by, by.length);
                         dgSocket.receive(dgPacket);
-
+                        
                         String command = new String(by, 0, dgPacket.getLength());
                         if (!command.equals("")) {
                             Log.w(TAG, command);
                             msg1 = command;
-                            handler.sendEmptyMessage(1);
+                            handler.sendMessage(handler.obtainMessage(1, new String(msg1)));
                         }
 
                     } catch (IOException e) {
@@ -437,6 +441,74 @@ public class TVSocketControllerService extends Service {
                     } finally {
                         dgPacket = null;
                     }
+                }
+            } catch (SocketException e) {
+                e.printStackTrace();
+
+            } finally {
+                try {
+                    if (dgSocket != null) {
+                        dgSocket.close();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    
+    /**
+     * 服务端接收客户端发来的socket
+     * <p>
+     * DatagramSocket:一开始就创建好
+     * DatagramPacket:接收一个创建一个, 这样免得发生阻塞
+     */
+    private class get_command_new extends Thread {
+        public void run() {
+            DatagramSocket dgSocket = null;
+
+            try {
+                dgSocket = new DatagramSocket(10013);
+                DatagramPacket dgPacket = null;
+
+                
+                String command = null;
+                while (true) {
+                    try {
+                    	byte[] by = new byte[1024];
+                        dgPacket =  new DatagramPacket(by, by.length);
+                        dgSocket.receive(dgPacket);
+                        if (command == null) {
+                        	command = new String(dgPacket.getData(),0,dgPacket.getData().length).trim();
+						}
+                        else {
+                        	command += new String(dgPacket.getData(),0,dgPacket.getData().length).trim();
+						}
+                        
+                        if (command.contains("^")) {
+                        	int bindex = 0,eindex = 0;
+                        	
+                        	 while ((eindex = command.indexOf('^', bindex)) != -1) {
+                        		 Log.w(TAG, command);
+                                 msg1 = command.substring(bindex, eindex);
+                                 handler.sendMessage(handler.obtainMessage(1,new String(msg1)));
+                                 
+                                 if (command.length() == (eindex + 1)) {
+                                	 command = null;
+                                	 break;
+                                 }
+                                 else {
+                                	 bindex = eindex + 1;
+                                 }
+                                 
+     						}   
+                        	 //处理完连续的信息，其余的数据，全部抛弃
+                        	 command = null;
+						}
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } 
                 }
             } catch (SocketException e) {
                 e.printStackTrace();

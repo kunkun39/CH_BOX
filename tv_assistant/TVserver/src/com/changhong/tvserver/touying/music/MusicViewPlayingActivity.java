@@ -140,7 +140,8 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     /**
      * 判断是否拖动以同步歌词
      */
-    boolean isSeeked = false;       
+    boolean isSeeked = false; 
+    boolean isSkipSong = false;
     
     List<JsonMusicObject> objectsList = new ArrayList<JsonMusicObject>();
 
@@ -238,7 +239,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     	mIsHwDecode = getIntent().getBooleanExtra("isHW", false);
         Uri uriPath = getIntent().getData();
         objectsList.clear();
-        playlist = null;
+        playlist = null;        
         
         if (null != uriPath) {
             try {
@@ -494,7 +495,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
 	                    mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARING;
 	                    break;
 	                case EVENT_PLAY:
-	                    mVV.resume();
+	                    mVV.resume();	                    
 	                    break;
 	                case EVENT_PAUSE:
 	                	mVV.pause();
@@ -570,8 +571,10 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
          */
         if (mPlayerStatus == PLAYER_STATUS.PLAYER_PREPARED) {
             mLastPos = mVV.getCurrentPosition();
+            isSkipSong = true;
             mVV.stopPlayback();
-        }       
+        }   
+        
     }
 
 
@@ -648,7 +651,8 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     public boolean onError(int what, int extra) {
         Log.v(TAG, "onError");
         
-        mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
+        mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;         
+        
         return true;
     }
 
@@ -669,10 +673,11 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
             /**
              * auto play finished stat = -1
              */
-            if (stat == -1) {
+            if (stat == -1 && !isSkipSong) {
             	if (objectsList.isEmpty()
             			|| mVideoSource.equals(objectsList.get(objectsList.size() - 1).musicPath)) {
             		finish();
+            		return ;
 				}
             	
             	boolean isFind = false;
@@ -702,6 +707,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
                 
             }
         }
+        isSkipSong = false;
         mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
     }
     
@@ -714,5 +720,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
         Log.v(TAG, "onPrepared");
         mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARED;
     }
+    
+    
 
 }
