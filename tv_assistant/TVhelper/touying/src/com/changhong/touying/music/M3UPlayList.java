@@ -180,6 +180,10 @@ public class M3UPlayList {
     			+ name 
     			+ SUFFIX;
     	
+    	if (path.contains("^")) {
+			return null;
+		}
+    	
     	//判断名字是否存在
     	File f = new File(path);
     	if (f.exists())
