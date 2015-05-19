@@ -390,9 +390,12 @@ public class MusicPlayer extends DialogFragment{
     {
     	
     	//ClientSendCommandService.sendMessage(CMD_STOP);
-    	Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
-        view.startAnimation(animation);
-        view.setVisibility(View.INVISIBLE);
+    	if (view.getVisibility() == View.VISIBLE) {
+    		Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
+            view.startAnimation(animation);
+            view.setVisibility(View.INVISIBLE);
+		}
+    	
     }
     
     
@@ -527,7 +530,8 @@ public class MusicPlayer extends DialogFragment{
                 		playFinish();	                                                                    
                 }
 	        }
-        }; 
+        };
+        autoPlaying(true);
         
     }
 
