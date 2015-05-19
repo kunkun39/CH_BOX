@@ -141,8 +141,8 @@ public class SingleMusicAdapter extends BaseAdapter {
     	((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
 				.show(player).commitAllowingStateLoss();
 		if (music != null) {
-			player.attachMusic(music).autoPlaying(true);
-			player.playMusic(music);
+			player.attachMusics(musics).autoPlaying(true);
+			player.playMusics(music);
 		} else {
 			player.autoPlaying(true);
 		}

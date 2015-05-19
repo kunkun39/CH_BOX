@@ -1,12 +1,14 @@
 package com.changhong.touying.music;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.changhong.touying.R;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class MusicDataAdapter extends BaseAdapter {
         musics = provider.getList();
         model = provider.getMapStructure(musics);
         musicList = provider.getMusicList(model);
+        Log.i("mmmm", "musics="+musics+"     model="+model+"    musicList="+musicList);
     }
 
     public int getCount() {
