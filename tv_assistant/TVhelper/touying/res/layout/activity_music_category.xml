@@ -49,12 +49,20 @@
         android:focusable="false"
         android:gravity="center_vertical|center_horizontal"
         android:orientation="vertical" >
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#FFFFFFFF" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#FFFFFFFF" />
             <TextView
                 android:id="@+id/music_category_all"
                 android:layout_width="0dp"
@@ -75,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="专辑"
+                android:text="歌手"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <View
@@ -91,6 +99,10 @@
                 android:gravity="center"
                 android:text="歌单"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#FFFFFFFF" />
         </LinearLayout>
 
         <View
