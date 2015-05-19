@@ -125,6 +125,7 @@ public class MusicCategoryAllTab extends Fragment {
 
 			}
 		});
+		player.attachMusics(musics).autoPlaying(true);
 	}
 
 	private void initEvent() {
