@@ -21,6 +21,7 @@ import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+import com.changhong.touying.tab.MusicCategoryAllTab;
 import com.changhong.touying.tab.MusicCategoryPlaylistTab;
 import com.changhong.touying.tab.MusicCategorySpecialTab;
 
@@ -67,7 +68,25 @@ public class MusicCategoryActivity extends FragmentActivity {
         Fragment fragment = new MusicCategoryPlaylistTab();
         getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent,fragment, MusicCategoryPlaylistTab.TAG).hide(fragment).commitAllowingStateLoss();
         fragment = new MusicCategorySpecialTab();
-        getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragment, MusicCategorySpecialTab.TAG).show(fragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragment, MusicCategorySpecialTab.TAG).hide(fragment).commitAllowingStateLoss();
+        fragment = new MusicCategoryAllTab();
+        getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragment, MusicCategoryAllTab.TAG).show(fragment).commitAllowingStateLoss();
+        
+        TextView allMusicBtn = (TextView)findViewById(R.id.music_category_all);
+        allMusicBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryAllTab.TAG);
+				getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
+
+			}
+		});
         
         TextView specialBtn = (TextView)findViewById(R.id.music_category_specail);
         specialBtn.setOnClickListener(new OnClickListener() {
@@ -76,6 +95,8 @@ public class MusicCategoryActivity extends FragmentActivity {
 			public void onClick(View v) {
 
 				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryAllTab.TAG);
 				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
 				getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
@@ -90,6 +111,8 @@ public class MusicCategoryActivity extends FragmentActivity {
 			public void onClick(View v) {
 
 				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
+				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
+				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryAllTab.TAG);
 				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
 				getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();

@@ -1,36 +1,29 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
-import android.content.Context;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentActivity;
-import android.view.*;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
 import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicLrc;
-import com.changhong.touying.music.MusicPlayList;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
-import com.changhong.touying.service.MusicService;
-import com.changhong.touying.service.MusicServiceImpl;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.changhong.touying.music.SingleMusicAdapter;
 
 /**
  * Created by Jack Wang
@@ -66,7 +59,7 @@ public class MusicViewActivity extends FragmentActivity {
     /**
      * 数据适配器
      */
-    private MusicAdapter musicAdapter;
+    private SingleMusicAdapter singleMusicAdapter;
     
     private MusicPlayer player;
 
@@ -99,8 +92,8 @@ public class MusicViewActivity extends FragmentActivity {
         listClients = (Button) findViewById(R.id.btn_list);
 
         musicListView = (ListView) findViewById(R.id.music_list_view);
-        musicAdapter = new MusicAdapter(this);
-        musicListView.setAdapter(musicAdapter);
+        singleMusicAdapter = new SingleMusicAdapter(this,musics,player);
+        musicListView.setAdapter(singleMusicAdapter);
 
         musicSinger = (TextView) findViewById(R.id.music_singer);
         musicSinger.setText(playlistName + "       共" + musics.size()+ "首");
@@ -193,89 +186,6 @@ public class MusicViewActivity extends FragmentActivity {
         });
     }
 
-    /**
-     * *******************************************Music List data adapter**********************************************
-     */
-
-    public class MusicAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-        private boolean isReadyExit = false;
-
-        public MusicAdapter(Context context) {
-            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        public int getCount() {
-            return musics.size();
-        }
-
-        public Object getItem(int item) {
-            return item;
-        }
-
-        public long getItemId(int id) {
-            return id;
-        }
-
-        //创建View方法
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            TextView musicName = null;
-
-            TextView fullPath = null;
-            
-            ImageView playBtn = null;
-
-            if (convertView == null) {
-                //获得view
-                convertView = inflater.inflate(R.layout.music_list_item, null);
-                musicName = (TextView) convertView.findViewById(R.id.music_item_name);
-                fullPath = (TextView) convertView.findViewById(R.id.music_item_path);
-                playBtn = (ImageView)convertView.findViewById(R.id.music_list_play);
-                
-                //组装view
-                DataWapper wapper = new DataWapper(musicName, fullPath,playBtn);
-                convertView.setTag(wapper);
-            } else {
-                DataWapper wapper = (DataWapper) convertView.getTag();
-                musicName = wapper.musicName;
-                fullPath = wapper.fullPath;
-                playBtn = wapper.playBtn;
-            }
-
-            final Music music = musics.get(position);
-            musicName.setText("  > " + music.getArtist() + " - " + music.getTitle() + " [" + DateUtils.getTimeShow(music.getDuration() / 1000) + "]");
-            fullPath.setText(music.getPath());  
-            
-            playBtn.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					playMusics(musics, music);
-				}
-			});
-
-            return convertView;
-        }
-
-        private final class DataWapper {
-
-            //音乐的名字
-            public TextView musicName;
-
-            //视屏的全路径
-            public TextView fullPath;
-            
-            public ImageView playBtn;
-
-            private DataWapper(TextView musicName, TextView fullPath,ImageView playBtn) {
-                this.musicName = musicName;
-                this.fullPath = fullPath;
-                this.playBtn = playBtn;
-            }
-        }
-    }
 
 
     /**
@@ -306,14 +216,4 @@ public class MusicViewActivity extends FragmentActivity {
         return super.onKeyDown(keyCode, event);
     }
     
-	private void playMusics(List<Music> musics,Music music)
-    {   	
-		getSupportFragmentManager().beginTransaction().show(player).commitAllowingStateLoss();		
-		
-		if (music != null) {
-    		player.playMusics(music);
-		}else {
-			player.autoPlaying(true);
-		}    	    	    	
-    }
 }

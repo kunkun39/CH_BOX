@@ -1,39 +1,22 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.textservice.TextInfo;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.NetworkUtils;
-import com.changhong.common.utils.StringUtils;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.music.MediaUtil;
 import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicLrc;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
-
-import org.json.JSONObject;
 
 /**
  * Created by maren on 2015/4/9.
@@ -123,7 +106,7 @@ public class MusicDetailsActivity extends FragmentActivity {
 		}
 		
 		defaultImage=(ImageView)findViewById(R.id.iv_music_ablum);
-		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getAlbumId(), true, false));
+		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
 		returnImage = (ImageView) findViewById(R.id.d_btn_return);
 		playImage = (ImageView) findViewById(R.id.d_btn_play);

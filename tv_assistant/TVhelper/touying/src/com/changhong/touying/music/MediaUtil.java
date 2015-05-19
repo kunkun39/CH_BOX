@@ -19,6 +19,7 @@ import android.graphics.BitmapFactory.Options;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.changhong.touying.R;
 
