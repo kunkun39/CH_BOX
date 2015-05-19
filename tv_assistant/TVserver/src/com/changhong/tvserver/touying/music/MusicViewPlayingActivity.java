@@ -106,7 +106,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     
     private WakeLock mWakeLock = null;
     private PLAYER_STATUS mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
-    private int stat = 0;////-1; -1自动退出
+    private int stat = -1;// -1自动退出
 
     private boolean isInital = false;
     /**
