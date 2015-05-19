@@ -83,6 +83,9 @@ public class MusicCategoryAllTab extends Fragment {
 	}
 
 	private void initView(View v) {
+
+		initPlayer();
+
 		/**
 		 * 歌曲部分
 		 */
@@ -91,12 +94,13 @@ public class MusicCategoryAllTab extends Fragment {
 		singleMusicAdapter = new SingleMusicAdapter(getActivity(), musics,
 				player);
 		lv.setAdapter(singleMusicAdapter);
+	}
 
-		/**
-		 * 播放控制栏
-		 */
+	/**
+	 * 播放控制栏
+	 */
+	private void initPlayer() {
 		player = new MusicPlayer();
-
 		getActivity().getSupportFragmentManager().beginTransaction()
 				.add(R.id.music_seek_layout_all, player, MusicPlayer.TAG)
 				.show(player).commitAllowingStateLoss();

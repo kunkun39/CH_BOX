@@ -85,7 +85,9 @@ public class MusicViewActivity extends FragmentActivity {
     private void initViews() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_music_view_list);
-
+        
+        initPlayer();
+        
         title = (TextView) findViewById(R.id.title);
         back = (Button) findViewById(R.id.btn_back);
         clients = (ListView) findViewById(R.id.clients);
@@ -97,7 +99,11 @@ public class MusicViewActivity extends FragmentActivity {
 
         musicSinger = (TextView) findViewById(R.id.music_singer);
         musicSinger.setText(playlistName + "       共" + musics.size()+ "首");
-        player = new MusicPlayer();
+        
+    }
+    
+    private void initPlayer(){
+    	player = new MusicPlayer();
         getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).show(player).commitAllowingStateLoss();
         player.setOnPlayListener(new OnPlayListener() {
 			boolean isLastSong = false;
