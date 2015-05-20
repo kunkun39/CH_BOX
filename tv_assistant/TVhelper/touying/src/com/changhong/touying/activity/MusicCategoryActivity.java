@@ -3,13 +3,11 @@ package com.changhong.touying.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +35,7 @@ public class MusicCategoryActivity extends FragmentActivity {
     private Button back;
     private ListView clients = null;
     private BoxSelectAdapter ipAdapter;
+    private TextView allMusicBtn,specialBtn,playlistBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +71,13 @@ public class MusicCategoryActivity extends FragmentActivity {
         fragment = new MusicCategoryAllTab();
         getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragment, MusicCategoryAllTab.TAG).show(fragment).commitAllowingStateLoss();
         
-        TextView allMusicBtn = (TextView)findViewById(R.id.music_category_all);
+        allMusicBtn = (TextView)findViewById(R.id.music_category_all);
         allMusicBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-
+				changeTextColor(allMusicBtn);
+				MyApplication.vibrator.vibrate(100);
 				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
 				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
@@ -88,12 +88,13 @@ public class MusicCategoryActivity extends FragmentActivity {
 			}
 		});
         
-        TextView specialBtn = (TextView)findViewById(R.id.music_category_specail);
+        specialBtn = (TextView)findViewById(R.id.music_category_specail);
         specialBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-
+				changeTextColor(specialBtn);
+				MyApplication.vibrator.vibrate(100);
 				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryPlaylistTab.TAG);
 				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryAllTab.TAG);
@@ -104,12 +105,13 @@ public class MusicCategoryActivity extends FragmentActivity {
 			}
 		});
         
-        TextView playlistBtn = (TextView)findViewById(R.id.music_category_playlist);
+        playlistBtn = (TextView)findViewById(R.id.music_category_playlist);
         playlistBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-
+				changeTextColor(playlistBtn);
+				MyApplication.vibrator.vibrate(100);
 				Fragment fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategorySpecialTab.TAG);
 				getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
 				fragment =  getSupportFragmentManager().findFragmentByTag(MusicCategoryAllTab.TAG);
@@ -168,6 +170,14 @@ public class MusicCategoryActivity extends FragmentActivity {
                 finish();
             }
         });
+
+    }
+    
+    private void changeTextColor(TextView tv){
+    	allMusicBtn.setTextColor(getResources().getColor(R.color.white));;
+    	specialBtn.setTextColor(getResources().getColor(R.color.white));;
+    	playlistBtn.setTextColor(getResources().getColor(R.color.white));;
+    	tv.setTextColor(getResources().getColor(R.color.orange));
 
     }
 

@@ -70,7 +70,9 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="单曲"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textColor="@color/orange"
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                />
 
             <View
                 android:layout_width="1px"
@@ -84,7 +86,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="歌手"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                />
 
             <View
                 android:layout_width="1px"
@@ -98,7 +101,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="歌单"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium" 
+                />
             <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"

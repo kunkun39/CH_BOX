@@ -42,7 +42,7 @@ public class MusicCategorySpecialTab extends Fragment{
     /**
      * 视频浏览部分
      */
-    private GridView musicGridView;
+    private ListView musicGridView;
 
     @Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,7 @@ public class MusicCategorySpecialTab extends Fragment{
 
         
     	// TODO 自动生成的方法存根
-    	View v = inflater.inflate(R.layout.tab_music_gridview, container,false);
+    	View v = inflater.inflate(R.layout.music_special_listview, container,false);
     	
     	initView(v);
     	
@@ -75,7 +75,7 @@ public class MusicCategorySpecialTab extends Fragment{
         /**
          * 歌曲部分
          */    	
-        musicGridView = (GridView) v.findViewById(R.id.music_grid_view);
+        musicGridView = (ListView) v.findViewById(R.id.music_special_listview);
         musicAdapter = new MusicDataAdapter(getActivity());
         musicGridView.setAdapter(musicAdapter);
     }

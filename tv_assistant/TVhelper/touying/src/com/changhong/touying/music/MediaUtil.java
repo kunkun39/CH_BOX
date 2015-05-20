@@ -16,10 +16,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.changhong.touying.R;
 
@@ -29,6 +31,9 @@ public class MediaUtil {
 	//获取专辑封面的Uri
 	private static final Uri albumArtUri = Uri.parse("content://media/external/audio/albumart");
 
+	
+	//第几张默认图片
+	private static int position=0;
 	/**
 	 * 用于从数据库中查询歌曲的信息，保存在List当中
 	 * 
@@ -137,9 +142,9 @@ public class MediaUtil {
 		BitmapFactory.Options opts = new BitmapFactory.Options();
 		opts.inPreferredConfig = Bitmap.Config.RGB_565;
 		if(small){	//返回小图片
-			return BitmapFactory.decodeStream(context.getResources().openRawResource(R.drawable.music5), null, opts);
+			return BitmapFactory.decodeStream(context.getResources().openRawResource(R.drawable.defaultalbum), null, opts);
 		}
-		return BitmapFactory.decodeStream(context.getResources().openRawResource(R.drawable.defaultalbum), null, opts);
+		return BitmapFactory.decodeStream(context.getResources().openRawResource(returnDefaultDrawable(context)), null, opts);
 	}
 	
 	
@@ -292,5 +297,38 @@ public class MediaUtil {
 			}
 		}
 		return candidate;
+	}
+	
+	private static int returnDefaultDrawable(Context context) {
+		int musicImageSource = (position + 1) % 12;
+		position++;
+		switch (musicImageSource) {
+		case 1:
+			return R.drawable.music_bg1;
+		case 2:
+			return R.drawable.music_bg2;
+		case 3:
+			return R.drawable.music_bg3;
+		case 4:
+			return R.drawable.music_bg4;
+		case 5:
+			return R.drawable.music_bg5;
+		case 6:
+			return R.drawable.music_bg6;
+		case 7:
+			return R.drawable.music_bg7;
+		case 8:
+			return R.drawable.music_bg8;
+		case 9:
+			return R.drawable.music_bg9;
+		case 10:
+			return R.drawable.music_bg10;
+		case 11:
+			return R.drawable.music_bg11;
+		case 12:
+			return R.drawable.music_bg12;
+		default:
+			return R.drawable.music_bg1;
+		}
 	}
 }
