@@ -89,14 +89,14 @@ public class WebUtils {
 
     public static String convertLocalFileToHttpURL(String url) {
         if (StringUtils.hasLength(url)) {
-            return url.replace("%", "%25").replace(" ", "%20").replace("+", "%2B").replace("#", "%23").replace("&", "%26").replace("=", "%3D").replace("?", "%3F");
+            return url.replace("%", "%25").replace(" ", "%20").replace("+", "%2B").replace("#", "%23").replace("&", "%26").replace("=", "%3D").replace("?", "%3F").replace("^", "%5E");
         }
         return url;
     }
 
     public static String convertHttpURLToLocalFile(String url) {
         if (StringUtils.hasLength(url)) {
-            return url.replace("%20", " ").replace("%2B", "+").replace("%23", "#").replace("%26", "&").replace("%3D", "=").replace("%3F", "?").replace("%25", "%");
+            return url.replace("%20", " ").replace("%2B", "+").replace("%23", "#").replace("%26", "&").replace("%3D", "=").replace("%3F", "?").replace("%25", "%").replace("%5E", "^");
         }
         return url;
     }

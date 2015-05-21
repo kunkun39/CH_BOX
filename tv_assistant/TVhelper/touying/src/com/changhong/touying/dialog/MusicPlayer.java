@@ -40,6 +40,7 @@ import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.WebUtils;
 import com.changhong.touying.R;
 import com.changhong.touying.music.JsonMusicObject;
 import com.changhong.touying.music.Music;
@@ -491,7 +492,7 @@ public class MusicPlayer extends DialogFragment{
 	                    	}
 						}		
 	                    //判断当前的页面是否为在播放的歌曲
-	                    if (key != null && key.equals(content[0].replace("%20", " "))) {
+	                    if (key != null && key.equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
 	                        int progress = Integer.parseInt(content[1]);
 	                        if (view.getVisibility() == View.INVISIBLE 
 	                        		&& progress > 0
@@ -746,17 +747,17 @@ public class MusicPlayer extends DialogFragment{
 					obj.setMusicName(m.getTitle());
 					
 					if (obj.getMusicPath().startsWith(NanoHTTPDService.defaultHttpServerPath)) {
-	                    musicSelectedPath = obj.getMusicPath().replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+	                    musicSelectedPath = WebUtils.convertLocalFileToHttpURL(obj.getMusicPath().replace(NanoHTTPDService.defaultHttpServerPath, ""));
 	                } else {
 	                    for (String otherHttpServerPath : NanoHTTPDService.otherHttpServerPaths) {
 	                        if (obj.getMusicPath().startsWith(otherHttpServerPath)) {
-	                            musicSelectedPath = obj.getMusicPath().replace(otherHttpServerPath, "").replace(" ", "%20");
+	                            musicSelectedPath = WebUtils.convertLocalFileToHttpURL(obj.getMusicPath().replace(otherHttpServerPath, ""));
 	                        }
 	                    }
 	                }
 	                
 	                String httpAddress = "http://" + ipAddress + ":" + NanoHTTPDService.HTTP_PORT;
-	                obj.setMusicPath(httpAddress + musicSelectedPath.replace(" ", "%20"));
+	                obj.setMusicPath(httpAddress + musicSelectedPath);
 	                
 	                try {
 	                    MusicLrc lrc = musicService.findMusicLrc(obj.getArtist(), obj.getMusicName());
@@ -764,15 +765,15 @@ public class MusicPlayer extends DialogFragment{
 	                        String lrcPath = lrc.getPath();
 	                        String lrcHttpAddress = null;
 	                        if (lrcPath.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
-	                            lrcHttpAddress = lrcPath.replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+	                            lrcHttpAddress = WebUtils.convertLocalFileToHttpURL(lrcPath.replace(NanoHTTPDService.defaultHttpServerPath, ""));
 	                        } else {
 	                            for (String otherHttpServerPath : NanoHTTPDService.otherHttpServerPaths) {
 	                                if (lrcPath.startsWith(otherHttpServerPath)) {
-	                                    lrcHttpAddress = obj.getMusicPath().replace(otherHttpServerPath, "").replace(" ", "%20");
+	                                    lrcHttpAddress = WebUtils.convertLocalFileToHttpURL(obj.getMusicPath().replace(otherHttpServerPath, ""));
 	                                }
 	                            }
 	                        }
-	                        obj.setMusicLrcPath(httpAddress + lrcHttpAddress.replace(" ", "%20"));	                        
+	                        obj.setMusicLrcPath(httpAddress + lrcHttpAddress);	                        
 	                    }
 	                } catch (Exception e) {
 	                    e.printStackTrace();
@@ -843,11 +844,11 @@ public class MusicPlayer extends DialogFragment{
                  */
                 String musicSelectedPath = null;
                 if (musicPath.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
-                    musicSelectedPath = musicPath.replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+                    musicSelectedPath = WebUtils.convertLocalFileToHttpURL(musicPath.replace(NanoHTTPDService.defaultHttpServerPath, ""));
                 } else {
                     for (String otherHttpServerPath : NanoHTTPDService.otherHttpServerPaths) {
                         if (musicPath.startsWith(otherHttpServerPath)) {
-                            musicSelectedPath = musicPath.replace(otherHttpServerPath, "").replace(" ", "%20");
+                            musicSelectedPath = WebUtils.convertLocalFileToHttpURL(musicPath.replace(otherHttpServerPath, ""));
                         }
                     }
                 }
@@ -855,7 +856,8 @@ public class MusicPlayer extends DialogFragment{
                 String ipAddress = NetworkUtils.getLocalHostIp();
 
                 String httpAddress = "http://" + ipAddress + ":" + NanoHTTPDService.HTTP_PORT;
-                String musicHttpAddress = httpAddress + musicSelectedPath.replace(" ", "%20");
+                
+                String musicHttpAddress = httpAddress + musicSelectedPath;
                 JSONObject o = new JSONObject();
                 o.put("music_play", "music_play");
                 o.put("path", musicHttpAddress);
@@ -868,15 +870,15 @@ public class MusicPlayer extends DialogFragment{
                         String lrcPath = lrc.getPath();
                         String lrcHttpAddress = null;
                         if (lrcPath.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
-                            lrcHttpAddress = lrcPath.replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+                            lrcHttpAddress = WebUtils.convertLocalFileToHttpURL(lrcPath.replace(NanoHTTPDService.defaultHttpServerPath, ""));
                         } else {
                             for (String otherHttpServerPath : NanoHTTPDService.otherHttpServerPaths) {
                                 if (lrcPath.startsWith(otherHttpServerPath)) {
-                                    lrcHttpAddress = musicPath.replace(otherHttpServerPath, "").replace(" ", "%20");
+                                    lrcHttpAddress = WebUtils.convertLocalFileToHttpURL(musicPath.replace(otherHttpServerPath, ""));
                                 }
                             }
                         }
-                        o.put("musicLrcPath", httpAddress + lrcHttpAddress.replace(" ", "%20"));
+                        o.put("musicLrcPath", httpAddress + lrcHttpAddress);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
