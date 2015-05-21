@@ -62,6 +62,8 @@ public class VedioDataAdapter extends BaseAdapter {
         ImageView vedioImage = null;
 
         TextView vedioName = null;
+        
+        TextView vedioNO = null;
 
         TextView fullPath = null;
 
@@ -70,15 +72,17 @@ public class VedioDataAdapter extends BaseAdapter {
             convertView = inflater.inflate(item_image, null);
             vedioImage = (ImageView) convertView.findViewById(R.id.vedio_item_image);
             vedioName = (TextView) convertView.findViewById(R.id.vedio_item_name);
+            vedioNO = (TextView) convertView.findViewById(R.id.vedio_item_NO);
             fullPath = (TextView) convertView.findViewById(R.id.vedio_item_path);
 
             //组装view
-            DataWapper wapper = new DataWapper(vedioImage, vedioName, fullPath);
+            DataWapper wapper = new DataWapper(vedioImage, vedioName,vedioNO, fullPath);
             convertView.setTag(wapper);
         } else {
             DataWapper wapper = (DataWapper) convertView.getTag();
             vedioImage = wapper.getVedioImage();
             vedioName = wapper.getVedioName();
+            vedioNO = wapper.getVedioNO();
             fullPath = wapper.getFullPath();
         }
 
@@ -87,10 +91,12 @@ public class VedioDataAdapter extends BaseAdapter {
         Vedio vedio = (Vedio) list.get(0);
 
         if (list.size() > 1) {
-            vedioName.setText(key + "\n" + list.size() + "个视频");
+            vedioName.setText(key);
+            vedioNO.setText(list.size() + "个视频");
             fullPath.setText("");
         } else {
             String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
+            vedioName.setLines(2);
             vedioName.setText(displayName);
             fullPath.setText(String.valueOf(position));
         }
@@ -149,14 +155,18 @@ public class VedioDataAdapter extends BaseAdapter {
 
         //视频的名字
         private TextView vedioName;
+        
+      //视频的数量
+        private TextView vedioNO;
 
         //视屏的全路径
         private TextView fullPath;
 
 
-        private DataWapper(ImageView vedioImage, TextView vedioName, TextView fullPath) {
+        private DataWapper(ImageView vedioImage, TextView vedioName, TextView vedioNO, TextView fullPath) {
             this.vedioImage = vedioImage;
             this.vedioName = vedioName;
+            this.vedioNO = vedioNO;
             this.fullPath = fullPath;
         }
 
@@ -174,6 +184,14 @@ public class VedioDataAdapter extends BaseAdapter {
 
         public void setVedioName(TextView vedioName) {
             this.vedioName = vedioName;
+        }
+        
+        public TextView getVedioNO() {
+            return vedioNO;
+        }
+
+        public void setVedioNO(TextView vedioNO) {
+            this.vedioNO = vedioNO;
         }
 
         public TextView getFullPath() {

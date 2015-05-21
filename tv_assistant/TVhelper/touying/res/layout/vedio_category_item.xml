@@ -17,10 +17,26 @@
     <TextView
             android:id="@+id/vedio_item_name"
             android:layout_below="@+id/vedio_item_image"
-            android:layout_width="90dp"
-            android:layout_height="35dp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:ellipsize="end"
+            android:gravity="bottom"
+            android:lines="1"
+            android:textColor="@color/white"
+            android:layout_alignParentLeft="true">
+    </TextView>
+    
+    <TextView
+            android:id="@+id/vedio_item_NO"
+            android:layout_below="@+id/vedio_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"
-            android:textSize="11sp"
+            android:textSize="12sp"
+            android:ellipsize="end"
+            android:gravity="top"
+            android:lines="1"
             android:textColor="@color/white"
             android:layout_alignParentLeft="true">
     </TextView>
