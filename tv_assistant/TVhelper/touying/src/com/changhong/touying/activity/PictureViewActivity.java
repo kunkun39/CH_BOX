@@ -80,7 +80,7 @@ public class PictureViewActivity extends Activity {
         /**
         * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(PictureViewActivity.this);
+        ipAdapter = new BoxSelectAdapter(PictureViewActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

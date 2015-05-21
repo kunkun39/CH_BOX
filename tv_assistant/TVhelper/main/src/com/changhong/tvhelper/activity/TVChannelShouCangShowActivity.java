@@ -123,7 +123,7 @@ public class TVChannelShouCangShowActivity extends Activity {
         /**
          * IP part
          */
-        ipAdapter = new BoxSelectAdapter(TVChannelShouCangShowActivity.this);
+        ipAdapter = new BoxSelectAdapter(TVChannelShouCangShowActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

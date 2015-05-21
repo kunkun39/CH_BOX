@@ -77,7 +77,7 @@ public class VedioCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(VedioCategoryActivity.this);
+        ipAdapter = new BoxSelectAdapter(VedioCategoryActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

@@ -116,7 +116,7 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(PictureCategoryActivity.this);
+        ipAdapter = new BoxSelectAdapter(PictureCategoryActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

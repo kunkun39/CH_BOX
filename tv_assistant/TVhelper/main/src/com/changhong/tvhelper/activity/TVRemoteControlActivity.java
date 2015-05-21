@@ -227,7 +227,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             }
         });
 
-        ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this);
+        ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

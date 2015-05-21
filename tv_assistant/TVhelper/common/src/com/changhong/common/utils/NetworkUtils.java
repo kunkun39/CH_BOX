@@ -24,6 +24,8 @@ public class NetworkUtils {
 
     private final static int NET_5G_FREQUENCY = 5120;
 
+    public final static String BOX_DEFAULT_NAME = "客    厅";
+
     public static String getLocalHostIp() {
         String ipaddress = "";
         try {
@@ -111,7 +113,7 @@ public class NetworkUtils {
             // 判断ip地址是否与正则表达式匹配
             if (ip.matches(regex)) {
                 // 返回判断信息
-                return "客    厅";
+                return BOX_DEFAULT_NAME;
             } else {
                 return ip;
             }

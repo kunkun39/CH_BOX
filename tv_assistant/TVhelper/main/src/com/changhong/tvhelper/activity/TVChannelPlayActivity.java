@@ -199,6 +199,7 @@ public class TVChannelPlayActivity extends Activity {
         mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_STRETCH, 0);
         if (path != null) {
             mVideoView.setVideoPath(path);
+            Log.e("NOFEHNOFHOEFHO", path);
             initProgramInfo(name);
         }
 

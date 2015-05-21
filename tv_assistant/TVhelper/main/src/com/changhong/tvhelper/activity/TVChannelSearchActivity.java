@@ -307,7 +307,7 @@ public class TVChannelSearchActivity extends Activity {
 				finish();
 			}
 		});
-		ipAdapter = new BoxSelectAdapter(TVChannelSearchActivity.this);
+		ipAdapter = new BoxSelectAdapter(TVChannelSearchActivity.this, ClientSendCommandService.serverIpList);
 		clients.setAdapter(ipAdapter);
 		clients.setOnTouchListener(new View.OnTouchListener() {
 			@Override

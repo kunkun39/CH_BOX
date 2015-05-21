@@ -130,7 +130,7 @@ public class MusicCategoryActivity extends FragmentActivity {
         /**
          * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(MusicCategoryActivity.this);
+        ipAdapter = new BoxSelectAdapter(MusicCategoryActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

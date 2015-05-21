@@ -254,7 +254,7 @@ public class TVHelperMainActivity extends Activity {
         /**
          * Ip部分
          */
-        ipAdapter = new BoxSelectAdapter(TVHelperMainActivity.this);
+        ipAdapter = new BoxSelectAdapter(TVHelperMainActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

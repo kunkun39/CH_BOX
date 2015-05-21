@@ -84,7 +84,7 @@ public class VedioViewActivity extends Activity {
         clients = (ListView) findViewById(R.id.clients);
         listClients = (Button) findViewById(R.id.btn_list);
         
-        ipAdapter = new BoxSelectAdapter(VedioViewActivity.this);
+        ipAdapter = new BoxSelectAdapter(VedioViewActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override

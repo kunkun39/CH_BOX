@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.changhong.common.service.ClientSendCommandService;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 15-5-15.
  */
@@ -15,13 +17,16 @@ public class BoxSelectAdapter extends BaseAdapter {
 
     private LayoutInflater minflater;
 
-    public BoxSelectAdapter(Context context) {
+    private List<String> ipList;
+
+    public BoxSelectAdapter(Context context, List<String> ipList) {
         this.minflater = LayoutInflater.from(context);
+        this.ipList = ipList;
     }
 
     @Override
     public int getCount() {
-        return ClientSendCommandService.serverIpList.size();
+        return ipList.size();
     }
 
     @Override
@@ -50,7 +55,7 @@ public class BoxSelectAdapter extends BaseAdapter {
             vh = (ViewHolder) convertView.getTag();
         }
 
-        String serverIP = ClientSendCommandService.serverIpList.get(position);
+        String serverIP = ipList.get(position);
 
         vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP) +  " [" + serverIP + "]");
 

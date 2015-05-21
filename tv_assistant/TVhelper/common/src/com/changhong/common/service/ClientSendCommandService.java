@@ -12,6 +12,7 @@ import android.util.Log;
 import com.changhong.common.domain.AppInfo;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.MobilePerformanceUtils;
+import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.WebUtils;
 import org.apache.commons.io.IOUtils;
@@ -84,19 +85,19 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     }
 
     public static String getCurrentConnectBoxName() {
-        String name = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
-        if (StringUtils.hasLength(name)) {
-            return name;
+        String boxName = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
+        if (StringUtils.hasLength(boxName)) {
+            return boxName;
         }
         return ClientSendCommandService.serverIP;
     }
 
     public static String getConnectBoxName(String serverIP) {
-        String name = ClientSendCommandService.serverIpListMap.get(serverIP);
-        if (StringUtils.hasLength(name)) {
-            return name;
+        String boxName = ClientSendCommandService.serverIpListMap.get(serverIP);
+        if (StringUtils.hasLength(boxName)) {
+            return boxName;
         }
-        return serverIP;
+        return NetworkUtils.BOX_DEFAULT_NAME;
     }
 
     private class SendCommend extends Thread {

@@ -136,7 +136,7 @@ public class MusicViewActivity extends FragmentActivity {
         /**
          * IP part
          */
-        ipAdapter = new BoxSelectAdapter(MusicViewActivity.this);
+        ipAdapter = new BoxSelectAdapter(MusicViewActivity.this, ClientSendCommandService.serverIpList);
         clients.setAdapter(ipAdapter);
         clients.setOnTouchListener(new View.OnTouchListener() {
             @Override
