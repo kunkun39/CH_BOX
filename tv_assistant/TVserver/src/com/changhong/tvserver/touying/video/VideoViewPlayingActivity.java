@@ -10,7 +10,9 @@ import com.baidu.cyberplayer.core.BVideoView.OnErrorListener;
 import com.baidu.cyberplayer.core.BVideoView.OnInfoListener;
 import com.baidu.cyberplayer.core.BVideoView.OnPlayingBufferCacheListener;
 import com.baidu.cyberplayer.core.BVideoView.OnPreparedListener;
+import com.baidu.cyberplayer.core.BVideoView.OnSeekCompleteListener;
 
+import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -27,12 +29,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 public class VideoViewPlayingActivity extends Activity implements OnPreparedListener,
         OnCompletionListener,
         OnErrorListener,
         OnInfoListener,
-        OnPlayingBufferCacheListener {
+        OnPlayingBufferCacheListener,
+        OnSeekCompleteListener {
 
     private final String TAG = "VideoViewPlayingActivity";
 
@@ -62,6 +66,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
      */
     public static EventHandler mEventHandler;
     private HandlerThread mHandlerThread;
+    private Handler mHandler;
 
     /**
      * 播放状态
@@ -69,6 +74,10 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
     private enum PLAYER_STATUS {
         PLAYER_IDLE, PLAYER_PREPARING, PLAYER_PREPARED,
     }
+    
+    private final static int PLAYER_CTRL_SHOW = 1;
+    private final static int PLAYER_CTRL_HIDE = 2;
+    
 
     private final Object SYNC_Playing = new Object();
     private final int EVENT_PLAY = 0;
@@ -77,6 +86,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
     private final int EVENT_SEEKTO = 3;
     private WakeLock mWakeLock = null;
     private PLAYER_STATUS mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
+    private Runnable autoExitRunnable;
     private int stat = -1;
 
     /**
@@ -121,6 +131,53 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
         mHandlerThread = new HandlerThread("event handler thread", Process.THREAD_PRIORITY_BACKGROUND);
         mHandlerThread.start();
         mEventHandler = new EventHandler(mHandlerThread.getLooper());
+        mHandler = new Handler()
+        {
+        	@Override
+            public void handleMessage(Message msg)
+        	{
+        		switch (msg.what) {
+				case PLAYER_CTRL_SHOW:
+						if (mVVCtl != null) {
+							mVVCtl.show();
+						}
+					break;
+				case PLAYER_CTRL_HIDE:
+				{
+					if (mVVCtl != null) {
+						mVVCtl.hide();
+					}
+				}
+				break;
+
+				default:
+					break;
+				}
+        	}
+        };
+        
+        autoExitRunnable = new  Runnable() {
+        	long lastTime = 0L;
+        	static final int detalTime = 1000 * 60;
+        	static final int detalDuringTime = 1000 * 60 * 2;
+        	long lastestTime = 0;
+			@Override
+			public void run() {
+				long currentTime = System.currentTimeMillis();
+				long duringTime = currentTime - lastestTime;												
+				
+				if (lastTime == 0L
+						|| duringTime > detalDuringTime) {
+					lastTime = currentTime;					
+				}
+				
+				if (currentTime - lastTime > detalTime) {
+					finish();
+				}
+				lastestTime = currentTime;
+				
+			}
+		};
     }
 
     /**
@@ -227,6 +284,9 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
                     String message = (String) msg.obj;
                     int currentPosition = Integer.valueOf(message.split(":")[2]);
                     mVV.seekTo(currentPosition);
+                    if (mHandler != null) {
+            			mHandler.sendEmptyMessage(PLAYER_CTRL_SHOW);
+            		}
                     break;
                 default:
                     break;
@@ -310,6 +370,18 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
     @Override
     public boolean onInfo(int what, int extra) {
         switch (what) {
+	        case 1002:
+	        {
+	        	Toast.makeText(this, "手机与电视的连接中断，无法找到视频源", Toast.LENGTH_SHORT).show();
+	        }break;
+	        case 1003:
+	        {
+	        	if (mHandler != null) {
+	        		mHandler.post(autoExitRunnable);	
+				}
+	        		        	
+	        }
+	        break;
             /**
              * 开始缓冲
              */
@@ -381,5 +453,12 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
         Log.v(TAG, "onPrepared");
         mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARED;
     }
+
+	@Override
+	public void onSeekComplete() {
+		if (mHandler != null) {
+			mHandler.sendEmptyMessage(PLAYER_CTRL_HIDE);
+		}
+	}
 
 }

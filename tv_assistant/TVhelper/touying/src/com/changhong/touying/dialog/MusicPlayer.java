@@ -478,10 +478,7 @@ public class MusicPlayer extends DialogFragment{
                     		                    	
                     	}
 	                    else {
-	                    	// 当finish UDP包掉了后，实现自动检测歌曲播放，切换到正确的进度
-	                    	if (music == null && playingMusic.startsWith(playlistName + "-")) {
-	                    		handler.post(autoPlayRunnable);
-							}
+	                    	
 	                    	key = (music != null) ? playlistName + "-" + music.getTitle() + "-" +music.getArtist() : null;
 						}
 	                    
@@ -523,7 +520,13 @@ public class MusicPlayer extends DialogFragment{
 	                        isPlaying = false;
 	                        isPausing = true;
 	                    }                   	
-	                }	                
+	                }
+                    else {
+                    	// 当finish UDP包掉了后，实现自动检测歌曲播放，切换到正确的进度        
+                    	if(handler != null && autoPlayRunnable != null)
+                    		handler.postAtFrontOfQueue(autoPlayRunnable);
+						
+					}
 	            }
                 if ((msg.what == 1 && seekBar.getMax() - seekBar.getProgress() <= 5)) {
                 		Log.e("MusicViewActivity", "music stop play");

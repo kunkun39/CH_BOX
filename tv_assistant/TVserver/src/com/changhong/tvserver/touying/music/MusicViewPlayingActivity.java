@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -34,6 +35,7 @@ import com.baidu.cyberplayer.core.BVideoView.OnErrorListener;
 import com.baidu.cyberplayer.core.BVideoView.OnInfoListener;
 import com.baidu.cyberplayer.core.BVideoView.OnPlayingBufferCacheListener;
 import com.baidu.cyberplayer.core.BVideoView.OnPreparedListener;
+import com.baidu.cyberplayer.core.BVideoView.OnSeekCompleteListener;
 import com.changhong.tvserver.MyApplication;
 import com.changhong.tvserver.R;
 import com.changhong.tvserver.TVSocketControllerService;
@@ -45,7 +47,8 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
         OnCompletionListener,
         OnErrorListener,
         OnInfoListener,
-        OnPlayingBufferCacheListener {
+        OnPlayingBufferCacheListener
+         {
 
     private final String TAG = "MusicViewPlayingActivity";
 
@@ -136,6 +139,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
      */
     private Timer lrcTimer = new Timer();
     private Handler lrcHandler;
+    private Runnable autoExitRunnable;
 
     /**
      * 判断是否拖动以同步歌词
@@ -211,6 +215,30 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
                 }
             }
         };
+        
+        autoExitRunnable = new  Runnable() {
+        	long lastTime = 0L;
+        	static final int detalTime = 1000 * 60;
+        	static final int detalDuringTime = 1000 * 60 * 2;
+        	long lastestTime = 0L;
+			@Override
+			public void run() {
+				long currentTime = System.currentTimeMillis();
+				long duringTime = currentTime - lastestTime;												
+				
+				if (lastTime == 0L
+						|| duringTime > detalDuringTime) {
+					lastTime = currentTime;					
+				}
+				
+				if (currentTime - lastTime > detalTime) {
+					finish();
+				}
+				lastestTime = currentTime;
+				
+			}
+		};
+		
         isInital = true;
         synchronized (SYNC_Playing) {
             SYNC_Playing.notify();
@@ -620,6 +648,19 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     @Override
     public boolean onInfo(int what, int extra) {
         switch (what) {
+        
+	        case 1002:
+	        {
+	        	Toast.makeText(this, "手机与电视的连接中断，无法找到音频源", Toast.LENGTH_SHORT).show();
+	        }break;
+	        case 1003:
+	        {
+	        	if (mEventHandler != null) {
+	        		mEventHandler.postAtFrontOfQueue(autoExitRunnable);
+				}
+	        	
+	        }
+	        break;
             /**
              * 开始缓冲
              */
