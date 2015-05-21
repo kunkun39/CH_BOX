@@ -302,6 +302,7 @@ public class VedioDetailsActivity extends Activity {
                         String ipAddress = NetworkUtils.getLocalHostIp();
                         String httpAddress = "http://" + ipAddress + ":" + NanoHTTPDService.HTTP_PORT;
                         httpAddress = httpAddress + WebUtils.convertLocalFileToHttpURL(vedioSelectedPath);
+                        Log.e("JOFEFEFFE", httpAddress);
 
                         /**
                          * 有时候用户在进入投影页面，但是确没有投影动作，http服务关闭，但是用户现在点击投影，所以这里需要先检查有没有HTTP服务
