@@ -1,33 +1,22 @@
 package com.changhong.tvhelper.activity;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.os.SystemClock;
-
-import com.baidu.voicerecognition.android.Candidate;
-import com.baidu.voicerecognition.android.VoiceRecognitionClient;
-import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
-import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
-import com.changhong.baidu.BaiDuVoiceConfiguration;
-import com.changhong.common.domain.AppInfo;
-import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BidirSlidingLayout;
-import com.changhong.common.widgets.BoxSelectAdapter;
-import com.changhong.remotecontrol.TVInputDialogActivity;
-
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.graphics.PointF;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,21 +27,27 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.voicerecognition.android.Candidate;
+import com.baidu.voicerecognition.android.VoiceRecognitionClient;
+import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
+import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
+import com.changhong.baidu.BaiDuVoiceConfiguration;
+import com.changhong.common.domain.AppInfo;
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.remotecontrol.TVInputDialogActivity;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
 import com.changhong.tvhelper.view.TVChannelSwitchDialog;
 import com.changhong.tvhelper.view.TVNumInputDialog;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
