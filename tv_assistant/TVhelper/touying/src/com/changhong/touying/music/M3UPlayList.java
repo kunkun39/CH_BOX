@@ -163,6 +163,12 @@ public class M3UPlayList {
 	public static  MusicPlayList generalplaylist(Context context ,String name)
     {
 		File dirfile = null;
+		if (name != null && !name.isEmpty()&& name.length() > 15) {
+			
+			Toast.makeText(context, R.string.nametoolong, Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		
 		try {			
 			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
 	    	{

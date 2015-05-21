@@ -16,5 +16,6 @@
     <string name="PlayList_modify">修改</string>
     <string name="byplaylist">按播放列表</string>
     <string name="byspecial">按专辑</string>
+    <string name="nametoolong">名字过长,请重新取名字</string>
     <string name="filenotfound">文件不存在，或名字起的太奇怪，勿要傲娇！</string>
 </resources>
