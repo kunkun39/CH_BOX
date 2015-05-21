@@ -15,6 +15,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.changhong.common.utils.UnicodeReader;
@@ -56,8 +57,7 @@ public class M3UPlayList {
 			{
 				if (temp.startsWith("#")) {
 					continue;
-				}
-				
+				}				
 				playlistString.add(temp);
 			}
 			
@@ -137,8 +137,7 @@ public class M3UPlayList {
 			for (String item : playList) {				
 				stream.write(item.getBytes(Charset.forName("UTF-8")));
 				stream.write("\n".getBytes());
-			}
-			
+			}			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();			
 			isResult = false;
@@ -161,16 +160,28 @@ public class M3UPlayList {
 		return isResult;
 	}
 	
-	public static  MusicPlayList generalplaylist(String name)
+	public static  MusicPlayList generalplaylist(Context context ,String name)
     {
-
-    	if(!Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
-    		return null;
-    	
-    	//判断目录存在性
-    	File dirfile = Environment.getExternalStoragePublicDirectory(SUFFIX);
-    	if (!dirfile.exists()) {
-    		dirfile.mkdirs();
+		File dirfile = null;
+		try {			
+			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+	    	{
+	    		//判断目录存在性
+	        	dirfile = Environment.getExternalStoragePublicDirectory(SUFFIX);
+	        	if (!dirfile.exists()) {
+	        		dirfile.mkdirs();
+	    		}
+	    	}  
+	    	else {
+	    		dirfile = new File(context.getApplicationInfo().dataDir + "/" + SUFFIX);
+	    		if (!dirfile.exists()) {
+	        		dirfile.mkdirs();
+	    		}
+	    		Log.d(SUFFIX, "Can not create playlist in sdcard!");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
     	
     	//建立列表对象

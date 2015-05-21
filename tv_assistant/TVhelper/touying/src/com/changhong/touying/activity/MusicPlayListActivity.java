@@ -122,15 +122,7 @@ public class MusicPlayListActivity extends Activity{
 		M3UPlayList.savePlayList(MusicPlayListActivity.this, mMusicPlayList.getPath(), mMusicPlayList.getPlayList());
 		super.onPause();
 	}
-	
-	/* （非 Javadoc）
-	 * @see android.app.Activity#onStop()
-	 */
-	@Override
-	protected void onStop() {
-		// TODO 自动生成的方法存根
-		super.onStop();		
-	}
+
 	/**************************************************************初始化函数************************/
 	
 	private void initListView()

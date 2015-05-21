@@ -38,6 +38,8 @@ public class M3UListProviderService extends Service{
 	
 	private static String path = Environment.getExternalStoragePublicDirectory(".m3u").getPath();
 	
+	private static String dataPath;
+	
 	private static final int PATH_DEEPTH = 6;		
 	
 	static List<String> list = new ArrayList<String>();
@@ -49,12 +51,14 @@ public class M3UListProviderService extends Service{
 
 	BroadcastReceiver bReceiver;
 	Set<String> playlist;
+	boolean isSearching = false;
 
 
 	@Override
 	public void onCreate() {
 
 		super.onCreate();
+		dataPath = getApplicationInfo().dataDir + "/" + "SUFFIX";
 		bReceiver = new BroadcastReceiver() {
 			
 			@Override
@@ -63,13 +67,24 @@ public class M3UListProviderService extends Service{
 				
 				if (action.equals(Intent.ACTION_MEDIA_MOUNTED)
 						|| action.equals(UPDATE_INTENT)) {
-					loadList();
-					getPlayList(path, SUFFIX);
+					loadPlayList();
+					if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+					{
+						searchListPlayList(path, SUFFIX);
+					}
+					else {
+						searchListPlayList(dataPath, SUFFIX);
+					}
 				}
 			}
 		};	
-		loadList();
-		getPlayList(path, SUFFIX);
+		loadPlayList();
+		searchListPlayList(dataPath, SUFFIX);
+		if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+		{
+			searchListPlayList(path, SUFFIX);
+			searchListPlayList(Environment.getExternalStorageState(), SUFFIX);
+		}
 		
 		// 在IntentFilter中选择你要监听的行为  
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);// sd卡被插入，且已经挂载
@@ -95,7 +110,7 @@ public class M3UListProviderService extends Service{
 		return list;
 	}
 	
-	private void saveList(List<String> list)
+	private synchronized void saveList(List<String> list)
 	{
 		Set<String> set = new HashSet<String>();
 		
@@ -103,13 +118,21 @@ public class M3UListProviderService extends Service{
 			set.add(string);
 		}
 		
-		SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-		preferences.edit().putStringSet(PLAYLIST_KEY, set).commit();		
+		try
+		{
+			SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+			preferences.edit().putStringSet(PLAYLIST_KEY, set).commit();	
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	
 	}
 	
-	private  void loadList()
+	private synchronized void loadPlayList()
 	{			
-		SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);//PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
 		
 		Set<String> set = preferences.getStringSet(PLAYLIST_KEY, null);
 		
@@ -123,7 +146,7 @@ public class M3UListProviderService extends Service{
 		}		
 	}
 	
-	private synchronized void getPlayList(final String path,final String suffix)
+	private void searchListPlayList(final String path,final String suffix)
     {    	    	    	
     	new Thread()
     	{
@@ -132,10 +155,11 @@ public class M3UListProviderService extends Service{
     		{
     			int pathDeepth = 1;
     			List<String> list = new ArrayList<String>();    			
-    			
-    			listFile(new File(path),suffix,list,pathDeepth);    			
+    			synchronized (this) {
+    				listFile(new File(path),suffix,list,pathDeepth);   
+				}    			 			
     			saveList(list);    			
-    			loadList();
+    			loadPlayList();
     		}
     	}.start();
     }

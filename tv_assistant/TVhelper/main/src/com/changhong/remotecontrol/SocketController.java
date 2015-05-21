@@ -219,8 +219,6 @@ public abstract class SocketController implements ClientSocketInterface {
         public static final int WAITING_TIME = 3000;
         private Map<String, Long> mServerIP = new HashMap<String, Long>();
         private Queue<DatagramPacket> mDataPackageList = new LinkedList<DatagramPacket>();
-
-
         private String mServerIpCur = null;
 
         public void exit() {
@@ -243,18 +241,13 @@ public abstract class SocketController implements ClientSocketInterface {
 
             if (ip == null)
                 return;
-
-            Log.d(TAG, "set cur ip");
             if (mServerIP.isEmpty()) {
                 mServerIpCur = ip;
             }
 
             //refresh map for date changed or get a new ip
-            //if(!mServerIP.containsKey(ip))
-            {
-                mServerIP.put(ip, new Date().getTime());
-                onIpObtained(ip);
-            }
+            mServerIP.put(ip, new Date().getTime());
+            onIpObtained(ip);            
 
             Log.d(TAG, "Add ip" + mServerIpCur);
 
@@ -267,7 +260,6 @@ public abstract class SocketController implements ClientSocketInterface {
             for (; itEntry.hasNext(); ) {
                 Entry<String, Long> entry = itEntry.next();
                 if (timeCur - entry.getValue() > (WAITING_TIME * 3)) {
-                    //mServerIP.remove(entry);
                     Log.d(TAG, "remove ip(timeCur:" + timeCur + "timeSaved:" + entry.getValue() + ")");
                     removeIp(entry);
                     itEntry.remove();
@@ -278,16 +270,12 @@ public abstract class SocketController implements ClientSocketInterface {
         }
 
         public void setIp(String serverIP) {
-            Log.d(TAG, "setIp in");
             String ip = ipCheck(serverIP) ? serverIP : null;
-            Log.d(TAG, "setIp:" + ip);
 
             if (ip == null)
-                return;
-            Log.d(TAG, "ip != null");
+                return;            
 
             // add ip or update time with ip
-            //if(!mServerIP.containsKey(ip))
             {
                 Log.d(TAG, "come to add ip");
                 addIp(ip);
@@ -297,26 +285,14 @@ public abstract class SocketController implements ClientSocketInterface {
                         && ClientSendCommandService.serverIP.length() > 0) {
                     mServerIpCur = ClientSendCommandService.serverIP;
                 }
-
-
-                Log.d(TAG, "addIp:" + ip);
-
             }
-            /*
-	    	else {
-	    		mServerIpCur = ip;
-			}
-			*/
         }
 
         public void removeIp(String ip) {
             if (ipCheck(ip)) {
                 for (Entry<String, Long> entry : mServerIP.entrySet()) {
                     if (entry.getKey().equals(ip)) {
-                        //mServerIP.remove(entry);
                         removeIp(entry);
-
-
                     }
                 }
 
@@ -329,7 +305,6 @@ public abstract class SocketController implements ClientSocketInterface {
                 return;
             }
 
-            //mServerIP.remove(entry.getKey());
             onIpRemoved(entry.getKey());
             Log.d(TAG, "remove ip" + entry.getKey());
 
@@ -354,9 +329,7 @@ public abstract class SocketController implements ClientSocketInterface {
                             mbytes.length,
                             InetAddress.getByName(entry),
                             CONTENT_PORT));
-                } catch (UnknownHostException e) {
-                    // TODO Auto-generated catch block
-                    Log.d(TAG, "add Broadcast Package failed");
+                } catch (UnknownHostException e) {                    
                     e.printStackTrace();
                 }
             }
@@ -374,7 +347,6 @@ public abstract class SocketController implements ClientSocketInterface {
                         InetAddress.getByName(mServerIpCur),
                         CONTENT_PORT));
             } catch (UnknownHostException e) {
-                // TODO Auto-generated catch block
                 Log.d(TAG, "add Single Package failed");
                 e.printStackTrace();
             }
@@ -392,13 +364,9 @@ public abstract class SocketController implements ClientSocketInterface {
             if (ip.length() > 0 && ip.length() <= 15) {
                 //b begin
                 int b = 0, count = 0;
-                while ((b = ip.indexOf(".", b) + 1) != 0) {
-                    count++;
-
-                }
-                if (count == 3) return true;
+                while ((b = ip.indexOf(".", b) + 1) != 0) count++;
+                return  (count == 3)? true : false;
             }
-
             return false;
         }
 

@@ -137,27 +137,31 @@ public class MusicPlayerActivity extends FragmentActivity{
         List<Music> musics = (ArrayList<Music>) provider.getList();
         
 		Intent intent = getIntent();
-		if (intent.getAction().equals(Intent.ACTION_VIEW)) {			
-			String path = intent.getData().getPath();
-			if (path.endsWith(".mp3")
-					|| path.endsWith(".m4a")) {
-				for (Music music : musics) {
-	    			if (music.getPath().equals(path)) {
-	    				this.music = music;
-	    			}
-	    		}
-			}
-			else if (path.endsWith(".m3u")) {
-				playlist.clear();
-				List<Music> list = M3UPlayList.loadPlayListToMusicList(this,path);
-				if (list == null) {
+		try {					
+			if (intent.getAction().equals(Intent.ACTION_VIEW)) {			
+				String path = intent.getData().getPath();
+				if (path.endsWith(".mp3")
+						|| path.endsWith(".m4a")) {
+					for (Music music : musics) {
+		    			if (music.getPath().equals(path)) {
+		    				this.music = music;
+		    			}
+		    		}
+				}
+				else if (path.endsWith(".m3u")) {
+					playlist.clear();
+					List<Music> list = M3UPlayList.loadPlayListToMusicList(this,path);
+					if (list == null) {
+						finish();
+					}
+					playlist.addAll(list);
+				}
+				else {
 					finish();
 				}
-				playlist.addAll(list);
 			}
-			else {
-				finish();
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}    
 

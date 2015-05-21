@@ -109,16 +109,22 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
 
         mIsHwDecode = getIntent().getBooleanExtra("isHW", false);
         Uri uriPath = getIntent().getData();
-        if (null != uriPath) {
-            String scheme = uriPath.getScheme();
-            if (null != scheme) {
-                mVideoSource = uriPath.toString();
-            } else {
-                mVideoSource = uriPath.getPath();
-            }
-        }
-        String[] tokens = mVideoSource.split("/");
-        playVeidoKey = tokens[tokens.length - 1];
+        try {
+	        if (null != uriPath) {
+	            String scheme = uriPath.getScheme();
+	           
+	            if (null != scheme) {
+	                mVideoSource = uriPath.toString();
+	            } else {
+	                mVideoSource = uriPath.getPath();
+	            }
+	        }
+	        String[] tokens = mVideoSource.split("/");
+	        playVeidoKey = tokens[tokens.length - 1];        
+        } catch (Exception e) {
+			e.printStackTrace();
+			finish();
+		}
 
         /**
          * 初始化UI
@@ -281,8 +287,15 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
                     mVV.pause();
                     break;
                 case EVENT_SEEKTO:
-                    String message = (String) msg.obj;
-                    int currentPosition = Integer.valueOf(message.split(":")[2]);
+                	String message = (String) msg.obj;
+                	int currentPosition = 0;
+                	try {
+                		currentPosition = Integer.valueOf(message.split(":")[2]);
+					} catch (Exception e) {
+						e.printStackTrace();						
+						break;
+					}
+                    
                     mVV.seekTo(currentPosition);
                     if (mHandler != null) {
             			mHandler.sendEmptyMessage(PLAYER_CTRL_SHOW);
@@ -327,7 +340,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
             mLastPos = mVV.getCurrentPosition();
             mVV.stopPlayback();
         }
-        onDestroy();
+        finish();
     }
 
 
@@ -351,9 +364,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
         super.onStop();
 
         mHandlerThread.quit();
-        Log.v(TAG, "onStop");
-
-        finish();
+        Log.v(TAG, "onStop");        
     }
 
     @SuppressLint("NewApi")

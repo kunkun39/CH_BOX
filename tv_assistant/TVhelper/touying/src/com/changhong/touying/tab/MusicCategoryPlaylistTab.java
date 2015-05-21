@@ -217,11 +217,15 @@ public class MusicCategoryPlaylistTab extends Fragment{
     {
     	MusicPlayList list = musicPlayLists.get(index);
     	
-    	File file = new File(list.getPath());
-    	if(file.exists())
-    	{
-    		file.delete();
-    	}  
+    	try {					
+	    	File file = new File(list.getPath());
+	    	if(file.exists())
+	    	{
+	    		file.delete();
+	    	}  
+    	} catch (Exception e) {
+			e.printStackTrace();
+		}
     	musicPlayLists.remove(list);
     	updateView();
     }
@@ -264,7 +268,7 @@ public class MusicCategoryPlaylistTab extends Fragment{
 						|| playListName.isEmpty()) {											
 					return ; 
 				}
-				MusicPlayList list = M3UPlayList.generalplaylist(editText.getText().toString());					
+				MusicPlayList list = M3UPlayList.generalplaylist(MusicCategoryPlaylistTab.this.getActivity(), editText.getText().toString());					
 				if (list == null) {
 					Toast.makeText(getActivity(), R.string.playlist_createfile_failed, Toast.LENGTH_SHORT).show();						
 					return ;

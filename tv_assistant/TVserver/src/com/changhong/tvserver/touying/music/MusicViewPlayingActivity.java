@@ -289,9 +289,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
             		    	String musicLrcPath = jsonObject.getString("musicLrcPath");
             		    	
             			 objectsList.add(new JsonMusicObject(musicPath, musicName, artist, musicLrcPath));
-					}
-            		 
-            		//objectsList.addAll(JSON.parseObject(, new TypeReference<List<JsonMusicObject>>(){}));            		     		            		
+					}            		             		     		            		
                 	
                 	mVideoSource = objectsList.get(0).musicPath;
                     musicName = objectsList.get(0).musicName;
@@ -308,6 +306,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
                 
             } catch (Exception e) {
                 e.printStackTrace();
+                finish();
             }
         }
     }
@@ -425,7 +424,12 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     class LyricDownloadAsyncTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            String lyricFilePath = baiduLyricDownloadManager.searchLyricFromWeb(musicLrcPath, musicName, artist);
+        	String lyricFilePath = null;
+        	try {
+        		lyricFilePath = baiduLyricDownloadManager.searchLyricFromWeb(musicLrcPath, musicName, artist);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}            
 
             if (lyricFilePath == null || "".equals(lyricFilePath)) {
                 lyricFilePath = miniLyricDownloadManager.searchLyricFromWeb(musicName, artist);
@@ -530,7 +534,15 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
 	                    break;
 	                case EVENT_AUTO:
 	                	message = (String) msg.obj;
-	                    int isAuto = Integer.valueOf(message.split(":")[2]);
+	                	int isAuto = -1;
+	                	try
+	                	{
+	                		isAuto = Integer.valueOf(message.split(":")[2]);
+	                	}
+	                	catch (Exception e) {
+	                		e.printStackTrace();
+	                		break;
+						}	                   
 	                    if (isAuto == 0) {
 	                    	stat = 0;
 						}
@@ -544,7 +556,16 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
 	                    break;
 	                case EVENT_SEEKTO:
 	                    message = (String) msg.obj;
-	                    int currentPosition = Integer.valueOf(message.split(":")[2]);
+	                    int currentPosition = 0;
+	                    try
+	                    {
+	                    	currentPosition = Integer.valueOf(message.split(":")[2]);
+	                    }
+	                    catch (Exception e) {
+							e.printStackTrace();
+							break;
+						}
+	                    
 	                    mVV.seekTo(currentPosition);
 	
 	                    /**
