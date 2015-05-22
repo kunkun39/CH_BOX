@@ -799,7 +799,12 @@ public class MusicPlayer extends DialogFragment{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();
+            try {
+            	Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+            
         }
     }
     private void touYing(String musicPath, String musicName, String artist) {
@@ -894,7 +899,12 @@ public class MusicPlayer extends DialogFragment{
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();
+            try {
+            	Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();	
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+            
         }
     }
     
