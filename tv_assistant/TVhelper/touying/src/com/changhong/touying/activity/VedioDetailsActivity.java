@@ -290,11 +290,11 @@ public class VedioDetailsActivity extends Activity {
                         String vedioSelectedPath = null;
 
                         if (vedioPath.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
-                            vedioSelectedPath = vedioPath.replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
+                            vedioSelectedPath = vedioPath.replace(NanoHTTPDService.defaultHttpServerPath, "");
                         } else {
                             for (String otherHttpServerPath : NanoHTTPDService.otherHttpServerPaths) {
                                 if (vedioPath.startsWith(otherHttpServerPath)) {
-                                    vedioSelectedPath = vedioPath.replace(otherHttpServerPath, "").replace(" ", "%20");
+                                    vedioSelectedPath = vedioPath.replace(otherHttpServerPath, "");
                                 }
                             }
                         }
