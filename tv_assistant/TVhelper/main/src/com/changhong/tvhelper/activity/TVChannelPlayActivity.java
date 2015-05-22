@@ -135,11 +135,6 @@ public class TVChannelPlayActivity extends Activity {
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
-        width = metric.widthPixels;     // 屏幕宽度（像素）
-        height = metric.heightPixels;   // 屏幕高度（像素）
-        float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）
-        int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
-        Log.e("ysharp", "width>>>" + width + "height>>>" + height + "density>>>" + density + "densityDpi>>>" + densityDpi);
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -192,14 +187,13 @@ public class TVChannelPlayActivity extends Activity {
         dd.show();
 
         mVideoView = (VideoView) findViewById(R.id.surface_view);
-        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
+        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
         mVideoView.setBufferSize(256 * 1024);
         mVideoView.setKeepScreenOn(true);
-        mVideoView.setHardwareDecoder(true);
+//        mVideoView.setHardwareDecoder(true);
         mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_STRETCH, 0);
         if (path != null) {
             mVideoView.setVideoPath(path);
-            Log.e("NOFEHNOFHOEFHO", path);
             initProgramInfo(name);
         }
 
