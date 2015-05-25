@@ -20,7 +20,7 @@ public class HttpClientService {
     /**
      * 外网服务器访问地址
      */
-    //private static String HOSTS = "http://www.ottserver.com:8081/";
+//    private static String HOSTS = "http://www.ottserver.com:8081/";
 
     /**
      * 川网服务器访问地址

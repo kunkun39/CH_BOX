@@ -53,6 +53,8 @@ import java.util.*;
 
 public class TVChannelPlayActivity extends Activity {
 
+    public GestureDetector mGestureDetector = null;
+
     /**
      * video play view
      */
@@ -66,12 +68,7 @@ public class TVChannelPlayActivity extends Activity {
     public static String path = null;
     public static String name = null;
     public static int mm = 1;
-
     private String freq = "";
-    private int HD_PLAYING_BUFFER = 1024 * 1024;
-    private int SD_PLAYING_BUFFER = 256 * 1024;
-
-    public GestureDetector mGestureDetector = null;
 
     /**
      * 播放和退出时间戳
@@ -79,6 +76,9 @@ public class TVChannelPlayActivity extends Activity {
     private long playTimestamp = 0l;
     private long backTimestamp = 0l;
 
+    /**
+     * 节目和频道操作部分
+     */
     private View mVolumeBrightnessLayout;
     private ImageView mOperationBg;
     private ImageView mOperationPercent;
@@ -101,7 +101,7 @@ public class TVChannelPlayActivity extends Activity {
      */
     private ListView channelList;
     private ChannelAdapter channelAdapter;
-    private List<String> channelNames;
+    private List<String> channelNames = new ArrayList<String>();
     private boolean menuKey = false;
     private RelativeLayout relativeLayout;
 
@@ -122,7 +122,6 @@ public class TVChannelPlayActivity extends Activity {
      */
     private int returnConfirm = 1;
 
-
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -130,11 +129,11 @@ public class TVChannelPlayActivity extends Activity {
         if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this))
             return;
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);//ȥ��������
-
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//ȥ����Ϣ��
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int screenHeight = metric.heightPixels;     // 屏幕高度（像素）
 
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -145,7 +144,6 @@ public class TVChannelPlayActivity extends Activity {
         mOperationPercent = (ImageView) findViewById(R.id.operation_percent);
 
         //频道列表
-        channelNames = new ArrayList<String>();
         initTVChannel();
         channelAdapter = new ChannelAdapter(this);
         relativeLayout = (RelativeLayout) findViewById(R.id.channel_list_layout);
@@ -186,11 +184,19 @@ public class TVChannelPlayActivity extends Activity {
         });
         dd.show();
 
+        /**
+         * 设置VEDIO部分
+         */
         mVideoView = (VideoView) findViewById(R.id.surface_view);
-        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
+        if (screenHeight >= 1080) {
+            mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
+            mVideoView.setHardwareDecoder(true);
+        } else {
+            mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
+            mVideoView.setHardwareDecoder(false);
+        }
         mVideoView.setBufferSize(256 * 1024);
         mVideoView.setKeepScreenOn(true);
-//        mVideoView.setHardwareDecoder(true);
         mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_STRETCH, 0);
         if (path != null) {
             mVideoView.setVideoPath(path);
