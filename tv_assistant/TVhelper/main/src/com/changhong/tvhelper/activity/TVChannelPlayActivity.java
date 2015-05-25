@@ -71,8 +71,6 @@ import com.changhong.tvhelper.service.ClientGetCommandService;
 
 public class TVChannelPlayActivity extends Activity {
 
-	public GestureDetector mGestureDetector = null;
-
 	/**
 	 * video play view
 	 */
@@ -150,25 +148,21 @@ public class TVChannelPlayActivity extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		this.getWindow().addFlags(
-				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this))
 			return;
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);// ȥ����Ϣ��
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// ȥ����Ϣ��
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		int screenHeight = metric.heightPixels; // 屏幕高度（像素）
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		mMaxVolume = mAudioManager
-				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-
-		setContentView(R.layout.activity_channel_play);
+		mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
 		initView();
+
 		initEvent();
 
 		IntentFilter intentfilter = new IntentFilter();
@@ -206,7 +200,7 @@ public class TVChannelPlayActivity extends Activity {
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
 		if (screenHeight >= 1080) {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
-			mVideoView.setHardwareDecoder(false);
+			mVideoView.setHardwareDecoder(true);
 		} else {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
 			mVideoView.setHardwareDecoder(false);
@@ -219,44 +213,50 @@ public class TVChannelPlayActivity extends Activity {
 			initProgramInfo(name);
 		}
 
-		mVideoView.setOnPreparedListener(new OnPreparedListener() {
-			public void onPrepared(MediaPlayer mp) {
-				try {
-					if (dd.isShowing()) {
-						dd.dismiss();
-					}
-					int w = mVideoView.getVideoWidth();
-					int h = mVideoView.getVideoHeight();
-					if (h > 576) {
-						mVideoView.setBufferSize(512 * 1024);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                return false;
+            }
+        });
 
-		mVideoView
-				.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
-					@Override
-					public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
-						try {
-							Log.e("ysharp", "" + arg1);
-							if (arg0.isBuffering()) {
-								if (!dd.isShowing()) {
-									dd.show();
-								}
-							}
-							if (arg1 >= 25) {
-								if (dd.isShowing()) {
-									dd.dismiss();
-								}
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+        mVideoView.setOnPreparedListener(new OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                try {
+                    if (dd.isShowing()) {
+                        dd.dismiss();
+                    }
+                    int w = mVideoView.getVideoWidth();
+                    int h = mVideoView.getVideoHeight();
+                    if (h > 576) {
+                        mVideoView.setBufferSize(512 * 1024);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+		mVideoView.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
+                try {
+                    Log.e("ysharp", "" + arg1);
+                    if (arg0.isBuffering()) {
+                        if (!dd.isShowing()) {
+                            dd.show();
+                        }
+                    }
+                    if (arg1 >= 25) {
+                        if (dd.isShowing()) {
+                            dd.dismiss();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 		// controller = new MediaController(this);
 
@@ -267,12 +267,13 @@ public class TVChannelPlayActivity extends Activity {
 		// mVideoView.setMediaController(controller);
 		mVideoView.requestFocus();
 
-//		mGestureDetector = new GestureDetector(this, new MyGestureListener());
 		playTimestamp = System.currentTimeMillis();
 		new PlayerIsPlayingMinitorThread().start();
 	}
 
 	private void initView() {
+        setContentView(R.layout.activity_channel_play);
+
 		mVolumeBrightnessLayout = findViewById(R.id.operation_volume_brightness);
 		mOperationBg = (ImageView) findViewById(R.id.operation_bg);
 		mOperationPercent = (ImageView) findViewById(R.id.operation_percent);
@@ -298,7 +299,6 @@ public class TVChannelPlayActivity extends Activity {
 		seekbarWidget = (LinearLayout) findViewById(R.id.seekbarWidget);
 		sound = (SeekBar) findViewById(R.id.sound);
 		bright = (SeekBar) findViewById(R.id.bright);
-
 	}
 
 	private void initEvent() {
@@ -310,29 +310,21 @@ public class TVChannelPlayActivity extends Activity {
 		mVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 		sound.setProgress(mVolume);
 		sound.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-				// TODO Auto-generated method stub
 				if (progress < 1) {
 					progress = 1;
 				}
-				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-						progress, 0);
-				;
+				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
 			}
 		});
 
@@ -341,33 +333,23 @@ public class TVChannelPlayActivity extends Activity {
 		 * 亮度调节
 		 */
 		bright.setMax(255);
-		int normal = Settings.System.getInt(getContentResolver(),
-				Settings.System.SCREEN_BRIGHTNESS, 255);
+		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
 		bright.setProgress(normal);
 
 		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-
 			}
 
 			@Override
 			public void onStartTrackingTouch(SeekBar seekBar) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				// TODO Auto-generated method stub
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				// 取得当前进度
 				int tmpInt = seekBar.getProgress();
-
-				// 当进度小于80时，设置成80，防止太黑看不见的后果。
-//				if (tmpInt < 80) {
-//					tmpInt = 80;
-//				}
 
 				// 根据当前进度改变亮度
 				Settings.System.putInt(getContentResolver(),
@@ -515,8 +497,7 @@ public class TVChannelPlayActivity extends Activity {
 					if (channelName.equals((String) map.get("service_name"))) {
 						name = (String) map.get("service_name");
 						path = ChannelService.obtainChannlPlayURL(map);
-						if (mVideoView != null && name != null
-								&& !name.equals(ILLEGAL_PROGRAM_NAME)) {
+						if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
 							mVideoView.setVideoPath(path);
 						}
 						return;
