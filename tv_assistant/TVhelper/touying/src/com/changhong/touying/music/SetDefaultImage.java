@@ -4,10 +4,16 @@ package com.changhong.touying.music;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.changhong.touying.R;
+import com.changhong.touying.tab.MusicCategoryAllTab;
+import com.changhong.touying.tab.MusicCategoryPlaylistTab;
+import com.changhong.touying.tab.MusicCategorySpecialTab;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
 public class SetDefaultImage {
