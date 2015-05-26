@@ -137,7 +137,9 @@ public class TVChannelShouCangShowActivity extends Activity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
+                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
+                ClientSendCommandService.titletxt = boxName;
+                title.setText(boxName);
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
 

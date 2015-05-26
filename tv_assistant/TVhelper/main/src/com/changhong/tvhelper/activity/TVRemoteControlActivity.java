@@ -237,7 +237,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                     long arg3) {
                 ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                title.setText(ClientSendCommandService.getCurrentConnectBoxName());
+                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
+                ClientSendCommandService.titletxt = boxName;
+                title.setText(boxName);
                 ClientSendCommandService.handler.sendEmptyMessage(2);
                 onUpdate();
                 clients.setVisibility(View.GONE);
