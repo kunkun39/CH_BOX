@@ -192,7 +192,7 @@ public class TVChannelPlayActivity extends Activity {
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
 		if (screenHeight >= 1080) {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
-			mVideoView.setHardwareDecoder(false);
+			mVideoView.setHardwareDecoder(true);
 		} else {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
 			mVideoView.setHardwareDecoder(false);
