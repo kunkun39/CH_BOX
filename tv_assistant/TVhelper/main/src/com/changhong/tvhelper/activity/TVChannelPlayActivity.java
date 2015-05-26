@@ -111,6 +111,10 @@ public class TVChannelPlayActivity extends Activity {
 	 * 当前亮度
 	 */
 	private float mBrightness = -1f;
+    /**
+     * 屏幕宽度
+     */
+    private int screenHeight = 0;
 
 	/**
 	 * 
@@ -156,7 +160,7 @@ public class TVChannelPlayActivity extends Activity {
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
-		int screenHeight = metric.heightPixels; // 屏幕高度（像素）
+		screenHeight = metric.heightPixels; // 屏幕高度（像素）
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
@@ -200,7 +204,7 @@ public class TVChannelPlayActivity extends Activity {
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
 		if (screenHeight >= 1080) {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
-			mVideoView.setHardwareDecoder(true);
+			mVideoView.setHardwareDecoder(false);
 		} else {
 			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
 			mVideoView.setHardwareDecoder(false);
@@ -499,7 +503,8 @@ public class TVChannelPlayActivity extends Activity {
 						path = ChannelService.obtainChannlPlayURL(map);
 						if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
 							mVideoView.setVideoPath(path);
-						}
+                            mVideoView.requestFocus();
+                        }
 						return;
 					}
 				}
@@ -647,36 +652,6 @@ public class TVChannelPlayActivity extends Activity {
 		return true;
 	}
 
-
-	/**
-	 * 滑动改变亮度
-	 *
-	 * @param percent
-	 */
-	private void onBrightnessSlide(float percent) {
-		if (mBrightness < 0) {
-			mBrightness = getWindow().getAttributes().screenBrightness;
-			if (mBrightness <= 0.00f)
-				mBrightness = 0.50f;
-			if (mBrightness < 0.01f)
-				mBrightness = 0.01f;
-
-			// 显示
-			mOperationBg.setImageResource(R.drawable.video_brightness_bg);
-			mVolumeBrightnessLayout.setVisibility(View.VISIBLE);
-		}
-		WindowManager.LayoutParams lpa = getWindow().getAttributes();
-		lpa.screenBrightness = mBrightness + percent;
-		if (lpa.screenBrightness > 1.0f)
-			lpa.screenBrightness = 1.0f;
-		else if (lpa.screenBrightness < 0.01f)
-			lpa.screenBrightness = 0.01f;
-		getWindow().setAttributes(lpa);
-
-		ViewGroup.LayoutParams lp = mOperationPercent.getLayoutParams();
-		lp.width = (int) (findViewById(R.id.operation_full).getLayoutParams().width * lpa.screenBrightness);
-		mOperationPercent.setLayoutParams(lp);
-	}
 
 	/**
 	 * 手势结束
