@@ -21,7 +21,8 @@
         android:id="@+id/channel_list_layout"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:visibility="gone" >
+        android:visibility="gone" 
+        >
 
         <TextView
             android:id="@+id/text_all"

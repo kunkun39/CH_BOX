@@ -77,7 +77,13 @@ public class TVChannelPlayActivity extends Activity {
 	public static VideoView mVideoView;
 	// private MediaController controller;
 	private int width, height;
-
+	
+	/**
+	 * 
+	 * 缓冲提示对话框
+	 */
+	private ProgressDialog dd=null;
+	
 	/**
 	 * video play source
 	 */
@@ -169,9 +175,8 @@ public class TVChannelPlayActivity extends Activity {
 
 		initEvent();
 
-		IntentFilter intentfilter = new IntentFilter();
-		intentfilter.addAction("com.action.switchchannel");
-		registerReceiver(this.SwitchReceiver, intentfilter);
+		registerMyReceiver();
+		
 		Intent intent = getIntent();
 		if (intent.getStringExtra("channelname") != null
 				&& !intent.getStringExtra("channelname").equals("")
@@ -179,24 +184,7 @@ public class TVChannelPlayActivity extends Activity {
 			name = intent.getStringExtra("channelname");
 		}
 
-		final ProgressDialog dd = new ProgressDialog(TVChannelPlayActivity.this);
-		dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dd.setMessage("正在拼命为您加载视频数据...");
-
-		dd.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode,
-					KeyEvent event) {
-				if (KeyEvent.KEYCODE_BACK == keyCode) {
-					if (dd.isShowing()) {
-						dd.dismiss();
-					}
-					finish();
-				}
-				return false;
-			}
-		});
-		dd.show();
+		initDialog();
 
 		/**
 		 * 设置VEDIO部分
@@ -371,6 +359,27 @@ public class TVChannelPlayActivity extends Activity {
 		});
 
 	}
+	
+	private void  initDialog(){
+		dd = new ProgressDialog(TVChannelPlayActivity.this);
+		dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		dd.setMessage("正在拼命为您加载视频数据...");
+
+		dd.setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				if (KeyEvent.KEYCODE_BACK == keyCode) {
+					if (dd.isShowing()) {
+						dd.dismiss();
+					}
+					finish();
+				}
+				return false;
+			}
+		});
+		dd.show();
+	}
 
 	private void setWidgetVisible(int i) {
 		programInfoLayout.setVisibility(i);
@@ -529,6 +538,12 @@ public class TVChannelPlayActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+	
+	private void registerMyReceiver(){
+		IntentFilter intentfilter = new IntentFilter();
+		intentfilter.addAction("com.action.switchchannel");
+		registerReceiver(this.SwitchReceiver, intentfilter);
+	}
 
 	private BroadcastReceiver SwitchReceiver = new BroadcastReceiver() {
 
@@ -621,6 +636,9 @@ public class TVChannelPlayActivity extends Activity {
 					MyApplication.vibrator.vibrate(100);
 					setPath(channelNames.get(position));
 					initProgramInfo(channelNames.get(position));
+					if(!dd.isShowing()){
+						dd.show();
+					}
 				}
 			});
 			return convertView;
