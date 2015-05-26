@@ -443,6 +443,10 @@ public class TVInputDialogActivity extends Activity {
         String content = mEditText.getText().toString();
 
         //if (StringUtils.hasLength(content))
+        if (content.contains("^")) {
+			return ;
+		}
+        
         {
             try {
                 Message msg = mHandler.obtainMessage();
