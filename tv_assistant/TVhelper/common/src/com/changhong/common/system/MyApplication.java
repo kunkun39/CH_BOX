@@ -73,8 +73,8 @@ public class MyApplication extends Application {
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
         instance=this;
         viewOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.ic_error)
+                .showImageForEmptyUri(R.drawable.ic_stub)
+                .showImageOnFail(R.drawable.ic_stub)
                 .cacheInMemory(false)
                 .cacheOnDisk(false)
                 .smallImageGenerate(true)
@@ -85,8 +85,8 @@ public class MyApplication extends Application {
                 .build();
 
         detailsOptions = new DisplayImageOptions.Builder()
-                .showImageForEmptyUri(R.drawable.ic_empty)
-                .showImageOnFail(R.drawable.ic_error)
+                .showImageForEmptyUri(R.drawable.ic_stub)
+                .showImageOnFail(R.drawable.ic_stub)
                 .cacheInMemory(false)
                 .cacheOnDisk(false)
                 .considerExifParams(true)
