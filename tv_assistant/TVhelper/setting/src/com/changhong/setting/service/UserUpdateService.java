@@ -450,7 +450,7 @@ public class UserUpdateService {
                                     //不停的更新下载的状态
                                     UpdateLogService preferenceService = new UpdateLogService(context);
                                     while (!UserUpdateService.THREAD_ONE_FINISHED || !UserUpdateService.THREAD_TWO_FINISHED) {
-//                                        Thread.sleep(1000);
+                                        Thread.sleep(100);
 
                                         /**
                                          * 检查是否有异常，如果有异常，向外抛出异常，用handler通知用户
@@ -464,7 +464,6 @@ public class UserUpdateService {
                                          * 计算现在更新的进度
                                          */
                                         int alreadyRead = (int)preferenceService.getTotalDownlaodDataSize();
-//                                        int progress = (int) ((alreadyRead * 100) / fileTotalSize);
                                         m_pDialog.setProgress(alreadyRead);
                                     }
 
