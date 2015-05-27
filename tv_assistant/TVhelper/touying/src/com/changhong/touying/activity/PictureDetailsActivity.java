@@ -13,6 +13,7 @@ import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.view.*;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
@@ -122,6 +123,18 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     private float currentRotationPosition = 0f;
 
+    /*******************************************手势图片**************************************************************/
+
+    private ImageView gestureUp;
+    private ImageView gestureLeft;
+    private ImageView gestureRight;
+    private ImageView gestureScale;
+    private TextView textUp;
+    private TextView textLeft;
+    private TextView textRight;
+    private TextView textScale;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,8 +150,6 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_picture_details);
 
-        currentShow = false;
-
         detector = new GestureDetector(this);
         flipper = (ViewFlipper) findViewById(R.id.image_flipper);
         flipper.setDrawingCacheEnabled(false);
@@ -149,6 +160,17 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
 
         rotationLeft = (ImageView) findViewById(R.id.rotation_left);
         rotationRight = (ImageView) findViewById(R.id.rotation_right);
+
+        gestureUp = (ImageView) findViewById(R.id.gesture_up);
+        gestureLeft = (ImageView) findViewById(R.id.gesture_left);
+        gestureRight = (ImageView) findViewById(R.id.gesture_right);
+        gestureScale = (ImageView) findViewById(R.id.gesture_scale);
+        textUp = (TextView) findViewById(R.id.text_up);
+        textLeft = (TextView) findViewById(R.id.text_left);
+        textRight = (TextView) findViewById(R.id.text_right);
+        textScale = (TextView) findViewById(R.id.text_scale);
+
+        currentShow = false;
     }
 
     private void initData() {
@@ -173,6 +195,20 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         flipper.setDisplayedChild(currentImagePosistion);
 
         showFlipperImages();
+
+        /**
+         * 显示手势图片
+         */
+        AlphaAnimation fadeImage = new AlphaAnimation(0f, 1f);
+        fadeImage.setDuration(2000);
+        gestureUp.startAnimation(fadeImage);
+        gestureLeft.startAnimation(fadeImage);
+        gestureRight.startAnimation(fadeImage);
+        gestureScale.startAnimation(fadeImage);
+        textUp.startAnimation(fadeImage);
+        textLeft.startAnimation(fadeImage);
+        textRight.startAnimation(fadeImage);
+        textScale.startAnimation(fadeImage);
     }
 
     private void initEvent() {
