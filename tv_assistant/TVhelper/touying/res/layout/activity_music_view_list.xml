@@ -61,13 +61,21 @@
                 />
     </LinearLayout>
 
-    <LinearLayout
+    <LinearLayout	           
+            android:id="@+id/music_seek_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"                  
+            android:layout_alignParentBottom="true"/>
+    
+    <LinearLayout
+            android:layout_height="match_parent"
             android:layout_width="fill_parent"
             android:layout_marginTop="107.6dip"
             android:focusable="false"
             android:orientation="horizontal"
-            android:gravity="center_vertical|center_horizontal"
+            android:layout_above="@id/music_seek_layout"
+            android:gravity="center_horizontal"
             >
         <ListView
                 android:id="@+id/music_list_view"
@@ -86,12 +94,7 @@
             android:listSelector="@drawable/title_ip_list"
             android:visibility="gone"
             ></ListView>
-    <LinearLayout	           
-            android:id="@+id/music_seek_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"                  
-            android:layout_alignParentBottom="true"/>
+    
 
     <Button
             android:id="@+id/btn_list"
