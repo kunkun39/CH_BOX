@@ -35,6 +35,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.media.AudioManager;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,6 +51,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,13 +81,13 @@ public class TVChannelPlayActivity extends Activity {
 	public static VideoView mVideoView;
 	// private MediaController controller;
 	private int width, height;
-	
+
 	/**
 	 * 
 	 * 缓冲提示对话框
 	 */
-	private ProgressDialog dd=null;
-	
+	private ProgressDialog dd = null;
+
 	/**
 	 * video play source
 	 */
@@ -117,10 +121,10 @@ public class TVChannelPlayActivity extends Activity {
 	 * 当前亮度
 	 */
 	private float mBrightness = -1f;
-    /**
-     * 屏幕宽度
-     */
-    private int screenHeight = 0;
+	/**
+	 * 屏幕宽度
+	 */
+	private int screenHeight = 0;
 
 	/**
 	 * 
@@ -128,6 +132,14 @@ public class TVChannelPlayActivity extends Activity {
 	 */
 	private SeekBar sound, bright;
 	private LinearLayout seekbarWidget;
+
+	/**
+	 * 
+	 * 动画效果
+	 */
+
+	private AnimationSet PIInAnimationSet,PIOutAnimationSet, SKBInAnimationSet,SKBOutAnimationSet,
+			channelListInAnimationSet, channelListOutAnimationSet;
 
 	/**
 	 * 频道列表
@@ -158,25 +170,28 @@ public class TVChannelPlayActivity extends Activity {
 	@Override
 	public void onCreate(Bundle icicle) {
 		super.onCreate(icicle);
-		this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		this.getWindow().addFlags(
+				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		if (!io.vov.vitamio.LibsChecker.checkVitamioLibs(this))
 			return;
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);// ȥ����Ϣ��
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// ȥ����Ϣ��
 
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		screenHeight = metric.heightPixels; // 屏幕高度（像素）
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		mMaxVolume = mAudioManager
+				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
 		initView();
 
 		initEvent();
 
 		registerMyReceiver();
-		
+
 		Intent intent = getIntent();
 		if (intent.getStringExtra("channelname") != null
 				&& !intent.getStringExtra("channelname").equals("")
@@ -205,50 +220,51 @@ public class TVChannelPlayActivity extends Activity {
 			initProgramInfo(name);
 		}
 
-        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-            @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                return false;
-            }
-        });
+		mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+			@Override
+			public boolean onError(MediaPlayer mp, int what, int extra) {
+				return false;
+			}
+		});
 
-        mVideoView.setOnPreparedListener(new OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                try {
-                    if (dd.isShowing()) {
-                        dd.dismiss();
-                    }
-                    int w = mVideoView.getVideoWidth();
-                    int h = mVideoView.getVideoHeight();
-                    if (h > 576) {
-                        mVideoView.setBufferSize(512 * 1024);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+		mVideoView.setOnPreparedListener(new OnPreparedListener() {
+			public void onPrepared(MediaPlayer mp) {
+				try {
+					if (dd.isShowing()) {
+						dd.dismiss();
+					}
+					int w = mVideoView.getVideoWidth();
+					int h = mVideoView.getVideoHeight();
+					if (h > 576) {
+						mVideoView.setBufferSize(512 * 1024);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
-		mVideoView.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
-                try {
-                    Log.e("ysharp", "" + arg1);
-                    if (arg0.isBuffering()) {
-                        if (!dd.isShowing()) {
-                            dd.show();
-                        }
-                    }
-                    if (arg1 >= 25) {
-                        if (dd.isShowing()) {
-                            dd.dismiss();
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+		mVideoView
+				.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
+					@Override
+					public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
+						try {
+							Log.e("ysharp", "" + arg1);
+							if (arg0.isBuffering()) {
+								if (!dd.isShowing()) {
+									dd.show();
+								}
+							}
+							if (arg1 >= 25) {
+								if (dd.isShowing()) {
+									dd.dismiss();
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 
 		// controller = new MediaController(this);
 
@@ -264,7 +280,7 @@ public class TVChannelPlayActivity extends Activity {
 	}
 
 	private void initView() {
-        setContentView(R.layout.activity_channel_play);
+		setContentView(R.layout.activity_channel_play);
 
 		mVolumeBrightnessLayout = findViewById(R.id.operation_volume_brightness);
 		mOperationBg = (ImageView) findViewById(R.id.operation_bg);
@@ -316,7 +332,8 @@ public class TVChannelPlayActivity extends Activity {
 				if (progress < 1) {
 					progress = 1;
 				}
-				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
+						progress, 0);
 			}
 		});
 
@@ -325,7 +342,8 @@ public class TVChannelPlayActivity extends Activity {
 		 * 亮度调节
 		 */
 		bright.setMax(255);
-		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
+		int normal = Settings.System.getInt(getContentResolver(),
+				Settings.System.SCREEN_BRIGHTNESS, 255);
 		bright.setProgress(normal);
 
 		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -339,7 +357,8 @@ public class TVChannelPlayActivity extends Activity {
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
 				// 取得当前进度
 				int tmpInt = seekBar.getProgress();
 
@@ -359,8 +378,8 @@ public class TVChannelPlayActivity extends Activity {
 		});
 
 	}
-	
-	private void  initDialog(){
+
+	private void initDialog() {
 		dd = new ProgressDialog(TVChannelPlayActivity.this);
 		dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dd.setMessage("正在拼命为您加载视频数据...");
@@ -382,9 +401,87 @@ public class TVChannelPlayActivity extends Activity {
 	}
 
 	private void setWidgetVisible(int i) {
+		setMyAnimation(i);
+		relativeLayout.setVisibility(i);
 		programInfoLayout.setVisibility(i);
 		seekbarWidget.setVisibility(i);
-		relativeLayout.setVisibility(i);
+		
+	}
+
+	private void setMyAnimation(int i) {
+		initAnimation();
+		if (i == View.VISIBLE) {
+			relativeLayout.startAnimation(channelListInAnimationSet);
+			programInfoLayout.startAnimation(PIInAnimationSet);
+			seekbarWidget.startAnimation(SKBInAnimationSet);
+			
+		}else{
+			relativeLayout.startAnimation(channelListOutAnimationSet);
+			programInfoLayout.startAnimation(PIOutAnimationSet);
+			seekbarWidget.startAnimation(SKBOutAnimationSet);
+			
+		}
+	}
+
+	private void initAnimation() {
+		
+		if (null == channelListInAnimationSet) {
+			channelListInAnimationSet = new AnimationSet(true);
+			TranslateAnimation CLIAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, -1f,
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, 0f);
+			CLIAnimation.setDuration(500);
+			channelListInAnimationSet.addAnimation(CLIAnimation);
+		}
+		if (null == channelListOutAnimationSet) {
+			channelListOutAnimationSet = new AnimationSet(true);
+			TranslateAnimation CLOAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, 0f);
+			CLOAnimation.setDuration(500);
+			channelListOutAnimationSet.addAnimation(CLOAnimation);
+		}
+		if (null == PIInAnimationSet) {
+			PIInAnimationSet = new AnimationSet(true);
+			TranslateAnimation PIIAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					1f, Animation.RELATIVE_TO_SELF, 0f);
+			PIIAnimation.setDuration(500);
+			PIInAnimationSet.addAnimation(PIIAnimation);
+		}
+		if (null == PIOutAnimationSet) {
+			PIOutAnimationSet = new AnimationSet(true);
+			TranslateAnimation PIOAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, 1f);
+			PIOAnimation.setDuration(500);
+			PIOutAnimationSet.addAnimation(PIOAnimation);
+		}
+
+		if (null == SKBInAnimationSet) {
+			SKBInAnimationSet = new AnimationSet(true);
+			TranslateAnimation SKBIAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					-0.5f, Animation.RELATIVE_TO_SELF, 0f);
+			SKBIAnimation.setDuration(500);
+			SKBInAnimationSet.addAnimation(SKBIAnimation);
+		}
+		
+		if (null == SKBOutAnimationSet) {
+			SKBOutAnimationSet = new AnimationSet(true);
+			TranslateAnimation SKBOAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, -0.5f);
+			SKBOAnimation.setDuration(500);
+			SKBOutAnimationSet.addAnimation(SKBOAnimation);
+		}
+		
 	}
 
 	/**
@@ -449,9 +546,8 @@ public class TVChannelPlayActivity extends Activity {
 						// 获得节目信息
 						name = (String) map.get("service_name");
 						channelIndex = (String) map.get("channel_index");
-						// setWidgetVisible(View.VISIBLE);
+						setWidgetVisible(View.VISIBLE);
 
-						programInfoLayout.setVisibility(View.VISIBLE);
 						textChannelName.setText(channelPlayName);
 
 						// 设置台标
@@ -510,10 +606,11 @@ public class TVChannelPlayActivity extends Activity {
 					if (channelName.equals((String) map.get("service_name"))) {
 						name = (String) map.get("service_name");
 						path = ChannelService.obtainChannlPlayURL(map);
-						if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
+						if (mVideoView != null && name != null
+								&& !name.equals(ILLEGAL_PROGRAM_NAME)) {
 							mVideoView.setVideoPath(path);
-                            mVideoView.requestFocus();
-                        }
+							mVideoView.requestFocus();
+						}
 						return;
 					}
 				}
@@ -538,8 +635,8 @@ public class TVChannelPlayActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
-	
-	private void registerMyReceiver(){
+
+	private void registerMyReceiver() {
 		IntentFilter intentfilter = new IntentFilter();
 		intentfilter.addAction("com.action.switchchannel");
 		registerReceiver(this.SwitchReceiver, intentfilter);
@@ -636,7 +733,7 @@ public class TVChannelPlayActivity extends Activity {
 					MyApplication.vibrator.vibrate(100);
 					setPath(channelNames.get(position));
 					initProgramInfo(channelNames.get(position));
-					if(!dd.isShowing()){
+					if (!dd.isShowing()) {
 						dd.show();
 					}
 				}
@@ -669,7 +766,6 @@ public class TVChannelPlayActivity extends Activity {
 		}
 		return true;
 	}
-
 
 	/**
 	 * 手势结束
