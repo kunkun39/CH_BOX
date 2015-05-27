@@ -414,12 +414,13 @@ public class TVChannelPlayActivity extends Activity {
 			relativeLayout.startAnimation(channelListInAnimationSet);
 			programInfoLayout.startAnimation(PIInAnimationSet);
 			seekbarWidget.startAnimation(SKBInAnimationSet);
+			menuKey=true;
 			
 		}else{
 			relativeLayout.startAnimation(channelListOutAnimationSet);
 			programInfoLayout.startAnimation(PIOutAnimationSet);
 			seekbarWidget.startAnimation(SKBOutAnimationSet);
-			
+			menuKey=false;
 		}
 	}
 
