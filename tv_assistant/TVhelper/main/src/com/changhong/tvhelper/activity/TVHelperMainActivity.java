@@ -19,7 +19,7 @@ import android.util.JsonReader;
 import android.view.MotionEvent;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.*;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.TouYingCategoryActivity;
@@ -51,7 +51,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.changhong.common.utils.NetworkUtils;
 import com.changhong.setting.activity.SettingActivity;
 import com.changhong.setting.service.UpdateLogService;
 import com.changhong.setting.service.UserUpdateService;
@@ -142,6 +141,10 @@ public class TVHelperMainActivity extends Activity {
         initViewAndEvent();
 
         initUpdateThread();
+
+        Toast.makeText(TVHelperMainActivity.this, "CPU=" + SystemUtils.getMaxCpuFreq(), 10000).show();
+        Log.e("CPU", "CPU=" + SystemUtils.getMaxCpuFreq() + "  Name=" + SystemUtils.getCpuName());
+        //san xing 2265600, 1664000
     }
 
     private void initService() {
