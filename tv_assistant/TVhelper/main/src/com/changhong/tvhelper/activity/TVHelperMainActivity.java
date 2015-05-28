@@ -141,10 +141,6 @@ public class TVHelperMainActivity extends Activity {
         initViewAndEvent();
 
         initUpdateThread();
-
-        Toast.makeText(TVHelperMainActivity.this, "CPU=" + SystemUtils.getMaxCpuFreq(), 10000).show();
-        Log.e("CPU", "CPU=" + SystemUtils.getMaxCpuFreq() + "  Name=" + SystemUtils.getCpuName());
-        //san xing 2265600, 1664000
     }
 
     private void initService() {

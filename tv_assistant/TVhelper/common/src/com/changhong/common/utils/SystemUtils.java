@@ -10,6 +10,8 @@ import java.io.IOException;
  */
 public class SystemUtils {
 
+    public final static int MIN_CPU_YINGJIE_FRE = 2000000;
+
     private final static String kCpuInfoMaxFreqFilePath = "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq";
 
     public static int getMaxCpuFreq() {

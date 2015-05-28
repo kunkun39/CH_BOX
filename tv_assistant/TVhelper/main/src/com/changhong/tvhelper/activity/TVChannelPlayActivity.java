@@ -16,6 +16,7 @@
 
 package com.changhong.tvhelper.activity;
 
+import com.changhong.common.utils.SystemUtils;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
@@ -206,14 +207,20 @@ public class TVChannelPlayActivity extends Activity {
 		 * 设置VEDIO部分
 		 */
 		mVideoView = (VideoView) findViewById(R.id.surface_view);
-		if (screenHeight >= 1080) {
-			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
-			mVideoView.setHardwareDecoder(true);
-		} else {
-			mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
-			mVideoView.setHardwareDecoder(false);
-		}
-		mVideoView.setBufferSize(256 * 1024);
+        try {
+            if (screenHeight >= 1080 && SystemUtils.getMaxCpuFreq() > SystemUtils.MIN_CPU_YINGJIE_FRE) {
+                mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_MEDIUM);
+                mVideoView.setHardwareDecoder(true);
+            } else {
+                mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
+                mVideoView.setHardwareDecoder(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_LOW);
+            mVideoView.setHardwareDecoder(false);
+        }
+        mVideoView.setBufferSize(256 * 1024);
 		mVideoView.setKeepScreenOn(true);
 		mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_STRETCH, 0);
 		if (path != null) {
