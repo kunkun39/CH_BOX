@@ -190,6 +190,10 @@ public class YuYingWordsUtils {
         TV_CHANNEL_SEARCH_KEYWORDS.put("十一", "11");
         TV_CHANNEL_SEARCH_KEYWORDS.put("十二", "12");
         TV_CHANNEL_SEARCH_KEYWORDS.put("十三", "13");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("台", "");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("套", "");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("卫视", "");
+        TV_CHANNEL_SEARCH_KEYWORDS.put("电视", "");
     }
 
     /**
