@@ -138,8 +138,9 @@ public class TVChannelPlayActivity extends Activity {
 	 * 动画效果
 	 */
 
-	private AnimationSet PIInAnimationSet,PIOutAnimationSet, SKBInAnimationSet,SKBOutAnimationSet,
-			channelListInAnimationSet, channelListOutAnimationSet;
+	private AnimationSet PIInAnimationSet, PIOutAnimationSet,
+			SKBInAnimationSet, SKBOutAnimationSet, channelListInAnimationSet,
+			channelListOutAnimationSet;
 
 	/**
 	 * 频道列表
@@ -383,7 +384,7 @@ public class TVChannelPlayActivity extends Activity {
 		dd = new ProgressDialog(TVChannelPlayActivity.this);
 		dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		dd.setMessage("正在拼命为您加载视频数据...");
-
+		dd.setCanceledOnTouchOutside(false);
 		dd.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(DialogInterface dialog, int keyCode,
@@ -405,7 +406,7 @@ public class TVChannelPlayActivity extends Activity {
 		relativeLayout.setVisibility(i);
 		programInfoLayout.setVisibility(i);
 		seekbarWidget.setVisibility(i);
-		
+
 	}
 
 	private void setMyAnimation(int i) {
@@ -414,18 +415,18 @@ public class TVChannelPlayActivity extends Activity {
 			relativeLayout.startAnimation(channelListInAnimationSet);
 			programInfoLayout.startAnimation(PIInAnimationSet);
 			seekbarWidget.startAnimation(SKBInAnimationSet);
-			menuKey=true;
-			
-		}else{
+			menuKey = true;
+
+		} else {
 			relativeLayout.startAnimation(channelListOutAnimationSet);
 			programInfoLayout.startAnimation(PIOutAnimationSet);
 			seekbarWidget.startAnimation(SKBOutAnimationSet);
-			menuKey=false;
+			menuKey = false;
 		}
 	}
 
 	private void initAnimation() {
-		
+
 		if (null == channelListInAnimationSet) {
 			channelListInAnimationSet = new AnimationSet(true);
 			TranslateAnimation CLIAnimation = new TranslateAnimation(
@@ -438,27 +439,27 @@ public class TVChannelPlayActivity extends Activity {
 		if (null == channelListOutAnimationSet) {
 			channelListOutAnimationSet = new AnimationSet(true);
 			TranslateAnimation CLOAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f,
-					Animation.RELATIVE_TO_SELF, -1f, Animation.RELATIVE_TO_SELF,
-					0f, Animation.RELATIVE_TO_SELF, 0f);
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					-1f, Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f);
 			CLOAnimation.setDuration(500);
 			channelListOutAnimationSet.addAnimation(CLOAnimation);
 		}
 		if (null == PIInAnimationSet) {
 			PIInAnimationSet = new AnimationSet(true);
 			TranslateAnimation PIIAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f,
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					1f, Animation.RELATIVE_TO_SELF, 0f);
+					0f, Animation.RELATIVE_TO_SELF, 1f,
+					Animation.RELATIVE_TO_SELF, 0f);
 			PIIAnimation.setDuration(500);
 			PIInAnimationSet.addAnimation(PIIAnimation);
 		}
 		if (null == PIOutAnimationSet) {
 			PIOutAnimationSet = new AnimationSet(true);
 			TranslateAnimation PIOAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f,
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					0f, Animation.RELATIVE_TO_SELF, 1f);
+					0f, Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 1f);
 			PIOAnimation.setDuration(500);
 			PIOutAnimationSet.addAnimation(PIOAnimation);
 		}
@@ -466,23 +467,23 @@ public class TVChannelPlayActivity extends Activity {
 		if (null == SKBInAnimationSet) {
 			SKBInAnimationSet = new AnimationSet(true);
 			TranslateAnimation SKBIAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f,
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					-0.5f, Animation.RELATIVE_TO_SELF, 0f);
+					0f, Animation.RELATIVE_TO_SELF, -0.5f,
+					Animation.RELATIVE_TO_SELF, 0f);
 			SKBIAnimation.setDuration(500);
 			SKBInAnimationSet.addAnimation(SKBIAnimation);
 		}
-		
+
 		if (null == SKBOutAnimationSet) {
 			SKBOutAnimationSet = new AnimationSet(true);
 			TranslateAnimation SKBOAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f,
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					0f, Animation.RELATIVE_TO_SELF, -0.5f);
+					0f, Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, -0.5f);
 			SKBOAnimation.setDuration(500);
 			SKBOutAnimationSet.addAnimation(SKBOAnimation);
 		}
-		
+
 	}
 
 	/**
@@ -525,7 +526,9 @@ public class TVChannelPlayActivity extends Activity {
 				}
 				break;
 			case 4:
-				setWidgetVisible(View.INVISIBLE);
+				if (menuKey) {
+					setWidgetVisible(View.GONE);
+				}
 				break;
 			default:
 				break;
