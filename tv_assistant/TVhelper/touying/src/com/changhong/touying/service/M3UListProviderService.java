@@ -5,6 +5,7 @@ package com.changhong.touying.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.Set;
 import com.changhong.common.system.AppConfig;
 import com.changhong.touying.music.MusicUtils;
 
+import android.R.bool;
 import android.R.integer;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -19,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -42,15 +45,16 @@ public class M3UListProviderService extends Service{
 	
 	private static final int PATH_DEEPTH = 6;		
 	
-	static List<String> list = new ArrayList<String>();
+	static Set<String> playlistInStorage = new HashSet<String>(),
+			playlistInData = new HashSet<String>(),
+			playlistInM3uDir = new HashSet<String>();		
 	
 	/**
      * 音频列表文件后缀
      */
     private static final String SUFFIX = ".m3u";
 
-	BroadcastReceiver bReceiver;
-	Set<String> playlist;
+	BroadcastReceiver bReceiver;	
 	boolean isSearching = false;
 
 
@@ -58,7 +62,7 @@ public class M3UListProviderService extends Service{
 	public void onCreate() {
 
 		super.onCreate();
-		dataPath = getApplicationInfo().dataDir + "/" + "SUFFIX";
+		dataPath = getApplicationInfo().dataDir + "/" + SUFFIX;
 		bReceiver = new BroadcastReceiver() {
 			
 			@Override
@@ -67,24 +71,12 @@ public class M3UListProviderService extends Service{
 				
 				if (action.equals(Intent.ACTION_MEDIA_MOUNTED)
 						|| action.equals(UPDATE_INTENT)) {
-					loadPlayList();
-					if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
-					{
-						searchListPlayList(path, SUFFIX);
-					}
-					else {
-						searchListPlayList(dataPath, SUFFIX);
-					}
+					AsyncTask.execute(new PlaylistLoadHandle());					
 				}
 			}
 		};	
-		loadPlayList();
-		searchListPlayList(dataPath, SUFFIX);
-		if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
-		{
-			searchListPlayList(path, SUFFIX);
-			searchListPlayList(Environment.getExternalStorageState(), SUFFIX);
-		}
+		AsyncTask.execute(new PlaylistLoadHandle());
+		AsyncTask.execute(new PlaylistLoadALLHandle());	
 		
 		// 在IntentFilter中选择你要监听的行为  
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_MEDIA_MOUNTED);// sd卡被插入，且已经挂载
@@ -106,22 +98,34 @@ public class M3UListProviderService extends Service{
 	}		
 	
 	public static  List<String> getList()
-	{		
-		return list;
+	{				
+		List<String> result = new ArrayList<String>();
+		result.addAll(playlistInData);
+		result.addAll(playlistInStorage);
+		result.addAll(playlistInM3uDir);
+		
+		return result;
 	}
 	
-	private synchronized void saveList(List<String> list)
+	private synchronized void saveList(Set<String> list,Set<String> value)
 	{
-		Set<String> set = new HashSet<String>();
+		String preferenceName = PLAYLIST_KEY;
 		
-		for (String string : list) {
-			set.add(string);
-		}
+		if (list == playlistInData) {
+			preferenceName += "DATA";			
+		}else if (list == playlistInM3uDir) {			
+			preferenceName += "M3U";
+		}else {
+			preferenceName += "ALL";
+		}	
+		
+		list.clear();
+		list.addAll(value);
 		
 		try
 		{
 			SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
-			preferences.edit().putStringSet(PLAYLIST_KEY, set).commit();	
+			preferences.edit().putStringSet(preferenceName, list).commit();	
 		}
 		catch(Exception e)
 		{
@@ -130,41 +134,56 @@ public class M3UListProviderService extends Service{
 	
 	}
 	
-	private synchronized void loadPlayList()
-	{			
-		SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+	private synchronized void loadPlayList(Set<String> list)
+	{	
+		String preferenceName = PLAYLIST_KEY;
 		
-		Set<String> set = preferences.getStringSet(PLAYLIST_KEY, null);
-		
-		if (set== null
-				|| set.size() == 0) {
-			return ;
+		if (list == playlistInData) {
+			preferenceName += "DATA";			
+		}else if (list == playlistInM3uDir) {			
+			preferenceName += "M3U";
+		}else {
+			preferenceName += "ALL";
 		}
-		list.clear();
-		for (String s : set) {
-			list.add(s);
-		}		
+		
+		SharedPreferences preferences = this.getSharedPreferences(NAME, Context.MODE_PRIVATE);
+				
+		Set<String> tempSet = preferences.getStringSet(preferenceName, null);
+		if (tempSet != null) {	
+			list.clear();
+			list.addAll(tempSet);
+		}		 
 	}
 	
-	private void searchListPlayList(final String path,final String suffix)
+	class PlaylistLoadHandle implements Runnable {
+		public void run() {
+			searchListPlayList(playlistInData,dataPath, SUFFIX);			
+			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+			{
+				searchListPlayList(playlistInM3uDir,path, SUFFIX);	
+			}
+		}
+	}
+	
+	class PlaylistLoadALLHandle implements Runnable {
+		public void run() {					
+			if(Environment.getExternalStorageState().equalsIgnoreCase(Environment.MEDIA_MOUNTED))
+			{	
+				searchListPlayList(playlistInStorage,Environment.getExternalStorageState(), SUFFIX);
+			}
+		}
+	}
+
+	private void searchListPlayList(Set<String> list,String path,final String suffix)
     {    	    	    	
-    	new Thread()
-    	{
-    		@Override
-			public void run()
-    		{
-    			int pathDeepth = 1;
-    			List<String> list = new ArrayList<String>();    			
-    			synchronized (this) {
-    				listFile(new File(path),suffix,list,pathDeepth);   
-				}    			 			
-    			saveList(list);    			
-    			loadPlayList();
-    		}
-    	}.start();
+		int pathDeepth = 1;		
+		Set<String> tempList = new HashSet<String>();
+		listFile(new File(path),suffix,tempList,pathDeepth);      			 			
+		saveList(list,tempList);    			
+		loadPlayList(list);
     }
     
-    private void listFile(File file,String suffix,List<String> list,int deepth)
+    private void listFile(File file,String suffix,Collection<String> list,int deepth)
     {
     	if (deepth > PATH_DEEPTH) {
 			return ;

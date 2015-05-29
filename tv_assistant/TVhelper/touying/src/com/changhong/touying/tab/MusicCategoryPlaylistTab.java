@@ -85,7 +85,14 @@ public class MusicCategoryPlaylistTab extends Fragment{
          */
         MusicService musicService = new MusicServiceImpl(getActivity());
         musicService.findAllMusicLrc();   
-        loadPlayLists();
+        getActivity().sendBroadcast(new Intent(M3UListProviderService.UPDATE_INTENT));
+        
+    }
+
+    @Override
+    public void onStart() {
+    	super.onStart();
+    	loadPlayLists();
     }
     
     @Override
@@ -304,13 +311,10 @@ public class MusicCategoryPlaylistTab extends Fragment{
     
     private synchronized void loadPlayLists()
     {
-    	// 删除列表
-    	musicPlayLists.clear();
+    	
     	
     	//更新视图，之后再获取到文件的时候会重新填充
-    	updateView();    	    	
-    	
-    	getActivity().sendBroadcast(new Intent(M3UListProviderService.UPDATE_INTENT));
+    	updateView();    	    	        	
     	
     	// 收索sdcard，找到播放列表文件，并加入，然后更新列表
     	List<String> list = M3UListProviderService.getList(); 	
@@ -319,6 +323,10 @@ public class MusicCategoryPlaylistTab extends Fragment{
     			|| list.size() == 0) {
 			return ;
 		}
+    	
+    	// 删除列表
+    	musicPlayLists.clear();
+    	
     	List<String> tempList;
     	for (String s : list) {
     		MusicPlayList item = new MusicPlayList();
