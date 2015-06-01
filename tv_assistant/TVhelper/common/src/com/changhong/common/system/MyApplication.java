@@ -51,6 +51,11 @@ public class MyApplication extends Application {
      * image load options for picture details
      */
     public static DisplayImageOptions detailsOptions;
+    
+    /**
+     * image load options for zoom in pictures
+     */
+    public static DisplayImageOptions musicPicOptions;
 
     /**
      * small pictures cache file path
@@ -93,6 +98,18 @@ public class MyApplication extends Application {
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
+        
+        musicPicOptions = new DisplayImageOptions.Builder()
+		        .showImageForEmptyUri(R.drawable.ic_stub)
+		        .showImageOnFail(R.drawable.ic_stub)
+		        .cacheInMemory(false)
+		        .cacheOnDisk(true)
+		        .smallImageGenerate(true)
+		        .considerExifParams(true)
+		        .imageScaleType(ImageScaleType.EXACTLY)
+		        .bitmapConfig(Bitmap.Config.RGB_565)
+		        .displayer(new FadeInBitmapDisplayer(800))
+		        .build();
 
         ImageLoaderConfiguration config = new ImageLoaderConfiguration
                 .Builder(getApplicationContext())
