@@ -32,24 +32,28 @@ public class ChannelService {
     public Map<String, Program> searchCurrentChannelPlay() {
         Map<String, Program> currentPlaying = new HashMap<String, Program>();
 
-        SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
-        if (database != null) {
-            String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
-            String currentTime = DateUtils.getCurrentTimeStamp();
-            Cursor cursor = database.rawQuery("select i_ChannelIndex, str_eventName, str_startTime, str_endTime from epg_information where i_weekIndex = ? and str_startTime < ? and str_endTime >= ?",
-                    new String[]{weekIndex, currentTime, currentTime});
+        try {
+            SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+            if (database != null) {
+                String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
+                String currentTime = DateUtils.getCurrentTimeStamp();
+                Cursor cursor = database.rawQuery("select i_ChannelIndex, str_eventName, str_startTime, str_endTime from epg_information where i_weekIndex = ? and str_startTime < ? and str_endTime >= ?",
+                        new String[]{weekIndex, currentTime, currentTime});
 
-            while (cursor.moveToNext()) {
-                String channelIndex = cursor.getString(0);
-                String eventName = cursor.getString(1);
-                String startTime = cursor.getString(2);
-                String endTime = cursor.getString(3);
+                while (cursor.moveToNext()) {
+                    String channelIndex = cursor.getString(0);
+                    String eventName = cursor.getString(1);
+                    String startTime = cursor.getString(2);
+                    String endTime = cursor.getString(3);
 
-                // 获取该图片的父路径名
-                Program program = new Program(channelIndex, eventName, startTime, endTime);
-                currentPlaying.put(channelIndex, program);
+                    // 获取该图片的父路径名
+                    Program program = new Program(channelIndex, eventName, startTime, endTime);
+                    currentPlaying.put(channelIndex, program);
+                }
+                cursor.close();
             }
-            cursor.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return currentPlaying;

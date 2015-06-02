@@ -87,9 +87,13 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
       mVideoAspectRatio = mp.getVideoAspectRatio();
       Log.d("onVideoSizeChangedAnther: (%dx%d)", mVideoWidth, mVideoHeight);
       if (mVideoWidth != 0 && mVideoHeight != 0)
-        setVideoLayout(mVideoLayout, mAspectRatio);
-        mSurfaceHolder.setFixedSize(mVideoWidth, mVideoHeight);
-        mMediaPlayer.setDisplay(mSurfaceHolder);
+          try {
+              setVideoLayout(mVideoLayout, mAspectRatio);
+              mSurfaceHolder.setFixedSize(mVideoWidth, mVideoHeight);
+              mMediaPlayer.setDisplay(mSurfaceHolder);
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
     }
   };
   OnPreparedListener mPreparedListener = new OnPreparedListener() {

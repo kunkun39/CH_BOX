@@ -248,7 +248,6 @@ public class TVChannelPlayActivity extends Activity {
             @Override
             public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
                 try {
-                    Log.e("ysharp", "" + arg1);
                     if (arg0.isBuffering()) {
                         if (!dd.isShowing()) {
                             dd.show();
