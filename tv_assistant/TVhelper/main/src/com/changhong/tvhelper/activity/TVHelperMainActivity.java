@@ -9,7 +9,6 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
-import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -19,14 +18,11 @@ import android.util.JsonReader;
 import android.view.MotionEvent;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.*;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.TouYingCategoryActivity;
-import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
-import com.changhong.tvhelper.service.ClientGetCommandService;
 import com.changhong.faq.activity.QuestionListActivity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -39,14 +35,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,7 +48,6 @@ import com.changhong.setting.activity.SettingActivity;
 import com.changhong.setting.service.UpdateLogService;
 import com.changhong.setting.service.UserUpdateService;
 
-import com.changhong.tvhelper.service.ClientLocalThreadRunningService;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -67,54 +59,11 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.text.TextUtils;
-import android.util.JsonReader;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.NetworkUtils;
-import com.changhong.faq.activity.QuestionListActivity;
-import com.changhong.setting.activity.SettingActivity;
-import com.changhong.setting.service.UpdateLogService;
-import com.changhong.setting.service.UserUpdateService;
-import com.changhong.setting.view.AppHelpDialog;
-import com.changhong.touying.activity.TouYingCategoryActivity;
-import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.service.AppLogService;
-import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.tvhelper.service.ClientLocalThreadRunningService;
 
 public class TVHelperMainActivity extends Activity {
 
@@ -136,37 +85,9 @@ public class TVHelperMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper_main);
 
-        initService();
-
         initViewAndEvent();
 
         initUpdateThread();
-    }
-
-    private void initService() {
-        /**
-         * 启动get command服务
-         */
-        Intent service1 = new Intent(TVHelperMainActivity.this, ClientGetCommandService.class);
-        startService(service1);
-
-        /**
-         * 启动send command服务
-         */
-        Intent service2 = new Intent(TVHelperMainActivity.this, ClientSendCommandService.class);
-        startService(service2);
-
-        /**
-         * 启动手机端本地线程
-         */
-        Intent service3 = new Intent(TVHelperMainActivity.this, ClientLocalThreadRunningService.class);
-        startService(service3);
-		
-		/**
-         * 启动播放了列表收索服务
-         */
-        Intent service4 = new Intent(TVHelperMainActivity.this, M3UListProviderService.class);
-        startService(service4);
     }
 
     private void initViewAndEvent() {

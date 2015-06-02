@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.changhong.common.service.ClientSendCommandService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,11 +18,15 @@ public class BoxSelectAdapter extends BaseAdapter {
 
     private LayoutInflater minflater;
 
-    private List<String> ipList;
+    private List<String> ipList = new ArrayList<String>();
 
     public BoxSelectAdapter(Context context, List<String> ipList) {
         this.minflater = LayoutInflater.from(context);
-        this.ipList = ipList;
+        if (ipList != null) {
+            for (String ip : ipList) {
+                this.ipList.add(ip);
+            }
+        }
     }
 
     @Override

@@ -8,7 +8,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
+import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.tvhelper.service.ClientLocalThreadRunningService;
 
 /**
  * Created by maren on 2015/5/15.
@@ -29,6 +33,34 @@ public class TVHelperWelcomeActivity extends Activity {
 
         handler = new Handler();
         handler.postDelayed(new LoadingApplication(), 4000);
+
+        initService();
+    }
+
+    private void initService() {
+        /**
+         * 启动get command服务
+         */
+        Intent service1 = new Intent(TVHelperWelcomeActivity.this, ClientGetCommandService.class);
+        startService(service1);
+
+        /**
+         * 启动send command服务
+         */
+        Intent service2 = new Intent(TVHelperWelcomeActivity.this, ClientSendCommandService.class);
+        startService(service2);
+
+        /**
+         * 启动手机端本地线程
+         */
+        Intent service3 = new Intent(TVHelperWelcomeActivity.this, ClientLocalThreadRunningService.class);
+        startService(service3);
+
+        /**
+         * 启动播放了列表收索服务
+         */
+        Intent service4 = new Intent(TVHelperWelcomeActivity.this, M3UListProviderService.class);
+        startService(service4);
     }
 
     class LoadingApplication implements Runnable {
