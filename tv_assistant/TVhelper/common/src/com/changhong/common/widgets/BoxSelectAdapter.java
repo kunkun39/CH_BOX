@@ -18,15 +18,11 @@ public class BoxSelectAdapter extends BaseAdapter {
 
     private LayoutInflater minflater;
 
-    private List<String> ipList = new ArrayList<String>();
+    private List<String> ipList;
 
     public BoxSelectAdapter(Context context, List<String> ipList) {
         this.minflater = LayoutInflater.from(context);
-        if (ipList != null) {
-            for (String ip : ipList) {
-                this.ipList.add(ip);
-            }
-        }
+        this.ipList = ipList;
     }
 
     @Override
