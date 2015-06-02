@@ -244,27 +244,26 @@ public class TVChannelPlayActivity extends Activity {
 			}
 		});
 
-		mVideoView
-				.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
-					@Override
-					public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
-						try {
-							Log.e("ysharp", "" + arg1);
-							if (arg0.isBuffering()) {
-								if (!dd.isShowing()) {
-									dd.show();
-								}
-							}
-							if (arg1 >= 25) {
-								if (dd.isShowing()) {
-									dd.dismiss();
-								}
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
+		mVideoView.setOnBufferingUpdateListener(new OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer arg0, int arg1) {
+                try {
+                    Log.e("ysharp", "" + arg1);
+                    if (arg0.isBuffering()) {
+                        if (!dd.isShowing()) {
+                            dd.show();
+                        }
+                    }
+                    if (arg1 >= 25) {
+                        if (dd.isShowing()) {
+                            dd.dismiss();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 		mVideoView.requestFocus();
 
@@ -316,13 +315,11 @@ public class TVChannelPlayActivity extends Activity {
 			}
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				if (progress < 1) {
 					progress = 1;
 				}
-				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC,
-						progress, 0);
+				mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
 			}
 		});
 
@@ -331,8 +328,7 @@ public class TVChannelPlayActivity extends Activity {
 		 * 亮度调节
 		 */
 		bright.setMax(255);
-		int normal = Settings.System.getInt(getContentResolver(),
-				Settings.System.SCREEN_BRIGHTNESS, 255);
+		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
 		bright.setProgress(normal);
 
 		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -484,8 +480,7 @@ public class TVChannelPlayActivity extends Activity {
 			case 0:
 				break;
 			case 1:
-				Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000)
-						.show();
+				Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000).show();
 				break;
 			case 3:
 				if (programList != null && programList.size() > 0) {
@@ -529,11 +524,9 @@ public class TVChannelPlayActivity extends Activity {
 			if (!ClientSendCommandService.channelData.isEmpty()) {
 
 				for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-					Map<String, Object> map = ClientSendCommandService.channelData
-							.get(i);
+					Map<String, Object> map = ClientSendCommandService.channelData.get(i);
 
-					if (channelPlayName
-							.equals((String) map.get("service_name"))) {
+					if (channelPlayName.equals((String) map.get("service_name"))) {
 						// 获得节目信息
 						name = (String) map.get("service_name");
 						channelIndex = (String) map.get("channel_index");
@@ -545,8 +538,7 @@ public class TVChannelPlayActivity extends Activity {
 						try {
 							imageViewChannelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(channelPlayName));
 						} catch (Exception e) {
-							imageViewChannelLogo
-									.setImageResource(R.drawable.logotv);
+							imageViewChannelLogo.setImageResource(R.drawable.logotv);
 						}
 						break;
 					}
@@ -589,8 +581,7 @@ public class TVChannelPlayActivity extends Activity {
 		try {
 			if (!ClientSendCommandService.channelData.isEmpty()) {
 				for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-					Map<String, Object> map = ClientSendCommandService.channelData
-							.get(i);
+					Map<String, Object> map = ClientSendCommandService.channelData.get(i);
 					if (channelName.equals((String) map.get("service_name"))) {
 						name = (String) map.get("service_name");
 						path = ChannelService.obtainChannlPlayURL(map);
