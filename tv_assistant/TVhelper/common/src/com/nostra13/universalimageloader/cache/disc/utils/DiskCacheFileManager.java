@@ -91,8 +91,11 @@ public class DiskCacheFileManager {
 
         int lastIndexOfSlash = vedioFilePath.lastIndexOf(File.separator);
         int lastIndexOfDot = vedioFilePath.lastIndexOf(".");
+        if(lastIndexOfSlash>lastIndexOfDot){
+        	lastIndexOfDot=vedioFilePath.length();
+        }
         String prefix = vedioFilePath.substring(lastIndexOfSlash, lastIndexOfDot);
-
+        
         String vedioImagePath = MyApplication.smallImageCachePath + prefix + ".mk";
         File vedioImage = new File(vedioImagePath);
         if (vedioImage != null && vedioImage.exists()) {

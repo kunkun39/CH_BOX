@@ -101,7 +101,7 @@ public class MyApplication extends Application {
         
         musicPicOptions = new DisplayImageOptions.Builder()
 		        .showImageForEmptyUri(R.drawable.ic_stub)
-		        .showImageOnFail(R.drawable.ic_stub)
+		        .showImageOnFail(R.drawable.music_bg12)
 		        .cacheInMemory(false)
 		        .cacheOnDisk(true)
 		        .smallImageGenerate(true)
