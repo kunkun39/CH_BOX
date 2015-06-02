@@ -61,13 +61,31 @@
 		            android:layout_marginRight="5dp"
 		            android:background="@drawable/sendinput"
                     android:visibility="gone"/>
+	        <Button
+		            android:id="@+id/cancel"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="center_horizontal|center_vertical"
+		            android:layout_marginLeft="30dp"
+		            android:layout_marginRight="30dp"
+		            android:text="@string/cancel"
+		            android:textColor="@color/white"
+		            android:textAppearance="?android:attr/textAppearanceMedium"
+		            android:background="@drawable/remote_input_btn_bg"
+                    android:layout_weight="1"/>
 
             <Button
                     android:id="@+id/send"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:background="@drawable/input_complete"
+                    android:background="@drawable/remote_input_btn_bg"
                     android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:text="@string/input_dialog_btn_send"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/white"
                     android:gravity="center"/>
         </LinearLayout>
     </LinearLayout>

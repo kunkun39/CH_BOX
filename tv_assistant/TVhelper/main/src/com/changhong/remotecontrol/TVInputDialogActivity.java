@@ -258,6 +258,18 @@ public class TVInputDialogActivity extends Activity {
             }
 
         });
+        
+        Button btnCancel = (Button) view.findViewById(id.cancel);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                MyApplication.vibrator.vibrate(100);
+                hideInputMethod();
+                clear();
+            }
+        });
+        
 
         Button btnDelete = (Button) view.findViewById(id.delete);
         btnDelete.setOnClickListener(new View.OnClickListener() {
