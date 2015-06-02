@@ -106,9 +106,6 @@ public class TVChannelPlayActivity extends Activity {
 	/**
 	 * 节目和频道操作部分
 	 */
-	private View mVolumeBrightnessLayout;
-	private ImageView mOperationBg;
-	private ImageView mOperationPercent;
 	private AudioManager mAudioManager;
 	/**
 	 * 最大声音
@@ -118,10 +115,6 @@ public class TVChannelPlayActivity extends Activity {
 	 * 当前声音
 	 */
 	private int mVolume = -1;
-	/**
-	 * 当前亮度
-	 */
-	private float mBrightness = -1f;
 	/**
 	 * 屏幕宽度
 	 */
@@ -138,7 +131,6 @@ public class TVChannelPlayActivity extends Activity {
 	 * 
 	 * 动画效果
 	 */
-
 	private AnimationSet PIInAnimationSet, PIOutAnimationSet,
 			SKBInAnimationSet, SKBOutAnimationSet, channelListInAnimationSet,
 			channelListOutAnimationSet;
@@ -274,13 +266,6 @@ public class TVChannelPlayActivity extends Activity {
 					}
 				});
 
-		// controller = new MediaController(this);
-
-		// if (name != null) {
-		// controller.setFileName(name);
-		// controller.show();
-		// }
-		// mVideoView.setMediaController(controller);
 		mVideoView.requestFocus();
 
 		playTimestamp = System.currentTimeMillis();
@@ -289,10 +274,6 @@ public class TVChannelPlayActivity extends Activity {
 
 	private void initView() {
 		setContentView(R.layout.activity_channel_play);
-
-		mVolumeBrightnessLayout = findViewById(R.id.operation_volume_brightness);
-		mOperationBg = (ImageView) findViewById(R.id.operation_bg);
-		mOperationPercent = (ImageView) findViewById(R.id.operation_percent);
 
 		// 频道列表
 		initTVChannel();
@@ -501,7 +482,6 @@ public class TVChannelPlayActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case 0:
-				mVolumeBrightnessLayout.setVisibility(View.GONE);
 				break;
 			case 1:
 				Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000)
@@ -563,9 +543,7 @@ public class TVChannelPlayActivity extends Activity {
 
 						// 设置台标
 						try {
-							imageViewChannelLogo
-									.setImageResource(ClientGetCommandService.channelLogoMapping
-											.get(channelPlayName));
+							imageViewChannelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(channelPlayName));
 						} catch (Exception e) {
 							imageViewChannelLogo
 									.setImageResource(R.drawable.logotv);
@@ -581,19 +559,18 @@ public class TVChannelPlayActivity extends Activity {
 						 * 初始化DB
 						 */
 						if (MyApplication.databaseContainer == null) {
-							MyApplication.databaseContainer = new DatabaseContainer(
-									TVChannelPlayActivity.this);
+							MyApplication.databaseContainer = new DatabaseContainer(TVChannelPlayActivity.this);
 						}
 
 						try {
 							ChannelService channelService = new ChannelService();
-							programList = channelService
-									.searchCurrentChannelPlayByIndex(channelIndex);
+							programList = channelService.searchCurrentChannelPlayByIndex(channelIndex);
 							// 得到节目信息，发送消息更新UI
 							mDismissHandler.sendEmptyMessage(3);
+
 							// 3秒后，节目信息显示框消失
-							Thread.sleep(5000);
-							mDismissHandler.sendEmptyMessage(4);
+							Thread.sleep(3000);
+                            mDismissHandler.sendEmptyMessage(4);
 						} catch (Exception e) {
 							Log.e("TVChannelPlayActivity", e.toString());
 							e.printStackTrace();
@@ -617,8 +594,7 @@ public class TVChannelPlayActivity extends Activity {
 					if (channelName.equals((String) map.get("service_name"))) {
 						name = (String) map.get("service_name");
 						path = ChannelService.obtainChannlPlayURL(map);
-						if (mVideoView != null && name != null
-								&& !name.equals(ILLEGAL_PROGRAM_NAME)) {
+						if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
 							mVideoView.setVideoPath(path);
 							mVideoView.requestFocus();
 						}
@@ -636,8 +612,7 @@ public class TVChannelPlayActivity extends Activity {
 		try {
 			if (!ClientSendCommandService.channelData.isEmpty()) {
 				for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-					Map<String, Object> map = ClientSendCommandService.channelData
-							.get(i);
+					Map<String, Object> map = ClientSendCommandService.channelData.get(i);
 					channelNames.add(map.get("service_name").toString());
 				}
 			}
@@ -662,8 +637,7 @@ public class TVChannelPlayActivity extends Activity {
 				Log.e("TVPlayer", "channelname >>> " + name + "channelfreq >>>"
 						+ switchfreq);
 				// 异频点才换台
-				if (name != null && !name.equals("")
-						&& !switchfreq.equals(freq)) {
+				if (name != null && !name.equals("") && !switchfreq.equals(freq)) {
 					freq = switchfreq;
 					setPath(name);
 				}
@@ -675,9 +649,8 @@ public class TVChannelPlayActivity extends Activity {
 		public void run() {
 			while (true) {
 				try {
-					// 用户在10秒钟之内连续返回则退出，反则技术器归一
-					if ((System.currentTimeMillis() - backTimestamp) > 10000
-							&& backTimestamp != 0l) {
+					// 用户在10秒钟之内连续返回则退出，反则计数器归一
+					if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
 						returnConfirm = 1;
 						backTimestamp = 0l;
 					}
@@ -686,8 +659,7 @@ public class TVChannelPlayActivity extends Activity {
 						// 播放中更新时间
 						playTimestamp = System.currentTimeMillis();
 					}
-					if ((System.currentTimeMillis() - playTimestamp) > 8000
-							&& playTimestamp != 0l) {
+					if ((System.currentTimeMillis() - playTimestamp) > 8000 && playTimestamp != 0l) {
 						// 超过8秒一直没有播放，退出播放界面
 						if (mDismissHandler != null) {
 							mDismissHandler.sendEmptyMessage(1);
@@ -722,22 +694,17 @@ public class TVChannelPlayActivity extends Activity {
 			return position;
 		}
 
-		public View getView(final int position, View convertView,
-				ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			ViewHolder vh = null;
 			if (convertView == null) {
 				vh = new ViewHolder();
-				convertView = minflater.inflate(R.layout.tv_play_channel_item,
-						null);
-				vh.channelName = (TextView) convertView
-						.findViewById(R.id.channel_name);
+				convertView = minflater.inflate(R.layout.tv_play_channel_item, null);
+				vh.channelName = (TextView) convertView.findViewById(R.id.channel_name);
 				convertView.setTag(vh);
 			} else {
 				vh = (ViewHolder) convertView.getTag();
 			}
-			vh.channelName.setText(StringUtils.getShortString(
-					"  " + String.valueOf(position + 1) + "  "
-							+ channelNames.get(position), 15));
+			vh.channelName.setText(StringUtils.getShortString("  " + String.valueOf(position + 1) + "  " + channelNames.get(position), 18));
 			vh.channelName.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -763,7 +730,7 @@ public class TVChannelPlayActivity extends Activity {
 		// 处理手势结束
 		switch (event.getAction() & MotionEvent.ACTION_MASK) {
 		case MotionEvent.ACTION_DOWN:
-			if (!menuKey) {
+            if (!menuKey) {
 				setWidgetVisible(View.VISIBLE);
 				menuKey = true;
 			} else {
@@ -783,8 +750,6 @@ public class TVChannelPlayActivity extends Activity {
 	 */
 	private void endGesture() {
 		mVolume = -1;
-		mBrightness = -1f;
-
 		// 隐藏
 		mDismissHandler.removeMessages(0);
 		mDismissHandler.sendEmptyMessageDelayed(0, 500);
@@ -809,8 +774,7 @@ public class TVChannelPlayActivity extends Activity {
 			if (returnConfirm == 1) {
 				returnConfirm = 0;
 				backTimestamp = System.currentTimeMillis();
-				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出", 1000)
-						.show();
+				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出", 1000).show();
 			} else {
 				mDismissHandler = null;
 				finish();

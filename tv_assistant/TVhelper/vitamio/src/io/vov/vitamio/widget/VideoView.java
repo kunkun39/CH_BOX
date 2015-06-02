@@ -82,8 +82,8 @@ public class VideoView extends SurfaceView implements MediaController.MediaPlaye
   OnVideoSizeChangedListener mSizeChangedListener = new OnVideoSizeChangedListener() {
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
       Log.d("onVideoSizeChanged: (%dx%d)", width, height);
-      mVideoWidth = getLayoutParams().height;
-      mVideoHeight = getLayoutParams().height;
+      mVideoWidth = getLayoutParams().width;
+      mVideoHeight = getLayoutParams().width;
       mVideoAspectRatio = mp.getVideoAspectRatio();
       Log.d("onVideoSizeChangedAnther: (%dx%d)", mVideoWidth, mVideoHeight);
       if (mVideoWidth != 0 && mVideoHeight != 0)
