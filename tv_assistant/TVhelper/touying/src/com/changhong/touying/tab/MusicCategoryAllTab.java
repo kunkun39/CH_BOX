@@ -31,21 +31,23 @@ public class MusicCategoryAllTab extends Fragment {
 	/**
 	 * 数据适配器
 	 */
-	private SingleMusicAdapter singleMusicAdapter;
+	private SingleMusicAdapter singleMusicAdapter=null;
 	/**
 	 * 
 	 * 所有的音乐信息
 	 */
-	private List<Music> musics;
+	private List<Music> musics=null;
 	/**
 	 * 单曲TAB的内容
 	 */
-	private ListView lv;
+	private ListView lv=null;
 	/**
 	 * 视频浏览部分
 	 */
-	private MusicPlayer player;
+	private MusicPlayer player=null;
+	
 
+	private View v=null;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,15 +74,15 @@ public class MusicCategoryAllTab extends Fragment {
 		musics = (List<Music>) provider.getList();
 
 		// TODO 自动生成的方法存根
-		View v = inflater.inflate(R.layout.activity_music_all_view, container,
+		v = inflater.inflate(R.layout.activity_music_all_view, container,
 				false);
-
 		initView(v);
-
 		initEvent();
-
 		return v;
 	}
+
+	
+	
 
 	private void initView(View v) {
 

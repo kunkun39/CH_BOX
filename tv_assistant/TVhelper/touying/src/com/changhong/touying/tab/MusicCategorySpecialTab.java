@@ -10,6 +10,7 @@ import java.util.zip.Inflater;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,75 +30,84 @@ import com.changhong.touying.service.MusicServiceImpl;
  * @author yves.yang
  *
  */
-public class MusicCategorySpecialTab extends Fragment{
-
+public class MusicCategorySpecialTab extends Fragment {
 
 	public static final String TAG = "MusicCategorySpecialTab";
-    /**************************************************歌曲部分*******************************************************/
+	/************************************************** 歌曲部分 *******************************************************/
 
-    /**
-     * Image List adapter
-     */
-    private MusicDataAdapter musicAdapter;
-    /**
-     * 视频浏览部分
-     */
-    private ListView musicGridView;
+	/**
+	 * Image List adapter
+	 */
+	private MusicDataAdapter musicAdapter = null;
+	/**
+	 * 视频浏览部分
+	 */
+	private ListView musicGridView = null;
 
-    @Override
+	private View v = null;
+
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+		super.onCreate(savedInstanceState);
+	}
 
-    /* （非 Javadoc）
-     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
-     */
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    		Bundle savedInstanceState) {
-    	/**
-         * 启动歌词扫描服务
-         */
-        MusicService musicService = new MusicServiceImpl(getActivity());
-        musicService.findAllMusicLrc();
+	/*
+	 * （非 Javadoc）
+	 * 
+	 * @see
+	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+	 * android.view.ViewGroup, android.os.Bundle)
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		/**
+		 * 启动歌词扫描服务
+		 */
+		MusicService musicService = new MusicServiceImpl(getActivity());
+		musicService.findAllMusicLrc();
 
-        
-    	// TODO 自动生成的方法存根
-    	View v = inflater.inflate(R.layout.music_special_listview, container,false);
-    	
-    	initView(v);
-    	
-    	initEvent();
-    	
-    	return v;
-    }
-    private void initView(View v) {        
-        /**
-         * 歌曲部分
-         */    	
-        musicGridView = (ListView) v.findViewById(R.id.music_special_listview);
-        musicAdapter = new MusicDataAdapter(getActivity());
-        musicGridView.setAdapter(musicAdapter);
-    }
+		// TODO 自动生成的方法存根
+		View v = inflater.inflate(R.layout.music_special_listview, container,
+				false);
+		initView(v);
+		initEvent();
+		
+		return v;
+	}
 
-    private void initEvent() {        
 
-        /**
-         * 歌曲部分
-         */
-        musicGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), MusicViewActivity.class);
-                Bundle bundle = new Bundle();
-                List<Music> musics = MusicDataAdapter.getPositionMusics(position);
-                bundle.putSerializable("musics", (Serializable) musics);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
+	private void initView(View v) {
+		/**
+		 * 歌曲部分
+		 */
+		musicGridView = (ListView) v.findViewById(R.id.music_special_listview);
+		musicAdapter = new MusicDataAdapter(getActivity());
+		musicGridView.setAdapter(musicAdapter);
+	}
 
-    }
+	private void initEvent() {
+
+		/**
+		 * 歌曲部分
+		 */
+		musicGridView
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						MyApplication.vibrator.vibrate(100);
+						Intent intent = new Intent();
+						intent.setClass(getActivity(), MusicViewActivity.class);
+						Bundle bundle = new Bundle();
+						List<Music> musics = MusicDataAdapter
+								.getPositionMusics(position);
+						bundle.putSerializable("musics", (Serializable) musics);
+						intent.putExtras(bundle);
+						startActivity(intent);
+					}
+				});
+
+	}
 }

@@ -3,29 +3,20 @@
  */
 package com.changhong.touying.tab;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.integer;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -35,12 +26,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.changhong.common.utils.UnicodeReader;
 import com.changhong.touying.R;
 import com.changhong.touying.activity.MusicPlayListActivity;
 import com.changhong.touying.activity.MusicViewActivity;
-import com.changhong.touying.dialog.MusicPlayer;
-import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
 import com.changhong.touying.music.M3UPlayList;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicPlayList;
@@ -128,7 +116,8 @@ public class MusicCategoryPlaylistTab extends Fragment{
     
     @Override
 	public void onResume() {
-        super.onResume();		
+        super.onResume();
+        loadPlayLists();
         updateView();        
     }
     

@@ -40,8 +40,8 @@ public class MusicDataAdapter extends BaseAdapter {
 		musics = provider.getList();
 		model = provider.getMapStructure(musics);
 		musicList = provider.getMusicList(model);
-		Log.i("mmmm", "MusicDataAdapter=musics=" + musics + "     model=" + model
-				+ "    musicList=" + musicList);
+//		Log.i("mmmm", "MusicDataAdapter=musics=" + musics + "     model=" + model
+//				+ "    musicList=" + musicList);
 	}
 
 	public int getCount() {

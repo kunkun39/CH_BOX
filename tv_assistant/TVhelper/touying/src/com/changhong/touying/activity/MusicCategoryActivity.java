@@ -1,8 +1,13 @@
 package com.changhong.touying.activity;
 
+import java.util.List;
+
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,12 +22,15 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
-import com.changhong.touying.music.SetDefaultImage;
+import com.changhong.touying.music.MediaUtil;
+import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
 import com.changhong.touying.tab.MusicCategoryAllTab;
 import com.changhong.touying.tab.MusicCategoryPlaylistTab;
 import com.changhong.touying.tab.MusicCategorySpecialTab;
+import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 /**
  * Created by Jack Wang
@@ -41,9 +49,27 @@ public class MusicCategoryActivity extends FragmentActivity {
 	private Fragment fragmentSpecial = null;
 	private Fragment fragmentList = null;
 
+	public static MusicCategoryActivity musicCategory = null;
+
+	// public MusicCategoryActivity(){
+	// if(null==musicCategory){
+	// musicCategory=new MusicCategoryActivity();
+	// }
+	//
+	// }
+
+	public static MusicCategoryActivity getInstance() {
+		if (null == musicCategory) {
+			musicCategory = new MusicCategoryActivity();
+		}
+		return musicCategory;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		initView();
+		initEvent();
 
 		/**
 		 * 启动歌词扫描服务
@@ -51,11 +77,9 @@ public class MusicCategoryActivity extends FragmentActivity {
 		MusicService musicService = new MusicServiceImpl(
 				MusicCategoryActivity.this);
 		musicService.findAllMusicLrc();
-
-		initView();
-
-		initEvent();
 	}
+
+	
 
 	private void initView() {
 		setContentView(R.layout.activity_music_category);
@@ -69,16 +93,37 @@ public class MusicCategoryActivity extends FragmentActivity {
 		listClients = (Button) findViewById(R.id.btn_list);
 
 		fragmentAll = new MusicCategoryAllTab();
-		
+		// fragmentSpecial = new MusicCategorySpecialTab();
+		// fragmentList = new MusicCategoryPlaylistTab();
+
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				getSupportFragmentManager().beginTransaction().add(R.id.realtabcontent, fragmentAll, MusicCategoryAllTab.TAG).show(fragmentAll).commitAllowingStateLoss();
+				// myTransaction =
+				// getSupportFragmentManager().beginTransaction();
+				// myTransaction.add(R.id.realtabcontent, fragmentAll,
+				// MusicCategoryAllTab.TAG).show(fragmentAll);
+				// myTransaction.commitAllowingStateLoss();
+
+				getSupportFragmentManager()
+						.beginTransaction()
+						.add(R.id.realtabcontent, fragmentAll,
+								MusicCategoryAllTab.TAG).show(fragmentAll)
+						.commitAllowingStateLoss();
+				// getSupportFragmentManager()
+				// .beginTransaction()
+				// .add(R.id.realtabcontent, fragmentSpecial,
+				// MusicCategorySpecialTab.TAG)
+				// .hide(fragmentSpecial).commitAllowingStateLoss();
+				// getSupportFragmentManager()
+				// .beginTransaction()
+				// .add(R.id.realtabcontent, fragmentList,
+				// MusicCategoryPlaylistTab.TAG)
+				// .hide(fragmentList).commitAllowingStateLoss();
 			}
 		}).start();
-		
 
 		allMusicBtn = (TextView) findViewById(R.id.music_category_all);
 		allMusicBtn.setOnClickListener(new OnClickListener() {
@@ -116,39 +161,86 @@ public class MusicCategoryActivity extends FragmentActivity {
 	}
 
 	private void selectorFragment(int i) {
+
 		if (null == fragmentAll) {
 			fragmentAll = new MusicCategoryAllTab();
-			getSupportFragmentManager().beginTransaction()
-			.add(R.id.realtabcontent, fragmentAll, MusicCategoryAllTab.TAG).commitAllowingStateLoss();
+			// myTransaction.add(R.id.realtabcontent, fragmentAll,
+			// MusicCategoryAllTab.TAG).hide(fragmentAll);
 		}
+
 		if (null == fragmentSpecial) {
 			fragmentSpecial = new MusicCategorySpecialTab();
-			getSupportFragmentManager()
-			.beginTransaction()
-			.add(R.id.realtabcontent, fragmentSpecial,
-					MusicCategorySpecialTab.TAG).commitAllowingStateLoss();
+			// myTransaction.add(R.id.realtabcontent, fragmentSpecial,
+			// MusicCategorySpecialTab.TAG).hide(fragmentSpecial);
 		}
 		if (null == fragmentList) {
 			fragmentList = new MusicCategoryPlaylistTab();
-			getSupportFragmentManager()
-			.beginTransaction()
-			.add(R.id.realtabcontent, fragmentList,
-					MusicCategoryPlaylistTab.TAG).commitAllowingStateLoss();
+			// myTransaction.add(R.id.realtabcontent, fragmentList,
+			// MusicCategoryPlaylistTab.TAG).hide(fragmentList);
 		}
 
-		getSupportFragmentManager().beginTransaction().hide(fragmentAll).commitAllowingStateLoss();
-		getSupportFragmentManager().beginTransaction().hide(fragmentSpecial).commitAllowingStateLoss();
-		getSupportFragmentManager().beginTransaction().hide(fragmentList).commitAllowingStateLoss();
-		
-		
+		showFragment(i);
 
+	}
+
+	private void showFragment(int i) {
+		FragmentTransaction myTransaction = getSupportFragmentManager()
+				.beginTransaction();
 		if (1 == i) {
-			getSupportFragmentManager().beginTransaction().show(fragmentAll).commitAllowingStateLoss();
+
+			fragmentAll = getSupportFragmentManager().findFragmentByTag(
+					MusicCategoryAllTab.TAG);
+			if (null == fragmentAll) {
+				fragmentAll = new MusicCategoryAllTab();
+				myTransaction.add(R.id.realtabcontent, fragmentAll,
+						MusicCategoryAllTab.TAG);
+			}
+			myTransaction.show(fragmentAll);
+
+			if (fragmentSpecial.isVisible()) {
+				myTransaction.hide(fragmentSpecial);
+			}
+
+			if (fragmentList.isVisible()) {
+				myTransaction.hide(fragmentList);
+			}
+
 		} else if (2 == i) {
-			getSupportFragmentManager().beginTransaction().show(fragmentSpecial).commitAllowingStateLoss();
+
+			fragmentSpecial = getSupportFragmentManager().findFragmentByTag(
+					MusicCategorySpecialTab.TAG);
+			if (null == fragmentSpecial) {
+				fragmentSpecial = new MusicCategorySpecialTab();
+				myTransaction.add(R.id.realtabcontent, fragmentSpecial,
+						MusicCategorySpecialTab.TAG);
+			}
+			myTransaction.show(fragmentSpecial);
+
+			if (fragmentAll.isVisible()) {
+				myTransaction.hide(fragmentAll);
+			}
+			if (fragmentList.isVisible()) {
+				myTransaction.hide(fragmentList);
+			}
 		} else if (3 == i) {
-			getSupportFragmentManager().beginTransaction().show(fragmentList).commitAllowingStateLoss();
+
+			fragmentList = getSupportFragmentManager().findFragmentByTag(
+					MusicCategoryPlaylistTab.TAG);
+			if (null == fragmentList) {
+				fragmentList = new MusicCategoryPlaylistTab();
+				myTransaction.add(R.id.realtabcontent, fragmentList,
+						MusicCategoryPlaylistTab.TAG);
+			}
+			myTransaction.show(fragmentList);
+
+			if (fragmentAll.isVisible()) {
+				myTransaction.hide(fragmentAll);
+			}
+			if (fragmentSpecial.isVisible()) {
+				myTransaction.hide(fragmentSpecial);
+			}
 		}
+		myTransaction.commitAllowingStateLoss();
 	}
 
 	private void initEvent() {

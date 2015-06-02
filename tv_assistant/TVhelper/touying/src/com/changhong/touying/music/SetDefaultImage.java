@@ -4,12 +4,15 @@ package com.changhong.touying.music;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.changhong.common.system.MyApplication;
 import com.changhong.touying.R;
+import com.changhong.touying.activity.MusicCategoryActivity;
 import com.changhong.touying.tab.MusicCategoryAllTab;
 import com.changhong.touying.tab.MusicCategoryPlaylistTab;
 import com.changhong.touying.tab.MusicCategorySpecialTab;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -38,16 +41,48 @@ public class SetDefaultImage {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				Bitmap bitmap = MediaUtil.getArtwork(context,
+				final Bitmap bitmap = MediaUtil.getArtwork(context,
 						music.getId(), music.getArtistId(),
 						true, false);
+				
 				if (bitmap != null && iv != null) {
-					iv.setImageBitmap(bitmap);
-					iv.setScaleType(ImageView.ScaleType.FIT_XY);
+//					Activity activity=(Activity)iv.getContext();
+//					activity.runOnUiThread(new UpdateUI(iv, bitmap));
+					
+					iv.post(new Runnable() {
+						
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							iv.setImageBitmap(bitmap);
+						}
+					});
 				}
 				DiskCacheFileManager.saveSmallImage(bitmap,
 						music.getPath());
+				
+				
+				
 			}
 		});
 	}
+	
+	private class UpdateUI extends Thread{
+		private ImageView iv;
+		private Bitmap bitmap;
+		public UpdateUI(ImageView iv,Bitmap bitmap){
+			this.iv=iv;
+			this.bitmap=bitmap;
+		}
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			super.run();
+			iv.setImageBitmap(bitmap);
+			
+		}
+		
+	}
+	
 }

@@ -48,7 +48,7 @@ public class MediaUtil {
 		for (int i = 0; i < cursor.getCount(); i++) {
 			cursor.moveToNext();
 			Music music = new Music();
-			int id = (int)cursor.getLong(cursor
+			long id = cursor.getLong(cursor
 					.getColumnIndex(MediaStore.Audio.Media._ID));	//音乐id
 			String title = cursor.getString((cursor	
 					.getColumnIndex(MediaStore.Audio.Media.TITLE))); // 音乐标题
@@ -58,7 +58,7 @@ public class MediaUtil {
 					.getColumnIndex(MediaStore.Audio.Media.ALBUM));	//专辑
 			String displayName = cursor.getString(cursor
 					.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME));
-			int albumId = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+			long albumId = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 			int duration = (int)cursor.getLong(cursor
 					.getColumnIndex(MediaStore.Audio.Media.DURATION)); // 时长
 			long size = cursor.getLong(cursor
@@ -208,7 +208,7 @@ public class MediaUtil {
 	 */
 	public static Bitmap getArtwork(Context context, long song_id, long album_id, boolean allowdefalut, boolean small){
 		if(album_id < 0) {
-			if(song_id < 0) {
+			if(song_id< 0) {
 				Bitmap bm = getArtworkFromFile(context, song_id, -1);
 				if(bm != null) {
 					return bm;

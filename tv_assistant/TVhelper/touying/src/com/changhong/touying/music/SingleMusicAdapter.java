@@ -86,7 +86,7 @@ public class SingleMusicAdapter extends BaseAdapter {
  			}
 
  			final Music music = musics.get(position);
- 			Log.i("mmmm", "SingleMusicAdapter=music=" + music);
+// 			Log.i("mmmm", "SingleMusicAdapter=music=" + music);
  			musicName.setText(music.getTitle());
  			artist.setText(music.getArtist() + "  ["
  					+ DateUtils.getTimeShow(music.getDuration() / 1000) + "]");
@@ -98,7 +98,7 @@ public class SingleMusicAdapter extends BaseAdapter {
  			if (!musicImagePath.equals("")) {
  				MyApplication.imageLoader.displayImage("file://"
  						+ musicImagePath, wapper.defaultImage,
- 						MyApplication.viewOptions);
+ 						MyApplication.musicPicOptions);
  				wapper.defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
  			} else {
  				SetDefaultImage.getInstance()

@@ -1,10 +1,14 @@
 package com.changhong.touying.activity;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +28,11 @@ import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.touying.R;
+import com.changhong.touying.music.MediaUtil;
+import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
+import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 /**
  * Created by Jack Wang
@@ -50,19 +58,19 @@ public class TouYingCategoryActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		/**
 		 * 启动Http服务
          */
         Intent http = new Intent(TouYingCategoryActivity.this, NanoHTTPDService.class);
         startService(http);
-
         initMedia();
 
 		initView();
 
 		initEvent();
 	}
+
 
     private void initMedia() {
         /**

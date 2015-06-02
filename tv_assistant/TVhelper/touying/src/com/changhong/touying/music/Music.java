@@ -7,23 +7,23 @@ import java.io.Serializable;
  */
 public class Music implements Serializable {
 
-    private int id;// 歌曲ID
+    private long id;// 歌曲ID
 
     private String title; // 歌曲名称
 
     private String path;// 歌曲路径
 
-    private int albumId;//专辑ID 
+    private long albumId;//专辑ID 
 
     private String artist;// 歌手名称
 
-    private int artistId;
+    private long artistId;
 
     private int duration;// 歌曲时长
 
     private long createTime;
 
-    public Music(int id, String title, String path, int albumId, String artist, int artistId, int duration, long createTime) {
+    public Music(long id, String title, String path, long albumId, String artist, long artistId, int duration, long createTime) {
         this.id = id;
         this.title = title;
         this.path = path;
@@ -37,11 +37,11 @@ public class Music implements Serializable {
     public Music(){
     	
     }
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,11 +61,11 @@ public class Music implements Serializable {
         this.path = path;
     }
 
-    public int getAlbumId() {
+    public long getAlbumId() {
         return albumId;
     }
 
-    public void setAlbumId(int albumId) {
+    public void setAlbumId(long albumId) {
         this.albumId = albumId;
     }
 
@@ -77,11 +77,11 @@ public class Music implements Serializable {
         this.artist = artist;
     }
 
-    public int getArtistId() {
+    public long getArtistId() {
         return artistId;
     }
 
-    public void setArtistId(int artistId) {
+    public void setArtistId(long artistId) {
         this.artistId = artistId;
     }
 
