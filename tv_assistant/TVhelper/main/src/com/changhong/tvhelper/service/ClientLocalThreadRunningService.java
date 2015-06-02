@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.*;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.WindowManager;
+
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
@@ -20,6 +22,11 @@ import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.WebUtils;
+import com.changhong.touying.activity.TouYingCategoryActivity;
+import com.changhong.touying.music.MediaUtil;
+import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicProvider;
+import com.changhong.touying.music.SetDefaultImage;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.activity.TVChannelPlayActivity;
@@ -28,6 +35,7 @@ import com.changhong.tvhelper.activity.TVChannelShouCangShowActivity;
 import com.changhong.tvhelper.activity.TVRemoteControlActivity;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
+
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -61,7 +69,7 @@ public class ClientLocalThreadRunningService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        initData();
         initViewEvent();
 
         initThreads();
@@ -468,4 +476,26 @@ public class ClientLocalThreadRunningService extends Service {
         }
 
     }
+    
+	private void initData() {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				MusicProvider provider = new MusicProvider(ClientLocalThreadRunningService.this);
+				List<Music> musics = (List<Music>) provider.getList();
+				SetDefaultImage.getInstance().setContext(ClientLocalThreadRunningService.this);
+				for (int i = 0; i < musics.size(); i++) {
+					Music music=musics.get(i);
+					
+					SetDefaultImage.getInstance().startExecutor(null, music);
+//					Bitmap bitmap = MediaUtil.getArtwork(ClientLocalThreadRunningService.this, music.getId(),
+//							music.getArtistId(), true, false);
+//					DiskCacheFileManager.saveSmallImage(bitmap, music.getPath());
+				}
+			}
+		}).start();
+		
+	}
 }
