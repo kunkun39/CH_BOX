@@ -364,25 +364,29 @@ public class TVChannelPlayActivity extends Activity {
 	}
 
 	private void initDialog() {
-		dd = new ProgressDialog(TVChannelPlayActivity.this);
-		dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		dd.setMessage("正在拼命为您加载视频数据...");
-		dd.setCanceledOnTouchOutside(false);
-		dd.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode,
-					KeyEvent event) {
-				if (KeyEvent.KEYCODE_BACK == keyCode) {
-					if (dd.isShowing()) {
-						dd.dismiss();
-					}
-					finish();
-				}
-				return false;
-			}
-		});
-		dd.show();
-	}
+        try {
+            dd = new ProgressDialog(TVChannelPlayActivity.this);
+            dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            dd.setMessage("正在拼命为您加载视频数据...");
+            dd.setCanceledOnTouchOutside(false);
+            dd.setOnKeyListener(new OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode,
+                                     KeyEvent event) {
+                    if (KeyEvent.KEYCODE_BACK == keyCode) {
+                        if (dd.isShowing()) {
+                            dd.dismiss();
+                        }
+                        finish();
+                    }
+                    return false;
+                }
+            });
+            dd.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void setWidgetVisible(int i) {
 		setMyAnimation(i);
