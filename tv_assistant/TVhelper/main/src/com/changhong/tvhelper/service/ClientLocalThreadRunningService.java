@@ -452,19 +452,19 @@ public class ClientLocalThreadRunningService extends Service {
                     List<OrderProgram> orderPrograms = channelService.findOrderProgramsByWeek(weekIndexName);
                     for (OrderProgram orderProgram : orderPrograms) {
 
-//                        if (orderProgram.getProgramStartTime().compareTo(currentTime) == 0) {
-//                            channelService.deleteOrderProgram(orderProgram.getProgramName(), date);
+                        if (orderProgram.getProgramStartTime().compareTo(currentTime) == 0) {
+                            channelService.deleteOrderProgram(orderProgram.getProgramName(), date);
                             //更新收藏界面
-//                            if (TVChannelShouCangShowActivity.mHandler != null) {
-//                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
-//                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(0);
-//                            }
+                            if (TVChannelShouCangShowActivity.mHandler != null) {
+                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
+                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(0);
+                            }
                             Log.e("OrderProgram", orderProgram.getProgramStartTime());
                             Message msg = new Message();
                             msg.what = 0;
                             msg.obj = orderProgram;
                             handler.sendMessage(msg);
-//                        }
+                        }
                     }
 
                     //休息30S
