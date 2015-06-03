@@ -3,11 +3,14 @@ package com.changhong.touying.activity;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -71,17 +74,46 @@ public class TouYingCategoryActivity extends Activity {
 		initEvent();
 	}
 
+	
+	
 
-    private void initMedia() {
+    @Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+    	unbindService(conn);
+		super.onDestroy();
+	}
+
+    ServiceConnection conn=new ServiceConnection() {
+		
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+
+
+	private void initMedia() {
         /**
          * 通知系统媒体去更新媒体库
          */
         String[] types = {"video/3gpp", "video/x-msvideo", "video/mp4", "video/mpeg", "video/quicktime",
                 "audio/x-wav", "audio/x-pn-realaudio", "audio/x-ms-wma", "audio/x-ms-wmv", "audio/x-mpeg", "image/jpeg", "image/png"};
-        MediaScannerConnection.scanFile(this, new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()}, types, null);
-        startService(new Intent(this, M3UListProviderService.class));
+        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()}, types, null);
+        
+        Intent intent=new Intent(getApplicationContext(), M3UListProviderService.class);
+        bindService(intent, conn, BIND_AUTO_CREATE);
     }
 
+    
+    
 	private void initView() {
 		setContentView(R.layout.activity_touying_category);
 //		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
