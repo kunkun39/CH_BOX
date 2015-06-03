@@ -74,13 +74,13 @@ public class MusicCategoryPlaylistTab extends Fragment{
         MusicService musicService = new MusicServiceImpl(getActivity());
         musicService.findAllMusicLrc();   
         getActivity().sendBroadcast(new Intent(M3UListProviderService.UPDATE_INTENT));
-        
+        loadPlayLists();
     }
 
     @Override
     public void onStart() {
     	super.onStart();
-    	loadPlayLists();
+    	
     }
     
     @Override
@@ -116,8 +116,7 @@ public class MusicCategoryPlaylistTab extends Fragment{
     
     @Override
 	public void onResume() {
-        super.onResume();
-        loadPlayLists();
+        super.onResume();        
         updateView();        
     }
     
