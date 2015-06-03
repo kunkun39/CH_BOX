@@ -50,7 +50,7 @@ public class SystemUtils {
 
     public final static boolean isScreenLocked(Context c) {
         android.app.KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(c.KEYGUARD_SERVICE);
-        return !mKeyguardManager.inKeyguardRestrictedInputMode();
+        return mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 
 }
