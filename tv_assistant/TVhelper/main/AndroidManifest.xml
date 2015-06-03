@@ -74,12 +74,12 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity 
-	android:name=".activity.TVChannelPlayActivity" 
-	android:theme="@android:style/Theme.NoTitleBar" 
-	android:screenOrientation="landscape"/>
+            android:name=".activity.TVChannelPlayActivity"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="landscape"/>
         <activity android:name=".activity.TVChannelShowActivity" 
-	android:theme="@android:style/Theme.NoTitleBar" 
-	android:screenOrientation="portrait"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"  android:taskAffinity=""/>
 
         <activity android:name=".activity.TVChannelSearchActivity" android:screenOrientation="portrait"/>
 

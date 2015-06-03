@@ -1,5 +1,8 @@
 package com.changhong.common.utils;
 
+import android.app.KeyguardManager;
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -45,38 +48,9 @@ public class SystemUtils {
         return result;
     }
 
-    public static String getCpuName() {
-        FileReader fr = null;
-        BufferedReader br = null;
-        try {
-            fr = new FileReader("/proc/cpuinfo");
-            br = new BufferedReader(fr);
-            String text = br.readLine();
-            String[] array = text.split(":\\s+", 2);
-            for (int i = 0; i < array.length; i++) {
-            }
-            return array[1];
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fr != null)
-                try {
-                    fr.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            if (br != null)
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-        }
-        return null;
+    public final static boolean isScreenLocked(Context c) {
+        android.app.KeyguardManager mKeyguardManager = (KeyguardManager) c.getSystemService(c.KEYGUARD_SERVICE);
+        return !mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 
 }

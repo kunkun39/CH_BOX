@@ -179,9 +179,11 @@ public class TVChannelPlayActivity extends Activity {
 		screenHeight = metric.heightPixels; // 屏幕高度（像素）
 
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		mMaxVolume = mAudioManager
-				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		mMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 
+        /**
+         * handle，用于外部切换频道是使用
+         */
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {

@@ -18,10 +18,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.WebUtils;
+import com.changhong.common.utils.*;
 import com.changhong.touying.activity.TouYingCategoryActivity;
 import com.changhong.touying.music.MediaUtil;
 import com.changhong.touying.music.Music;
@@ -29,10 +26,7 @@ import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.music.SetDefaultImage;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.activity.TVChannelPlayActivity;
-import com.changhong.tvhelper.activity.TVChannelProgramShowActivity;
-import com.changhong.tvhelper.activity.TVChannelShouCangShowActivity;
-import com.changhong.tvhelper.activity.TVRemoteControlActivity;
+import com.changhong.tvhelper.activity.*;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
@@ -109,6 +103,7 @@ public class ClientLocalThreadRunningService extends Service {
     public void initViewEvent() {
         manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         powerManager = (PowerManager) this.getSystemService(this.POWER_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
         handler = new Handler() {
             @Override
@@ -116,40 +111,28 @@ public class ClientLocalThreadRunningService extends Service {
                 switch (msg.what) {
                     case 0:
                         final OrderProgram program = (OrderProgram) msg.obj;
-                        //判断是否锁屏
-                        if (!powerManager.isScreenOn()) {
+                        //判断是否锁屏还有锁屏但是还亮着的
+                        if (!powerManager.isScreenOn() || SystemUtils.isScreenLocked(ClientLocalThreadRunningService.this)) {
                             try {
                                 Intent intent = new Intent();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("channelname", program.getChannelName());
-                                String index = program.getChannelIndex();
-                                int channelSize = ClientSendCommandService.channelData.size();
-                                for (int i = 0; i < channelSize; i++) {
-                                    Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                    String channelIndex = (String) map.get("channel_index");
-                                    if (index.equals(channelIndex)) {
-                                        TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
-                                        Log.e("TVChannelPlayActivity.path",TVChannelPlayActivity.path);
-                                    }
-                                }
-                                intent.putExtras(bundle);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
-                                notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelShowActivity.class);
+
                                 pendingIntent = PendingIntent.getActivity(ClientLocalThreadRunningService.this, 0, intent, 0);
                                 notification = new Notification();
                                 notification.icon = R.drawable.applogo;
-                                notification.tickerText = "电视助手：您有预约节目已经开始";
+                                notification.flags |= Notification.FLAG_AUTO_CANCEL;
+                                notification.tickerText = "电视助手：您有预约节目";
                                 notification.defaults = Notification.DEFAULT_SOUND;
-                                notification.setLatestEventInfo(ClientLocalThreadRunningService.this, "电视助手：您有预约节目已经开始", program.getProgramName(), pendingIntent);
+                                notification.setLatestEventInfo(ClientLocalThreadRunningService.this, "电视助手：您有预约节目", program.getChannelName() + "-" + program.getProgramName(), pendingIntent);
                                 notificationManager.notify(0, notification);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
 
                         } else {
-                            try {
 
+                            try {
                                 ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                 final String shortClassName = info.topActivity.getClassName();
 
@@ -159,6 +142,9 @@ public class ClientLocalThreadRunningService extends Service {
                                         .setPositiveButton("播放", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                /**
+                                                 * 如果是正在播放，就直接切换频道，如果没有播放，就跳转到播放页面
+                                                 */
                                                 if ("com.changhong.tvhelper.activity.TVChannelPlayActivity".equals(shortClassName)) {
                                                     Message message = new Message();
                                                     message.obj = program.getChannelName();
@@ -468,23 +454,23 @@ public class ClientLocalThreadRunningService extends Service {
                     List<OrderProgram> orderPrograms = channelService.findOrderProgramsByWeek(weekIndexName);
                     for (OrderProgram orderProgram : orderPrograms) {
 
-//                        if (orderProgram.getProgramStartTime().compareTo(currentTime) == 0) {
-//                            channelService.deleteOrderProgram(orderProgram.getProgramName(), date);
+                        if (orderProgram.getProgramStartTime().compareTo(currentTime) == 0) {
+                            channelService.deleteOrderProgram(orderProgram.getProgramName(), date);
                             //更新收藏界面
-//                            if (TVChannelShouCangShowActivity.mHandler != null) {
-//                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
-//                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(0);
-//                            }
+                            if (TVChannelShouCangShowActivity.mHandler != null) {
+                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
+                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(0);
+                            }
                             Log.e("OrderProgram", orderProgram.getProgramStartTime());
                             Message msg = new Message();
                             msg.what = 0;
                             msg.obj = orderProgram;
                             handler.sendMessage(msg);
-//                        }
+                        }
                     }
 
                     //休息30S
-                    Thread.sleep(1000 * 60);
+                    Thread.sleep(1000 * 30);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
