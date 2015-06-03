@@ -78,6 +78,11 @@ public class TVSocketControllerService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        /**
+         * 系统默认启动是不启动activity, 而是启动Service, 所以Service也需要从新读一下名称
+         */
+        MainActivity.CH_BOX_NAME = MainActivity.getBoxName(TVSocketControllerService.this);
+
         DeviceInfo.CollectInfo();
         DeviceModel = DeviceInfo.DeviceModel;
 

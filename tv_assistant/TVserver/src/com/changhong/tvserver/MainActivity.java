@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
         chboxName = (EditText) findViewById(R.id.ch_box_name);
         chboxSave = (Button) findViewById(R.id.ch_box_save);
 
-        CH_BOX_NAME = getBoxName();
+        CH_BOX_NAME = getBoxName(MainActivity.this);
         chboxName.setText(CH_BOX_NAME);
 
         Intent intent = new Intent(MainActivity.this, TVSocketControllerService.class);
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
                     try {
                         if (!CH_BOX_NAME.equals(content)) {
                             content = content.trim();
-                            saveBoxName(content);
+                            saveBoxName(MainActivity.this, content);
                             CH_BOX_NAME = content;
                         }
                         Toast.makeText(MainActivity.this, "保存成功!", 3000).show();
@@ -65,16 +65,16 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void saveBoxName(String name) {
-        SharedPreferences preferences = MainActivity.this.getSharedPreferences("changhong_box_name", Context.MODE_PRIVATE);
+    public static void saveBoxName(Context context, String name) {
+        SharedPreferences preferences = context.getSharedPreferences("changhong_box_name", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putString("CH_BOX_NAME", name);
         editor.commit();
     }
 
-    private String getBoxName() {
-        SharedPreferences preferences = MainActivity.this.getSharedPreferences("changhong_box_name", Context.MODE_PRIVATE);
+    public static String getBoxName(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences("changhong_box_name", Context.MODE_PRIVATE);
         return preferences.getString("CH_BOX_NAME", "客    厅");
     }
 

@@ -81,7 +81,9 @@ public class TVChannelPlayActivity extends Activity {
 	 */
 	public static VideoView mVideoView;
 	// private MediaController controller;
-	private int width, height;
+
+    public static Handler handler;
+    private int width, height;
 
 	/**
 	 * 
@@ -179,6 +181,18 @@ public class TVChannelPlayActivity extends Activity {
 		mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		mMaxVolume = mAudioManager
 				.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                String channelname = (String) msg.obj;
+                setPath(channelname);
+                initProgramInfo(channelname);
+                if (!dd.isShowing()) {
+                    dd.show();
+                }
+            }
+        };
 
 		initView();
 
