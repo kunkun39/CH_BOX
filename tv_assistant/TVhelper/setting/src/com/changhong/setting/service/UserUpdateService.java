@@ -78,10 +78,10 @@ public class UserUpdateService {
     /**
      * JSON和APK服务器URL
      */
-   public final static String JSON_URL = "http://192.168.0.101:8080/update/download/update.json";
-   public final static String UPDATE_URL = "http://192.168.0.101:8080/update/download/tvhelper.apk";
-//    public final static String JSON_URL = "http://www.ottserver.com:8080/update/download/update.json";
-//    public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/download/tvhelper.apk";
+//   public final static String JSON_URL = "http://192.168.0.101:8080/update/download/update.json";
+//   public final static String UPDATE_URL = "http://192.168.0.101:8080/update/download/tvhelper.apk";
+    public final static String JSON_URL = "http://www.ottserver.com:8080/update/download/update.json";
+    public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/download/tvhelper.apk";
 
     /**
      * 更新信息和版本
