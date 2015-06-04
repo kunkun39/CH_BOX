@@ -78,7 +78,7 @@ public class TVHelperMainActivity extends Activity {
     /**
      * message handler
      */
-    private Handler mhandler = null;
+    public static Handler mhandler = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +186,6 @@ public class TVHelperMainActivity extends Activity {
         clients.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ipAdapter.notifyDataSetChanged();
                 ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
                 String boxName = ClientSendCommandService.getCurrentConnectBoxName();
                 ClientSendCommandService.titletxt = boxName;
@@ -214,6 +213,9 @@ public class TVHelperMainActivity extends Activity {
             public void handleMessage(Message msg1) {
                 switch (msg1.what) {
                     case 1:
+                        if (ipAdapter != null) {
+                            ipAdapter.notifyDataSetChanged();
+                        }
                         break;
                     case 2:
                         finish();

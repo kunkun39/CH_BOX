@@ -35,6 +35,7 @@ import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.*;
 import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
+import com.changhong.tvhelper.activity.TVHelperMainActivity;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 public class ClientGetCommandService extends Service implements ClientSocketInterface {
@@ -151,7 +152,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
 
                         if (StringUtils.hasLength(serverAddress)) {
-                            Log.w(TAG, serverAddress);
+                            Log.w("COMMAND_CLEAN", (ClientSendCommandService.serverIP == null ? "" : ClientSendCommandService.serverIP) + "-" + serverAddress);
 
                             if (!ClientSendCommandService.serverIpList.contains(serverAddress)) {
                                 ClientSendCommandService.serverIpList.add(serverAddress);
@@ -166,16 +167,17 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                      * 更新频道和应用列表
                                      */
                                     ClientSendCommandService.handler.sendEmptyMessage(2);
+                                    ClientSendCommandService.titletxt = boxName;
+                                    time = System.currentTimeMillis();
+                                    ClientSendCommandService.handler.sendEmptyMessage(2);
+
+                                    /**
+                                     * 更细所有的频道TITLE
+                                     */
+                                    mHandler.sendEmptyMessage(0);
+                                } else {
+                                    //如果现在的IP已经选择了，那么就只做加入操作
                                 }
-                                ClientSendCommandService.titletxt = boxName;
-                                time = System.currentTimeMillis();
-                                ClientSendCommandService.handler.sendEmptyMessage(2);
-
-                                /**
-                                 * 更细所有的频道TITLE
-                                 */
-                                mHandler.sendEmptyMessage(0);
-
                             } else if (ClientSendCommandService.serverIP != null && serverAddress.equals(ClientSendCommandService.serverIP)) {
                                 /**
                                  * 更新当前server的活动时间
@@ -303,6 +305,13 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
         ClientSendCommandService.serverIP = null;
         ClientSendCommandService.titletxt = "未连接";
         mHandler.sendEmptyMessage(0);
+
+        /**
+         * 通知主界面更新IP
+         */
+        if (TVHelperMainActivity.mhandler != null) {
+            TVHelperMainActivity.mhandler.sendEmptyMessage(1);
+        }
         time = 0l;
     }
 

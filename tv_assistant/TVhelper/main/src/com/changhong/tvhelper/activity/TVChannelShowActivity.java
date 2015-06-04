@@ -296,20 +296,12 @@ public class TVChannelShowActivity extends Activity {
         clients.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ipAdapter.notifyDataSetChanged();
-
-                String ip = ClientSendCommandService.serverIpList.get(arg2);;
-                if (!ip.equals(ClientSendCommandService.serverIP)) {
-                	title.setText(ClientSendCommandService.getCurrentConnectBoxName());
-                    ClientSendCommandService.handler.sendEmptyMessage(2);
-                    while (ClientSendCommandService.searchChannelFinished) {
-                        mHandler.sendEmptyMessage(0);
-                    }
-				}                 
-                
+                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
+                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
+                ClientSendCommandService.titletxt = boxName;
+                title.setText(boxName);
+                ClientSendCommandService.handler.sendEmptyMessage(2);
                 clients.setVisibility(View.GONE);
-
-                
             }
         });
         list.setOnClickListener(new OnClickListener() {
