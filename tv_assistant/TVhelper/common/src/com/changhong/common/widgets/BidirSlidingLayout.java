@@ -242,7 +242,7 @@ public class BidirSlidingLayout extends RelativeLayout implements
 	 */
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		super.onLayout(changed, l, t, r, b);
+		 super.onLayout(changed, l, t, r, b);
 		if (changed) {
 			// 获取左侧菜单布局对象
 			// leftMenuLayout = getChildAt(0);
@@ -253,11 +253,12 @@ public class BidirSlidingLayout extends RelativeLayout implements
 			rightMenuLayoutParams = (MarginLayoutParams) rightMenuLayout
 					.getLayoutParams();
 			// 获取内容布局对象左侧布局
-			contentLayout = getChildAt(1);
-			contentLayoutParams = (RelativeLayout.LayoutParams) contentLayout
-					.getLayoutParams();
-			contentLayoutParams.width = screenWidth;
-			contentLayout.setLayoutParams(contentLayoutParams);
+			// yves.yang Removed
+			//contentLayout = getChildAt(1);
+			//contentLayoutParams = (RelativeLayout.LayoutParams) contentLayout
+			//		.getLayoutParams();
+			//contentLayoutParams.width = screenWidth;
+			//contentLayout.setLayoutParams(contentLayoutParams);
 
 			// rightMenuLayout=inflate(getContext(), R.layout.sidemenu, null);
 			LinearLayout menu_controller = (LinearLayout) findViewById(R.id.menu_controller);
