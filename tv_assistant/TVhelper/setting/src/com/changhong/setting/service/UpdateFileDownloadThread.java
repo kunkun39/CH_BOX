@@ -104,6 +104,7 @@ public class UpdateFileDownloadThread extends Thread {
             //异常处理
             preferenceService.saveDownloadException(true);
             UserUpdateService.THREAD_DOWNLOAD_EXCEPTION  = true;
+            UserUpdateService.downloading=false;
         } finally {
             try {
                 if (downloadConnection != null) {
