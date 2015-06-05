@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="com.changhong.system.domain.column.Column" table="movie_column">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="columnID" column="column_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="columnTypeCode" column="column_type_code" insert="true" update="true" type="java.lang.String"/>
+        <property name="type" column="column_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="parentID" column="column_parent_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="columnName" column="column_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="alias" column="column_alias" insert="true" update="true" type="java.lang.String"/>
+        <property name="describe" column="column_describe" insert="true" update="true" type="java.lang.String"/>
+        <property name="display" column="column_display" insert="true" update="true" type="java.lang.String"/>
+        <property name="rank" column="column_rank" insert="true" update="true" type="java.lang.String"/>
+        <property name="url" column="column_url" insert="true" update="true" type="java.lang.String"/>
+        <property name="urlType" column="column_url_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="updateTime" column="column_update_time" insert="true" update="true" type="java.lang.String"/>
+        <property name="relevantChargeMode" column="column_relevant_chargemode" insert="true" update="true" type="java.lang.String"/>
+        <property name="productID" column="column_product_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="resourceType" column="column_resource_type" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+</hibernate-mapping>

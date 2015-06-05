@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+        <property name="defaultLocale" value="en"/>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+    </bean>
+
+    <bean class="com.changhong.common.web.handler.ApplicationExceptionHandler"/>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="order" value="0"/>
+        <property name="mappings">
+            <props>
+                <prop key="/error.html">errorHandleController</prop>
+                <prop key="/backend/error.html">errorHandleController</prop>
+                <prop key="/backend/index.html">updateLoginController</prop>
+                <prop key="/backend/dashboard.html">dashboardController</prop>
+
+                <!--system part-->
+                <prop key="/backend/useroverview.html">userManagementController</prop>
+                <prop key="/backend/userform.html">userFormController</prop>
+                <prop key="/backend/userchangeenable.html">userChangeEnableController</prop>
+                <prop key="/backend/userchangepassword.html">userChangePasswordController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="errorHandleController" class="com.changhong.common.web.contorller.ApplicationExceptionController"/>
+
+    <bean id="updateLoginController" class="com.changhong.system.web.controller.BackendLoginController"/>
+
+    <bean id="dashboardController" class="com.changhong.system.web.controller.DashboardController"/>
+
+    <!--system part-->
+
+    <bean id="userManagementController" class="com.changhong.system.web.controller.UserManagementController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userFormController" class="com.changhong.system.web.controller.UserFormController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userChangeEnableController" class="com.changhong.system.web.controller.UserChangeEnableController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="userChangePasswordController" class="com.changhong.system.web.controller.UserChangePasswordController">
+        <property name="userService" ref="userService"/>
+    </bean>
+
+</beans>

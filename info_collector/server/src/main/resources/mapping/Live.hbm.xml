@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="com.changhong.system.domain.live.LiveChannel" table="live_channel">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+        <property name="channelID" column="channel_id" insert="true" update="true" type="java.lang.Integer"/>
+        <property name="channelName" column="channel_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbTSID" column="dvb_ts_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbServiceID" column="dvb_Service_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbLogicChannelID" column="dvb_logicchannel_id" insert="true" update="true"
+                  type="java.lang.String"/>
+        <property name="dvbVideoCodec" column="dvb_videocodec" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbAudioCodec" column="dvb_audiocodec" insert="true" update="true" type="java.lang.String"/>
+        <property name="dec" column="channel_dec" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbBitRate" column="dvb_bitrate" insert="true" update="true" type="java.lang.String"/>
+        <property name="dvbResolution" column="dvb_resolution" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelTypeID" column="channel_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelType" column="channel_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelIcon" column="channel_icon" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelImage" column="channel_image" insert="true" update="true" type="java.lang.String"/>
+        <property name="feeType" column="fee_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="videoType" column="video_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="videoCodeInfo" column="video_code_info" insert="true" update="true" type="java.lang.String"/>
+        <property name="audioCodeInfo" column="audio_code_info" insert="true" update="true" type="java.lang.String"/>
+        <property name="muxInfo" column="mux_info" insert="true" update="true" type="java.lang.String"/>
+        <property name="resolutionInfo" column="resolution_info" insert="true" update="true" type="java.lang.String"/>
+        <property name="otherInfoArray" column="other_info_array" insert="true" update="true" type="java.lang.String"/>
+        <property name="playUrl" column="play_url" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.live.LiveProgram" table="live_program">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+        <property name="programID" column="program_id" insert="true" update="true" type="java.lang.Integer"/>
+        <property name="programName" column="program_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelID" column="channel_id" insert="true" update="true" type="java.lang.Integer"/>
+        <property name="channelName" column="channel_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventDate" column="event_date" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventDateID" column="event_date_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventType" column="event_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="playTime" column="play_time" insert="true" update="true" type="java.lang.String"/>
+        <property name="endTime" column="end_time" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventDesc" column="event_desc" insert="true" update="true" type="java.lang.String"/>
+        <property name="videoType" column="video_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="viewLevel" column="view_level" insert="true" update="true" type="java.lang.String"/>
+        <property name="playUrl" column="play_url" insert="true" update="true" type="java.lang.String"/>
+        <property name="bitRateInfo" column="bit_rate_info" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventImageUrl" column="event_image_url" insert="true" update="true" type="java.lang.String"/>
+        <property name="assertID" column="assert_id" insert="true" update="true" type="java.lang.String"/>
+
+        <property name="contentProviderID" column="content_provider_id" insert="true" update="true" type="java.lang.String"/>
+
+        <property name="localEntryUID" column="local_entry_uid" insert="true" update="true" type="java.lang.String"/>
+        <property name="productOfferingUID" column="product_offering_uid" insert="true" update="true" type="java.lang.String"/>
+
+        <many-to-one name="movie" column="movieinfo_id" class="com.changhong.system.domain.movie.MovieInfo" lazy="proxy" cascade="all" insert="true" update="true"/>
+    </class>
+
+
+</hibernate-mapping>

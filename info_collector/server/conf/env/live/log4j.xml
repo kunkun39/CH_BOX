@@ -11,7 +11,7 @@
 	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
 		<param name="MaxBackupIndex" value="1" />
 		<param name="MaxFileSize" value="10000000" />
-		<param name="File" value="../logs/ott_gh.log" />
+		<param name="File" value="../logs/info_collector.log" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="[%d{ISO8601}] %p %c: - %m\n" />
 		</layout>

@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="com.changhong.system.domain.movie.MovieInfo" table="movie_info">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+        <property name="recommendPage" column="recommend_page" insert="true" update="true" type="java.lang.String"/>
+        <property name="recommend" column="recommend" insert="true" update="true" type="java.lang.Boolean"/>
+        <property name="columnID" column="column_id" insert="true" update="true" type="java.lang.String"/>
+
+        <property name="movieID" column="movie_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="movieName" column="movie_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="movieAliasName" column="movie_alias_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="type" column="movie_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="typeID" column="movie_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="dramaType" column="drama_type" insert="true" update="true" type="java.lang.String"/>
+        <property name="dramaTypeID" column="drama_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="area" column="movie_area" insert="true" update="true" type="java.lang.String"/>
+        <property name="areaID" column="movie_area_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="year" column="movie_year" insert="true" update="true" type="java.lang.String"/>
+        <property name="director" column="movie_director" insert="true" update="true" type="java.lang.String"/>
+        <property name="actor" column="movie_actor" insert="true" update="true" type="java.lang.String"/>
+        <property name="host" column="movie_host" insert="true" update="true" type="java.lang.String"/>
+        <property name="station" column="movie_station" insert="true" update="true" type="java.lang.String"/>
+        <property name="author" column="movie_author" insert="true" update="true" type="java.lang.String"/>
+        <property name="runTime" column="movie_runtime" insert="true" update="true" type="java.lang.String"/>
+        <property name="count" column="movie_count" insert="true" update="true" type="java.lang.Integer"/>
+        <property name="summaryShort" column="movie_summaryshort" insert="true" update="true" type="java.lang.String"/>
+        <property name="commentary" column="movie_commentary" insert="true" update="true" type="java.lang.String"/>
+        <property name="tag" column="movie_tag" insert="true" update="true" type="java.lang.String"/>
+        <property name="suggestPrice" column="movie_suggestprice" insert="true" update="true" type="java.lang.String"/>
+        <property name="recommendClass1" column="movie_recommendclass1" insert="true" update="true" type="java.lang.Double"/>
+        <property name="recommendClass2" column="movie_recommendclass2" insert="true" update="true" type="java.lang.Double"/>
+        <property name="recommendClass3" column="movie_recommendclass3" insert="true" update="true" type="java.lang.Double"/>
+        <property name="recommendClass4" column="movie_recommendclass4" insert="true" update="true" type="java.lang.Double"/>
+        <property name="otherInfoArray1" column="movie_otherinfoarray" insert="true" update="true" type="java.lang.String"/>
+
+        <bag name="playInfos" table="play_info" cascade="all" lazy="true" order-by="id asc">
+            <key column="movieinfo_id"/>
+            <one-to-many class="com.changhong.system.domain.movie.PlayInfo"/>
+        </bag>
+
+        <bag name="posters" table="poster_info" cascade="all" lazy="true" order-by="id asc">
+            <key column="movieinfo_id"/>
+            <one-to-many class="com.changhong.system.domain.movie.Poster"/>
+        </bag>
+
+    </class>
+
+    <class name="com.changhong.system.domain.movie.PlayInfo" table="play_info">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="playPlatform" column="play_platform" insert="true" update="true" type="java.lang.String"/>
+        <property name="assetID" column="play_assetid" insert="true" update="true" type="java.lang.String"/>
+        <property name="assetName" column="play_assetname" insert="true" update="true" type="java.lang.String"/>
+        <property name="contentProviderID" column="play_contentproviderid" insert="true" update="true" type="java.lang.String"/>
+        <property name="localEntryUID" column="play_localentryuid" insert="true" update="true" type="java.lang.String"/>
+        <property name="productOfferingUID" column="play_productofferinguid" insert="true" update="true" type="java.lang.String"/>
+        <property name="playUrl" column="play_url" insert="true" update="true" type="java.lang.String"/>
+        <property name="playUrlID" column="play_urlid" insert="true" update="true" type="java.lang.String"/>
+        <property name="playSwfUrl" column="play_swfurl" insert="true" update="true" type="java.lang.String"/>
+        <property name="mainCacheUrl" column="play_maincache_url" insert="true" update="true" type="java.lang.String"/>
+        <property name="series" column="play_series" insert="true" update="true" type="java.lang.String"/>
+        <property name="singlePriceInfo" column="play_singlepriceinfos" insert="true" update="true" type="java.lang.String"/>
+        <property name="copyRightInfo" column="play_copyrightinfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="videoCodecInfo" column="play_videocodecinfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="audioCodecInfo" column="play_audiocodecinfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="muxInfo" column="play_muxInfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="runTimeInfo" column="play_runtimeinfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="resolutionInfo" column="play_resolutioninfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="bitRateInfo" column="play_bitrateinfo" insert="true" update="true" type="java.lang.String"/>
+        <property name="otherInfoArray2" column="play_otherinfoarray" insert="true" update="true" type="java.lang.String"/>
+        <property name="contentProviderIDArray" column="play_contentprovideridarray" insert="true" update="true" type="java.lang.String"/>
+        <property name="seriesArray" column="play_seriesarray" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movie.Poster" table="poster_info">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="posterID" column="poster_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="imageUrl" column="poster_imageurl" insert="true" update="true" type="java.lang.String"/>
+        <property name="aspectRatio" column="poster_aspectratio" insert="true" update="true" type="java.lang.String"/>
+        <property name="series" column="poster_series" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+</hibernate-mapping>

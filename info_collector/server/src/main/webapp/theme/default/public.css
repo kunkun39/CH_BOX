@@ -1,0 +1,191 @@
+html {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background: #ffffff
+}
+
+form, table, img {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    border: 0;
+    vertical-align: middle;
+}
+
+div, td, th, input, select, textarea, span, li, p, a, h1, h2, h3, h4 {
+    font-size: 11px;
+    font-family: Arial,Helvetica,sans-serif;
+    color: black;
+}
+
+ul {
+    margin: 0;
+    padding: 0
+}
+
+a {
+    color: #104d7a;
+    text-decoration: none;
+    font-size: 11px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    outline: none;
+}
+
+a:focus {
+    -moz-outline-style: none;
+}
+
+dl {
+    padding: 0;
+}
+
+dd {
+    margin: 0
+}
+
+table {
+    empty-cells: show;
+}
+
+input {
+    vertical-align: middle;
+}
+
+.list td {
+    height: 30px;
+    padding: 0 4px;
+    color: #515050
+}
+
+.list thead td {
+    background: #dfdbdb;
+    font-weight: bold;
+    color: #5d5c5c
+}
+
+.list tbody tr.odd td {
+    background: #f0efef;
+}
+
+.form table td {
+    padding: 8px 5px;
+}
+
+.form td.title {
+    font-size: 11px;
+    width: 185px;
+    text-align: right;
+}
+
+textarea{
+    border: 1px solid #ddd;
+    background: #ffffff
+}
+
+.form input {
+    height: 23px;
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+    background: #ffffff
+}
+
+.form select {
+    height: 23px;
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+    background: #ffffff
+}
+
+.form .radio{
+    vertical-align: top;
+}
+
+.paging {
+    line-height: 30px;
+    text-align: right;
+}
+
+.search {
+    padding: 5px;
+}
+
+.search span{
+    margin-right: 15px;
+}
+.search span label{
+    margin-right: 10px;
+}
+
+.search input.text {
+    height: 20px;
+    width: 250px;
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+}
+
+.search select.text {
+    height: 26px;
+    width: 250px;
+    border: 1px solid #ddd;
+    padding: 2px 5px;
+}
+
+.required {
+  color: #cc0000;
+}
+
+tr.r1 {
+    background-color: white;
+}
+
+tr.r2 {
+    background-color: #e7eff5
+}
+
+tr.over {
+    background-color: khaki;
+    cursor:pointer;
+}
+
+button.thoughtbot {
+    background-color: #EE432E;
+    background-image: -moz-linear-gradient(center top , #EE432E 0%, #C63929 50%, #B51700 50%, #891100 100%);
+    border: 1px solid #951100;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
+    color: #FFFFFF;
+    font: bold 11px/1 "helvetica neue",helvetica,arial,sans-serif;
+    padding: 3px 0 10px;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+    width: 60px;
+    height: 21px;
+}
+
+button.thoughtbotform {
+    background-color: #EE432E;
+    background-image: -moz-linear-gradient(center top , #EE432E 0%, #C63929 50%, #B51700 50%, #891100 100%);
+    border: 1px solid #951100;
+    border-radius: 5px;
+    box-shadow: 0 0 0 1px rgba(255, 115, 100, 0.4) inset, 0 1px 3px #333333;
+    color: #FFFFFF;
+    font: bold 11px/1 "helvetica neue",helvetica,arial,sans-serif;
+    padding: 5px 0 10px;
+    text-align: center;
+    text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.8);
+    width: 80px;
+    height: 25px;
+}

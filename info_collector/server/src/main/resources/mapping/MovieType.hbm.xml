@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+    <class name="com.changhong.system.domain.movietype.Type" table="movie_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="typeID" column="type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="type" column="type_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="typeSequence" column="type_sequence" insert="true" update="true" type="java.lang.Integer"/>
+        <property name="dramaType" column="drama_type_id" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.DramaType" table="movie_drama_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="dramaTypeID" column="drama_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="dramaType" column="drama_type_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="dramaTypeSequence" column="drama_type_sequence" insert="true" update="true" type="java.lang.Integer"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.Area" table="movie_area">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="areaID" column="area_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="area" column="area_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="areaGroupID" column="area_group_id" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.AreaGroup" table="movie_area_group">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="areaGroupID" column="area_group_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="areaGroup" column="area_group_name" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.ClientType" table="movie_client_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="clientTypeID" column="client_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="clientType" column="client_type_name" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.ChannelType" table="movie_channel_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="channelTypeID" column="channel_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelType" column="channel_type_name" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.EventType" table="movie_event_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="eventTypeID" column="event_type_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="eventType" column="event_type_name" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
+    <class name="com.changhong.system.domain.movietype.Provider" table="movie_provider_type">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="providerID" column="provider_id" insert="true" update="true" type="java.lang.String"/>
+        <property name="providerName" column="provider_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="providerType" column="provider_type" insert="true" update="true" type="java.lang.String"/>
+    </class>
+</hibernate-mapping>
