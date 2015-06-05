@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}] %C{1}:%L - %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="FILE" class="org.apache.log4j.RollingFileAppender">
+		<param name="MaxBackupIndex" value="1" />
+		<param name="MaxFileSize" value="10000000" />
+		<param name="File" value="../logs/ott_gh.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d{ISO8601}] %p %c: - %m\n" />
+		</layout>
+	</appender>
+
+	<logger name="org.apache.commons">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.quartz">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework.security">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.hibernate">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.directwebremoting">
+		<level value="ERROR" />
+	</logger>
+	<logger name="com.handsun.cloud">
+		<level value="DEBUG" />
+	</logger>
+	<root>
+		<level value="INFO" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</log4j:configuration>
