@@ -417,7 +417,6 @@ public class VideoView extends SurfaceView implements
 	}
 
 	public void stopPlayback() {
-		synchronized (mMediaPlayer) {
 			if (mMediaPlayer != null) {
 				mMediaPlayer.stop();
 				mMediaPlayer.release();
@@ -425,7 +424,6 @@ public class VideoView extends SurfaceView implements
 				mCurrentState = STATE_IDLE;
 				mTargetState = STATE_IDLE;
 			}
-		}
 		
 	}
 
@@ -437,7 +435,6 @@ public class VideoView extends SurfaceView implements
 		Intent i = new Intent("com.android.music.musicservicecommand");
 		i.putExtra("command", "pause");
 		mContext.sendBroadcast(i);
-		synchronized (mMediaPlayer) {
 			release(false);
 			try {
 				mDuration = -1;
@@ -476,7 +473,6 @@ public class VideoView extends SurfaceView implements
 						MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 				return;
 			}
-		}
 		
 	}
 
@@ -571,7 +567,6 @@ public class VideoView extends SurfaceView implements
 				&& keyCode != KeyEvent.KEYCODE_MENU
 				&& keyCode != KeyEvent.KEYCODE_CALL
 				&& keyCode != KeyEvent.KEYCODE_ENDCALL;
-		synchronized (mMediaPlayer) {
 			if (isInPlaybackState() && isKeyCodeSupported
 					&& mMediaController != null) {
 				if (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
@@ -604,7 +599,6 @@ public class VideoView extends SurfaceView implements
 			}
 
 			return super.onKeyDown(keyCode, event);
-		}
 
 	}
 
@@ -618,19 +612,16 @@ public class VideoView extends SurfaceView implements
 
 	public void start() {
 		
-		synchronized (mMediaPlayer) {
 			if (isInPlaybackState()) {
 				mMediaPlayer.start();
 				mCurrentState = STATE_PLAYING;
 			}
 			mTargetState = STATE_PLAYING;
-		}
 		
 	}
 
 	public void pause() {
 		
-		synchronized (mMediaPlayer) {
 			if (isInPlaybackState()) {
 				if (mMediaPlayer.isPlaying()) {
 					mMediaPlayer.pause();
@@ -638,7 +629,6 @@ public class VideoView extends SurfaceView implements
 				}
 			}
 			mTargetState = STATE_PAUSED;
-		}
 		
 	}
 
@@ -685,9 +675,7 @@ public class VideoView extends SurfaceView implements
 	}
 
 	public boolean isPlaying() {
-		synchronized (mMediaPlayer) {
 			return isInPlaybackState() && mMediaPlayer.isPlaying();
-		}
 		
 	}
 
@@ -731,10 +719,8 @@ public class VideoView extends SurfaceView implements
 	}
 
 	public void setVideoQuality(int quality) {
-		synchronized (mMediaPlayer) {
 			if (mMediaPlayer != null)
 				mMediaPlayer.setVideoQuality(quality);
-		}
 		
 	}
 
