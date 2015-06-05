@@ -7,15 +7,10 @@ import java.net.SocketException;
 import java.util.*;
 
 import android.app.ActivityManager;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
 import com.changhong.common.domain.NetworkStatus;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.ClientSocketInterface;
-import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
@@ -27,16 +22,13 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
 import android.util.Log;
-import com.changhong.common.system.AppConfig;
 import com.changhong.setting.utils.NetEstimateUtils;
 import com.changhong.touying.activity.*;
 import com.changhong.touying.dialog.MusicPlayer;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.*;
 import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
 import com.changhong.tvhelper.activity.TVHelperMainActivity;
-import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 public class ClientGetCommandService extends Service implements ClientSocketInterface {
 
