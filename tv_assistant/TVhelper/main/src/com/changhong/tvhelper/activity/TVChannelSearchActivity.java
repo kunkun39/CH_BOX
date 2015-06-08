@@ -1,6 +1,7 @@
 package com.changhong.tvhelper.activity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -355,7 +356,7 @@ public class TVChannelSearchActivity extends Activity {
 					if (StringUtils.hasLength(searchString)) {
 						try {
 							searchString = YuYingWordsUtils.normalChannelSearchWordsConvert(searchString);
-
+							
 							/**
                              * 匹配频道
                              */
@@ -364,6 +365,20 @@ public class TVChannelSearchActivity extends Activity {
                                     searchChannel.add(ClientSendCommandService.channelData.get(i));
                                 }
                             }
+							
+							/**
+							 * 根据当前播放内容匹配频道
+							 */
+							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)ChannelService.searchProgramByText(searchString);
+							for (Map<String, Object> channel : channelList) {								
+								for (Map<String, Object> tempMap : searchChannel) {
+									if (tempMap.containsValue(channel.get("service_name"))) {
+										continue;
+									}									
+								}
+								searchChannel.add(channel);								
+							}
+							
 							/**
                              * 匹配音乐
                              */
