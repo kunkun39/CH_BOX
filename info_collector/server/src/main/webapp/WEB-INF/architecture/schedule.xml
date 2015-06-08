@@ -17,16 +17,16 @@
         <property name="triggers">
             <list>
                 <bean class="org.springframework.scheduling.quartz.CronTriggerBean">
-                    <!-- run every day 1AM -->
-                    <property name="cronExpression" value="0 0 0/6 * * ?"/>
-                    <!--<property name="cronExpression" value="* 0/1 * * * ?"/>-->
-                    <property name="jobDetail">
-                        <bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-                            <property name="targetObject" ref="schedulerService"/>
-                            <property name="targetMethod" value="renewProgramHistory"/>
-                            <property name="concurrent" value="false"/>
-                        </bean>
-                    </property>
+                    <!--&lt;!&ndash; run every day 1AM &ndash;&gt;-->
+                    <!--<property name="cronExpression" value="0 0 0/6 * * ?"/>-->
+                    <!--&lt;!&ndash;<property name="cronExpression" value="* 0/1 * * * ?"/>&ndash;&gt;-->
+                    <!--<property name="jobDetail">-->
+                        <!--<bean class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+                            <!--<property name="targetObject" ref="schedulerService"/>-->
+                            <!--<property name="targetMethod" value="renewProgramHistory"/>-->
+                            <!--<property name="concurrent" value="false"/>-->
+                        <!--</bean>-->
+                    <!--</property>-->
                 </bean>
             </list>
         </property>

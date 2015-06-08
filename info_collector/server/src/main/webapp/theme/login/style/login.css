@@ -1,0 +1,27 @@
+/*
+ * @description: 后台管理系统-登录页面样式
+ * @author: wuzhibo 2014.07.29
+ * @update:
+**/
+
+@charset "utf-8";
+
+body { background-color:#dfdfdf; }
+.login-box { width:100%; height:100%; position:absolute; background:url(../images/login_main_bg.jpg) no-repeat 250px 0; }
+.login-form { padding-left: 50%; padding-top:15%; }
+.login-form dl { overflow:hidden; zoom:1; padding:5px 0; }
+.login-form dl dt, .login-form dl dd { float:left; display:inline; }
+.login-form dl dt { padding-top:3px;
+    width: 48px;
+}
+
+.login-textbox { border:1px solid #c5c5c5; padding:6px; background:url(../images/field_text_bg.jpg) repeat-x left center; width:175px; }
+.login-textbox:focus { border-color:#39F; }
+
+cite { font-size:16px; letter-spacing:0.2em; display:block; text-align:center; width:70px; height:27px; line-height:27px; background:#ffc; margin-left:6px; }
+
+.login-action { padding:10px 0 0 48px; }
+
+.login-button { background:url(../images/login_button.jpg) no-repeat left center; border:none; width:94px; height:28px; cursor:pointer; }
+
+.login-tip { display:block; width:215px; text-align:center; height:25px; line-height:25px; border:solid 1px #ffa523; background-color:#ffc; color:red; padding:0 10px; }

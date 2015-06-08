@@ -1,6 +1,5 @@
 package com.changhong.common.repository;
 
-import com.changhong.system.repository.LiveDao;
 import com.changhong.system.repository.UserDao;
 
 /**
