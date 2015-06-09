@@ -13,6 +13,26 @@ CREATE TABLE `system_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ALTER TABLE `system_user` ADD INDEX  system_user_index_name(`name`);
 
+DROP TABLE IF EXISTS `client_user`;
+CREATE TABLE `client_user`(
+  `id` int(11) NOT NULL auto_increment,
+  `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `name` varchar(120) default NULL,
+  `contactway` varchar(255) default '',
+  PRIMARY KEY  (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+DROP TABLE IF EXISTS `feedback_info`;
+CREATE TABLE `feedback_info`(
+  `id` int(11) NOT NULL auto_increment,
+  `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `content` varchar(255) default '',
+  `user_id` int(11) NOT NULL ,
+  `status` varchar(1) default '0',
+  PRIMARY KEY(`id`),
+  FOREIGN KEY  (`user_id`) REFERENCES client_user(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
 SET FOREIGN_KEY_CHECKS=0;
 
 

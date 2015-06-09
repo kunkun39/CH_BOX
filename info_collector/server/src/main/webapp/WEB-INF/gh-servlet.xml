@@ -33,6 +33,9 @@
                 <prop key="/backend/userform.html">userFormController</prop>
                 <prop key="/backend/userchangeenable.html">userChangeEnableController</prop>
                 <prop key="/backend/userchangepassword.html">userChangePasswordController</prop>
+                <!--client collector-->
+                <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
+                <prop key="/backend/clientusercollector.html">userCollectorController</prop>
             </props>
         </property>
     </bean>
@@ -61,4 +64,12 @@
         <property name="userService" ref="userService"/>
     </bean>
 
+    <!--client collector-->
+    <bean id="userFeedBackController" class="com.changhong.system.web.controller.UserFeedBackController">
+
+    </bean>
+
+    <bean id="userCollectorController" class="com.changhong.system.web.controller.UserCollectorController">
+
+    </bean>
 </beans>
