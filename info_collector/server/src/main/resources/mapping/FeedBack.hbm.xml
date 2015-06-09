@@ -9,7 +9,6 @@
             <generator class="increment"/>
         </id>
         <property name="dateTime" column="timestamp" type="java.util.Date"/>
-
         <property name="content" column="content" insert="true" update="true" type="java.lang.String"/>
         <property name="status" column="status" insert="true" update="true" type="java.lang.String"/>
         <many-to-one name="clientUser" column="user_id" class="com.changhong.system.domain.ClientUser" cascade="none" lazy="proxy" insert="true" update="true"/>
