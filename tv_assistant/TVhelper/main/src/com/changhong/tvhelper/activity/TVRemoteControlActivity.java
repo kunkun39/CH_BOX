@@ -51,7 +51,7 @@ import com.changhong.tvhelper.view.TVNumInputDialog;
 
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
-    private static final String TAG = "TVhelper";
+    private static final String TAG = "TVRemoteControlActivity";
 //    private BidirSlidingLayout bidirSlidingLayout;
     /**
      * control part

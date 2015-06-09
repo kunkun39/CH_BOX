@@ -127,6 +127,7 @@ public class YuYingWordsUtils {
     static {
         //baidu yuyin charaters, which is different from normal char, so replace it to normal one
         TV_CHANNEL_REPLACE_KEYWORDS.put("ｃｃｔｖ", "CCTV-");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("cctv", "CCTV-");
         TV_CHANNEL_REPLACE_KEYWORDS.put("中央", "CCTV-");
         TV_CHANNEL_REPLACE_KEYWORDS.put("四川", "SCTV-");
         TV_CHANNEL_REPLACE_KEYWORDS.put("成都", "CDTV-");
