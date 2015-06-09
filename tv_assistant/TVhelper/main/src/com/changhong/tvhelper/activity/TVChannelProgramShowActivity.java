@@ -176,7 +176,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 }
 
                 try {
-                    programInfos = channelService.searchProgramInfos(channelIndex);
+                    programInfos = channelService.searchProgramInfosByName(channelName);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

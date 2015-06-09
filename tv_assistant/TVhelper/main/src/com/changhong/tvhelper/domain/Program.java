@@ -5,7 +5,7 @@ package com.changhong.tvhelper.domain;
  */
 public class Program {
 
-    private String channelIndex;
+    private String channelName ;
 
     private String weekIndex;
 
@@ -15,15 +15,15 @@ public class Program {
 
     private String programEndTime;
 
-    public Program(String channelIndex, String programName, String programStartTime, String programEndTime) {
-        this.channelIndex = channelIndex;
+    public Program(String channelName, String programName, String programStartTime, String programEndTime) {
+        this.channelName = channelName;
         this.programName = programName;
         this.programStartTime = programStartTime;
         this.programEndTime = programEndTime;
     }
 
-    public Program(String channelIndex, String weekIndex, String programName, String programStartTime, String programEndTime) {
-        this.channelIndex = channelIndex;
+    public Program(String channelName, String weekIndex, String programName, String programStartTime, String programEndTime) {
+        this.channelName = channelName;
         this.weekIndex = weekIndex;
         this.programName = programName;
         this.programStartTime = programStartTime;
@@ -31,11 +31,11 @@ public class Program {
     }
 
     public String getChannelIndex() {
-        return channelIndex;
+        return channelName;
     }
 
-    public void setChannelIndex(String channelIndex) {
-        this.channelIndex = channelIndex;
+    public void setChannelIndex(String channelName) {
+        this.channelName = channelName;
     }
 
     public String getWeekIndex() {

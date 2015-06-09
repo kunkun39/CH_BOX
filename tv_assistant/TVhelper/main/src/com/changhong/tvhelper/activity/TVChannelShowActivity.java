@@ -546,9 +546,8 @@ public class TVChannelShowActivity extends Activity {
             } else {
                 vh.channelLogo.setImageResource(R.drawable.logotv);
             }
-            vh.channelName.setText((String) channelShowData.get(position).get("service_name"));
-            String channelIdex = (String) channelShowData.get(position).get("channel_index");
-            Program program = currentChannelPlayData.get(channelIdex);
+            vh.channelName.setText(channelName);
+            Program program = currentChannelPlayData.get(channelName);
             if (program != null) {
                 String time = "正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + StringUtils.getShortString(program.getProgramName(), 12);
                 vh.channelPlayInfo.setText(time);

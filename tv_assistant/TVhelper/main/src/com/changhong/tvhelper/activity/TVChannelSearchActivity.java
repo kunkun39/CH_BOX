@@ -657,8 +657,8 @@ public class TVChannelSearchActivity extends Activity {
 			vh.channelName.setText(serviceName);
 
             //设置PLAYINFO
-            String channelIndex= (String) map.get("channel_index");
-            Program program=currentChannelPlayData.get(channelIndex);
+            String channelName= (String) map.get("service_name");
+            Program program=currentChannelPlayData.get(channelName);
             if(program != null){
                 String time="正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + program.getProgramName();
                 vh.channelPlayInfo.setText(time);

@@ -548,7 +548,7 @@ public class TVChannelPlayActivity extends Activity {
 					if (channelPlayName.equals((String) map.get("service_name"))) {
 						// 获得节目信息
 						name = (String) map.get("service_name");
-						channelIndex = (String) map.get("channel_index");
+						channelIndex = (String) map.get("name");
 						setWidgetVisible(View.VISIBLE);
 
 						textChannelName.setText(channelPlayName);
@@ -575,7 +575,7 @@ public class TVChannelPlayActivity extends Activity {
 
 						try {
 							ChannelService channelService = new ChannelService();
-							programList = channelService.searchCurrentChannelPlayByIndex(channelIndex);
+							programList = channelService.searchCurrentChannelPlayByName(name);
 							// 得到节目信息，发送消息更新UI
 							mDismissHandler.sendEmptyMessage(3);
 
