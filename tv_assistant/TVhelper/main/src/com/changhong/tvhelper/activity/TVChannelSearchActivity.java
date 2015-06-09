@@ -256,20 +256,6 @@ public class TVChannelSearchActivity extends Activity {
             }
 		});
 
-		/**
-		 * 转到播放界面
-		 */
-		channelSearchList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TVChannelPlayActivity.name = (String) searchChannel.get(position).get("service_name");
-                Intent intent = new Intent(TVChannelSearchActivity.this, TVChannelPlayActivity.class);
-                String name = (String) searchChannel.get(position).get("service_name");
-                intent.putExtra("channelname", name);
-                startActivity(intent);
-			}
-		});
-
         musicSearchList.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

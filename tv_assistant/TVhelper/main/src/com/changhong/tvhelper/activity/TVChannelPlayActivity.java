@@ -406,7 +406,7 @@ public class TVChannelPlayActivity extends Activity {
 
 	private void setWidgetVisible(int i) {
 		setMyAnimation(i);
-		relativeLayout.setVisibility(i);
+//		relativeLayout.setVisibility(i);
 		programInfoLayout.setVisibility(i);
 		seekbarWidget.setVisibility(i);
 
@@ -415,13 +415,13 @@ public class TVChannelPlayActivity extends Activity {
 	private void setMyAnimation(int i) {
 		initAnimation();
 		if (i == View.VISIBLE) {
-			relativeLayout.startAnimation(channelListInAnimationSet);
+//			relativeLayout.startAnimation(channelListInAnimationSet);
 			programInfoLayout.startAnimation(PIInAnimationSet);
 			seekbarWidget.startAnimation(SKBInAnimationSet);
 			menuKey = true;
 
 		} else {
-			relativeLayout.startAnimation(channelListOutAnimationSet);
+//			relativeLayout.startAnimation(channelListOutAnimationSet);
 			programInfoLayout.startAnimation(PIOutAnimationSet);
 			seekbarWidget.startAnimation(SKBOutAnimationSet);
 			menuKey = false;

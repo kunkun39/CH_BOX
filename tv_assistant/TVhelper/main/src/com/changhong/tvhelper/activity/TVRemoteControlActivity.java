@@ -202,7 +202,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
                 Dialog dialog = new AlertDialog.Builder(TVRemoteControlActivity.this)
-                        .setTitle("是否确定关机？")
+                        .setTitle("是否打开或关闭机顶盒？")
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
 
                             @Override
