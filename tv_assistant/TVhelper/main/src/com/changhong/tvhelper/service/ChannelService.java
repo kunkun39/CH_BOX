@@ -37,17 +37,17 @@ public class ChannelService {
             if (database != null) {
                 String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
                 String currentTime = DateUtils.getCurrentTimeStamp();
-                Cursor cursor = database.rawQuery("select str_ChannelName, str_eventName, str_startTime, str_endTime from epg_information where i_weekIndex = ? and str_startTime < ? and str_endTime >= ?",
+                Cursor cursor = database.rawQuery("select i_ChannelIndex, str_eventName, str_startTime, str_endTime,str_ChannelName from epg_information where i_weekIndex = ? and str_startTime < ? and str_endTime >= ?",
                         new String[]{weekIndex, currentTime, currentTime});
 
                 while (cursor.moveToNext()) {
-                    String channelName = cursor.getString(0);
+                    String channelIndex = cursor.getString(0);
                     String eventName = cursor.getString(1);
                     String startTime = cursor.getString(2);
                     String endTime = cursor.getString(3);
-
+                    String channelName = cursor.getString(4);
                     // 获取该图片的父路径名
-                    Program program = new Program(channelName, eventName, startTime, endTime);
+                    Program program = new Program(channelIndex, eventName, startTime, endTime,channelName);
                     currentPlaying.put(channelName, program);
                 }
                 cursor.close();
@@ -66,15 +66,16 @@ public class ChannelService {
         if (database != null) {
             String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
             String currentTime = DateUtils.getCurrentTimeStamp();
-            Cursor cursor = database.rawQuery("select  str_eventName, str_startTime, str_endTime from epg_information  where  i_weekIndex = ? AND str_ChannelName = ? AND str_endTime > ? AND str_eventName !='无节目信息'",
+            Cursor cursor = database.rawQuery("select  i_ChannelIndex,str_eventName, str_startTime, str_endTime from epg_information  where  i_weekIndex = ? AND str_ChannelName = ? AND str_endTime > ? AND str_eventName !='无节目信息'",
                     new String[]{weekIndex,channelName,currentTime});
 
 
             while (cursor.moveToNext()) {
-                String eventName = cursor.getString(0);
-                String startTime = cursor.getString(1);
-                String endTime = cursor.getString(2);
-                Program program = new Program(channelName, eventName, startTime, endTime);
+            	String channelIndex = cursor.getString(0);
+                String eventName = cursor.getString(1);
+                String startTime = cursor.getString(2);
+                String endTime = cursor.getString(3);
+                Program program = new Program(channelIndex, eventName, startTime, endTime,channelName);
                 programList.add(program);
             }
             cursor.close();
@@ -91,18 +92,19 @@ public class ChannelService {
 
         SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
         if (database != null) {
-            Cursor cursor = database.rawQuery("select i_weekIndex, str_eventName, str_startTime, str_endTime from epg_information where str_ChannelName = ? " +
+            Cursor cursor = database.rawQuery("select i_ChannelIndex,i_weekIndex, str_eventName, str_startTime, str_endTime from epg_information where str_ChannelName = ? " +
                             "order by str_startTime asc",
                     new String[]{channelName});
 
             while (cursor.moveToNext()) {
-                String weekIndex = cursor.getString(0);
-                String eventName = cursor.getString(1);
-                String startTime = cursor.getString(2);
-                String endTime = cursor.getString(3);
+            	String channelIndex = cursor.getString(0);
+                String weekIndex = cursor.getString(1);
+                String eventName = cursor.getString(2);
+                String startTime = cursor.getString(3);
+                String endTime = cursor.getString(4);
 
                 // 获取该图片的父路径名
-                Program program = new Program(channelName, weekIndex, eventName, startTime, endTime);
+                Program program = new Program(channelIndex, weekIndex, eventName, startTime, endTime,channelName);
                 List<Program> list = programs.get(String.valueOf(weekIndex));
                 if (list == null) {
                     list = new ArrayList<Program>();

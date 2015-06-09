@@ -1,4 +1,4 @@
-<com.changhong.common.widgets.BidirSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bidir_sliding_layout"
     android:layout_width="match_parent"
@@ -146,4 +146,4 @@
             android:background="@drawable/title_btn_list_selector" />
     </RelativeLayout>
 
-</com.changhong.common.widgets.BidirSlidingLayout>
+</RelativeLayout>

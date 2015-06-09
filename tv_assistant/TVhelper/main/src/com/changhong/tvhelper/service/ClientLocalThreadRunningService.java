@@ -151,12 +151,12 @@ public class ClientLocalThreadRunningService extends Service {
                                                     Intent intent = new Intent();
                                                     Bundle bundle = new Bundle();
                                                     bundle.putString("channelname", program.getChannelName());
-                                                    String index = program.getChannelIndex();
+                                                    String name = program.getChannelName();
                                                     int channelSize = ClientSendCommandService.channelData.size();
                                                     for (int i = 0; i < channelSize; i++) {
                                                         Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                                        String channelIndex = (String) map.get("channel_index");
-                                                        if (index.equals(channelIndex)) {
+                                                        String channelName = (String) map.get("service_name");
+                                                        if (name.equals(channelName)) {
                                                             TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
                                                         }
                                                     }

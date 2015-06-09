@@ -5,6 +5,8 @@ package com.changhong.tvhelper.domain;
  */
 public class Program {
 
+	private String channelIndex ;
+	
     private String channelName ;
 
     private String weekIndex;
@@ -15,15 +17,17 @@ public class Program {
 
     private String programEndTime;
 
-    public Program(String channelName, String programName, String programStartTime, String programEndTime) {
-        this.channelName = channelName;
+    public Program(String channelIndex, String programName, String programStartTime, String programEndTime,String channelName) {
+        this.channelIndex=channelIndex;
         this.programName = programName;
         this.programStartTime = programStartTime;
         this.programEndTime = programEndTime;
+        this.setChannelName(channelName);
     }
 
-    public Program(String channelName, String weekIndex, String programName, String programStartTime, String programEndTime) {
-        this.channelName = channelName;
+    public Program(String channelIndex, String weekIndex, String programName, String programStartTime, String programEndTime,String channelName) {
+    	this.channelIndex=channelIndex;
+    	this.setChannelName(channelName);
         this.weekIndex = weekIndex;
         this.programName = programName;
         this.programStartTime = programStartTime;
@@ -31,11 +35,11 @@ public class Program {
     }
 
     public String getChannelIndex() {
-        return channelName;
+        return channelIndex;
     }
 
-    public void setChannelIndex(String channelName) {
-        this.channelName = channelName;
+    public void setChannelIndex(String channelIndex) {
+        this.channelIndex = channelIndex;
     }
 
     public String getWeekIndex() {
@@ -69,4 +73,12 @@ public class Program {
     public void setProgramEndTime(String programEndTime) {
         this.programEndTime = programEndTime;
     }
+
+	public String getChannelName() {
+		return channelName;
+	}
+
+	public void setChannelName(String channelName) {
+		this.channelName = channelName;
+	}
 }
