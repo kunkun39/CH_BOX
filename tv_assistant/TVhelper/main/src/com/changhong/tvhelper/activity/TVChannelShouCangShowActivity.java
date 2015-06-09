@@ -226,7 +226,7 @@ public class TVChannelShouCangShowActivity extends Activity {
                                     MyApplication.vibrator.vibrate(100);
 
                                     if (orderProgramList.size() <= 0) {
-                                        Toast.makeText(TVChannelShouCangShowActivity.this, "预约节目为空", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(TVChannelShouCangShowActivity.this, "预约节目为空", Toast.LENGTH_SHORT).show();
                                     } else if (ClientSendCommandService.serverIpList.isEmpty()) {
                                         channelOrProgramList.setVisibility(View.INVISIBLE);
                                     }

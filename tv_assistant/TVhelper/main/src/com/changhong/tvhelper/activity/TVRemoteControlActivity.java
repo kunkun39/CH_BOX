@@ -986,7 +986,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                          * after search it still empty, notice user channel is empty
                          */
                         if (ClientSendCommandService.channelData.isEmpty()) {
-                            Toast.makeText(TVRemoteControlActivity.this, "频道列表为空", Toast.LENGTH_LONG).show();
+                            Toast.makeText(TVRemoteControlActivity.this, "频道列表为空", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
