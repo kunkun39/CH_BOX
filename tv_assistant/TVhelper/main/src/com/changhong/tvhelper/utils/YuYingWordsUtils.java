@@ -207,4 +207,18 @@ public class YuYingWordsUtils {
         }
         return needConvert;
     }
+
+    private final static Map<String, String> TV_CHANNEL_SPECIAL_WORDS = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_SPECIAL_WORDS.put("四川卫视", "SCTV-1");
+    }
+
+    /**
+     * 判断
+     */
+    public static String getSpecialWordsChannel(String needCheck) {
+        return TV_CHANNEL_SPECIAL_WORDS.get(needCheck);
+    }
 }

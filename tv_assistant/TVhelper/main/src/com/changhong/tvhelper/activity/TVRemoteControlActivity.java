@@ -900,8 +900,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                      * compare the matched app, use char compare one by one
                      */
                     matchChannel.clear();
+                    int size = ClientSendCommandService.serverAppInfo.size();
                     for (int i = 0; i < recognitionResult.length(); i++) {
-                        for (int j = 0; j < ClientSendCommandService.serverAppInfo.size(); j++) {
+                        for (int j = 0; j < size; j++) {
                             AppInfo info = ClientSendCommandService.serverAppInfo.get(j);
                             String appName = info.appName;
                             if (appName.indexOf(recognitionResult.charAt(i)) >= 0) {
@@ -994,8 +995,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                          * compare the matched chancel, use char compare one by one
                          */
                         matchChannel.clear();
+                        int size = ClientSendCommandService.channelData.size();
                         for (int i = 0; i < recognitionResult.length(); i++) {
-                            for (int j = 0; j < ClientSendCommandService.channelData.size(); j++) {
+                            for (int j = 0; j < size; j++) {
                                 String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
                                 if (channelName.indexOf(recognitionResult.charAt(i)) >= 0) {
                                     Integer count = matchChannel.get(String.valueOf(j));
@@ -1046,6 +1048,20 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                             }
                                         }
                                     }
+                                }
+                            }
+                        }
+
+                        /**
+                         * 处理一些特殊的语音, 如四川卫视，其实是SCTV-1，通过文件对比是不能搜索到了，只有进行特殊处理
+                         */
+                        String specialWords = YuYingWordsUtils.getSpecialWordsChannel(beforeConvertRecognitionResult);
+                        if(StringUtils.hasLength(specialWords)) {
+                            for (int j = 0; j < size; j++) {
+                                String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
+                                if (channelName.equals(specialWords)) {
+                                    Log.i(TVRemoteControlActivity.TAG, "special words handle " + channelName + "-" + specialWords);
+                                    bestPostion = String.valueOf(j);
                                 }
                             }
                         }

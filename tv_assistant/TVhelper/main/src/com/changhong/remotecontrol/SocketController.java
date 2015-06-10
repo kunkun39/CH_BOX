@@ -182,9 +182,9 @@ public abstract class SocketController implements ClientSocketInterface {
     class ThreadLinkChecked extends Thread {
         public void run() {
             while (!mIsExit) {
-                mRemoteInfo.update();
-
                 try {
+                    mRemoteInfo.update();
+
                     sleep(ClientSocketInterface.RELAX_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
