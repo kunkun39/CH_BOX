@@ -66,7 +66,7 @@
 
     <!--client collector-->
     <bean id="userFeedBackController" class="com.changhong.system.web.controller.UserFeedBackController">
-
+        <!--<property name="feedBackService" ref="feedBackService"/>-->
     </bean>
 
     <bean id="userCollectorController" class="com.changhong.system.web.controller.UserCollectorController">

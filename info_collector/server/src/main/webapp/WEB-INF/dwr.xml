@@ -4,6 +4,9 @@
 
 <dwr>
     <allow>
-
+        <create creator="spring" javascript="SystemDWRHandler" scope="script">
+            <param name="beanName" value="systemDWRHandler"/>
+            <include method="obtainFeedBackInfoAmountByMonth"/>
+        </create>
     </allow>
 </dwr>
