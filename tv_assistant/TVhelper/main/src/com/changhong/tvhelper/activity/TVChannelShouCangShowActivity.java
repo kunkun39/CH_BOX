@@ -164,6 +164,39 @@ public class TVChannelShouCangShowActivity extends Activity {
                 finish();
             }
         });
+        
+        channelText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                if (allShouChangChannel.isEmpty()) {
+                    Toast.makeText(TVChannelShouCangShowActivity.this, "频道收藏为空", Toast.LENGTH_SHORT).show();
+                }
+
+                channelText.setTextColor(getResources().getColor(R.color.orange));
+                orderProgramText.setTextColor(getResources().getColor(R.color.white));
+             // 通知Handler扫描收藏节目完成
+                mHandler.sendEmptyMessage(2);
+            }
+        });
+        
+        orderProgramText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                if (orderProgramList.size() <= 0) {
+                    Toast.makeText(TVChannelShouCangShowActivity.this, "预约节目为空", Toast.LENGTH_SHORT).show();
+                } else if (ClientSendCommandService.serverIpList.isEmpty()) {
+                    channelOrProgramList.setVisibility(View.INVISIBLE);
+                }
+
+                orderProgramText.setTextColor(getResources().getColor(R.color.orange));
+                channelText.setTextColor(getResources().getColor(R.color.white));
+             // 通知Handler扫描收藏节目完成
+                mHandler.sendEmptyMessage(3);
+              
+            }
+        });
 
         /**
          * 消息处理部分
@@ -176,6 +209,8 @@ public class TVChannelShouCangShowActivity extends Activity {
                         if (channelAdapter != null) {
                             channelOrProgramList.setAdapter(channelAdapter);
                             channelAdapter.notifyDataSetChanged();
+                            channelText.setTextColor(getResources().getColor(R.color.orange));
+                            orderProgramText.setTextColor(getResources().getColor(R.color.white));
                         }
                         break;
                     case 1:
@@ -191,25 +226,14 @@ public class TVChannelShouCangShowActivity extends Activity {
 
                         //重新加载预约频道数据并刷新Adapter
                         try {
-                            channelAdapter = new ChannelAdapter(TVChannelShouCangShowActivity.this);
+                        	if(null==channelAdapter){
+                        		channelAdapter = new ChannelAdapter(TVChannelShouCangShowActivity.this);
+                            }
                             channelOrProgramList.setAdapter(channelAdapter);
+                            channelAdapter.notifyDataSetChanged();
                             channelText.setTextColor(getResources().getColor(R.color.orange));
-
-                            channelText.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    MyApplication.vibrator.vibrate(100);
-
-                                    if (allShouChangChannel.isEmpty()) {
-                                        Toast.makeText(TVChannelShouCangShowActivity.this, "频道收藏为空", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    channelText.setTextColor(getResources().getColor(R.color.orange));
-                                    orderProgramText.setTextColor(getResources().getColor(R.color.white));
-                                    channelOrProgramList.setAdapter(channelAdapter);
-                                    channelAdapter.notifyDataSetChanged();
-                                }
-                            });
+                            orderProgramText.setTextColor(getResources().getColor(R.color.white));
+                            
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -217,26 +241,11 @@ public class TVChannelShouCangShowActivity extends Activity {
                     case 3:
                         //重新加载预约节目数据并刷新Adapter
                         try {
-                            orderProgramAdapter = new OrderProgramAdapter(TVChannelShouCangShowActivity.this);
+                        	if(null==orderProgramAdapter){
+                        		orderProgramAdapter = new OrderProgramAdapter(TVChannelShouCangShowActivity.this);
+                            }
+                        	channelOrProgramList.setAdapter(orderProgramAdapter);
                             orderProgramAdapter.notifyDataSetChanged();
-
-                            orderProgramText.setOnClickListener(new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    MyApplication.vibrator.vibrate(100);
-
-                                    if (orderProgramList.size() <= 0) {
-                                        Toast.makeText(TVChannelShouCangShowActivity.this, "预约节目为空", Toast.LENGTH_SHORT).show();
-                                    } else if (ClientSendCommandService.serverIpList.isEmpty()) {
-                                        channelOrProgramList.setVisibility(View.INVISIBLE);
-                                    }
-
-                                    orderProgramText.setTextColor(getResources().getColor(R.color.orange));
-                                    channelText.setTextColor(getResources().getColor(R.color.white));
-                                    channelOrProgramList.setAdapter(orderProgramAdapter);
-                                    orderProgramAdapter.notifyDataSetChanged();
-                                }
-                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -255,44 +264,44 @@ public class TVChannelShouCangShowActivity extends Activity {
     private void initData() {
         channelShowData.clear();
         orderProgramShowData.clear();
+        new collectionProgramThread().start();
+        new OrderProgramThread().start();
+    }
+  //收藏节目数据获取
+    class collectionProgramThread extends Thread{
+    	 @Override
+         public void run() {
+         	/**
+              * 初始化DB
+              */
+             if (MyApplication.databaseContainer == null) {
+                 MyApplication.databaseContainer = new DatabaseContainer(TVChannelShouCangShowActivity.this);
+             }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 初始化DB
-                 */
-                if (MyApplication.databaseContainer == null) {
-                    MyApplication.databaseContainer = new DatabaseContainer(TVChannelShouCangShowActivity.this);
-                }
+             try {
+                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                     allShouChangChannel = channelService.getAllChannelShouCangs();
+                     currentChannelPlayData = channelService.searchCurrentChannelPlay();
+                     int channelSize = ClientSendCommandService.channelData.size();
 
-                try {
-                    if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-                        allShouChangChannel = channelService.getAllChannelShouCangs();
-                        currentChannelPlayData = channelService.searchCurrentChannelPlay();
-                        int channelSize = ClientSendCommandService.channelData.size();
+                     for (int i = 0; i < channelSize; i++) {
+                         Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                         String channelServiceId = (String) map.get("service_id");
+                         if (allShouChangChannel.contains(channelServiceId)) {
+                             channelShowData.add(map);
+                         }
+                     }
+                 }
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
 
-                        for (int i = 0; i < channelSize; i++) {
-                            Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                            String channelServiceId = (String) map.get("service_id");
-                            if (allShouChangChannel.contains(channelServiceId)) {
-                                channelShowData.add(map);
-                            }
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                // 通知Handler扫描收藏节目完成
-                mHandler.sendEmptyMessage(2);
-            }
-        }).start();
-
-
-
+             // 通知Handler扫描收藏节目完成
+             mHandler.sendEmptyMessage(2);
+         }
     }
 
+    //预约节目数据获取
     class OrderProgramThread extends Thread {
         @Override
         public void run() {
@@ -304,24 +313,21 @@ public class TVChannelShouCangShowActivity extends Activity {
                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                     orderProgramList = channelService.findAllOrderPrograms();
                     int channelSize = ClientSendCommandService.channelData.size();
-                    for (OrderProgram orderProgram : orderProgramList) {
-                        String channelIndex = orderProgram.getChannelIndex();
-                        for (int i = 0; i < channelSize; i++) {
+                    for (OrderProgram orderProgram:orderProgramList) {
+                        String channelName=orderProgram.getChannelName();
+                        for (int i=0;i<channelSize;i++) {
                             Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                            if (channelIndex.equals(map.get("channel_index"))) {
+                            if (channelName.equals(map.get("service_name"))) {
                                 orderProgramShowData.add(map);
                             }
-
                         }
-
                     }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            //通知Handler扫描预约节目完成
-            mHandler.sendEmptyMessage(3);
+          //通知Handler扫描预约节目完成
+//            mHandler.sendEmptyMessage(3);
         }
     }
 
@@ -621,16 +627,13 @@ public class TVChannelShouCangShowActivity extends Activity {
         if (ClientSendCommandService.titletxt != null) {
             title.setText(ClientSendCommandService.titletxt);
         }
-    }
+        
+        }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        //重新加载预约节目数据以更新预约节目UI
-        orderProgramList.clear();
-        orderProgramShowData.clear();
-        new OrderProgramThread().start();
 
     }
     
