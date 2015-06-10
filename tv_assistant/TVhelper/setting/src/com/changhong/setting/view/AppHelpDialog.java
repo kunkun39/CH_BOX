@@ -22,6 +22,7 @@ public class AppHelpDialog extends Dialog {
 
 	private LinearLayout remote_control_help;
 	private LinearLayout voice_control_help;
+	private LinearLayout yuyue_control_help;
 	private HelpDetailsDialog hdd;
 
 	public AppHelpDialog(final Context context) {
@@ -38,6 +39,7 @@ public class AppHelpDialog extends Dialog {
 		ImageButton helpButton = (ImageButton) findViewById(R.id.cancel_help);
 		remote_control_help = (LinearLayout) findViewById(R.id.remote_control_help);
 		voice_control_help = (LinearLayout) findViewById(R.id.voice_control_help);
+        yuyue_control_help = (LinearLayout) findViewById(R.id.yuyue_control_help);
 
 		helpButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -64,6 +66,14 @@ public class AppHelpDialog extends Dialog {
 				startDetailsDialog(context, context.getString(R.string.vch_name), context.getString(R.string.vch_content));
 			}
 		});
+
+        yuyue_control_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                startDetailsDialog(context, context.getString(R.string.pch_name), context.getString(R.string.pch_content));
+            }
+        });
 	}
 	
 	private void startDetailsDialog(Context context,String name,String content){

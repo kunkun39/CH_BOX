@@ -304,9 +304,9 @@ public class TVChannelShouCangShowActivity extends Activity {
                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                     orderProgramList = channelService.findAllOrderPrograms();
                     int channelSize = ClientSendCommandService.channelData.size();
-                    for (OrderProgram orderProgram:orderProgramList) {
-                        String channelIndex=orderProgram.getChannelIndex();
-                        for (int i=0;i<channelSize;i++) {
+                    for (OrderProgram orderProgram : orderProgramList) {
+                        String channelIndex = orderProgram.getChannelIndex();
+                        for (int i = 0; i < channelSize; i++) {
                             Map<String, Object> map = ClientSendCommandService.channelData.get(i);
                             if (channelIndex.equals(map.get("channel_index"))) {
                                 orderProgramShowData.add(map);

@@ -51,11 +51,24 @@
 
         <LinearLayout
             android:id="@+id/voice_control_help"
-            style="@style/bottom_layout" >
+            style="@style/mid_layout" >
 
             <TextView
                 style="@style/usertext"
                 android:text="@string/vch_name" />
+
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
+
+        <View style="@style/bg_line" />
+
+        <LinearLayout
+                android:id="@+id/yuyue_control_help"
+                style="@style/bottom_layout" >
+
+            <TextView
+                    style="@style/usertext"
+                    android:text="@string/pch_name" />
 
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
