@@ -85,6 +85,9 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     }
 
     public static String getCurrentConnectBoxName() {
+        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+            return "未连接";
+        }
         String boxName = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
         if (StringUtils.hasLength(boxName)) {
             return boxName;
