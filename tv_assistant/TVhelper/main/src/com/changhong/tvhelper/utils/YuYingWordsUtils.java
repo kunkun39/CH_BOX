@@ -108,7 +108,7 @@ public class YuYingWordsUtils {
         return needConvert;
     }
 
-    /**************************************************频道部分*********************************************************/
+    /************************************************语音换台部分*******************************************************/
 
     /**
      * yu yin channel switch need replace chars, key is baidu word, value is convert value which used for compare
@@ -171,6 +171,47 @@ public class YuYingWordsUtils {
         return needConvert;
     }
 
+    /**
+     * 保存语音和文字输入的查询和频道的关键词一致
+     */
+    private final static Map<String, String> TV_CHANNEL_SPECIAL_WORDS = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_SPECIAL_WORDS.put("四川", "SCTV-");
+        TV_CHANNEL_SPECIAL_WORDS.put("成都", "CDTV-");
+    }
+
+    /**
+     * 判断
+     */
+    public static String getSpecialWordsChannel(String needConvert) {
+        for (String key : TV_CHANNEL_SPECIAL_WORDS.keySet()) {
+            String value = TV_CHANNEL_SPECIAL_WORDS.get(key);
+            needConvert = needConvert.replace(key, value);
+        }
+        return needConvert;
+    }
+
+    /**
+     * 地方台的卫视一般都是一台，这个需要做一下处理
+     */
+    private final static Map<String, String> TV_CHANNEL_LOCATION_WORDS = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_LOCATION_WORDS.put("四川卫视", "SCTV-1");
+    }
+
+    /**
+     * 判断
+     */
+    public static String getLocationWordsChannel(String needCheck) {
+        return TV_CHANNEL_LOCATION_WORDS.get(needCheck);
+    }
+
+    /******************************************频道查询部分***********************************************************/
+
     private final static Map<String, String> TV_CHANNEL_SEARCH_KEYWORDS = new HashMap<String, String>();
 
     static {
@@ -208,17 +249,5 @@ public class YuYingWordsUtils {
         return needConvert;
     }
 
-    private final static Map<String, String> TV_CHANNEL_SPECIAL_WORDS = new HashMap<String, String>();
 
-    static {
-        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
-        TV_CHANNEL_SPECIAL_WORDS.put("四川卫视", "SCTV-1");
-    }
-
-    /**
-     * 判断
-     */
-    public static String getSpecialWordsChannel(String needCheck) {
-        return TV_CHANNEL_SPECIAL_WORDS.get(needCheck);
-    }
 }

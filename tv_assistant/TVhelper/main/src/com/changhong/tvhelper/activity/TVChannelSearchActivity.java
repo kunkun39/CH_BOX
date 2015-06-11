@@ -346,7 +346,9 @@ public class TVChannelSearchActivity extends Activity {
                              * 匹配频道
                              */
 							for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
+                                String serviceName = (String) ClientSendCommandService.channelData.get(i).get("service_name");
+                                serviceName = YuYingWordsUtils.getSpecialWordsChannel(serviceName);
+                                if (serviceName.toLowerCase().indexOf(searchString.toLowerCase()) >= 0) {
                                     searchChannel.add(ClientSendCommandService.channelData.get(i));
                                 }
                             }

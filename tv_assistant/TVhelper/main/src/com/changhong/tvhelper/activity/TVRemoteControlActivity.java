@@ -999,6 +999,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         for (int i = 0; i < recognitionResult.length(); i++) {
                             for (int j = 0; j < size; j++) {
                                 String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
+                                channelName = YuYingWordsUtils.getSpecialWordsChannel(channelName);
                                 if (channelName.indexOf(recognitionResult.charAt(i)) >= 0) {
                                     Integer count = matchChannel.get(String.valueOf(j));
                                     if (count == null) {
@@ -1028,6 +1029,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                 } else if (value == bestCounter) {
                                     String bestChannel = (String) ClientSendCommandService.channelData.get(Integer.valueOf(bestPostion)).get("service_name");
                                     String newChannel = (String) ClientSendCommandService.channelData.get(Integer.valueOf(position)).get("service_name");
+                                    bestChannel = YuYingWordsUtils.getSpecialWordsChannel(bestChannel);
+                                    newChannel = YuYingWordsUtils.getSpecialWordsChannel(newChannel);
 
                                     if (newChannel.length() < bestChannel.length()) {
                                         bestPostion = position;
@@ -1053,14 +1056,13 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         }
 
                         /**
-                         * 处理一些特殊的语音, 如四川卫视，其实是SCTV-1，通过文件对比是不能搜索到了，只有进行特殊处理
+                         * 特殊地方台处理逻辑
                          */
-                        String specialWords = YuYingWordsUtils.getSpecialWordsChannel(beforeConvertRecognitionResult);
-                        if(StringUtils.hasLength(specialWords)) {
+                        String locationChannel = YuYingWordsUtils.getLocationWordsChannel(beforeConvertRecognitionResult);
+                        if (StringUtils.hasLength(locationChannel)) {
                             for (int j = 0; j < size; j++) {
                                 String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
-                                if (channelName.equals(specialWords)) {
-                                    Log.i(TVRemoteControlActivity.TAG, "special words handle " + channelName + "-" + specialWords);
+                                if (channelName.equals(locationChannel)) {
                                     bestPostion = String.valueOf(j);
                                 }
                             }
