@@ -19,6 +19,7 @@ CREATE TABLE `client_user`(
   `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `username` varchar(120) default NULL,
   `contactway` varchar(255) default '',
+  `usermac` varchar(40) not NULL,
   PRIMARY KEY  (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

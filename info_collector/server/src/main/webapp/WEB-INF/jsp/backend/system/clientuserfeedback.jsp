@@ -117,7 +117,6 @@
 
             if("0" == month) {
                 //全年的报表
-                //一个月的报表
                 SystemDWRHandler.obtainFeedBackInfoAmountByMonth(status, year, month, function(result) {
                     var statisticData = JSON.parse(result);
                     var total = statisticData[0].total.split(",");

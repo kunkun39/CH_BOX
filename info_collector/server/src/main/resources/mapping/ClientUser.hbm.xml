@@ -12,5 +12,6 @@
 
         <property name="name" column="name" insert="true" update="true" type="java.lang.String"/>
         <property name="contactway" column="contactway" insert="true" update="true" type="java.lang.String"/>
+        <property name="mac" column="usermac" insert="true" update="true" type="java.lang.String"/>
     </class>
 </hibernate-mapping>

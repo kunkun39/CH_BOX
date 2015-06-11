@@ -8,6 +8,15 @@ import com.changhong.common.domain.EntityBase;
 public class ClientUser extends EntityBase{
     private String name;
     private String contactway;
+    private String mac;
+
+    public String getMac() {
+        return mac;
+    }
+
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
 
     public String getName() {
         return name;
