@@ -20,6 +20,12 @@ public class CHDateUtils {
         return current.getMonth() + 1;
     }
 
+    public static int getCurrentDate() {
+        Date current = new Date();
+        return current.getDate();
+    }
+
+
     public static Date getFirstDateOfMonth() {
         Date current = new Date();
         int year = current.getYear();

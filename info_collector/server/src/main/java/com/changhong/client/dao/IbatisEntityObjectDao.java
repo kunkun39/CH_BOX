@@ -21,4 +21,5 @@ public class IbatisEntityObjectDao extends SqlMapClientDaoSupport {
         super.setSqlMapClient(sqlMapClient);
     }
 
+
 }
