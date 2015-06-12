@@ -28,14 +28,33 @@ CREATE TABLE `feedback_info`(
   `id` int(11) NOT NULL auto_increment,
   `timestamp` timestamp default CURRENT_TIMESTAMP,
   `content` varchar(255) default '',
-  `user_id` int(11) NOT NULL ,
-  `status` varchar(1) default '0',
-  `fd_year` int(4) not NULL,
-  `fd_month` int(2) not NULL,
-  `fd_day` int(2) not NULL,
-  PRIMARY KEY(`id`),
-  FOREIGN KEY  (`user_id`) REFERENCES client_user(`id`)
+  `user_mac` varchar(255) default '',
+  `status` varchar(10) default '',
+  `fd_year`  varchar(255) default '',
+  `fd_month`  varchar(255) default '',
+  `fd_day`  varchar(255) default '',
+  PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
+DROP TABLE IF EXISTS `tv_channel_info`;
+CREATE TABLE `tv_channel_info`(
+  `id` int(11) NOT NULL auto_increment,
+  `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+  `tv_channel_name` varchar(255) default '',
+  `tv_program_name` varchar(255) default '',
+  `user_mac` varchar(255) default '',
+  `appkey` varchar(255) default '',
+  `status` varchar(10) default '',
+  `fd_year`  varchar(255) default '',
+  `fd_month`  varchar(255) default '',
+  `fd_day`  varchar(255) default '',
+  PRIMARY KEY(`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+
+
 
 SET FOREIGN_KEY_CHECKS=0;
 
