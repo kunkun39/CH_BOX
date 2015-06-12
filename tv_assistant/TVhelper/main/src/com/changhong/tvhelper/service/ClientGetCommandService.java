@@ -516,10 +516,9 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
         channelLogoMapping.put(getResources().getString(R.string.shanxi1weishi), R.drawable.logoshanxi);
         channelLogoMapping.put(getResources().getString(R.string.shanghaiweishi), R.drawable.logodongfang);
         channelLogoMapping.put(getResources().getString(R.string.shanghaiweishigaoqing), R.drawable.logodongfang);
-        channelLogoMapping.put(getResources().getString(R.string.shenzhengweishi), R.drawable.logotv);
-        channelLogoMapping.put(getResources().getString(R.string.shenzhengweishigaoqing), R.drawable.logotv);
-        channelLogoMapping.put(getResources().getString(R.string.shenzhenggaoqing), R.drawable.logotv);
-        channelLogoMapping.put(getResources().getString(R.string.shenzhenggaoqing), R.drawable.logotv);
+        channelLogoMapping.put(getResources().getString(R.string.shenzhengweishi), R.drawable.logoshenzheng);
+        channelLogoMapping.put(getResources().getString(R.string.shenzhengweishigaoqing), R.drawable.logoshenzheng);
+        channelLogoMapping.put(getResources().getString(R.string.shenzhenggaoqing), R.drawable.logoshenzheng);
         channelLogoMapping.put(getResources().getString(R.string.shanghaigaoqing), R.drawable.logodongfang);
         channelLogoMapping.put(getResources().getString(R.string.tianjinweishi), R.drawable.logotianjin);
         channelLogoMapping.put(getResources().getString(R.string.tianjingaoqing), R.drawable.logotianjin);
@@ -535,6 +534,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
         channelLogoMapping.put(getResources().getString(R.string.guangdongweishigaoqing), R.drawable.logoguangdong);
         channelLogoMapping.put(getResources().getString(R.string.guangdonggaoqing), R.drawable.logoguangdong);
         channelLogoMapping.put(getResources().getString(R.string.lvyouweishi), R.drawable.logolvyou);
+        channelLogoMapping.put(getResources().getString(R.string.bingtuanweishi), R.drawable.logobingtuan);
 
         //四川和成都
         channelLogoMapping.put(getResources().getString(R.string.sichuanweishi), R.drawable.logosichuan);
