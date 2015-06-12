@@ -85,54 +85,8 @@
 
         <activity android:name=".activity.TVChannelShouCangShowActivity" android:screenOrientation="portrait"/>
         <activity android:name=".activity.TVChannelProgramShowActivity" android:screenOrientation="portrait"/>
-        <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:launchMode="singleTop"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:windowSoftInputMode="stateAlwaysHidden" />
 
-        <!-- 投影部分 -->
-        <activity
-	android:name="com.changhong.touying.activity.TouYingCategoryActivity" 
-	android:exported="true"
-	android:screenOrientation="portrait"/>
-        <activity 
-            android:name="com.changhong.touying.activity.PictureCategoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.PictureViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.PictureDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.VedioCategoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.VedioViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.VedioDetailsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.MusicCategoryActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.MusicViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.changhong.touying.activity.MusicDetailsActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />                
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="audio/*"/>
-            </intent-filter>
-        </activity>
+        <!-- 投影部分 -->              
         <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
         <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
         <service android:name="com.changhong.touying.service.M3UListProviderService">
@@ -141,33 +95,6 @@
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
             </intent-filter>
         </service>
-
-        <!-- 问卷部分 -->
-        <activity
-            android:name="com.changhong.faq.activity.QuestionListActivity"
-            
-            android:launchMode="singleTask"
-	    android:label="QuestionListActivity"           
-            android:theme="@android:style/Theme.NoTitleBar" 
-	    android:screenOrientation="portrait"
-            android:exported="true">
-        </activity>
-        <activity
-            android:name="com.changhong.faq.activity.VoteRuleActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name="com.changhong.faq.activity.VoteSubmitActivity"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar" >
-        </activity>
-
-        <!-- 设置部分 -->
-        <activity
-            android:name="com.changhong.setting.activity.SettingActivity"
-            android:exported="true"
-            android:screenOrientation="portrait" >
-        </activity>
 
         <!-- 语音部分 -->
         <activity android:name="com.changhong.baidu.BiaDuTestActivity" />
