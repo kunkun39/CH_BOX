@@ -244,9 +244,13 @@ public class ImageShowPlayingActivity extends FragmentActivity {
         /**
          * image url get
          */
-        String[] urls = getIntent().getStringArrayExtra(EXTRA_IMAGE_URLS);
-        imagePath = urls[0];
-        smallImagePath = urls[1];
+        try {
+            String[] urls = getIntent().getStringArrayExtra(EXTRA_IMAGE_URLS);
+            imagePath = urls[0];
+            smallImagePath = urls[1];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         /**
          * image load
