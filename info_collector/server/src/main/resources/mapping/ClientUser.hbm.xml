@@ -10,7 +10,7 @@
         </id>
         <property name="timestamp" column="timestamp" type="java.util.Date"/>
 
-        <property name="name" column="name" insert="true" update="true" type="java.lang.String"/>
+        <property name="name" column="username" insert="true" update="true" type="java.lang.String"/>
         <property name="contactway" column="contactway" insert="true" update="true" type="java.lang.String"/>
         <property name="mac" column="usermac" insert="true" update="true" type="java.lang.String"/>
     </class>

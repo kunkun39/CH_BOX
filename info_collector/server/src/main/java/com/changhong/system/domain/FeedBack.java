@@ -8,44 +8,20 @@ import com.changhong.common.domain.EntityBase;
 public class FeedBack extends EntityBase{
     private String content;
     private String status;
-    private ClientUser clientUser;
-    private int year;
-    private int month;
-    private int day;
+    private String usermac;
+    private String year;
+    private String month;
+    private String day;
 
     public FeedBack() {
     }
 
-    public FeedBack(String content, String status, ClientUser clientUser, int year, int month, int day) {
+    public FeedBack(String content, String status, String usermac, String year, String month, String day) {
         this.content = content;
         this.status = status;
-        this.clientUser = clientUser;
+        this.usermac = usermac;
         this.year = year;
         this.month = month;
-        this.day = day;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
         this.day = day;
     }
 
@@ -65,11 +41,35 @@ public class FeedBack extends EntityBase{
         this.status = status;
     }
 
-    public ClientUser getClientUser() {
-        return clientUser;
+    public String getUsermac() {
+        return usermac;
     }
 
-    public void setClientUser(ClientUser clientUser) {
-        this.clientUser = clientUser;
+    public void setUsermac(String usermac) {
+        this.usermac = usermac;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
     }
 }

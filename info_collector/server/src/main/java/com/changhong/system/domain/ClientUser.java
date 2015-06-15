@@ -37,8 +37,9 @@ public class ClientUser extends EntityBase{
     public ClientUser() {
     }
 
-    public ClientUser(String name, String contactway) {
+    public ClientUser(String name, String contactway, String mac) {
         this.name = name;
         this.contactway = contactway;
+        this.mac = mac;
     }
 }

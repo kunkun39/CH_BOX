@@ -7,7 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt" %>
-<%@ taglib prefix="ch" uri="http://www.chanhong.com" %>
 <html>
 <head>
     <title>用户信息反馈</title>
@@ -28,7 +27,7 @@
 <table cellpadding="0" cellspacing="0" width="100%" class="box">
     <tr>
         <td width="200" valign="top" style="background: #e8e8e8;border-right: 1px solid #CCC;">
-            <jsp:include page="../statistic.jsp"/>
+            <jsp:include page="../statisticfeedback.jsp"/>
         </td>
 
         <td valign="top">
@@ -96,7 +95,7 @@
                     <td>
                         <div id="container1" style="width:80%; height: 350px; padding-left: 20px"></div>
                         <p style="margin-left:20px;">
-                            <button id="getcsv">获取CVS数据</button> <button id="download">导出Excel文件</button>
+                            <button id="feedbackcsv">获取CVS数据</button> <button id="feedbackexcel">导出Excel文件</button>
                         </p>
                     </td>
                 </tr>

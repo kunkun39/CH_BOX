@@ -28,11 +28,11 @@ CREATE TABLE `feedback_info`(
   `id` int(11) NOT NULL auto_increment,
   `timestamp` timestamp default CURRENT_TIMESTAMP,
   `content` varchar(255) default '',
-  `user_mac` varchar(255) default '',
+  `user_mac` varchar(40) default '',
   `status` varchar(10) default '',
-  `fd_year`  varchar(255) default '',
-  `fd_month`  varchar(255) default '',
-  `fd_day`  varchar(255) default '',
+  `fd_year`  char(4) default '',
+  `fd_month`  char(2) default '',
+  `fd_day`  char(2) default '',
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 

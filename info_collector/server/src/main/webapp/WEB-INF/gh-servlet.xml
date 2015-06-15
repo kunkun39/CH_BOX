@@ -36,6 +36,7 @@
                 <!--client collector-->
                 <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
                 <prop key="/backend/clientusercollector.html">userCollectorController</prop>
+                <prop key="/backend/clientuserfeedbackoverview.html">userFeedBackManagementCotroller</prop>
             </props>
         </property>
     </bean>
@@ -64,12 +65,14 @@
         <property name="userService" ref="userService"/>
     </bean>
 
-    <!--client collector-->
+
     <bean id="userFeedBackController" class="com.changhong.system.web.controller.UserFeedBackController">
-        <!--<property name="feedBackService" ref="feedBackService"/>-->
     </bean>
 
     <bean id="userCollectorController" class="com.changhong.system.web.controller.UserCollectorController">
+    </bean>
 
+    <bean id="userFeedBackManagementCotroller" class="com.changhong.system.web.controller.UserFeedBackManagementController">
+        <property name="feedBackService" ref="feedBackService"/>
     </bean>
 </beans>

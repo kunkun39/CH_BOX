@@ -11,11 +11,11 @@ public class SystemDWRHandler {
     @Autowired
     private FeedBackService feedBackService;
 
-    public String obtainFeedBackInfoAmountByMonth(String status,int year, int month) throws JSONException {
+    public String obtainFeedBackInfoAmountByMonth(String status,String year, String month) throws JSONException {
         return feedBackService.obtainFeedBackInfoByMonth(status, year, month).toString();
     }
 
-    public void setFeedBackService(FeedBackService feedBackService) {
-        this.feedBackService = feedBackService;
+    public String obtainCollectorInfoAmountByMonth(String status,String year, String month) throws JSONException {
+        return feedBackService.obtainCollectorInfoByMonth(status, year, month).toString();
     }
 }
