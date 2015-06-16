@@ -25,6 +25,11 @@ public class CHDateUtils {
         return current.getDate();
     }
 
+    public static int getCurrentHours(){
+        Date current = new Date();
+        return current.getHours();
+    }
+
 
     public static Date getFirstDateOfMonth() {
         Date current = new Date();

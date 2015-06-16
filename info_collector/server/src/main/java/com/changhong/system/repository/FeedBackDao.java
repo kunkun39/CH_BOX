@@ -1,6 +1,7 @@
 package com.changhong.system.repository;
 
 import com.changhong.common.repository.EntityObjectDao;
+import com.changhong.system.domain.TvChannelInfo;
 import com.changhong.system.domain.FeedBack;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,4 +18,7 @@ public interface FeedBackDao extends EntityObjectDao {
 
     JSONArray obtainFeedBackInfoByMonth(String status,String year,String month) throws JSONException;
     JSONArray obtainCollectorInfoByMonth(String status,String year,String month) throws JSONException;
+
+    List<TvChannelInfo> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName);
+    int loadAllTvChannelInfoSize();
 }

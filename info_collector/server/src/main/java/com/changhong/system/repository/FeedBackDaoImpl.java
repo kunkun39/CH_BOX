@@ -2,6 +2,9 @@ package com.changhong.system.repository;
 
 import com.changhong.common.repository.HibernateEntityObjectDao;
 import com.changhong.common.utils.CHDateUtils;
+import com.changhong.system.domain.TvChannelInfo;
+import com.changhong.system.domain.User;
+import org.hibernate.Query;
 import com.changhong.system.domain.ClientUser;
 import com.changhong.system.domain.FeedBack;
 import com.changhong.system.domain.User;
@@ -179,5 +182,29 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
         }
 
         return array;
+    }
+
+    @Override
+    public List<TvChannelInfo> obtainAllTvChannelInfo(int startPosition,int pageSize,String name) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("from TvChannelInfo u");
+        if (StringUtils.hasText(name)) {
+            builder.append(" where u.tv_channel_name like '" + name +"%'" );
+        }
+        org.hibernate.Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
+        Query query = session.createQuery(builder.toString());
+        query.setMaxResults(pageSize);
+        query.setFirstResult(startPosition);
+
+        List<TvChannelInfo> tvChannelInfos = query.list();
+        return tvChannelInfos;
+    }
+
+    @Override
+    public int loadAllTvChannelInfoSize() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("select count(u.id) from TvChannelInfo u");
+        List list =  getHibernateTemplate().find(builder.toString());
+        return ((Long)list.get(0)).intValue();
     }
 }

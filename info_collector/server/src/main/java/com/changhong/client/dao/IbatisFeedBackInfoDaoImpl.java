@@ -67,6 +67,7 @@ public class IbatisFeedBackInfoDaoImpl extends IbatisEntityObjectDao implements 
         values.put("fd_year", String.valueOf(CHDateUtils.getCurrentYear()));
         values.put("fd_month", String.valueOf(CHDateUtils.getCurrentMonth()));
         values.put("fd_day", String.valueOf(CHDateUtils.getCurrentDate()));
+        values.put("fd_hour", String.valueOf(CHDateUtils.getCurrentHours()));
         initSqlMapClient();
         getSqlMapClientTemplate().insert("Movie.insertTvChannelInfo", values);
     }

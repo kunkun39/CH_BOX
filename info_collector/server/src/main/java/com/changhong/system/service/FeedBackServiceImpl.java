@@ -1,7 +1,10 @@
 package com.changhong.system.service;
 
 import com.changhong.system.domain.FeedBack;
+import com.changhong.system.domain.TvChannelInfo;
 import com.changhong.system.repository.FeedBackDao;
+import com.changhong.system.web.facade.assember.TvChannelWebAssember;
+import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.facade.assember.FeedBackWebAssember;
 import com.changhong.system.web.facade.dto.FeedBackDTO;
 import org.json.JSONArray;
@@ -52,6 +55,23 @@ public class FeedBackServiceImpl implements FeedBackService{
         return feedBackDao.obtainFeedBackInfoByMonth(status,year,month);
     }
 
+
+
+    @Override
+    public List<TvChannelInfo> obtainTvChannelInfo(String channelName, String year, String month, String day, String hour) {
+        return null;
+    }
+
+    @Override
+    public List<TvChannelInfoDTO> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName) {
+        List<TvChannelInfo> tvChannelInfos= feedBackDao.obtainAllTvChannelInfo(startPosition,pageSize,channelName);
+        return TvChannelWebAssember.toTvChannelInfoDTOList(tvChannelInfos);
+    }
+
+    @Override
+    public int loadAllTvChannelInfoSize() {
+        return feedBackDao.loadAllTvChannelInfoSize();
+    }
     @Override
     public JSONArray obtainCollectorInfoByMonth(String status, String year, String month) throws JSONException {
         return feedBackDao.obtainCollectorInfoByMonth(status, year, month);

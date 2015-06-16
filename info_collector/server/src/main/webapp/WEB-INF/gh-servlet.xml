@@ -36,6 +36,7 @@
                 <!--client collector-->
                 <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
                 <prop key="/backend/clientusercollector.html">userCollectorController</prop>
+                <prop key="/backend/tvchannelinfooverview.html">tvChannelInfoManagementController</prop>
                 <prop key="/backend/clientuserfeedbackoverview.html">userFeedBackManagementCotroller</prop>
             </props>
         </property>
@@ -73,6 +74,10 @@
     </bean>
 
     <bean id="userFeedBackManagementCotroller" class="com.changhong.system.web.controller.UserFeedBackManagementController">
+        <property name="feedBackService" ref="feedBackService"/>
+    </bean>
+
+    <bean id="tvChannelInfoManagementController" class="com.changhong.system.web.controller.TvChannelInfoManagementController">
         <property name="feedBackService" ref="feedBackService"/>
     </bean>
 </beans>

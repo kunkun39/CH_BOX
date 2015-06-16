@@ -60,9 +60,10 @@
         status,
         fd_year,
         fd_month,
-        fd_day
+        fd_day,
+        fd_hour
         )
-        VALUES (#tvChannelName:VARCHAR#,#tvProgramName:VARCHAR#,#userMac:VARCHAR#,#appKey:VARCHAR#,#status:VARCHAR#,#fd_year:VARCHAR#,#fd_month:VARCHAR#,#fd_day:VARCHAR#)
+        VALUES (#tvChannelName:VARCHAR#,#tvProgramName:VARCHAR#,#userMac:VARCHAR#,#appKey:VARCHAR#,#status:VARCHAR#,#fd_year:VARCHAR#,#fd_month:VARCHAR#,#fd_day:VARCHAR#,#fd_hour:VARCHAR#)
     </insert>
 
 </sqlMap>

@@ -16,4 +16,21 @@
         <property name="month" column="fd_month" insert="true" update="true" type="java.lang.String"/>
         <property name="day" column="fd_day" insert="true" update="true" type="java.lang.String"/>
     </class>
+
+    <class name="com.changhong.system.domain.TvChannelInfo" table="tv_channel_info">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+        <property name="tvChannelName" column="tv_channel_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="tvProgramName" column="tv_program_name" insert="true" update="true" type="java.lang.String"/>
+        <property name="status" column="status" insert="true" update="true" type="java.lang.String"/>
+        <property name="userMac" column="user_mac" insert="true" update="true" type="java.lang.String"/>
+        <property name="appKey" column="appkey" insert="true" update="true" type="java.lang.String"/>
+        <property name="year" column="fd_year" insert="true" update="true" type="java.lang.String"/>
+        <property name="month" column="fd_month" insert="true" update="true" type="java.lang.String"/>
+        <property name="day" column="fd_day" insert="true" update="true" type="java.lang.String"/>
+        <property name="hour" column="fd_hour" insert="true" update="true" type="java.lang.String"/>
+
+    </class>
 </hibernate-mapping>
