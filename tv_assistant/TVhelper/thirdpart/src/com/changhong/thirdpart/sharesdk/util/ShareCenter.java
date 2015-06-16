@@ -1,26 +1,17 @@
 package com.changhong.thirdpart.sharesdk.util;
 
-import java.io.File;
-
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-import cn.sharesdk.douban.c;
-import cn.sharesdk.facebook.Facebook;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.system.email.Email;
-import cn.sharesdk.system.text.ShortMessage;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.tencent.qzone.QZone;
 import cn.sharesdk.tencent.weibo.TencentWeibo;
@@ -102,19 +93,6 @@ public class ShareCenter {
 		// WechatMoments.NAME;
 		/** 微信收藏 */
 		// WechatFavorite.NAME;
-		/** Facebook */
-		// Facebook.NAME;
-		/** 邮件 */
-		// Email.NAME;
-		/** 短信 */
-		// ShortMessage.NAME;
-		/** 豆瓣 */
-		// Douban.NAME;
-		// Renren.NAME;
-		// KaiXin.NAME;
-		// SohuSuishenkan.NAME;
-		// Yixin.NAME;
-		// YixinMoments.NAME;
 	}
 
 	/**
