@@ -1,9 +1,14 @@
 package com.changhong.tvhelper.activity;
 
-import com.changhong.common.utils.MobilePerformanceUtils;
+import android.app.ProgressDialog;
+import android.os.*;
+import android.os.Process;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Toast;
+import com.changhong.common.utils.StringUtils;
 import com.changhong.tvhelper.R;
 
-import com.baidu.cyberplayer.core.BMediaController;
 import com.baidu.cyberplayer.core.BVideoView;
 import com.baidu.cyberplayer.core.BVideoView.OnCompletionListener;
 import com.baidu.cyberplayer.core.BVideoView.OnErrorListener;
@@ -13,193 +18,100 @@ import com.baidu.cyberplayer.core.BVideoView.OnPreparedListener;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
-import android.os.Message;
-import android.os.Process;
 import android.util.Log;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import com.changhong.tvhelper.domain.Program;
 
 public class TVVideoViewPlayingActivity extends Activity implements OnPreparedListener,
 							OnCompletionListener,
 							OnErrorListener, 
 							OnInfoListener,
-							OnPlayingBufferCacheListener
-							{
+							OnPlayingBufferCacheListener {
+
 	private final String TAG = "VideoViewPlayingActivity";
 	
 	/**
 	 * 您的ak 
 	 */
 	private String AK = "GcB3uqcVvjzEtbsV8lxBDQ8d";
-	/**
-	 * //您的sk的前16位
-	 */
 	private String SK = "jshPsRMEXDTah1rqYO6qLilGkuFrFYKG";
 	
-	private String mVideoSource = null;
-	
 	private BVideoView mVV = null;
-	private BMediaController mVVCtl = null;
 	private RelativeLayout mViewHolder = null;
-	private LinearLayout mControllerHolder = null;
-	
-	private boolean mIsHwDecode = false;
-	
-	private EventHandler mEventHandler;
-	private HandlerThread mHandlerThread;
-	
+
+    /**
+     * 播放状态
+     */
 	private final Object SYNC_Playing = new Object();
-		
-	private final int EVENT_PLAY = 0;
-	
-	private static final String POWER_LOCK = "VideoViewPlayingActivity";
-	
-	/**
-	 * 播放状态
-	 */
 	private  enum PLAYER_STATUS {
 		PLAYER_IDLE, PLAYER_PREPARING, PLAYER_PREPARED,
 	}
-	
 	private PLAYER_STATUS mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
 	private int stat=-1;
-	
-	/**
-	 * 记录播放位置
-	 */
-	private int mLastPos = 0;
 
-	class EventHandler extends Handler {
-		public EventHandler(Looper looper) {
-			super(looper);
-		}
+    /**
+     * 播放的路径
+     */
+    public static String name = null;
+    public static String path = null;
 
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case EVENT_PLAY:
-				/**
-				 * 如果已经播放了，等待上一次播放结束
-				 */
-				if (mPlayerStatus != PLAYER_STATUS.PLAYER_IDLE) {
-					synchronized (SYNC_Playing) {
-						try {
-							SYNC_Playing.wait();
-							
-							Log.v(TAG, "wait player status to idle");
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}
+    /**
+     * 播放和退出时间戳
+     */
+    private long playTimestamp = 0l;
+    private long backTimestamp = 0l;
+    private int returnConfirm = 1;
 
-				/**
-				 * 设置播放url
-				 */
-				Log.v(TAG, mVideoSource);
-				mVV.setVideoPath(mVideoSource);
-				//mVV.setCacheBufferSize(1*1024*1024);
-				/**
-				 * 续播，如果需要如此
-				 */
-				if (mLastPos > 0) {
+    /**
+     * 定时隐藏
+     */
+    private Handler mDismissHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    break;
+                case 1:
+                    Toast.makeText(TVVideoViewPlayingActivity.this, "播放超时，退出播放！！！", 3000).show();
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
-					mVV.seekTo(mLastPos);
-					mLastPos = 0;
-				}
-
-				/**
-				 * 显示或者隐藏缓冲提示 
-				 */
-				mVV.showCacheInfo(true);
-				
-				/**
-				 * 开始播放
-				 */
-				//mVV.seekTo(0);
-				mVV.start();
-
-				mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARING;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	
-	/**
-	 * 实现切换示例
-	 */
-	private View.OnClickListener mPreListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			Log.v(TAG, "pre btn clicked");
-			/**
-			 * 如果已经开发播放，先停止播放
-			 */
-			if(mPlayerStatus != PLAYER_STATUS.PLAYER_IDLE){
-				mVV.stopPlayback();
-			}
-			
-			/**
-			 * 发起一次新的播放任务
-			 */
-			if(mEventHandler.hasMessages(EVENT_PLAY))
-				mEventHandler.removeMessages(EVENT_PLAY);
-			mEventHandler.sendEmptyMessage(EVENT_PLAY);
-		}
-	};
-	
-	private View.OnClickListener mNextListener = new View.OnClickListener() {
-		
-		@Override
-		public void onClick(View v) {
-			Log.v(TAG, "next btn clicked");
-		}
-	};
-			
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-						
 		setContentView(R.layout.activity_video_playing);
-		
-		mIsHwDecode = getIntent().getBooleanExtra("isHW", false);
-		Uri uriPath = getIntent().getData();
-		if (null != uriPath) {
-			String scheme = uriPath.getScheme();
-			if (null != scheme) {
-				mVideoSource = uriPath.toString();
-			} else {
-				mVideoSource = uriPath.getPath();
-			}
-		}
-		
-		initUI();
-		
-		/**
-		 * 开启后台事件处理线程
-		 */
-		mHandlerThread = new HandlerThread("event handler thread", Process.THREAD_PRIORITY_BACKGROUND);
-		mHandlerThread.start();
-		mEventHandler = new EventHandler(mHandlerThread.getLooper());
+
+        /**
+         * 获得播放的路径和节目的名称
+         */
+        if (!StringUtils.hasLength(path)) {
+            finish();
+            return;
+        }
+
+        /**
+         * 初始化UI
+         */
+        initUI();
+
+        /**
+         * 开始后台监视线程
+         */
+        playTimestamp = System.currentTimeMillis();
+        new PlayerIsPlayingMinitorThread().start();
 	}
 	
 	/**
 	 * 初始化界面
 	 */
-	private void initUI() {		
-		mViewHolder = (RelativeLayout)findViewById(R.id.view_holder);
-		mControllerHolder = (LinearLayout )findViewById(R.id.controller_holder);
-		
+	private void initUI() {
+        mViewHolder = (RelativeLayout)findViewById(R.id.view_holder);
+
 		/**
 		 * 设置ak及sk的前16位
 		 */
@@ -209,10 +121,15 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
 		 *创建BVideoView和BMediaController
 		 */
 		mVV = new BVideoView(this);
-		mVVCtl = new BMediaController(this);
-		mViewHolder.addView(mVV);
-		mControllerHolder.addView(mVVCtl);
-		
+        mVV.setVideoScalingMode(BVideoView.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+        mVV.setDecodeMode(BVideoView.DECODE_HW);
+        mVV.setKeepScreenOn(true);
+        mVV.showCacheInfo(true);
+        mVV.setCacheBufferSize(512 * 1024);
+        mVV.setVideoPath(path);
+        mViewHolder.addView(mVV);
+        Log.v(TAG, path);
+
 		/**
 		 * 注册listener
 		 */
@@ -220,17 +137,18 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
 		mVV.setOnCompletionListener(this);
 		mVV.setOnErrorListener(this);
 		mVV.setOnInfoListener(this);
-		mVVCtl.setPreNextListener(mPreListener, mNextListener);
-		
-		/**
-		 * 关联BMediaController
-		 */
-		mVV.setMediaController(mVVCtl);
-		/**
-		 * 设置解码模式
-		 */
-		mVV.setDecodeMode(BVideoView.DECODE_SW);
+        mVV.setOnPlayingBufferCacheListener(this);
+
+        /**
+         * 开始播放
+         */
+        mVV.start();
+        mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARING;
 	}
+
+
+
+    /**********************************************百度和系统方法重载部分*************************************************/
 
 	@Override
 	protected void onPause() {
@@ -241,7 +159,6 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
 		 * 在停止播放前 你可以先记录当前播放的位置,以便以后可以续播
 		 */
 		if (mPlayerStatus == PLAYER_STATUS.PLAYER_PREPARED) {
-			mLastPos = mVV.getCurrentPosition();
 			mVV.stopPlayback();
 		}
 		onDestroy();
@@ -251,57 +168,49 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		/**
-		 * 发起一次播放任务,当然您不一定要在这发起
-		 */
-		mEventHandler.sendEmptyMessage(EVENT_PLAY);	
 	}
 	
 	@Override
 	protected void onStop(){
 		super.onStop();
 		
-		mHandlerThread.quit();
 		Log.v(TAG, "onStop");
+
+        finish();
 	}
 	
 	@SuppressLint("NewApi")
 	@Override
 	protected void onDestroy(){
 		super.onDestroy();
-		/**
-		 * 结束后台事件处理线程
-		 */
-		mHandlerThread.quit();
 		Log.v(TAG, "onDestroy");
 	}
 
 	@Override
 	public boolean onInfo(int what, int extra) {
-		switch(what){
-		/**
-		 * 开始缓冲
-		 */
-		case BVideoView.MEDIA_INFO_BUFFERING_START:
-			break;
-		/**
-		 * 结束缓冲
-		 */
-		case BVideoView.MEDIA_INFO_BUFFERING_END:
-			break;
-		default:
-			break;
-		}
-		return false;
-	}
-	
-	/**
+        switch (what) {
+            /**
+             * 开始缓冲
+             */
+            case BVideoView.MEDIA_INFO_BUFFERING_START:
+                break;
+            /**
+             * 结束缓冲
+             */
+            case BVideoView.MEDIA_INFO_BUFFERING_END:
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    /**
 	 * 当前缓冲的百分比， 可以配合onInfo中的开始缓冲和结束缓冲来显示百分比到界面
 	 */
 	@Override
 	public void onPlayingBufferCache(int percent) {
-	}
+    }
 
 	/**
 	 * 播放出错
@@ -337,4 +246,57 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
 		Log.v(TAG, "onPrepared");
 		mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARED;
 	}
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                if (returnConfirm == 1) {
+                    returnConfirm = 0;
+                    backTimestamp = System.currentTimeMillis();
+                    Toast.makeText(TVVideoViewPlayingActivity.this, "再按一次退出", 1000).show();
+                } else {
+                    mDismissHandler = null;
+                    finish();
+                }
+                return true;
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**************************************后台播放监视线程*************************************************************/
+
+    private class PlayerIsPlayingMinitorThread extends Thread {
+        public void run() {
+            while (true) {
+                try {
+                    Log.v(TAG, mPlayerStatus.name());
+
+                    // 用户在10秒钟之内连续返回则退出，反则计数器归一
+                    if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
+                        returnConfirm = 1;
+                        backTimestamp = 0l;
+                    }
+
+                    if (mPlayerStatus != null && mPlayerStatus == PLAYER_STATUS.PLAYER_PREPARED) {
+                        // 播放中更新时间
+                        playTimestamp = System.currentTimeMillis();
+                    }
+
+                    if ((System.currentTimeMillis() - playTimestamp) > 10000 && playTimestamp != 0l) {
+                        // 超过8秒一直没有播放，退出播放界面
+                        if (mDismissHandler != null) {
+                            mDismissHandler.sendEmptyMessage(1);
+                        }
+                        break;
+                    }
+                    SystemClock.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }
