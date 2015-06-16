@@ -90,7 +90,8 @@ public class TVChannelShowActivity extends Activity {
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         height = metric.heightPixels;     // 屏幕高度（像素）
 
-        NetEstimateUtils.noticeEndUserNetworkStatus(this);
+        //提示用户的网络连接情况，由于川网局域网内，只能通通过WIFI连接，所以用不着显示
+        //NetEstimateUtils.noticeEndUserNetworkStatus(this);
 
         channelService = new ChannelService();
 
