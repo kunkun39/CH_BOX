@@ -50,6 +50,7 @@ CREATE TABLE `tv_channel_info`(
   `fd_year`  varchar(255) default '',
   `fd_month`  varchar(255) default '',
   `fd_day`  varchar(255) default '',
+  `fd_hour`  varchar(255) default '',
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
