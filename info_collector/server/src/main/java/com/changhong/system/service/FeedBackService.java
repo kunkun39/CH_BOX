@@ -18,8 +18,9 @@ public interface FeedBackService {
     String obtainUsernameByMac(String mac);
 
     JSONArray obtainFeedBackInfoByMonth(String status,String year,String month) throws JSONException;
-    JSONArray obtainCollectorInfoByMonth(String status,String year,String month) throws JSONException;
+    JSONArray obtainCollectorInfoAmountByProgram(String tvChannelName,String year,String month) throws JSONException;
     List<TvChannelInfo> obtainTvChannelInfo(String channelName,String year,String month,String day,String hour);
+    List<TvChannelInfo> obtainAllTvChannelInfo();
     List<TvChannelInfoDTO> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName);
     int loadAllTvChannelInfoSize();
 }

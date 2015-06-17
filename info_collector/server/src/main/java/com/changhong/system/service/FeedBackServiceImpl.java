@@ -63,6 +63,12 @@ public class FeedBackServiceImpl implements FeedBackService{
     }
 
     @Override
+    public List<TvChannelInfo> obtainAllTvChannelInfo() {
+        return feedBackDao.obtainAllTvChannelInfo();
+//        return TvChannelWebAssember.toTvChannelInfoDTOList(tvChannelInfos);
+    }
+
+    @Override
     public List<TvChannelInfoDTO> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName) {
         List<TvChannelInfo> tvChannelInfos= feedBackDao.obtainAllTvChannelInfo(startPosition,pageSize,channelName);
         return TvChannelWebAssember.toTvChannelInfoDTOList(tvChannelInfos);
@@ -73,8 +79,8 @@ public class FeedBackServiceImpl implements FeedBackService{
         return feedBackDao.loadAllTvChannelInfoSize();
     }
     @Override
-    public JSONArray obtainCollectorInfoByMonth(String status, String year, String month) throws JSONException {
-        return feedBackDao.obtainCollectorInfoByMonth(status, year, month);
+    public JSONArray obtainCollectorInfoAmountByProgram(String tvChannelName, String year, String month) throws JSONException {
+        return feedBackDao.obtainCollectorInfoAmountByProgram(tvChannelName, year, month);
     }
 
 }

@@ -15,7 +15,7 @@ public class SystemDWRHandler {
         return feedBackService.obtainFeedBackInfoByMonth(status, year, month).toString();
     }
 
-    public String obtainCollectorInfoAmountByMonth(String status,String year, String month) throws JSONException {
-        return feedBackService.obtainCollectorInfoByMonth(status, year, month).toString();
+    public String obtainCollectorInfoAmountByProgram(String tvChannelName,String year, String month) throws JSONException {
+        return feedBackService.obtainCollectorInfoAmountByProgram(tvChannelName, year, month).toString();
     }
 }

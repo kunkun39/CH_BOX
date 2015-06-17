@@ -37,12 +37,12 @@
                         反馈信息:
                     </span>
                     <span>
-                        已处理/未处理:
-                        <select id="status" style="width: 100px;">
-                            <option value="0" <c:if test="${status=='0'}">selected="true"</c:if>>未处理</option>
-                            <option value="1" <c:if test="${status=='1'}">selected="true"</c:if>>已处理</option>
+                        频道名:
+                        <select id="tvChannelName" style="width: 200px;">
+                            <c:forEach items="${tvChannelInfos}" var="tvChannelInfo">
+                                <option value="${tvChannelInfo.tvChannelName}" >${tvChannelInfo.tvChannelName}</option>
+                            </c:forEach>
                         </select>
-                        &nbsp;
                     </span>
                     <span>
                         时间:
@@ -111,68 +111,45 @@
 
 <script type="text/javascript">
 
-    function renew_sta_container(status, year, month, reportType) {
+    function renew_sta_container(tvChannelName, year, month, reportType) {
         jQuery("#container2_tr").show();
 
         if("0" == month) {
             //全年的报表
-            SystemDWRHandler.obtainCollectorInfoAmountByMonth(status, year, month, function(result) {
+            SystemDWRHandler.obtainCollectorInfoAmountByProgram(tvChannelName, year, month, function(result) {
                 var statisticData = JSON.parse(result);
                 var total = statisticData[0].total.split(",");
 
-                var days = statisticData[0].days;
-                sta_container2.xAxis.categories = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+                var programs = statisticData[0].series.split(",");
+                sta_container2.xAxis.categories = programs;
 
                 var newData = new Array();
-                var totalUpdateTimes = 0;
+
                 for(var i=0; i<total.length; i++) {
                     newData[i] = parseInt(total[i]);
-                    totalUpdateTimes = totalUpdateTimes + parseInt(total[i]);
                 }
                 sta_container2.series[0].data = newData;
 
-                var statusString = "";
-                if("1" == status) {
-                    var statusString = "已处理";
-                } else {
-                    var statusString = "未处理";
-                }
-                sta_container2.title.text = "用户" + year + statusString + "反馈总次数" + totalUpdateTimes + "次";
+                sta_container2.title.text = "频道 " + tvChannelName +" "+ year  + " 收视排行" ;
 
                 new Highcharts.Chart(sta_container2);
             });
         } else {
             //一个月的报表
-            SystemDWRHandler.obtainCollectorInfoAmountByMonth(status, year, month, function(result) {
+            SystemDWRHandler.obtainCollectorInfoAmountByProgram(tvChannelName, year, month, function(result) {
                 var statisticData = JSON.parse(result);
                 var total = statisticData[0].total.split(",");
 
-                var days = statisticData[0].days;
-                if(parseInt(days) == 28) {
-                    sta_container2.xAxis.categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28'];
-                } else if (parseInt(days) == 29) {
-                    sta_container2.xAxis.categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29'];
-                } else if (parseInt(days) == 30) {
-                    sta_container2.xAxis.categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30'];
-                } else {
-                    sta_container2.xAxis.categories = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'];
-                }
+                var programs = statisticData[0].series.split(",");
+                sta_container2.xAxis.categories = programs;
 
                 var newData = new Array();
-                var totalUpdateTimes = 0;
                 for(var i=0; i<total.length; i++) {
                     newData[i] = parseInt(total[i]);
-                    totalUpdateTimes = totalUpdateTimes + parseInt(total[i]);
                 }
                 sta_container2.series[0].data = newData;
 
-                var statusString = "";
-                if("1" == status) {
-                    var statusString = "已处理";
-                } else {
-                    var statusString = "未处理";
-                }
-                sta_container2.title.text = "用户" + year + "年" + month + "月" + statusString + "反馈总次数" + totalUpdateTimes + "次";
+                sta_container2.title.text = "频道 " + tvChannelName +" "+year +"年" + month + "月" + " 收视排行" ;
 
                 new Highcharts.Chart(sta_container2);
             });
@@ -180,11 +157,11 @@
     }
 
     function generateReport() {
-        var status = jQuery("#status").val();
+        var tvChannelName=jQuery("#tvChannelName").val();
         var year = jQuery("#reportYear").val();
         var month = jQuery("#reportMonth").val();
         var reportType = jQuery("#reportType").val();
-        renew_sta_container(status, year, month, reportType);
+        renew_sta_container(tvChannelName, year, month, reportType);
     }
 
 </script>

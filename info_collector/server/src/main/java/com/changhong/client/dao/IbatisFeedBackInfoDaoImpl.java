@@ -3,7 +3,6 @@ package com.changhong.client.dao;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.changhong.common.utils.CHDateUtils;
-import com.changhong.system.domain.FeedChannelInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

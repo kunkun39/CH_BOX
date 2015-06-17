@@ -22,7 +22,7 @@
 <table cellpadding="0" cellspacing="0" width="100%" class="box">
     <tr>
         <td width="200" valign="top" style="background: #e8e8e8;border-right: 1px solid #CCC;">
-            <jsp:include page="../systemtype.jsp"/>
+            <jsp:include page="../statisticcollector.jsp"/>
         </td>
         <td valign="top">
             <form action="${pageContext.request.contextPath}/backend/tvchannelinfooverview.html" class="search_form" method="POST">

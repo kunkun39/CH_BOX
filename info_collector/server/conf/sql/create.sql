@@ -26,7 +26,7 @@ CREATE TABLE `client_user`(
 DROP TABLE IF EXISTS `feedback_info`;
 CREATE TABLE `feedback_info`(
   `id` int(11) NOT NULL auto_increment,
-  `timestamp` timestamp default CURRENT_TIMESTAMP,
+  `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `content` varchar(255) default '',
   `user_mac` varchar(40) default '',
   `status` varchar(10) default '',

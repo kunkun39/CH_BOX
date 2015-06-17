@@ -1,9 +1,5 @@
 package com.changhong.client.dao;
 
-import com.changhong.system.domain.FeedChannelInfo;
-
-import java.util.List;
-
 /**
  * Created by maren on 2015/6/9.
  */

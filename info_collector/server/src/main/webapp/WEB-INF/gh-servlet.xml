@@ -71,6 +71,7 @@
     </bean>
 
     <bean id="userCollectorController" class="com.changhong.system.web.controller.UserCollectorController">
+        <property name="feedBackService" ref="feedBackService"/>
     </bean>
 
     <bean id="userFeedBackManagementCotroller" class="com.changhong.system.web.controller.UserFeedBackManagementController">

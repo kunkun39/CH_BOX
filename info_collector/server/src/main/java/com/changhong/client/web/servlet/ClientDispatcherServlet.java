@@ -1,22 +1,13 @@
 package com.changhong.client.web.servlet;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.changhong.client.dao.IbatisFeedBackInfoDao;
-import com.changhong.client.dao.IbatisFeedBackInfoDaoImpl;
-import com.changhong.client.dao.IbatisMovieDaoImpl;
-import com.changhong.client.service.FeedChannelService;
-import com.changhong.system.domain.FeedChannelInfo;
 
-import javax.annotation.Resource;
+import com.changhong.client.dao.IbatisFeedBackInfoDao;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -41,10 +32,12 @@ public class ClientDispatcherServlet extends HttpServlet {
         String requestURL = request.getRequestURI();
 
         String responseJSON = "";
+
         if ("/feedBack/client/userInfoCommit".equals(requestURL)) {
             String userInfo=request.getParameter("userObject");
             ibatisFeedBackInfoDao.saveClientInfo(userInfo);
             responseJSON = "success";
+
 
         } else if ("/feedBack/client/feedInfoMessageCommit".equals(requestURL)) {
             String feedInfo=request.getParameter("feedInfoObject");
