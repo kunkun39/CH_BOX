@@ -1,7 +1,14 @@
 package com.changhong.client.web.servlet;
 
+import com.changhong.client.dao.IbatisMovieDao;
+
+import javax.annotation.Resource;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import com.changhong.client.dao.IbatisFeedBackInfoDao;
+
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +24,9 @@ import java.io.PrintWriter;
  */
 
 public class ClientDispatcherServlet extends HttpServlet {
+
+    @Resource
+    IbatisMovieDao movieDao;
 
     private IbatisFeedBackInfoDao ibatisFeedBackInfoDao;
 
@@ -37,6 +47,13 @@ public class ClientDispatcherServlet extends HttpServlet {
             String userInfo=request.getParameter("userObject");
             ibatisFeedBackInfoDao.saveClientInfo(userInfo);
             responseJSON = "success";
+
+        if ("/feedBack/client/userInfoCommit".equals(requestURL)) {
+            movieDao.obtainColumns();
+            responseJSON = "success";
+
+        }
+
 
 
         } else if ("/feedBack/client/feedInfoMessageCommit".equals(requestURL)) {

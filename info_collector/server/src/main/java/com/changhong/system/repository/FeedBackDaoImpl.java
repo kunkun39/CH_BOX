@@ -200,7 +200,7 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
         StringBuilder builder = new StringBuilder();
         builder.append("from TvChannelInfo u");
         if (StringUtils.hasText(name)) {
-            builder.append(" where u.tv_channel_name like '" + name +"%'" );
+            builder.append(" where u.tvChannelName like '" + name +"%'" );
         }
         org.hibernate.Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
         Query query = session.createQuery(builder.toString());
