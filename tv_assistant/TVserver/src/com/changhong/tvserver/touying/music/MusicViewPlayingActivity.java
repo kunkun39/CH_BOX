@@ -7,6 +7,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,6 +24,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Process;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -218,7 +223,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
         
         autoExitRunnable = new  Runnable() {
         	long lastTime = 0L;
-        	static final int detalTime = 1000 * 60;
+        	static final int detalTime = 1000 * 30;
         	static final int detalDuringTime = 1000 * 60 * 2;
         	long lastestTime = 0L;
 			@Override
@@ -338,6 +343,44 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
          * 加载歌词
          */
         loadLocalLyric();
+    }
+    
+    private boolean isTopView()
+    {
+	    ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);  
+		ComponentName cn = am.getRunningTasks(1).get(0).topActivity;  	
+		return cn.getClassName().equals(MusicViewPlayingActivity.class.getName());
+    }
+    
+    private void showDialog()
+    {
+    	int width = getWindow().getDecorView().getWidth();
+		int height = getWindow().getDecorView().getHeight();
+		int magin = 40;
+		TextView textView = new TextView(MusicViewPlayingActivity.this);					
+		textView.setText("电视助手与机顶盒网络断开或电视助手已退出，无法获取资源");					
+		textView.setTextSize(40);	
+		textView.setWidth((width - magin) >> 1);
+		textView.setGravity(Gravity.CENTER);										
+
+		final Dialog dialog = new AlertDialog.Builder(MusicViewPlayingActivity.this)					
+		.setView(textView)
+		.create();					
+		dialog.show();
+		android.view.WindowManager.LayoutParams  params = dialog.getWindow().getAttributes();
+//		dialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);					
+		params.width = android.view.WindowManager.LayoutParams.MATCH_PARENT;
+		params.height = android.view.WindowManager.LayoutParams.WRAP_CONTENT;
+		
+		params.gravity = Gravity.CENTER;
+		dialog.getWindow().setAttributes(params);
+		lrcHandler.postDelayed(new Runnable() {						
+			@Override
+			public void run() {
+				if(dialog.isShowing())
+					dialog.dismiss();							
+			}
+		}, 2000);	
     }
 
     /**
@@ -648,10 +691,6 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
     @Override
     protected void onStop() {
         super.onStop();
-
-        mHandlerThread.quit();
-        Log.v(TAG, "onStop");
-        
         finish();
     }
 
@@ -668,12 +707,14 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
 
     @Override
     public boolean onInfo(int what, int extra) {
-        switch (what) {
-        
-	        case 1002:
-	        {
-	        	Toast.makeText(this, "手机与电视的连接中断，无法找到音频源", Toast.LENGTH_SHORT).show();
+        switch (what) {        
+        // 当播放连接中断时，但有缓冲时，收到的消息
+        	case 1002:
+	        {	        	
+	        	if(isTopView())
+	        		showDialog();
 	        }break;
+	     // 当播放连接中断时，但无缓冲时，收到的消息
 	        case 1003:
 	        {
 	        	if (mEventHandler != null) {

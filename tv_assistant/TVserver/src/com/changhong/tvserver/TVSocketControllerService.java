@@ -181,6 +181,7 @@ public class TVSocketControllerService extends Service {
                                 Log.e(TAG, msgCpy);
                                 Intent intent = new Intent(TVSocketControllerService.this, VideoViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.setData(Uri.parse(msgCpy));
                                 startActivity(intent);
