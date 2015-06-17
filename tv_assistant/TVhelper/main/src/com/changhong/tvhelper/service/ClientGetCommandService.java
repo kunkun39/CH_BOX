@@ -144,7 +144,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
 
                         if (StringUtils.hasLength(serverAddress)) {
-                            Log.w("COMMAND_CLEAN", (ClientSendCommandService.serverIP == null ? "" : ClientSendCommandService.serverIP) + "-" + serverAddress);
+                            Log.w("COMMAND_CLEAN", (ClientSendCommandService.serverIP == null ? "" : ClientSendCommandService.serverIP) + "-" + serverAddress + "-" + ClientSendCommandService.titletxt);
 
                             if (!ClientSendCommandService.serverIpList.contains(serverAddress)) {
                                 ClientSendCommandService.serverIpList.add(serverAddress);
@@ -161,7 +161,6 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                     ClientSendCommandService.handler.sendEmptyMessage(2);
                                     ClientSendCommandService.titletxt = boxName;
                                     time = System.currentTimeMillis();
-                                    ClientSendCommandService.handler.sendEmptyMessage(2);
 
                                     /**
                                      * 更细所有的频道TITLE

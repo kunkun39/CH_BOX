@@ -25,9 +25,6 @@ public class ClientTitleSettingService {
         if (TVChannelSearchActivity.title != null) {
             TVChannelSearchActivity.title.setText(ClientSendCommandService.titletxt);
         }
-        if (TVChannelSearchActivity.title != null) {
-            TVChannelSearchActivity.title.setText(ClientSendCommandService.titletxt);
-        }
         if (TVChannelShouCangShowActivity.title != null) {
             TVChannelShouCangShowActivity.title.setText(ClientSendCommandService.titletxt);
         }
