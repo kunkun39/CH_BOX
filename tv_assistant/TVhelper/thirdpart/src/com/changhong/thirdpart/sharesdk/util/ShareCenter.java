@@ -20,9 +20,13 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
 /**
- * ShareUtil 分享工具类
+ * ShareCenter 分享工具类 使用之前别忘了初始化ShareSDK.initSDK(context);
+ * 各个平台分享参数shareParam见官网http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
  * 
- * @author Administrator
+ * shareByShareParams(context,shareParam,platFrom,paListener) 直接分享到指定平台。
+ * showOneKeyShare 调用一键分享platform指定平台则分享到指定平台，为空显示一键分享对话框选择平台。
+ * 
+ * @author wangxiufeng
  * 
  */
 public class ShareCenter {
@@ -114,19 +118,23 @@ public class ShareCenter {
 	public static void shareByShareParams(Context context,
 			ShareParams shareParam, String platFrom,
 			PlatformActionListener paListener) {
+		//非主线程可能会影响某些功能
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
 		}
+		//分享参数为空不能分享
 		if (shareParam == null) {
 			L.e("shareParam or platFrom can not be null");
 			showToast(context, "shareParam分享内容不能为空", false);
 			return;
 		}
-		if (TextUtils.isEmpty(platFrom)) {// platFrom平台NAME为空，显示一键分享对话框
+		// 平台NAME为空，显示一键分享列表对话框
+		if (TextUtils.isEmpty(platFrom)) {
 			showOneKeyShare(context, shareParam, paListener, true, "");
 			return;
 		}
+		ShareSDK.initSDK(context);
 		checkParams(context, shareParam, platFrom);// 检测参数
 		{// 执行分享代码
 			Platform platform = ShareSDK.getPlatform(platFrom);
@@ -165,7 +173,7 @@ public class ShareCenter {
 		}
 		OnekeyShare oks = new OnekeyShare();
 		if (!TextUtils.isEmpty(platform)) {
-			oks.setPlatform(platform);// 设置平台，如果设置了平台就是对于单个平台分享，如果为空表示打开分享对话框
+			oks.setPlatform(platform);// 设置平台Name，如果为空表示打开分享对话框
 		}
 		// 关闭sso授权
 		oks.disableSSOWhenAuthorize();
@@ -191,9 +199,7 @@ public class ShareCenter {
 		oks.setSite(title);
 		// siteUrl是分享此内容的网站地址，仅在QQ空间使用，否则可以不提供 ，在本工程默认使用titleUrl
 		oks.setSiteUrl(titleUrl);
-
-		// 启动分享GUI
-		oks.show(context);
+		oks.show(context);// 启动分享GUI
 	}
 
 	/**
@@ -238,11 +244,9 @@ public class ShareCenter {
 		// title标题，在印象笔记、邮箱、信息、微信（包括好友、朋友圈和收藏）、 易信（包括好友、朋友圈）、人人网和QQ空间使用，否则可以不提供
 		oks.setTitle(shareParams.getTitle());
 		// titleUrl是标题的网络链接，仅在人人网和QQ/QQ空间使用
-		oks.setTitleUrl(TextUtils.isEmpty(shareParams.getTitleUrl()) ? "http://"
-				: shareParams.getTitleUrl());// QQ分享时候titleurl不能为空
+		oks.setTitleUrl(shareParams.getTitleUrl());// QQ分享时候titleurl不能为空
 		// url在微信（包括好友、朋友圈收藏）和易信（包括好友和朋友圈）中使用，否则可以不提供
-		oks.setUrl(TextUtils.isEmpty(shareParams.getUrl()) ? "http://"
-				: shareParams.getUrl());//
+		oks.setUrl(shareParams.getUrl());//
 		// text是分享文本，所有平台都需要这个字段
 		oks.setText(shareParams.getText() == null ? "" : shareParams.getText());
 		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数 确保SDcard下面存在此张图片,没图片可能导致分享失败
@@ -275,7 +279,6 @@ public class ShareCenter {
 	 */
 	public static void checkParams(Context context, ShareParams shareParam,
 			String platFrom) {
-		// 参数需要注释介绍：或代表选一即可，（）代表可有可无
 		if (platFrom.equals(QQ.NAME)) {
 			// QQ 需要参数title，titleUrl，text，imagePath或imageUrl，musicUrl(可选)
 			if (checkStringsHasEmpty("QQ", shareParam.getTitle(),
