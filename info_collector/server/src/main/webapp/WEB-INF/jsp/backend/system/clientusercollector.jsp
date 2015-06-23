@@ -39,6 +39,7 @@
                     <span>
                         频道名:
                         <select id="tvChannelName" style="width: 200px;">
+                            <option value="0" <c:if test="${tvChannelName==0}">selected="true"</c:if>>所有频道</option>
                             <c:forEach items="${tvChannelInfos}" var="tvChannelInfo">
                                 <option value="${tvChannelInfo.tvChannelName}" >${tvChannelInfo.tvChannelName}</option>
                             </c:forEach>
@@ -130,7 +131,12 @@
                 }
                 sta_container2.series[0].data = newData;
 
-                sta_container2.title.text = "频道 " + tvChannelName +" "+ year  + " 收视排行" ;
+                if(tvChannelName=="0"){
+                    sta_container2.title.text = "所有频道 " + " "+ year +"年"  + " 收视排行" ;
+                }else{
+                    sta_container2.title.text = "频道 " + tvChannelName +" "+ year +"年"  + " 收视排行" ;
+                }
+
 
                 new Highcharts.Chart(sta_container2);
             });
@@ -149,7 +155,12 @@
                 }
                 sta_container2.series[0].data = newData;
 
-                sta_container2.title.text = "频道 " + tvChannelName +" "+year +"年" + month + "月" + " 收视排行" ;
+                if(tvChannelName=="0") {
+                    sta_container2.title.text = "所有频道 " +" "+year +"年" + month + "月" + " 收视排行" ;
+                }else{
+                    sta_container2.title.text = "频道 " + tvChannelName +" "+year +"年" + month + "月" + " 收视排行" ;
+                }
+
 
                 new Highcharts.Chart(sta_container2);
             });

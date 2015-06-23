@@ -127,8 +127,15 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
         Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 
         if (Integer.parseInt(month) > 0) {
-            String sql = "select  count(id) as total ,tv_program_name from tv_channel_info " +
-                    "where tv_channel_name = '" + tvChannelName  + "' and fd_year = " + year + " and fd_month = " + month + " group by tv_program_name";
+            String sql;
+            if(tvChannelName.equals("0")){
+                sql = "select  count(id) as total ,tv_channel_name from tv_channel_info " +
+                        "where fd_year = " + year + " and fd_month = " + month + " group by tv_channel_name";
+            }else{
+                sql = "select  count(id) as total ,tv_program_name from tv_channel_info " +
+                        "where tv_channel_name = '" + tvChannelName  + "' and fd_year = " + year + " and fd_month = " + month + " group by tv_program_name";
+            }
+
             SQLQuery query = session.createSQLQuery(sql);
             query.setMaxResults(10);
             query.setFirstResult(0);
@@ -142,7 +149,7 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
                     bufferToal.append(total+",");
                 }
             }else{
-                buffer.append("CCTV-1"+",");
+                buffer.append(tvChannelName+",");
                 bufferToal.append(0+",");
             }
 
@@ -153,8 +160,15 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
             json.put("series", buffer.toString().substring(0, buffer.toString().length() - 1));
             array.put(json);
         } else {
-            String sql = "select  count(id) as total ,tv_program_name from tv_channel_info " +
-                    "where tv_channel_name = '" + tvChannelName  + "' and fd_year = " + year + " group by tv_program_name";
+            String sql;
+            if(tvChannelName.equals("0")){
+                sql = "select  count(id) as total ,tv_channel_name from tv_channel_info " +
+                        "where fd_year = " + year + " group by tv_channel_name";
+            }else{
+                sql = "select  count(id) as total ,tv_program_name from tv_channel_info " +
+                        "where tv_channel_name = '" + tvChannelName  + "' and fd_year = " + year + " group by tv_program_name";
+            }
+
             SQLQuery query = session.createSQLQuery(sql);
             List list = query.list();
             if(list!=null&&list.size()>0) {
@@ -166,7 +180,7 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
                     bufferToal.append(total + ",");
                 }
             }else{
-                buffer.append("CCTV-1"+",");
+                buffer.append(tvChannelName+",");
                 bufferToal.append(0+",");
             }
 
