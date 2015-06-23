@@ -29,8 +29,7 @@
 
     <application
         android:name="com.changhong.common.system.MyApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:allowBackup="true"        
         android:label="third part" >
 
         <!-- ======================================================================= -->
