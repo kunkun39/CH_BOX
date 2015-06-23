@@ -10,9 +10,15 @@ import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import android.R.integer;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -23,6 +29,7 @@ import com.changhong.tvserver.utils.StringUtils;
 import com.chome.virtualkey.virtualkey;
 import com.changhong.tvserver.touying.image.ImageShowPlayingActivity;
 import com.changhong.tvserver.touying.music.MusicViewPlayingActivity;
+import com.changhong.tvserver.touying.pdf.PDFViewerActivity;
 import com.changhong.tvserver.touying.video.VideoViewPlayingActivity;
 import org.apache.http.conn.util.InetAddressUtils;
 import com.ots.deviceinfoprovide.DeviceInfo;
@@ -68,7 +75,9 @@ public class TVSocketControllerService extends Service {
      * 2 - for music
      */
     public static int STOP_PLAY_TAG = 0;
-
+    public static IDataContainer dataContainer = new SocketDataContainer();
+    
+    
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -177,7 +186,14 @@ public class TVSocketControllerService extends Service {
                                     MusicViewPlayingActivity.mEventHandler.sendMessage(message);
                                 }
                                 //投影视屏部分
-                            } else if (msgCpy.substring(0, 4).equals("http")) {
+                            } else if (msgCpy.contains("pdf_start")) {
+                                Log.e(TAG, msgCpy);
+                                Intent intent = new Intent(TVSocketControllerService.this, PDFViewerActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setData(Uri.parse(msgCpy));
+                                startActivity(intent);
+                            }
+                            else if (msgCpy.substring(0, 4).equals("http")) {
                                 Log.e(TAG, msgCpy);
                                 Intent intent = new Intent(TVSocketControllerService.this, VideoViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -289,6 +305,15 @@ public class TVSocketControllerService extends Service {
                                 Intent intent = new Intent("FinishActivity");
                                 sendBroadcast(intent);
                             }
+                            else {
+                            	int devideToken = msgCpy.indexOf(':');
+                            	String type = null;
+                            	if (devideToken != -1) {
+                            		type = msgCpy.substring(0, msgCpy.indexOf(':') - 1);
+								}
+                            	dataContainer.update(msgCpy,type);
+                            	
+							}
                             break;
                         case 2:
                             Toast.makeText(TVSocketControllerService.this, "������߳�����ͻ����޷����룡����", 3000).show();
@@ -636,6 +661,59 @@ public class TVSocketControllerService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    static class SocketDataContainer implements IDataContainer
+    {
+    
+    	private final static String DEFAULT_TYPE = "NULL";
+        private static Map<IMessageListener,String> msgListeners = new HashMap<IMessageListener,String>();
+        
+		@Override
+		public void registListener(IMessageListener listener) {
+			msgListeners.put(listener,DEFAULT_TYPE);
+		}
+	
+		@Override
+		public void registListener(IMessageListener listener, String type) {
+			// TODO 自动生成的方法存根
+			msgListeners.put(listener,type);
+		}
+	
+		@Override
+		public void unregistListener(IMessageListener listener) {
+			// TODO 自动生成的方法存根
+			msgListeners.remove(listener);
+		}
+	
+		@Override
+		public void update(String msg,String type) {
+			if (msg == null) {
+				return ;
+			}
+			
+			try {
+				for (Entry<IMessageListener,String> entry: msgListeners.entrySet()) {
+					if (type == null 
+							|| entry.getValue().contains(type.trim().toLowerCase()))
+					{
+						entry.getKey().onDataChanged(msg);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}						
+		}
+		
+		@Override
+		public void update(String message) {
+			if (message == null) {
+				return ;
+			}
+			
+			update(message,null);
+			
+		}
     }
 
 }
