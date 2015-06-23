@@ -28,7 +28,7 @@ public class ShareUtil {
 			externalStorageState = Environment.getExternalStorageState();
 		} catch (NullPointerException e) { // (sh)it happens (Issue #660)
 			externalStorageState = "";
-			L.e(TAG + e);
+			e.printStackTrace();
 		}
 		L.d(TAG + "externalStorageState= " + externalStorageState);
 		if (MEDIA_MOUNTED.equals(externalStorageState)

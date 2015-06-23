@@ -30,6 +30,7 @@ import android.widget.Toast;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.weibo.TencentWeibo;
 
 import com.changhong.thirdpart.R;
@@ -77,7 +78,7 @@ public class ScreenShotView extends RelativeLayout {
 	/** 截屏时候是否替换掉上一张图片，true截图时候会删掉上一张截图，false 已时间命名，截图永远保存 **/
 	public boolean isReplaceLastImage = true;
 	/** 截屏图片显示停留时间 **/
-	public int imgShowTime = 5000;
+	public int imgShowTime = 1000;
 	/** 截屏按钮是否在其它页面 **/
 	public boolean isButtonOutside = true;
 	/** 是否在该页面显示回调toast **/
@@ -162,12 +163,15 @@ public class ScreenShotView extends RelativeLayout {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case SHOW_ANIMATION:
+				//缩放动画
 				iv_imgcut.startAnimation(scaleAnimation);
 				break;
 			case SHOW_TOAST:
+				//弹出toast提示
 				showToast(msg.obj + "");
 				break;
 			case DO_SHARE:
+				//分享操作
 				doShare();
 				break;
 			default:
@@ -259,26 +263,26 @@ public class ScreenShotView extends RelativeLayout {
 		// {// 直接分享
 		// //
 		// //http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
-		// ShareParams shareParams = new ShareParams();
-		// shareParams.setTitle("我的标题");
-		// shareParams.setTitleUrl("http://www.baidu.com");
-		// shareParams.setText("我的分享内容");
-		// shareParams.setImagePath(imgPath);
-		// shareParams.setImageUrl("http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif");
-		// shareParams.setSite("site标题");
-		// // shareParams.setShareType(Wechat.SHARE_IMAGE);
-		// shareParams
-		// .setSiteUrl("http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/");
-		// boolean silent = true;
-		// // shareParams.setFilePath("/sdcard/TVhelper8.apk");
-		// // File file=new File("/storage/emulated/0/TVhelper8.apk");
-		// // L.d(TAG+"filesize=="+file.length());
-		// shareParams.setExtInfo("App信息TVhelper8");
-		//
-		// String platform = TencentWeibo.NAME;
-		// ShareCenter.shareByShareParams(context, shareParams, platform,
-		// paListener);
-		// }
+//		 ShareParams shareParams = new ShareParams();
+//		 shareParams.setTitle("我的标题");
+//		 shareParams.setTitleUrl("http://www.baidu.com");
+//		 shareParams.setText("我的分享内容");
+//		 shareParams.setImagePath(imgPath);
+//		 shareParams.setImageUrl("http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif");
+//		 shareParams.setSite("site标题");
+//		 // shareParams.setShareType(Wechat.SHARE_IMAGE);
+//		 shareParams
+//		 .setSiteUrl("http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/");
+//		 boolean silent = true;
+//		 // shareParams.setFilePath("/sdcard/TVhelper8.apk");
+//		 // File file=new File("/storage/emulated/0/TVhelper8.apk");
+//		 // L.d(TAG+"filesize=="+file.length());
+//		 shareParams.setExtInfo("App信息TVhelper8");
+//		
+//		 String platform = TencentWeibo.NAME;
+//		 ShareCenter.shareByShareParams(context, shareParams, platform,
+//		 paListener);
+//		 }
 	}
 
 	private void saveImageFile() {
@@ -399,21 +403,21 @@ public class ScreenShotView extends RelativeLayout {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
-		L.d(TAG + "on draw");
+//		L.d(TAG + "on draw");
 		super.onDraw(canvas);
 	}
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// TODO Auto-generated method stub
-		L.d(TAG + "on layout l=" + l + " t=" + t + " r=" + r + " b=" + b);
+//		L.d(TAG + "on layout l=" + l + " t=" + t + " r=" + r + " b=" + b);
 		super.onLayout(changed, l, t, r, b);
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		L.d(TAG + "on onMeasure widthMeasureSpec=" + widthMeasureSpec
-				+ " heightMeasureSpec=" + heightMeasureSpec);
+//		L.d(TAG + "on onMeasure widthMeasureSpec=" + widthMeasureSpec
+//				+ " heightMeasureSpec=" + heightMeasureSpec);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 

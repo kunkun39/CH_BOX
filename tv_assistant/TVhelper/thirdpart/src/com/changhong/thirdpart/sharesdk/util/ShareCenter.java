@@ -171,6 +171,7 @@ public class ShareCenter {
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
 			Looper.prepare();
 		}
+		ShareSDK.initSDK(context);
 		OnekeyShare oks = new OnekeyShare();
 		if (!TextUtils.isEmpty(platform)) {
 			oks.setPlatform(platform);// 设置平台Name，如果为空表示打开分享对话框
@@ -181,23 +182,15 @@ public class ShareCenter {
 		oks.setDialogMode();// TODO 编辑采用对话框模式，去掉则为全屏
 		oks.setSilent(false);// TODO 是否直接分享
 		oks.setCallback(paListener);// 分享回调
-
-		// title标题，在印象笔记、邮箱、信息、微信（包括好友、朋友圈和收藏）、 易信（包括好友、朋友圈）、人人网和QQ空间使用，否则可以不提供
 		oks.setTitle(title);
 		if (TextUtils.isEmpty(titleUrl)) {
 			titleUrl = "http://";
 		}
-		// titleUrl是标题的网络链接，仅在人人网和QQ/QQ空间使用
 		oks.setTitleUrl(titleUrl);// QQ分享时候titleurl不能为空
-		// url在微信（包括好友、朋友圈收藏）和易信（包括好友和朋友圈）中使用，否则可以不提供
-		oks.setUrl(titleUrl);//
-		// text是分享文本，所有平台都需要这个字段
+		oks.setUrl(titleUrl);
 		oks.setText(text == null ? "" : text);
-		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数 确保SDcard下面存在此张图片,没图片可能导致分享失败
 		oks.setImagePath(imagePath == null ? "" : imagePath);//
-		// site是分享此内容的网站名称，仅在QQ空间使用，否则可以不提供,在本工程默认使用title
 		oks.setSite(title);
-		// siteUrl是分享此内容的网站地址，仅在QQ空间使用，否则可以不提供 ，在本工程默认使用titleUrl
 		oks.setSiteUrl(titleUrl);
 		oks.show(context);// 启动分享GUI
 	}
@@ -238,34 +231,24 @@ public class ShareCenter {
 		oks.setDialogMode();// 编辑采用对话框模式，去掉则为全屏
 		oks.setSilent(silent);// 是否直接分享
 		oks.setCallback(paListener);// 回调监听器
-
 		// 关闭sso授权
 		oks.disableSSOWhenAuthorize();
-		// title标题，在印象笔记、邮箱、信息、微信（包括好友、朋友圈和收藏）、 易信（包括好友、朋友圈）、人人网和QQ空间使用，否则可以不提供
 		oks.setTitle(shareParams.getTitle());
-		// titleUrl是标题的网络链接，仅在人人网和QQ/QQ空间使用
 		oks.setTitleUrl(shareParams.getTitleUrl());// QQ分享时候titleurl不能为空
-		// url在微信（包括好友、朋友圈收藏）和易信（包括好友和朋友圈）中使用，否则可以不提供
 		oks.setUrl(shareParams.getUrl());//
-		// text是分享文本，所有平台都需要这个字段
 		oks.setText(shareParams.getText() == null ? "" : shareParams.getText());
-		// imagePath是图片的本地路径，Linked-In以外的平台都支持此参数 确保SDcard下面存在此张图片,没图片可能导致分享失败
 		oks.setImagePath(shareParams.getImagePath());//
-		oks.setImageUrl(shareParams.getImageUrl());// imageUrl是图片的网络路径，新浪微博、人人网、QQ空间和Linked-In支持此字段
-		oks.setImageArray(shareParams.getImageArray());// 腾讯微博分享多张图片
-		oks.setComment(shareParams.getComment());// comment是我对这条分享的评论，仅在人人网和QQ空间使用，否则可以不提供
-		oks.setAddress(shareParams.getAddress());// address是接收人地址，仅在信息和邮件使用，否则可以不提供
-		oks.setExecuteUrl(shareParams.getExecuteUrl());// 设置KakaoTalk的应用打开地址
-		oks.setInstallUrl(shareParams.getInstallUrl());// 设置KakaoTalk的应用下载地址
-		oks.setLatitude(shareParams.getLatitude());// 分享地纬度，新浪微博、腾讯微博和foursquare支持此字段
-		oks.setLongitude(shareParams.getLongitude());// 分享地经度，新浪微博、腾讯微博和foursquare支持此字段
-		// oks.setShareContentCustomizeCallback(callback);
+		oks.setImageUrl(shareParams.getImageUrl());
+		oks.setImageArray(shareParams.getImageArray());
+		oks.setComment(shareParams.getComment());
+		oks.setAddress(shareParams.getAddress());
+		oks.setExecuteUrl(shareParams.getExecuteUrl());
+		oks.setInstallUrl(shareParams.getInstallUrl());
+		oks.setLatitude(shareParams.getLatitude());
+		oks.setLongitude(shareParams.getLongitude());
 		oks.setVenueDescription(shareParams.getVenueDescription());
-		// foursquare分享时的地方名
 		oks.setVenueName(shareParams.getVenueName());
-		// 为此添加检测图片是否存在功能
 		oks.setSite(shareParams.getSite());
-		// 为此添加检测图片是否存在功能
 		oks.setSiteUrl(shareParams.getSiteUrl());
 		// 启动分享GUI
 		oks.show(context);
