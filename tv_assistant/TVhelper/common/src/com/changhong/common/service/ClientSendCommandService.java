@@ -412,6 +412,14 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                                     String value = reader.nextString();
                                     map.put("channel_index", value);
                                     Log.i(TAG, value);
+                                } else if (namesub.equals("aStreamType")) {
+                                    String value = reader.nextString();
+                                    map.put("aStreamType", value);
+                                    Log.i("aStreamType", value);
+                                } else if (namesub.equals("vStreamType")) {
+                                    String value = reader.nextString();
+                                    map.put("vStreamType", value);
+                                    Log.i("vStreamType", value);
                                 } else {
                                     reader.skipValue();
                                 }

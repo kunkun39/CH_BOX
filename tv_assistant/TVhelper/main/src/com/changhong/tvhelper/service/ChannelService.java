@@ -2,9 +2,11 @@ package com.changhong.tvhelper.service;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.StringUtils;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 
@@ -20,11 +22,87 @@ public class ChannelService {
 
     private static final String TAG = "ChannelService";
 
+    /*******************************************处理频道相关***********************************************************/
+
+    /**
+     * 获得频道播放的URL
+     */
     public static String obtainChannlPlayURL(Map<String, Object> map) {
-        return "http://" + ClientSendCommandService.serverIP + ":8000/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("http://" + ClientSendCommandService.serverIP + ":8000/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
                 + "&aPid=" + map.get("aPid") + "&vPid=" + map.get("vPid")
-                + "&dmxId=" + map.get("dmxId") + "&service_id=" + map.get("service_id");
+                + "&dmxId=" + map.get("dmxId") + "&service_id=" + map.get("service_id"));
+
+        String channelName = (String)map.get("service_name");
+        if (channelName.contains("高清") || channelName.contains("HD")) {
+            String vStreamType = (String)map.get("vStreamType");
+            String aStreamType = (String)map.get("aStreamType");
+            String convertV = obtainVideoType(vStreamType);
+            String convertA = obtainAudioType(aStreamType);
+            if (StringUtils.hasLength(convertV) && StringUtils.hasLength(convertA)) {
+                buffer.append("&encode=1&encSrc=0&aStreamType=" + convertA + "&vStreamType=" + convertV);
+            }
+        }
+        Log.i(TAG, buffer.toString());
+        return buffer.toString();
     }
+
+    /**
+     *   public final static int CH_VIDEO_CODE_MPEG2 		= 0;
+         public final static int CH_VIDEO_CODE_MPEG2_HD		= 1;
+         public final static int CH_VIDEO_CODE_MPEG4_ASP    = 2;
+         public final static int CH_VIDEO_CODE_MPEG4_ASP_A	= 3;
+         public final static int CH_VIDEO_CODE_MPEG4_ASP_B	= 4;
+         public final static int CH_VIDEO_CODE_MPEG4_ASP_C	= 5;
+         public final static int CH_VIDEO_CODE_DIVX			= 6;
+         public final static int CH_VIDEO_CODE_VC1			= 7;
+         public final static int CH_VIDEO_CODE_H264			= 8;
+         public final static int CH_VIDEO_CODE_AVS			= 9;
+     */
+    private static String obtainVideoType(String videoType) {
+        if (!StringUtils.hasLength(videoType)) {
+            return null;
+        }
+
+        if ("2".equals(videoType)) {
+            return "0x02";
+        } else if ("27".equals(videoType)) {
+            return "0x1B";
+        }
+        return null;
+    }
+
+    /**
+     *   public final static int CH_AUDIO_CODE_MPEG1		= 0;
+         public final static int CH_AUDIO_CODE_MPEG2		= 1;
+         public final static int CH_AUDIO_CODE_MP3			= 2;
+         public final static int CH_AUDIO_CODE_AC3			= 3;
+         public final static int CH_AUDIO_CODE_AAC_ADTS		= 4;
+         public final static int CH_AUDIO_CODE_AAC_LOAS		= 5;
+         public final static int CH_AUDIO_CODE_HEAAC_ADTS	= 6;
+         public final static int CH_AUDIO_CODE_HEAAC_LOAS	= 7;
+         public final static int CH_AUDIO_CODE_WMA			= 8;
+         public final static int CH_AUDIO_CODE_AC3_PLUS		= 9;
+         public final static int CH_AUDIO_CODE_LPCM			= 10;
+         public final static int CH_AUDIO_CODE_DTS			= 11;
+         public final static int CH_AUDIO_CODE_ATRAC		= 12;
+     */
+    private static String obtainAudioType(String audioType) {
+        if (!StringUtils.hasLength(audioType)) {
+            return null;
+        }
+
+        if ("3".equals(audioType)) {
+            return "0x03";
+        } else if ("4".equals(audioType)) {
+            return "0x04";
+        } else if ("6".equals(audioType) || "129".equals(audioType)) {
+            return "0x06";
+        }
+        return null;
+    }
+
+    /*******************************************处理节目相关的***********************************************************/
 
     /**
      * 获得所有节目当前播放的节目

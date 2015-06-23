@@ -190,8 +190,13 @@ public class TVChannelPlayActivity extends Activity {
                 String channelname = (String) msg.obj;
                 setPath(channelname);
                 initProgramInfo(channelname);
-                if (!dd.isShowing()) {
-                    dd.show();
+
+                try {
+                    if (!dd.isShowing()) {
+                        dd.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -406,7 +411,7 @@ public class TVChannelPlayActivity extends Activity {
 
 	private void setWidgetVisible(int i) {
 		setMyAnimation(i);
-//		relativeLayout.setVisibility(i);
+		relativeLayout.setVisibility(i);
 		programInfoLayout.setVisibility(i);
 		seekbarWidget.setVisibility(i);
 
@@ -415,13 +420,13 @@ public class TVChannelPlayActivity extends Activity {
 	private void setMyAnimation(int i) {
 		initAnimation();
 		if (i == View.VISIBLE) {
-//			relativeLayout.startAnimation(channelListInAnimationSet);
+			relativeLayout.startAnimation(channelListInAnimationSet);
 			programInfoLayout.startAnimation(PIInAnimationSet);
 			seekbarWidget.startAnimation(SKBInAnimationSet);
 			menuKey = true;
 
 		} else {
-//			relativeLayout.startAnimation(channelListOutAnimationSet);
+			relativeLayout.startAnimation(channelListOutAnimationSet);
 			programInfoLayout.startAnimation(PIOutAnimationSet);
 			seekbarWidget.startAnimation(SKBOutAnimationSet);
 			menuKey = false;
@@ -499,7 +504,14 @@ public class TVChannelPlayActivity extends Activity {
 			case 0:
 				break;
 			case 1:
-				Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000).show();
+                try {
+                    if (dd.isShowing()) {
+                        dd.dismiss();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000).show();
 				break;
 			case 3:
 				if (programList != null && programList.size() > 0) {
@@ -605,8 +617,9 @@ public class TVChannelPlayActivity extends Activity {
 						name = (String) map.get("service_name");
 						path = ChannelService.obtainChannlPlayURL(map);
 						if (mVideoView != null && name != null && !name.equals(ILLEGAL_PROGRAM_NAME)) {
-							mVideoView.setVideoPath(path);
-							mVideoView.requestFocus();
+                            mVideoView.suspend();
+                            mVideoView.setVideoPath(path);
+                            mVideoView.start();
 						}
 						return;
 					}
@@ -669,7 +682,7 @@ public class TVChannelPlayActivity extends Activity {
 						// 播放中更新时间
 						playTimestamp = System.currentTimeMillis();
 					}
-					if ((System.currentTimeMillis() - playTimestamp) > 8000 && playTimestamp != 0l) {
+					if ((System.currentTimeMillis() - playTimestamp) > 10000 && playTimestamp != 0l) {
 						// 超过8秒一直没有播放，退出播放界面
 						if (mDismissHandler != null) {
 							mDismissHandler.sendEmptyMessage(1);
@@ -721,10 +734,15 @@ public class TVChannelPlayActivity extends Activity {
 					MyApplication.vibrator.vibrate(100);
 					setPath(channelNames.get(position));
 					initProgramInfo(channelNames.get(position));
-					if (!dd.isShowing()) {
-						dd.show();
-					}
-				}
+
+                    try {
+                        if (!dd.isShowing()) {
+                            dd.show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 			});
 			return convertView;
 		}
