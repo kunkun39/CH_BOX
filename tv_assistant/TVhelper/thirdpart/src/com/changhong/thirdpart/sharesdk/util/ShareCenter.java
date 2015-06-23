@@ -221,6 +221,7 @@ public class ShareCenter {
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
 			Looper.prepare();
 		}
+		ShareSDK.initSDK(context);
 		OnekeyShare oks = new OnekeyShare();
 		if (!TextUtils.isEmpty(platform)) {
 			oks.setPlatform(platform);// 设置平台，如果设置了平台就是对于单个平台分享，如果为空表示打开分享对话框
