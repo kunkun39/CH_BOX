@@ -46,7 +46,11 @@
 -keep class io.vov.**{*;}
 -dontwarn io.vov.**
 
+
 -keep class cn.sharesdk.**{*;}
+-keep class cn.**{*;}
+-keep class com.changhong.tvhelper.wxapi.**{*;}
+-keep class com.mob.**{*;}
 -keep class com.sina.**{*;}
 -keep class **.R$* {*;}
 -keep class **.R{*;}
