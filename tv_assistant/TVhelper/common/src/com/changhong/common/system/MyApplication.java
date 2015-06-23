@@ -14,6 +14,7 @@ import com.baidu.location.LocationClientOption.LocationMode;
 import com.changhong.common.R;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.utils.PathGenerateUtils;
+import com.changhong.location.MyLocationListener;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -69,17 +70,7 @@ public class MyApplication extends Application {
      */
     public static MyApplication instance;
     public static File epgDBCachePath;
-    /**
-     * 
-     * baidu location
-     * @return
-     */
-    public static LocationClient mLocationClient;//百度定位客户端
-    public GeofenceClient mGeofenceClient;
-    public static MyLocationListener mMyLocationListener;//监听器
-    private LocationMode tempMode = LocationMode.Hight_Accuracy;//高精度模式
-	private String tempcoor="bd09ll";//百度加密经纬度坐标
-    private int span=1000;//定位时间间隔
+
 
     public static MyApplication getContext(){  
         return instance;  
@@ -138,23 +129,8 @@ public class MyApplication extends Application {
         smallImageCachePath = StorageUtils.getCacheDirectory(this);
         epgDBCachePath = PathGenerateUtils.getEPGDirectory(this);
         
-        /**
-         * 
-         * 百度定位
-         */
-        mLocationClient = new LocationClient(this.getApplicationContext());
-        mMyLocationListener = new MyLocationListener();
-        mLocationClient.registerLocationListener(mMyLocationListener);
-        mGeofenceClient = new GeofenceClient(getApplicationContext());
-        InitLocation();
+   
     }
     
-    private void InitLocation(){
-        LocationClientOption option = new LocationClientOption();
-        option.setLocationMode(tempMode);//设置定位模式
-        option.setCoorType(tempcoor);//返回的定位结果是百度经纬度，默认值gcj02
-        option.setScanSpan(span);//设置发起定位请求的间隔时间为5000ms
-        option.setIsNeedAddress(true);
-        mLocationClient.setLocOption(option);
-    }
+    
 }
