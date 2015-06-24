@@ -20,8 +20,10 @@ import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
 /**
- * ShareCenter 分享工具类 使用之前别忘了初始化ShareSDK.initSDK(context);
- * 各个平台分享参数shareParam见官网http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
+ * ShareCenter 分享工具类 各个平台分享参数shareParam见官网http
+ * ://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%
+ * E5%88%86%E4%BA%AB%E5%86%85
+ * %E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
  * 
  * shareByShareParams(context,shareParam,platFrom,paListener) 直接分享到指定平台。
  * showOneKeyShare 调用一键分享platform指定平台则分享到指定平台，为空显示一键分享对话框选择平台。
@@ -32,6 +34,15 @@ import cn.sharesdk.wechat.moments.WechatMoments;
 public class ShareCenter {
 	public static final String SHAREBEGIN = "正在启动分享中...";
 
+	/** context */
+	public Context context = null;
+	/** share callback */
+	public PlatformActionListener paListener = null;
+
+	/** 微博分享的编辑页面是否采用对话框方式？true对话框；false全屏 */
+	public boolean isDialogModel = true;
+	/** 一键分享微博否采用编辑方式？true编辑；false直接分享 */
+	public boolean isEdit = true;
 	/**
 	 * ShareParams分享数据模型类，每个平台有自己对应的ShareParams类，建议使用父类
 	 * cn.sharesdk.framework.Platform.ShareParams 各数据类型即作用如下
@@ -99,8 +110,14 @@ public class ShareCenter {
 		// WechatFavorite.NAME;
 	}
 
+	public ShareCenter(Context context, PlatformActionListener paListener) {
+		super();
+		this.context = context;
+		this.paListener = paListener;
+	}
+
 	/**
-	 * 在主线程中使用，直接单独分享某个平台另一种实现方式。自定义shareParam参数直接分享，适用于所有分享方式。
+	 * 直接单独分享到某个指定平台。自定义shareParam参数直接分享，适用于所有平台直接分享。
 	 * 
 	 * @param context
 	 * @param shareParam
@@ -109,21 +126,19 @@ public class ShareCenter {
 	 *            %E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%
 	 *            84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
 	 * @param platFrom
-	 *            若platform设为空，显示一键分享对话框。
-	 *            platFrom是要分享平台对应的NAME，NAME值取可参考assert文件下ShareSDK
-	 *            .xml中该平台标签.Name .如分享QQ好友为QQ.NAME，QQ空间是QZONE.NAME
+	 *            platform为空，显示一键分享对话框。
+	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
+	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
 	 * @param paListener
 	 *            回调监听器
 	 */
-	public static void shareByShareParams(Context context,
-			ShareParams shareParam, String platFrom,
-			PlatformActionListener paListener) {
-		//非主线程可能会影响某些功能
+	public void shareByShareParams(ShareParams shareParam, String platFrom) {
+		// 非主线程可能会影响某些功能
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
 		}
-		//分享参数为空不能分享
+		// 分享参数为空不能分享
 		if (shareParam == null) {
 			L.e("shareParam or platFrom can not be null");
 			showToast(context, "shareParam分享内容不能为空", false);
@@ -131,23 +146,72 @@ public class ShareCenter {
 		}
 		// 平台NAME为空，显示一键分享列表对话框
 		if (TextUtils.isEmpty(platFrom)) {
-			showOneKeyShare(context, shareParam, paListener, true, "");
+			shareByOnekeyshare(shareParam, true, "");
 			return;
 		}
-		ShareSDK.initSDK(context);
+		if (context != null) {
+			ShareSDK.initSDK(context);
+		}
 		checkParams(context, shareParam, platFrom);// 检测参数
 		{// 执行分享代码
 			Platform platform = ShareSDK.getPlatform(platFrom);
+			platform.SSOSetting(true);
 			platform.setPlatformActionListener(paListener); // 设置分享事件回调
 			platform.share(shareParam);// 执行分享
 		}
 		showToast(context, SHAREBEGIN, true);
 	}
 
+	protected void shareByShareParams(Context context, ShareParams shareParam,
+			String platFrom, PlatformActionListener paListener) {
+		this.context = context;
+		this.paListener = paListener;
+		shareByShareParams(shareParam, platFrom);
+	}
+
 	/**
-	 * 调用一键分享实现分享功能(TVHelper适用)。
+	 * 弹出一键分享对话框分享本地图片和文本信息
 	 * 
 	 * @param context
+	 * @param title
+	 *            分享内容显示的标题
+	 * @param titleUrl
+	 *            分享内容点击跳转链接，
+	 * @param text
+	 *            分享内容文本
+	 * @param imagePath
+	 *            本地图片路径
+	 * @param paListener
+	 *            回调监听器
+	 */
+	public void showShareMenu(String title, String titleUrl, String text,
+			String imagePath) {
+		shareByOnekeyshare(title, titleUrl, text, imagePath, null, null);
+	}
+
+	/**
+	 * 弹出一键分享对话框分享网络图片和文本信息
+	 * 
+	 * @param context
+	 * @param title
+	 *            分享内容显示的标题
+	 * @param titleUrl
+	 *            分享内容点击跳转链接，
+	 * @param text
+	 *            分享内容文本
+	 * @param imageUrl
+	 *            网络图片路径
+	 * @param paListener
+	 *            回调监听器
+	 */
+	public void showShareMenuWithImgurl(String title, String titleUrl,
+			String text, String imageUrl) {
+		shareByOnekeyshare(title, titleUrl, text, null, imageUrl, null);
+	}
+
+	/**
+	 * 调用一键分享实现分享功能(适用TVHelper)。
+	 * 
 	 * @param title
 	 *            分享内容显示的标题
 	 * @param titleUrl
@@ -155,17 +219,16 @@ public class ShareCenter {
 	 * @param text
 	 *            分享内容文本
 	 * @param imagePath
-	 *            本地图片路径
-	 * @param paListener
-	 *            回调监听器
+	 *            本地图片路径，和imageURL二选一
+	 * @param imageUrl
+	 *            网络图片 ，和imagePath二选一
 	 * @param platform
-	 *            若platform设为空，显示一键分享对话框。
-	 *            platFrom是要分享平台对应的NAME，NAME值取可参考assert文件下ShareSDK
-	 *            .xml中该平台标签.Name .如分享QQ好友为QQ.NAME，QQ空间是QZONE.NAME
+	 *            platform为空，显示一键分享对话框。
+	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
+	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
 	 */
-	public static void showOneKeyShare(Context context, String title,
-			String titleUrl, String text, String imagePath,
-			PlatformActionListener paListener, String platform) {
+	public void shareByOnekeyshare(String title, String titleUrl, String text,
+			String imagePath, String imageUrl, String platform) {
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
@@ -178,44 +241,46 @@ public class ShareCenter {
 		}
 		// 关闭sso授权
 		oks.disableSSOWhenAuthorize();
-
-		oks.setDialogMode();// TODO 编辑采用对话框模式，去掉则为全屏
-		oks.setSilent(false);// TODO 是否直接分享
-		oks.setCallback(paListener);// 分享回调
-		oks.setTitle(title);
+		if (isDialogModel) {
+			oks.setDialogMode();// 编辑采用对话框模式
+		}
 		if (TextUtils.isEmpty(titleUrl)) {
 			titleUrl = "http://";
 		}
+		if (!TextUtils.isEmpty(imagePath)) {
+			oks.setImagePath(imagePath);//
+		}
+		if (!TextUtils.isEmpty(imageUrl)) {
+			oks.setImageUrl(imageUrl);
+		}
+		oks.setSilent(!isEdit);// 是否直接分享
+		oks.setCallback(paListener);// 分享回调
+		oks.setTitle(title);
 		oks.setTitleUrl(titleUrl);// QQ分享时候titleurl不能为空
 		oks.setUrl(titleUrl);
-		oks.setText(text == null ? "" : text);
-		oks.setImagePath(imagePath == null ? "" : imagePath);//
 		oks.setSite(title);
 		oks.setSiteUrl(titleUrl);
+		oks.setText(text == null ? "" : text);
 		oks.show(context);// 启动分享GUI
 	}
 
 	/**
-	 * 调用一键分享实现分享功能。在主线程中使用
+	 * 调用一键分享实现分享功能。platform为空弹出分享菜单，不为空直接分享到指定平台，建议在主线程中使用
 	 * 
-	 * @param context
 	 * @param shareParam
 	 *            分享数据model各个参数作用见本类最前面注释，每个平台分享内容不同，需要传入分享内容可参考http://wiki.mob.
 	 *            com/%E4%B8%8D%E5%90%8C
 	 *            %E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%
 	 *            84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/ 分享数据模型
-	 * @param paListener
-	 *            分享回调（QQ有部分版本回调时候有问题。）
 	 * @param silent
 	 *            是否直接分享， true直接分享 ，false打开编辑对话框
 	 * @param platFrom
-	 *            若platform设为空，显示一键分享对话框。
-	 *            platFrom是要分享平台对应的NAME，NAME值取可参考assert文件下ShareSDK
-	 *            .xml中该平台标签.Name .如分享QQ好友为QQ.NAME，QQ空间是QZONE.NAME
+	 *            platform为空，显示一键分享对话框。
+	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
+	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
 	 */
-	public static void showOneKeyShare(Context context,
-			ShareParams shareParams, PlatformActionListener paListener,
-			boolean silent, String platform) {
+	public void shareByOnekeyshare(ShareParams shareParams, boolean silent,
+			String platform) {
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
@@ -229,11 +294,12 @@ public class ShareCenter {
 			checkParams(context, shareParams, platform);
 		}
 
-		oks.setDialogMode();// 编辑采用对话框模式，去掉则为全屏
-		oks.setSilent(silent);// 是否直接分享
+		if (isDialogModel) {
+			oks.setDialogMode();// 编辑采用对话框模式
+		}
+		oks.setSilent(!isEdit);// 是否直接分享
 		oks.setCallback(paListener);// 回调监听器
-		// 关闭sso授权
-		oks.disableSSOWhenAuthorize();
+		oks.disableSSOWhenAuthorize();// 关闭sso授权
 		oks.setTitle(shareParams.getTitle());
 		oks.setTitleUrl(shareParams.getTitleUrl());// QQ分享时候titleurl不能为空
 		oks.setUrl(shareParams.getUrl());//
@@ -261,7 +327,7 @@ public class ShareCenter {
 	 * @param shareParam
 	 * @param platFrom
 	 */
-	public static void checkParams(Context context, ShareParams shareParam,
+	private void checkParams(Context context, ShareParams shareParam,
 			String platFrom) {
 		if (platFrom.equals(QQ.NAME)) {
 			// QQ 需要参数title，titleUrl，text，imagePath或imageUrl，musicUrl(可选)
@@ -319,7 +385,7 @@ public class ShareCenter {
 					Bitmap bitmap = shareParam.getImageData();
 					if (bitmap.getByteCount() >= 1024) {// 1KB以内 imageData
 						Log.e("", "微信分享的imageData不能超过1KB");
-						showToast(context, "微信分享的imageData不能超过1KB", false);
+//						showToast(context, "微信分享的imageData不能超过1KB", false);
 					}
 				}
 				if (shareParam.getShareType() == Wechat.SHARE_APPS) {
@@ -368,7 +434,7 @@ public class ShareCenter {
 	 * @param string
 	 * @return
 	 */
-	private static boolean checkStringsHasEmpty(String name, String... string) {
+	private boolean checkStringsHasEmpty(String name, String... string) {
 		boolean hasEmpty = false;
 		if (string == null || string.length <= 0) {
 			Log.e("", "the shareParams are empty when you shar " + name
@@ -385,172 +451,47 @@ public class ShareCenter {
 		return hasEmpty;
 	}
 
-	/************************************ 以下举例调用shareByShareParams方法直接分享 **************************************/
-	/**
-	 * 举例QQ直接分享，参数可按照要求再添加。
-	 * 
-	 * @param context
-	 *            context
-	 * @param title
-	 *            标题QQ分享小于30字符
-	 * @param titleUrl
-	 *            分享超链接
-	 * @param text
-	 *            文本QQ分享小于40字符
-	 * @param imageurl
-	 *            图片网络地址
-	 * @param imagepath
-	 *            图片本地地址 *
-	 * @param bitmap
-	 *            图片
-	 * @param paListener
-	 *            回调监听器
-	 */
-	public static void shareQQ(Context context, String title, String titleUrl,
-			String text, String imagepath, PlatformActionListener paListener) {
-		ShareParams sp = new ShareParams();
-		sp.setTitle(title);
-		sp.setText(text);
-		sp.setImagePath(imagepath);
-		if (TextUtils.isEmpty(titleUrl)) {
-			titleUrl = "http://";
-			L.e("shareQQ give a empty titleUrl");
-		}
-		sp.setTitleUrl(titleUrl); // 标题的超链接不能为空
-		shareByShareParams(context, sp, QQ.NAME, paListener);
+
+	public Context getContext() {
+		return context;
 	}
 
-	/**
-	 * 举例QQ空间直接分享，参数可按照要求再添加。
-	 * 
-	 * @param context
-	 * @param title
-	 * @param titleUrl
-	 * @param text
-	 * @param imagepath
-	 *            图片地址，可为空
-	 * @param site
-	 * @param siteUrl
-	 * @param paListener
-	 */
-	public static void shareQZone(Context context, String title,
-			String titleUrl, String text, String imagepath, String site,
-			String siteUrl, PlatformActionListener paListener) {
-		ShareParams sp = new ShareParams();
-		sp.setTitle(title);
-		sp.setTitleUrl(titleUrl); // 标题的超链接
-		sp.setText(text);
-		sp.setImagePath(imagepath);
-		sp.setSite(TextUtils.isEmpty(site) ? title : site);
-		sp.setSiteUrl(TextUtils.isEmpty(titleUrl) ? titleUrl : siteUrl);
-		shareByShareParams(context, sp, QZone.NAME, paListener);
+	public void setContext(Context context) {
+		this.context = context;
 	}
 
-	/**
-	 * 举例新浪微博直接分享，参数可按照要求再添加。
-	 * 
-	 * @param context
-	 * @param text
-	 * @param latitude
-	 *            北纬
-	 * @param longitude
-	 *            东经
-	 * @param imagePath
-	 *            本地图片地址
-	 * @param issilent
-	 *            是否直接分享，true为直接分享
-	 * @param paListener
-	 */
-	public static void shareSinaWeiBo(Context context, String text,
-			float latitude, float longitude, String imagePath,
-			boolean issilent, PlatformActionListener paListener) {
-		ShareParams sp = new ShareParams();
-		sp.setText(text);
-		sp.setLatitude(latitude);// 有效范围:-90.0到+90.0，+表示北纬
-		sp.setLongitude(longitude);// 有效范围：-180.0到+180.0，+表示东经
-		sp.setImagePath(imagePath);
-		if (issilent) {
-			// 以下两种方式二选一都可以
-			shareByShareParams(context, sp, SinaWeibo.NAME, paListener);
-			// showOneKeyShare(context, sp, paListener, issilent,
-			// SinaWeibo.NAME);
-		} else {
-			// 目前没有自定义编辑页面，就只能采用自带的一键分享的编辑页面
-			showOneKeyShare(context, sp, paListener, issilent, SinaWeibo.NAME);
-		}
+	public PlatformActionListener getPaListener() {
+		return paListener;
 	}
 
-	/**
-	 * 举例腾讯微博直接分享，参数可按照要求再添加。
-	 * 
-	 * @param context
-	 * @param text
-	 * @param latitude
-	 *            北纬
-	 * @param longitude
-	 *            东经
-	 * @param imagePath
-	 *            本地图片地址
-	 * @param imageArray
-	 *            图片数组，注意：如果设置了imagePath，那么imageArray无效
-	 * @param issilent
-	 *            是否直接分享 True为直接分享
-	 * @param paListener
-	 */
-	public static void shareTencentWeiBo(Context context, String text,
-			float latitude, float longitude, String imagePath,
-			String[] imageArray, boolean issilent,
-			PlatformActionListener paListener) {
-		ShareParams sp = new ShareParams();
-		sp.setText(text);
-		sp.setLatitude(latitude);// 有效范围:-90.0到+90.0，+表示北纬
-		sp.setLongitude(longitude);// 有效范围：-180.0到+180.0，+表示东经
-		sp.setImagePath(imagePath);
-		sp.setImageArray(imageArray);// 图片数组
-		if (issilent) {
-			// 以下两种方式二选一都可以
-			shareByShareParams(context, sp, TencentWeibo.NAME, paListener);
-			// showOneKeyShare(context, sp, paListener, issilent,
-			// TencentWeibo.NAME);
-		} else {
-			// 目前没有自定义编辑页面，就只能采用自带的一键分享的编辑页面
-			showOneKeyShare(context, sp, paListener, issilent,
-					TencentWeibo.NAME);
-		}
+	public void setPaListener(PlatformActionListener paListener) {
+		this.paListener = paListener;
 	}
+
+	public boolean isDialogModel() {
+		return isDialogModel;
+	}
+
+	public void setDialogModel(boolean isDialogModel) {
+		this.isDialogModel = isDialogModel;
+	}
+
+	public boolean isEdit() {
+		return isEdit;
+	}
+
+	public void setEdit(boolean isEdit) {
+		this.isEdit = isEdit;
+	}
+
 
 	public static void showToast(Context context, String content, boolean islong) {
-		Toast.makeText(context, content,
-				islong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+		if (context != null) {
+			Toast.makeText(context, content,
+					islong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+		} else {
+			Log.e("", "context is null can not show toast");
+		}
 	}
 
-	// public enum MyShareParams {
-	// SinaWeibo, TencentWeibo, QQ, QZone, Wechat, WechatMoments,
-	// WechatFavorite, Facebook, Email, ShortMessage
-	// }
-	//
-	// public static String getPlatFrom(MyShareParams myParams) {
-	// String platFrom = "";
-	// if (myParams == MyShareParams.SinaWeibo) {
-	// platFrom = SinaWeibo.NAME;
-	// } else if (myParams == MyShareParams.QQ) {
-	// platFrom = QQ.NAME;
-	// } else if (myParams == MyShareParams.QZone) {
-	// platFrom = QZone.NAME;
-	// } else if (myParams == MyShareParams.Wechat) {
-	// platFrom = Wechat.NAME;
-	// } else if (myParams == MyShareParams.WechatMoments) {
-	// platFrom = WechatMoments.NAME;
-	// } else if (myParams == MyShareParams.WechatFavorite) {
-	// platFrom = WechatFavorite.NAME;
-	// } else if (myParams == MyShareParams.Facebook) {
-	// platFrom = Facebook.NAME;
-	// } else if (myParams == MyShareParams.Email) {
-	// platFrom = Email.NAME;
-	// } else if (myParams == MyShareParams.ShortMessage) {
-	// platFrom = ShortMessage.NAME;
-	// }
-	//
-	// return platFrom;
-	// }
 }

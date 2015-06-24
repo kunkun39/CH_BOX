@@ -37,6 +37,7 @@ import com.changhong.thirdpart.R;
 import com.changhong.thirdpart.sharesdk.util.L;
 import com.changhong.thirdpart.sharesdk.util.ShareCenter;
 import com.changhong.thirdpart.sharesdk.util.ShareUtil;
+import com.changhong.thirdpart.sharesdk.util.ShareWeiXin.WeiXin;
 
 /**
  * 截屏View 截屏按钮可隐藏加在其它页面然后手动调用cutScreenAndShare()截屏。
@@ -70,7 +71,7 @@ public class ScreenShotView extends RelativeLayout {
 	/** 链接 */
 	public String titleUrl = "http://www.baidu.com";
 	/** 文本 */
-	public String text = "电视助手截屏分享，详情请咨询：110119";
+	public String text = "来自电视助手的截屏分享";
 	/** 回调 */
 	public PlatformActionListener platformActionListener;
 
@@ -252,14 +253,23 @@ public class ScreenShotView extends RelativeLayout {
 		return bmp;
 	}
 
+	String imageUrl="http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif";
+	String musicUrl="http://media.ringring.vn/ringtone/realtone/0/0/161/165346.mp3";
 	/**
 	 * 调用分享接口分享
 	 */
 	private void doShare() {
 		{// TODO 电视助手调用例子（弹出意见分享对话框）。
-			ShareCenter.showOneKeyShare(context, title, titleUrl, text,
-					imgPath, paListener, null);
+			ShareFactory.getShareCenter(context, paListener).showShareMenu(title, titleUrl, text, imgPath);
 		}
+//		ShareFactory.getShareQQ(context, paListener).shareImgByPath(title, titleUrl, text, imgPath);
+//		ShareFactory.getShareQQ(context, paListener).shareMusicWithImgurl(title, titleUrl, text, imgPath, musicUrl);
+//		ShareFactory.getShareQZone(context, paListener).shareText(title, titleUrl, text, "site", musicUrl);
+//		ShareFactory.getShareQZone(context, paListener).shareImageUrl(title, titleUrl, text, imageUrl, "site", musicUrl);
+		
+//		ShareFactory.getShareSinaWeiBo(context, paListener).shareImagePath(text, imgPath);
+//		ShareFactory.getShareTencentWeiBo(context, paListener).shareImageArray(text, new String[]{imgPath,imgPath,imageUrl,imageUrl}, 1, 1);
+		
 		// {// 直接分享
 		// //
 		// //http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
@@ -283,6 +293,31 @@ public class ScreenShotView extends RelativeLayout {
 //		 ShareCenter.shareByShareParams(context, shareParams, platform,
 //		 paListener);
 //		 }
+	}
+	Bitmap imageData=null;
+	public void shareWeiXinHaoyou() {
+		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.Wechat, title, text);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.Wechat, title, text, imgPath);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.Wechat, title, text, imageUrl);
+		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.Wechat, title, text, imageData);
+	
+	}
+	public void shareWeiXinFriends() {
+		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.WechatMoments, title, text);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.WechatMoments, title, text, imgPath);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatMoments, title, text, imageUrl);
+		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.WechatMoments, title, text, imageData);
+			
+	}
+	public void shareWeiXinConnect() {
+		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.WechatFavorite, title, text);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.WechatFavorite, title, text, imgPath);
+//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatFavorite, title, text, imageUrl);
+		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.WechatFavorite, title, text, imageData);
+		
 	}
 
 	private void saveImageFile() {
