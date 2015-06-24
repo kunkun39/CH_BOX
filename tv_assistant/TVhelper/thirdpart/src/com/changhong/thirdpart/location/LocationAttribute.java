@@ -1,7 +1,9 @@
 package com.changhong.thirdpart.location;
 
+import java.io.Serializable;
 
-public class LocationAttribute {
+
+public class LocationAttribute implements Serializable {
 	private String time=null;
 	private int locType=0;
 	private double latitude=0;

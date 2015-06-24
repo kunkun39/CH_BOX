@@ -2,11 +2,13 @@ package com.changhong.thirdpart.location;
 
 import java.util.Observable;
 
+import android.os.Bundle;
+import android.os.Message;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 
-public class MyLocationListener extends Observable implements
-		BDLocationListener {
+public class MyLocationListener implements BDLocationListener {
 
 	public LocationAttribute locationAttribute = null;
 
@@ -30,12 +32,11 @@ public class MyLocationListener extends Observable implements
 			locationAttribute.setSpeed(location.getSpeed());
 			locationAttribute.setDirection(location.getDirection());
 		}
-
-		measurementsChanged();
-	}
-
-	public void measurementsChanged() {
-		setChanged();
-		notifyObservers();
+		
+		Message message = new Message();
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("LocationAttribute", locationAttribute);
+		message.setData(bundle);
+		LocationUtil.getInstance().dispatchMessage(message);
 	}
 }
