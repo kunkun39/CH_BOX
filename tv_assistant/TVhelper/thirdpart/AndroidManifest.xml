@@ -51,7 +51,7 @@
             android:name="PUSH_GROUPID"
             android:value="" />
 
-        <receiver android:name="com.changhong.push.PushBroadCastReceiver" >
+        <receiver android:name="com.changhong.thirdpart.common.MainBroadCastReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -69,7 +69,7 @@
             android:label="NotificationCenter"
             android:process=":pushservice" >
         </service>
-        <service android:name="com.changhong.push.PushService" />
+        <service android:name="com.changhong.thirdpart.common.MainService" />
 
         <receiver android:name="com.igexin.sdk.PushReceiver" >
             <intent-filter>
