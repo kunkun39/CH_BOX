@@ -7,14 +7,10 @@ import android.app.Service;
 import android.graphics.Bitmap;
 import android.os.Vibrator;
 
-import com.baidu.location.GeofenceClient;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
 import com.changhong.common.R;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.utils.PathGenerateUtils;
-import com.changhong.location.MyLocationListener;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
