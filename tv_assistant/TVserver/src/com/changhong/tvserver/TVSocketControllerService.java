@@ -426,8 +426,6 @@ public class TVSocketControllerService extends Service {
                 dgSocket = new DatagramSocket(9002);
                 DatagramPacket dgPacket = null;
 
-                
-                
                 while (true) {
                     try {
                     	byte[] by = new byte[1024];
@@ -438,7 +436,7 @@ public class TVSocketControllerService extends Service {
                         if (!command.equals("")) {
                             Log.w(TAG, command);
                             msg1 = command;
-                            handler.sendMessage(handler.obtainMessage(1, new String(msg1)));
+                            handler.sendMessage(handler.obtainMessage(1, msg1));
                         }
 
                     } catch (IOException e) {
@@ -496,7 +494,7 @@ public class TVSocketControllerService extends Service {
                         	 while ((eindex = command.indexOf('^', bindex)) != -1) {
                         		 Log.w(TAG, command);
                                  msg1 = command.substring(bindex, eindex);
-                                 handler.sendMessage(handler.obtainMessage(1,new String(msg1)));
+                                 handler.sendMessage(handler.obtainMessage(1, msg1));
                                  
                                  if (command.length() == (eindex + 1)) {
                                 	 command = null;

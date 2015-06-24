@@ -332,7 +332,7 @@ public class ClientLocalThreadRunningService extends Service {
                     if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                         getEPGList("http://" + ClientSendCommandService.serverIP + ":8000/epg_database_ver.json");
                     }
-
+                    //every minus, the client go to server to check
                     Thread.sleep(1000 * 60);
 
                 } catch (Exception e) {
