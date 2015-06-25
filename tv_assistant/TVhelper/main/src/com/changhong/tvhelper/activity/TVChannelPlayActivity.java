@@ -682,8 +682,8 @@ public class TVChannelPlayActivity extends Activity {
 						// 播放中更新时间
 						playTimestamp = System.currentTimeMillis();
 					}
-					if ((System.currentTimeMillis() - playTimestamp) > 10000 && playTimestamp != 0l) {
-						// 超过8秒一直没有播放，退出播放界面
+					if ((System.currentTimeMillis() - playTimestamp) > 12000 && playTimestamp != 0l) {
+						// 超过12秒一直没有播放，退出播放界面
 						if (mDismissHandler != null) {
 							mDismissHandler.sendEmptyMessage(1);
 							finish();

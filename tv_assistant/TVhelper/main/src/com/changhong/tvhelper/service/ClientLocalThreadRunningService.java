@@ -176,6 +176,7 @@ public class ClientLocalThreadRunningService extends Service {
                                             }
                                         }).create();
                                 dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                                dialog.setCanceledOnTouchOutside(true);
                                 dialog.show();
                             } catch (Exception e) {
                                 e.printStackTrace();
