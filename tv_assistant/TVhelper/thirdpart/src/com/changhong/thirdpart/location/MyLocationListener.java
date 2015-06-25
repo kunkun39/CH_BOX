@@ -10,14 +10,13 @@ import com.baidu.location.BDLocationListener;
 
 public class MyLocationListener implements BDLocationListener {
 
-	public LocationAttribute locationAttribute = null;
+	
 
 	@Override
 	public void onReceiveLocation(BDLocation location) {
 		// Receive Location
-		if (null == locationAttribute) {
-			locationAttribute = new LocationAttribute();
-		}
+		LocationAttribute locationAttribute = new LocationAttribute();
+		
 		locationAttribute.setTime(location.getTime());
 		locationAttribute.setLocType(location.getLocType());
 		locationAttribute.setLatitude(location.getLatitude());
@@ -32,6 +31,8 @@ public class MyLocationListener implements BDLocationListener {
 			locationAttribute.setSpeed(location.getSpeed());
 			locationAttribute.setDirection(location.getDirection());
 		}
+		
+		LocationUtil.getInstance().setLocationAttrbute(locationAttribute);
 		
 		Message message = new Message();
 		Bundle bundle = new Bundle();

@@ -22,7 +22,7 @@ import android.util.Log;
  * @author yves.yang
  * 开起一个service 用于监听透传消息
  */
-public class MainService extends Service{
+public class MainService extends Service {
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -33,9 +33,11 @@ public class MainService extends Service{
 	public void onCreate() {
 		super.onCreate();
 		
-		PushUtils.getInstance().init(this).start();		
+		// push功能初始化
+		PushUtils.getInstance().init(this).start();	
 		
-		LocationUtil.getInstance().init(this).start();		
+		// 定位功能初始化
+		LocationUtil.getInstance().init(this);	
 	}
 		
 	@Override

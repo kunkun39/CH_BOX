@@ -26,7 +26,7 @@ import android.util.Log;
  * @category 使用方法:
  * 在要使用的activity,service 中先初始化，然后调用，
  * 每个要使用的activity,service尽量都初始化下，但在application中，
- * 就不需要初始化了
+ * 就不需要初始化了。使用透传消息，需要注册监听者registerListener。
  */
 public class PushUtils implements IThirdPartUtil,IDataContainer{
 	
@@ -47,6 +47,10 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		context.unregisterReceiver(mReceiver);
 	}
 
+	/**
+	 * 注册监听者，获取透传消息，消息保存在Message,getData,getString("String")里面。
+	 * 所谓透传消息，就是推送的，消息，监听器会直接接收到，然后反应，不会以通知的形式。
+	 */
 	@Override
 	public void registerListener(IDataListener l) {
 		dataContainer.registerListener(l);
@@ -57,6 +61,9 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		dataContainer.unregisterListener(l);
 	}
 
+	/**
+	 * 发送消息，所有监听器都能收到
+	 */
 	@Override
 	public void dispatchMessage(Message message) {
 		dataContainer.dispatchMessage(message);
@@ -84,6 +91,9 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		return mPushUtils;
 	}
 	
+	/**
+	 * 获取单例
+	 */
 	public static PushUtils getInstance()
 	{							
 		if (mPushUtils == null){			
@@ -96,21 +106,33 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		return mPushUtils;		
 	}
 	
+	/**
+	 * 确认运行状态
+	 */
 	public boolean isRunning()
 	{
 		return PushManager.getInstance().isPushTurnedOn(mContext);
 	}
 	
+	/**
+	 * 开始接收推送
+	 */
 	public void start()
 	{		
 		PushManager.getInstance().turnOnPush(mContext);
 	}
 	
+	/**
+	 * 暂停功能
+	 */
 	public void stop()
 	{
 		PushManager.getInstance().turnOffPush(mContext);
 	}
 	
+	/**
+	 * 停止服务，强度大于stop（）
+	 */
 	public void close()
 	{
 		PushManager.getInstance().stopService(mContext);
