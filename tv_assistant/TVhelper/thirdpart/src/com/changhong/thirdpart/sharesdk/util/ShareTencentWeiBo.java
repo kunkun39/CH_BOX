@@ -6,7 +6,11 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.tencent.weibo.TencentWeibo;
 
 import com.changhong.thirdpart.sharesdk.util.ShareCenter;
-
+/**
+ * 腾讯微博分享。微博分享是直接分享，没有编辑页面，如需编辑页面需要自定义。
+ * @author wangxiufeng
+ *
+ */
 public class ShareTencentWeiBo extends ShareCenter {
 
 	public ShareTencentWeiBo(Context context, PlatformActionListener paListener) {

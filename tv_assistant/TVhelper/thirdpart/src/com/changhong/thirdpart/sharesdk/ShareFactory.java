@@ -16,7 +16,7 @@ public class ShareFactory {
 	 * 获取分享基类对象，包含一键分享和分享到指定平台功能
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener回调函数，需要在此添加分享结果提示（一键分享不需要添加提示）。
 	 * @return
 	 */
 	public static ShareCenter getShareCenter(Context context,
@@ -30,7 +30,7 @@ public class ShareFactory {
 	 * 获取QQ分享对象
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener 回调函数，需要在此添加分享结果提示。
 	 * @return
 	 */
 	public static ShareQQ getShareQQ(Context context,
@@ -42,7 +42,7 @@ public class ShareFactory {
 	 * 获取微信分享对象
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener回调函数，需要在此添加分享结果提示。
 	 * @return
 	 */
 	public static ShareWeiXin getShareWeiXin(Context context,
@@ -54,7 +54,7 @@ public class ShareFactory {
 	 * 获取QQ空间分享对象
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener回调函数，需要在此添加分享结果提示。
 	 * @return
 	 */
 	public static ShareQZone getShareQZone(Context context,
@@ -66,7 +66,7 @@ public class ShareFactory {
 	 * 获取新浪微博分享对象
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener回调函数，需要在此添加分享结果提示。
 	 * @return
 	 */
 	public static ShareSinaWeiBo getShareSinaWeiBo(Context context,
@@ -78,7 +78,7 @@ public class ShareFactory {
 	 * 获取腾讯微博分享对象
 	 * 
 	 * @param context
-	 * @param paListener
+	 * @param paListener回调函数，需要在此添加分享结果提示。
 	 * @return
 	 */
 	public static ShareTencentWeiBo getShareTencentWeiBo(Context context,

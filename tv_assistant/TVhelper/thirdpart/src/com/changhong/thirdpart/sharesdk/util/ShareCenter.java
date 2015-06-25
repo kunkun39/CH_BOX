@@ -26,7 +26,7 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  * %E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
  * 
  * shareByShareParams(context,shareParam,platFrom,paListener) 直接分享到指定平台。
- * showOneKeyShare 调用一键分享platform指定平台则分享到指定平台，为空显示一键分享对话框选择平台。
+ * showShareMenu 打开分享菜单对话框 shareByOnekeyshare 使用一键分享实现分享功能
  * 
  * @author wangxiufeng
  * 
@@ -41,7 +41,7 @@ public class ShareCenter {
 
 	/** 微博分享的编辑页面是否采用对话框方式？true对话框；false全屏 */
 	public boolean isDialogModel = true;
-	
+
 	/** 一键分享微博否采用编辑方式？true编辑；false直接分享 */
 	public boolean isEdit = true;
 	/**
@@ -120,7 +120,6 @@ public class ShareCenter {
 	/**
 	 * 直接单独分享到某个指定平台。自定义shareParam参数直接分享，适用于所有平台直接分享。
 	 * 
-	 * @param context
 	 * @param shareParam
 	 *            分享数据model各个参数作用见本类最前面注释，每个平台分享内容不同，需要传入分享内容可参考http://wiki.mob.
 	 *            com/%E4%B8%8D%E5%90%8C
@@ -130,23 +129,21 @@ public class ShareCenter {
 	 *            platform为空，显示一键分享对话框。
 	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
 	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
-	 * @param paListener
-	 *            回调监听器
 	 */
 	public void shareByShareParams(ShareParams shareParam, String platFrom) {
-		// 非主线程可能会影响某些功能
-		if (Looper.myLooper() != Looper.getMainLooper()) {
+
+		if (Looper.myLooper() != Looper.getMainLooper()) {// 非主线程可能会影响某些功能
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
 		}
-		// 分享参数为空不能分享
-		if (shareParam == null) {
+
+		if (shareParam == null) {// 分享参数为空不能分享
 			L.e("shareParam or platFrom can not be null");
 			showToast(context, "shareParam分享内容不能为空", false);
 			return;
 		}
-		// 平台NAME为空，显示一键分享列表对话框
-		if (TextUtils.isEmpty(platFrom)) {
+
+		if (TextUtils.isEmpty(platFrom)) {// 平台NAME为空，显示一键分享列表对话框
 			shareByOnekeyshare(shareParam, "");
 			return;
 		}
@@ -492,7 +489,8 @@ public class ShareCenter {
 			Toast.makeText(context, content,
 					islong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
 		} else {
-			Log.e("", "context is null can not show toast");
+			Log.e("", "context is null can not show toast; the content is "
+					+ content);
 		}
 	}
 

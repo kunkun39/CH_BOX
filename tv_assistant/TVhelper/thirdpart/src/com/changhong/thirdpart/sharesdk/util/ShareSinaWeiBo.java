@@ -6,7 +6,12 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 
 import com.changhong.thirdpart.sharesdk.util.ShareCenter;
-
+/**
+ * 新浪微博分享。
+ * 分享是直接分享，微博分享没有编辑页面，如需编辑页面需要自定义。
+ * @author wangxiufeng
+ *
+ */
 public class ShareSinaWeiBo extends ShareCenter {
 
 	public ShareSinaWeiBo(Context context, PlatformActionListener paListener) {
