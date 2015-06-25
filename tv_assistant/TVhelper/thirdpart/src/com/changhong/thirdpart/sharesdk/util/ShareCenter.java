@@ -41,6 +41,7 @@ public class ShareCenter {
 
 	/** 微博分享的编辑页面是否采用对话框方式？true对话框；false全屏 */
 	public boolean isDialogModel = true;
+	
 	/** 一键分享微博否采用编辑方式？true编辑；false直接分享 */
 	public boolean isEdit = true;
 	/**
@@ -146,7 +147,7 @@ public class ShareCenter {
 		}
 		// 平台NAME为空，显示一键分享列表对话框
 		if (TextUtils.isEmpty(platFrom)) {
-			shareByOnekeyshare(shareParam, true, "");
+			shareByOnekeyshare(shareParam, "");
 			return;
 		}
 		if (context != null) {
@@ -279,8 +280,7 @@ public class ShareCenter {
 	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
 	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
 	 */
-	public void shareByOnekeyshare(ShareParams shareParams, boolean silent,
-			String platform) {
+	public void shareByOnekeyshare(ShareParams shareParams, String platform) {
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
@@ -329,6 +329,9 @@ public class ShareCenter {
 	 */
 	private void checkParams(Context context, ShareParams shareParam,
 			String platFrom) {
+		if (shareParam == null || platFrom == null) {
+			return;
+		}
 		if (platFrom.equals(QQ.NAME)) {
 			// QQ 需要参数title，titleUrl，text，imagePath或imageUrl，musicUrl(可选)
 			if (checkStringsHasEmpty("QQ", shareParam.getTitle(),
@@ -376,16 +379,17 @@ public class ShareCenter {
 
 			} else {
 				if (TextUtils.isEmpty(shareParam.getImagePath())
-						&& TextUtils.isEmpty(shareParam.getImagePath())
+						&& TextUtils.isEmpty(shareParam.getImageUrl())
 						&& shareParam.getImageData() == null) {
 					// imagePath/imageUrl/imageData
+					showToast(context, "分享图片资源不存在可能会导致分享失败!", false);
 					Log.e("",
 							"Wechat分享除SHARE_TEXT外其它ShareType需要图片资源，您没设置图片资源可能导致分享异常");
 				} else if (shareParam.getImageData() != null) {
 					Bitmap bitmap = shareParam.getImageData();
 					if (bitmap.getByteCount() >= 1024) {// 1KB以内 imageData
 						Log.e("", "微信分享的imageData不能超过1KB");
-//						showToast(context, "微信分享的imageData不能超过1KB", false);
+						// showToast(context, "微信分享的imageData不能超过1KB", false);
 					}
 				}
 				if (shareParam.getShareType() == Wechat.SHARE_APPS) {
@@ -451,7 +455,6 @@ public class ShareCenter {
 		return hasEmpty;
 	}
 
-
 	public Context getContext() {
 		return context;
 	}
@@ -483,7 +486,6 @@ public class ShareCenter {
 	public void setEdit(boolean isEdit) {
 		this.isEdit = isEdit;
 	}
-
 
 	public static void showToast(Context context, String content, boolean islong) {
 		if (context != null) {

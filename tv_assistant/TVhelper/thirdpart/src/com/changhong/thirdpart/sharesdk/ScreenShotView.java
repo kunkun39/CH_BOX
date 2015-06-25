@@ -32,6 +32,7 @@ import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.weibo.TencentWeibo;
+import cn.sharesdk.wechat.friends.Wechat;
 
 import com.changhong.thirdpart.R;
 import com.changhong.thirdpart.sharesdk.util.L;
@@ -253,72 +254,53 @@ public class ScreenShotView extends RelativeLayout {
 		return bmp;
 	}
 
-	String imageUrl="http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif";
-	String musicUrl="http://media.ringring.vn/ringtone/realtone/0/0/161/165346.mp3";
 	/**
 	 * 调用分享接口分享
 	 */
 	private void doShare() {
 		{// TODO 电视助手调用例子（弹出意见分享对话框）。
 			ShareFactory.getShareCenter(context, paListener).showShareMenu(title, titleUrl, text, imgPath);
+//			ShareFactory.getShareCenter(context, paListener).showShareMenuWithImgurl(title, titleUrl, text, imageUrl);
 		}
 //		ShareFactory.getShareQQ(context, paListener).shareImgByPath(title, titleUrl, text, imgPath);
 //		ShareFactory.getShareQQ(context, paListener).shareMusicWithImgurl(title, titleUrl, text, imgPath, musicUrl);
 //		ShareFactory.getShareQZone(context, paListener).shareText(title, titleUrl, text, "site", musicUrl);
 //		ShareFactory.getShareQZone(context, paListener).shareImageUrl(title, titleUrl, text, imageUrl, "site", musicUrl);
-		
 //		ShareFactory.getShareSinaWeiBo(context, paListener).shareImagePath(text, imgPath);
 //		ShareFactory.getShareTencentWeiBo(context, paListener).shareImageArray(text, new String[]{imgPath,imgPath,imageUrl,imageUrl}, 1, 1);
-		
-		// {// 直接分享
-		// //
-		// //http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/
-//		 ShareParams shareParams = new ShareParams();
-//		 shareParams.setTitle("我的标题");
-//		 shareParams.setTitleUrl("http://www.baidu.com");
-//		 shareParams.setText("我的分享内容");
-//		 shareParams.setImagePath(imgPath);
-//		 shareParams.setImageUrl("http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif");
-//		 shareParams.setSite("site标题");
-//		 // shareParams.setShareType(Wechat.SHARE_IMAGE);
-//		 shareParams
-//		 .setSiteUrl("http://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/");
-//		 boolean silent = true;
-//		 // shareParams.setFilePath("/sdcard/TVhelper8.apk");
-//		 // File file=new File("/storage/emulated/0/TVhelper8.apk");
-//		 // L.d(TAG+"filesize=="+file.length());
-//		 shareParams.setExtInfo("App信息TVhelper8");
-//		
-//		 String platform = TencentWeibo.NAME;
-//		 ShareCenter.shareByShareParams(context, shareParams, platform,
-//		 paListener);
-//		 }
 	}
-	Bitmap imageData=null;
-	public void shareWeiXinHaoyou() {
-		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.Wechat, title, text);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.Wechat, title, text, imgPath);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.Wechat, title, text, imageUrl);
-		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.Wechat, title, text, imageData);
+//	String imageUrl="http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif";
+//	String musicUrl="http://media.ringring.vn/ringtone/realtone/0/0/161/165346.mp3";
+//	Bitmap imageData=null;
+//	String url="http://tv.sohu.com/20150625/n415583961.shtml";
+//	public void shareWeiXinHaoyou() {
+//		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getShareWeiXin(context, paListener).shareText(WeiXin.Wechat, title, text);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByPath(WeiXin.Wechat, title, text, imgPath);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByUrl(WeiXin.Wechat, title, text, imageUrl);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByData(WeiXin.Wechat, title, text, imageData);
+//		ShareFactory.getShareWeiXin(context, paListener).shareVideoOrPageWithImgurl(WeiXin.Wechat, title, text, imageUrl, url, true);
+//		ShareFactory.getShareWeiXin(context, paListener).shareMusicWithImgUrl(WeiXin.Wechat, title, text, imageUrl, musicUrl, url);
 	
-	}
-	public void shareWeiXinFriends() {
-		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.WechatMoments, title, text);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.WechatMoments, title, text, imgPath);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatMoments, title, text, imageUrl);
-		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.WechatMoments, title, text, imageData);
-			
-	}
-	public void shareWeiXinConnect() {
-		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-//		ShareFactory.getSharWeiXin(context, paListener).shareText(WeiXin.WechatFavorite, title, text);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByPath(WeiXin.WechatFavorite, title, text, imgPath);
-//		ShareFactory.getSharWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatFavorite, title, text, imageUrl);
-		ShareFactory.getSharWeiXin(context, paListener).shareImageByData(WeiXin.WechatFavorite, title, text, imageData);
-		
-	}
+//	}
+//	public void shareWeiXinFriends() {
+//		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getShareWeiXin(context, paListener).shareText(WeiXin.WechatMoments, title, text);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByPath(WeiXin.WechatMoments, title, text, imgPath);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatMoments, title, text, imageUrl);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByData(WeiXin.WechatMoments, title, text, imageData);
+//		ShareFactory.getShareWeiXin(context, paListener).shareVideoOrPageWithImgurl(WeiXin.WechatMoments, title, text, imageUrl, url, true);
+//		ShareFactory.getShareWeiXin(context, paListener).shareMusicWithImgUrl(WeiXin.WechatMoments, title, text, imageUrl, musicUrl, url);
+//	}
+//	public void shareWeiXinConnect() {
+//		imageData=BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+//		ShareFactory.getShareWeiXin(context, paListener).shareText(WeiXin.WechatFavorite, title, text);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByPath(WeiXin.WechatFavorite, title, text, imgPath);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByUrl(WeiXin.WechatFavorite, title, text, imageUrl);
+//		ShareFactory.getShareWeiXin(context, paListener).shareImageByData(WeiXin.WechatFavorite, title, text, imageData);
+//		ShareFactory.getShareWeiXin(context, paListener).shareVideoOrPageWithImgurl(WeiXin.WechatFavorite, title, text, imageUrl, url, true);
+//		ShareFactory.getShareWeiXin(context, paListener).shareMusicWithImgUrl(WeiXin.WechatFavorite, title, text, imageUrl, musicUrl, url);
+//	}
 
 	private void saveImageFile() {
 		new Thread(new Runnable() {

@@ -45,7 +45,7 @@ public class ShareFactory {
 	 * @param paListener
 	 * @return
 	 */
-	public static ShareWeiXin getSharWeiXin(Context context,
+	public static ShareWeiXin getShareWeiXin(Context context,
 			PlatformActionListener paListener) {
 		return new ShareWeiXin(context, paListener);
 	}

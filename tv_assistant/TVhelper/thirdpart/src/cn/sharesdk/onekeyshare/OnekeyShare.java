@@ -417,7 +417,7 @@ public class OnekeyShare implements PlatformActionListener, Callback {
 				shareType = Platform.SHARE_IMAGE;
 				if (imagePath.endsWith(".gif")) {
 					shareType = Platform.SHARE_EMOJI;
-				} else if (data.containsKey("url") && !TextUtils.isEmpty(data.get("url").toString())) {
+				} else if (data.containsKey("url") &&data.get("url")!=null&& !TextUtils.isEmpty(data.get("url").toString())) {
 					shareType = Platform.SHARE_WEBPAGE;
 					if (data.containsKey("musicUrl") && !TextUtils.isEmpty(data.get("musicUrl").toString())) {
 						shareType = Platform.SHARE_MUSIC;

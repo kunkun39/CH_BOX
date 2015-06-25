@@ -98,19 +98,19 @@ public class ShareWeiXin extends ShareCenter {
 	}
 
 	/**
-	 * 分享表情(只支持好友)
+	 * 分享表情(只支持分享给好友不支持朋友圈和收藏)
 	 * 
 	 * @param title
 	 * @param text
 	 *            可选参数
 	 * @param imageData
 	 */
-	public void shareImageByData(String title, String text, Bitmap imageData) {
+	public void shareEmoji(String title, String text, Bitmap imageData) {
 		ShareParams params = new ShareParams();
 		params.setTitle(title);
 		params.setText(text);
 		params.setImageData(imageData);
-		params.setShareType(Wechat.SHARE_IMAGE);
+		params.setShareType(Wechat.SHARE_EMOJI);
 		shareByShareParams(context, params, getName(WeiXin.Wechat), paListener);
 	}
 
@@ -171,6 +171,112 @@ public class ShareWeiXin extends ShareCenter {
 			params.setShareType(Wechat.SHARE_WEBPAGE);
 		}
 
+		shareByShareParams(context, params, getName(weiXin), paListener);
+	}
+
+	/**
+	 * 分享视频或者网页
+	 * 
+	 * @param weiXin
+	 *            微信平台选择：微信好友，微信朋友圈，微信收藏
+	 * @param title
+	 * @param text
+	 * @param imageUrl
+	 *            网络图片地址
+	 * @param url
+	 *            URL地址
+	 * @param isVideo
+	 *            true为分享视频，false为分享网页
+	 */
+	public void shareVideoOrPageWithImgdata(WeiXin weiXin, String title,
+			String text, Bitmap imageData, String url, boolean isVideo) {
+		ShareParams params = new ShareParams();
+		params.setTitle(title);
+		params.setText(text);
+		params.setImageData(imageData);
+		params.setUrl(url);
+		if (isVideo) {
+			params.setShareType(Wechat.SHARE_VIDEO);
+		} else {
+			params.setShareType(Wechat.SHARE_WEBPAGE);
+		}
+
+		shareByShareParams(context, params, getName(weiXin), paListener);
+	}
+
+	/**
+	 * 分享音乐
+	 * (目前sharSDK有朋友圈音乐无法直接播放BUG)
+	 * @param weiXin
+	 *            微信平台选择：微信好友，微信朋友圈，微信收藏
+	 * @param title
+	 * @param text
+	 * @param imagePath
+	 *            本地图片地址
+	 * @param musicUrl 音乐地址
+	 * @param url
+	 *            消息点击后打开的页面地址
+	 */
+	public void shareMusicWithImgPath(WeiXin weiXin, String title, String text,
+			String imagePath, String musicUrl, String url) {
+		ShareParams params = new ShareParams();
+		params.setTitle(title);
+		params.setText(text);
+		params.setImagePath(imagePath);
+		params.setMusicUrl(musicUrl);
+		params.setUrl(url);
+		params.setShareType(Wechat.SHARE_MUSIC);
+
+		shareByShareParams(context, params, getName(weiXin), paListener);
+	}
+	/**
+	 * 分享音乐
+	 * (目前sharSDK有朋友圈音乐无法直接播放BUG)
+	 * @param weiXin
+	 *            微信平台选择：微信好友，微信朋友圈，微信收藏
+	 * @param title
+	 * @param text
+	 * @param imageUrl
+	 *            网络图片地址
+	 * @param musicUrl 音乐地址
+	 * @param url
+	 *            消息点击后打开的页面地址
+	 */
+	public void shareMusicWithImgUrl(WeiXin weiXin, String title, String text,
+			String imageUrl, String musicUrl, String url) {
+		ShareParams params = new ShareParams();
+		params.setTitle(title);
+		params.setText(text);
+		params.setImageUrl(imageUrl);
+		params.setMusicUrl(musicUrl);
+		params.setUrl(url);
+		params.setShareType(Wechat.SHARE_MUSIC);
+		
+		shareByShareParams(context, params, getName(weiXin), paListener);
+	}
+	/**
+	 * 分享音乐
+	 * (目前sharSDK有朋友圈音乐无法直接播放BUG)
+	 * @param weiXin
+	 *            微信平台选择：微信好友，微信朋友圈，微信收藏
+	 * @param title
+	 * @param text
+	 * @param imageData
+	 *            图片对象
+	 * @param musicUrl 音乐地址
+	 * @param url
+	 *            消息点击后打开的页面地址
+	 */
+	public void shareMusicWithImgData(WeiXin weiXin, String title, String text,
+			Bitmap imageData, String musicUrl, String url) {
+		ShareParams params = new ShareParams();
+		params.setTitle(title);
+		params.setText(text);
+		params.setImageData(imageData);
+		params.setMusicUrl(musicUrl);
+		params.setUrl(url);
+		params.setShareType(Wechat.SHARE_MUSIC);
+		
 		shareByShareParams(context, params, getName(weiXin), paListener);
 	}
 
