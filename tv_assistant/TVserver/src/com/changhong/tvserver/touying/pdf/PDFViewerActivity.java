@@ -3,20 +3,17 @@
  */
 package com.changhong.tvserver.touying.pdf;
 
-import com.changhong.tvserver.IDataContainer;
-import com.changhong.tvserver.IMessageListener;
-import com.changhong.tvserver.R;
-import com.changhong.tvserver.TVSocketControllerService;
-import com.joanzapata.pdfview.PDFView;
-
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Messenger;
-import android.view.KeyEvent;
+
+import com.changhong.tvserver.IDataContainer;
+import com.changhong.tvserver.IMessageListener;
+import com.changhong.tvserver.R;
+import com.changhong.tvserver.TVSocketControllerService;
+import com.joanzapata.pdfview.PDFView;
 
 /**
  * @author yves.yang
@@ -73,7 +70,7 @@ public class PDFViewerActivity extends Activity implements IMessageListener,PDFC
 
 		Intent intent = getIntent();
 		if (intent != null) {
-			String path = intent.getStringExtra(IN_DATA_STRING);
+			String path = String.valueOf(intent.getData());
 			pdfView = (PDFView)findViewById(R.id.pdfView);
 			pdfView.fromAsset(path).load();
 		}	
