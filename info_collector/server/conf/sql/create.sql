@@ -28,6 +28,7 @@ CREATE TABLE `feedback_info`(
   `id` int(11) NOT NULL auto_increment,
   `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
   `content` varchar(255) default '',
+  `reply_content` VARCHAR(255) default '',
   `user_mac` varchar(40) default '',
   `status` varchar(10) default '',
   `fd_year`  char(4) default '',
@@ -35,7 +36,6 @@ CREATE TABLE `feedback_info`(
   `fd_day`  char(2) default '',
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
 
 
 DROP TABLE IF EXISTS `tv_channel_info`;
@@ -54,8 +54,15 @@ CREATE TABLE `tv_channel_info`(
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-
-
+DROP TABLE IF EXISTS `app_info`
+CREATE TABLE `app_info` (
+   `id` int(11) NOT NULL auto_increment,
+   `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
+   `app_name` varchar(255) default '',
+   `app_key` varchar(255) default '',
+   `app_des` VARCHAR (255) DEFAULT '',
+   PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 SET FOREIGN_KEY_CHECKS=0;
 

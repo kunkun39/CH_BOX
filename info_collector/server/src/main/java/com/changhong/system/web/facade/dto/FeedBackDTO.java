@@ -12,18 +12,31 @@ import java.util.Date;
 public class FeedBackDTO implements Serializable {
     private int id=-1;
     private String content;
+    private String reply;
     private Date dateTime;
     private String username;
     private String usermac;
     private String status;
 
-    public FeedBackDTO(int id, String content, String username, String usermac, String status,Date dateTime) {
+    public FeedBackDTO() {
+    }
+
+    public FeedBackDTO(int id, String content,String reply, String username, String usermac, String status,Date dateTime) {
         this.id =id;
         this.content = content;
+        this.reply=reply;
         this.dateTime = dateTime;
         this.username = username;
         this.usermac = usermac;
         this.status = status;
+    }
+
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
     }
 
     public int getId() {

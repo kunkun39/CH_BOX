@@ -1,5 +1,6 @@
 package com.changhong.system.repository;
 
+import com.changhong.common.domain.EntityBase;
 import com.changhong.common.repository.HibernateEntityObjectDao;
 import com.changhong.common.utils.CHDateUtils;
 import com.changhong.system.domain.TvChannelInfo;
@@ -53,6 +54,18 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
     public String obtainUsernameByMac(String mac) {
         List<ClientUser>users=getHibernateTemplate().find("from ClientUser u where u.mac = ?", mac);
         return users.isEmpty() ? null : users.get(0).getName();
+    }
+
+    @Override
+    public boolean loadFeedBackExist(int feedbackId, String usermac) {
+        if (feedbackId < 0) {
+            List list = getHibernateTemplate().find("select count(fb.id) from FeedBack fb where fb.usermac = ?", usermac);
+            return ((Long) list.get(0)).intValue() > 0 ? true : false;
+        } else {
+            List list = getHibernateTemplate().find("select count(fb.id) from FeedBack fb where fb.usermac = ? and fb.id <> ?",
+                    new Object[]{usermac, feedbackId});
+            return ((Long) list.get(0)).intValue() > 0 ? true : false;
+        }
     }
 
     @Override

@@ -4,5 +4,7 @@
     <div class="users">
         <a href="${pageContext.request.contextPath}/backend/useroverview.html">用户管理</a>
     </div>
-
+    <div class="users">
+        <a href="${pageContext.request.contextPath}/backend/appoverview.html">应用管理</a>
+    </div>
 </div>

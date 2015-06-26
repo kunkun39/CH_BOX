@@ -37,18 +37,22 @@
                         <td>${feedback.username} </td>
                         <td>${feedback.usermac}</td>
                         <td>
-                            <c:if test="${feedback.status}">
+                            <c:if test="${feedback.status=='1'}">
                             已处理
                             </c:if>
-                            <c:if test="${!feedback.status}">
+                            <c:if test="${feedback.status=='0'}">
                             未处理
                             </c:if>
                         </td>
 
                         <td>
-                            <c:if test="${!feedback.status}">
-                                <a href="${pageContext.request.contextPath}/backend/clientuserfeedbackoverview.html" onclick=""><button class="thoughtbot">回复</button></a>
-                            </c:if>
+                            <%--<c:if test="${feedback.status=='0'}">--%>
+                                <%--<a href="${pageContext.request.contextPath}/backend/clientuserfeedbackform.html?feedbackId=${feedback.id}&&current=${current}" onclick=""><button class="thoughtbot">回复</button></a>--%>
+                            <%--</c:if>--%>
+                                <%--<c:if test="${feedback.status=='0'}">--%>
+                                <a href="${pageContext.request.contextPath}/backend/clientuserfeedbackchangestatus.html?feedbackId=${feedback.id}&&current=${current}" onclick=""><button class="thoughtbot">审查</button></a>
+                                <%--</c:if>--%>
+
                         </td>
 
                     </tr>

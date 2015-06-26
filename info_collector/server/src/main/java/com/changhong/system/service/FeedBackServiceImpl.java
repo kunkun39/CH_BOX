@@ -2,8 +2,10 @@ package com.changhong.system.service;
 
 import com.changhong.system.domain.FeedBack;
 import com.changhong.system.domain.TvChannelInfo;
+import com.changhong.system.domain.User;
 import com.changhong.system.repository.FeedBackDao;
 import com.changhong.system.web.facade.assember.TvChannelWebAssember;
+import com.changhong.system.web.facade.assember.UserWebAssember;
 import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.facade.assember.FeedBackWebAssember;
 import com.changhong.system.web.facade.dto.FeedBackDTO;
@@ -51,11 +53,34 @@ public class FeedBackServiceImpl implements FeedBackService{
     }
 
     @Override
+    public boolean loadFeedBackExist(int feedbackId, String usermac) {
+        return feedBackDao.loadFeedBackExist(feedbackId,usermac);
+    }
+
+    @Override
+    public void changeStatusForFeedBack(int feedbackId) {
+        FeedBack feedBack = (FeedBack) feedBackDao.findById(feedbackId, FeedBack.class);
+        if (feedBack.getStatus().equals("0")) {
+            feedBack.setStatus("1");
+        }
+    }
+
+    @Override
+    public void persistReply(FeedBackDTO feedBackDTO) {
+        FeedBack feedBack = FeedBackWebAssember.toFeedBackDomain(feedBackDTO);
+        feedBackDao.saveOrUpdate(feedBack);
+    }
+
+    @Override
+    public FeedBackDTO obtainFeedBackById(int feedbackId) {
+        FeedBack feedBack = (FeedBack) feedBackDao.findById(feedbackId, FeedBack.class);
+        return FeedBackWebAssember.toFeedBackDTO(feedBack,null);
+    }
+
+    @Override
     public JSONArray obtainFeedBackInfoByMonth(String status, String year, String month) throws JSONException {
         return feedBackDao.obtainFeedBackInfoByMonth(status,year,month);
     }
-
-
 
     @Override
     public List<TvChannelInfo> obtainTvChannelInfo(String channelName, String year, String month, String day, String hour) {

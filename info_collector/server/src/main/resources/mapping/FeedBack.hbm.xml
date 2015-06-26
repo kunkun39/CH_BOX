@@ -11,6 +11,7 @@
         <property name="timestamp" column="timestamp" type="java.util.Date"/>
         <property name="content" column="content" insert="true" update="true" type="java.lang.String"/>
         <property name="status" column="status" insert="true" update="true" type="java.lang.String"/>
+        <property name="reply" column="reply_content" update="true" type="java.lang.String"/>
         <property name="usermac" column="user_mac" insert="true" update="true" type="java.lang.String"/>
         <property name="year" column="fd_year" insert="true" update="true" type="java.lang.String"/>
         <property name="month" column="fd_month" insert="true" update="true" type="java.lang.String"/>
@@ -33,4 +34,5 @@
         <property name="hour" column="fd_hour" insert="true" update="true" type="java.lang.String"/>
 
     </class>
+
 </hibernate-mapping>

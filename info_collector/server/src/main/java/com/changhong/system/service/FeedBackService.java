@@ -16,6 +16,11 @@ public interface FeedBackService {
     List<FeedBackDTO> obtainUserFeedBacks(int startPosition, int pageSize);
     int obtainUserFeedBackSize();
     String obtainUsernameByMac(String mac);
+    boolean loadFeedBackExist(int feedbackId, String usermac);
+    void changeStatusForFeedBack(int feedbackId);
+
+    void persistReply(FeedBackDTO feedBackDTO);
+    FeedBackDTO obtainFeedBackById(int feedbackId);
 
     JSONArray obtainFeedBackInfoByMonth(String status,String year,String month) throws JSONException;
     JSONArray obtainCollectorInfoAmountByProgram(String tvChannelName,String year,String month) throws JSONException;

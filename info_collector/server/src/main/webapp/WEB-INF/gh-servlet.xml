@@ -33,11 +33,15 @@
                 <prop key="/backend/userform.html">userFormController</prop>
                 <prop key="/backend/userchangeenable.html">userChangeEnableController</prop>
                 <prop key="/backend/userchangepassword.html">userChangePasswordController</prop>
+                <prop key="/backend/appoverview.html">appManagementController</prop>
+                <prop key="/backend/appform.html">appFormController</prop>
                 <!--client collector-->
                 <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
                 <prop key="/backend/clientusercollector.html">userCollectorController</prop>
                 <prop key="/backend/tvchannelinfooverview.html">tvChannelInfoManagementController</prop>
                 <prop key="/backend/clientuserfeedbackoverview.html">userFeedBackManagementCotroller</prop>
+                <prop key="/backend/clientuserfeedbackform.html">userFeedBackFormController</prop>
+                <prop key="/backend/clientuserfeedbackchangestatus.html">userFeedBackChangeStatusController</prop>
             </props>
         </property>
     </bean>
@@ -66,6 +70,13 @@
         <property name="userService" ref="userService"/>
     </bean>
 
+    <bean id="appManagementController" class="com.changhong.system.web.controller.AppManagementController">
+        <property name="appService" ref="appService"/>
+    </bean>
+
+    <bean id="appFormController" class="com.changhong.system.web.controller.AppFormController">
+        <property name="appService" ref="appService"/>
+    </bean>
 
     <bean id="userFeedBackController" class="com.changhong.system.web.controller.UserFeedBackController">
     </bean>
@@ -79,6 +90,14 @@
     </bean>
 
     <bean id="tvChannelInfoManagementController" class="com.changhong.system.web.controller.TvChannelInfoManagementController">
+        <property name="feedBackService" ref="feedBackService"/>
+    </bean>
+
+    <bean id="userFeedBackFormController" class="com.changhong.system.web.controller.UserFeedBackFormController">
+        <property name="feedBackService" ref="feedBackService"/>
+    </bean>
+
+    <bean id="userFeedBackChangeStatusController" class="com.changhong.system.web.controller.UserFeedBackChangeStatusController">
         <property name="feedBackService" ref="feedBackService"/>
     </bean>
 </beans>

@@ -7,17 +7,34 @@ import com.changhong.common.domain.EntityBase;
  */
 public class FeedBack extends EntityBase{
     private String content;
+    private String reply;
     private String status;
     private String usermac;
     private String year;
     private String month;
     private String day;
 
+    public String getReply() {
+        return reply;
+    }
+
+    public void setReply(String reply) {
+        this.reply = reply;
+    }
+
     public FeedBack() {
     }
 
-    public FeedBack(String content, String status, String usermac, String year, String month, String day) {
+    public FeedBack(String content, String reply, String status, String usermac) {
         this.content = content;
+        this.reply = reply;
+        this.status = status;
+        this.usermac = usermac;
+    }
+
+    public FeedBack(String content, String reply,String status, String usermac, String year, String month, String day) {
+        this.content = content;
+        this.reply=reply;
         this.status = status;
         this.usermac = usermac;
         this.year = year;
