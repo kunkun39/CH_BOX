@@ -13,6 +13,7 @@ import com.changhong.thirdpart.location.LocationAttribute;
 import com.changhong.thirdpart.location.LocationUtil;
 import com.changhong.thirdpart.sharesdk.ScreenShotView;
 import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.uti.Util;
 import com.igexin.push.config.l;
 
 /**
@@ -64,11 +65,14 @@ public class ThirdpartTestActivity extends Activity implements OnClickListener {
 			L.d(MainService.TAG+"sharemsg==title="+title+" titleurl="+titleUrl+" text=="+text);
 			viewShare.cutScreenAndShare(title, titleUrl, text, null);
 		} else if (id == R.id.bt_startlocation) {
+			LocationUtil.getInstance().stop();
 			LocationUtil.getInstance().start();
 			LocationAttribute location = LocationUtil.getInstance()
 					.getLocationAttribute();
-			Toast.makeText(ThirdpartTestActivity.this,
-					"当前地址为：" + location.getAddress(), Toast.LENGTH_LONG).show();
+			
+			if (location.getAddress() != null) {
+				Util.showToast(this, location.getAddress(), 3000);
+			}
 		}
 	}
 

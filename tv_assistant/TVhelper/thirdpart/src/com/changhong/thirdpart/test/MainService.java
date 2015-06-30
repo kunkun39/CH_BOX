@@ -3,6 +3,7 @@
  */
 package com.changhong.thirdpart.test;
 
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import com.changhong.thirdpart.location.LocationAttribute;
 import com.changhong.thirdpart.location.LocationUtil;
 import com.changhong.thirdpart.push.PushUtils;
 import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.uti.Util;
 
 /**
  * @author yves.yang 开起一个service 用于监听透传消息
@@ -48,16 +50,16 @@ public class MainService extends Service implements IDataListener {
 
 	@Override
 	public void OnDataChanged(Message message) {
-		Bundle bundle = message.getData();
-		L.e(TAG + "OnDataChanged--message==" + message.toString());
+		Bundle bundle = message.getData();		
 		if (bundle.containsKey("String")) {
 			String dataString = (String) bundle.get("String");
-			Toast.makeText(this, dataString, Toast.LENGTH_SHORT).show();
+			Util.showToast(this, dataString, 3000);
 		} else if (bundle.containsKey("LocationAttribute")) {
 			LocationAttribute locationAttribute = ((LocationAttribute) bundle
 					.get("LocationAttribute"));
-			Toast.makeText(this, locationAttribute.getAddress(),
-					Toast.LENGTH_SHORT).show();
+			if (locationAttribute.getAddress() != null) {
+				Util.showToast(this, locationAttribute.getAddress(), 3000);
+			}
 		}
 
 	}
