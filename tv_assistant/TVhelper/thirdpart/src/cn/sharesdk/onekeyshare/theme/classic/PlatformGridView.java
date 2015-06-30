@@ -197,10 +197,17 @@ public class PlatformGridView extends LinearLayout implements
 		calPageSize();
 		int newPage = curFirst / PAGE_SIZE;
 
-		removeViewAt(1);
+		if (getChildAt(1)!=null) {
+			removeViewAt(1);
+		}
 		afterPlatformListGot();
 
-		pager.setCurrentScreen(newPage);
+		try {
+			pager.setCurrentScreen(newPage);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	public void setData(HashMap<String, Object> data, boolean silent) {

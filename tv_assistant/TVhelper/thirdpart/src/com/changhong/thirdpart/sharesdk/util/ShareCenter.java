@@ -242,8 +242,10 @@ public class ShareCenter {
 		if (isDialogModel) {
 			oks.setDialogMode();// 编辑采用对话框模式
 		}
-		if (TextUtils.isEmpty(titleUrl)) {
-			titleUrl = "http://";
+		if (!TextUtils.isEmpty(titleUrl)) {
+			oks.setTitleUrl(titleUrl);// QQ分享时候titleurl不能为空
+			oks.setUrl(titleUrl);
+			oks.setSiteUrl(titleUrl);
 		}
 		if (!TextUtils.isEmpty(imagePath)) {
 			oks.setImagePath(imagePath);//
@@ -254,11 +256,8 @@ public class ShareCenter {
 		oks.setSilent(!isEdit);// 是否直接分享
 		oks.setCallback(paListener);// 分享回调
 		oks.setTitle(title);
-		oks.setTitleUrl(titleUrl);// QQ分享时候titleurl不能为空
-		oks.setUrl(titleUrl);
 		oks.setSite(title);
-		oks.setSiteUrl(titleUrl);
-		oks.setText(text == null ? "" : text);
+		oks.setText(TextUtils.isEmpty(text)?"  ":text);
 		oks.show(context);// 启动分享GUI
 	}
 
