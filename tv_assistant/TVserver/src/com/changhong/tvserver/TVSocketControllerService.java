@@ -281,6 +281,8 @@ public class TVSocketControllerService extends Service {
                                 } catch (Exception e) {
                                     Log.i(TAG, "startActivity Com.smarttv_doggle_newui  err ! ");
                                 }
+                                Intent intent=new Intent("com.action.startDTV");
+                                sendBroadcast(intent);
                             } else if(msgCpy.startsWith("app_open:")){
                                 Log.e(TAG, "Location:" + msgCpy);
                                 openYuYingApplication(msgCpy);

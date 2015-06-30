@@ -206,7 +206,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
         autoExitRunnable = new  Runnable() {
         	long lastTime = 0L;
         	static final int detalTime = 1000 * 30;
-        	static final int detalDuringTime = 1000 * 60 * 2;
+        	static final int detalDuringTime = 1000 * 60;
         	long lastestTime = 0;
 			@Override
 			public void run() {
@@ -416,7 +416,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
     @Override
     protected void onStop() {
         super.onStop();    
-        
+
     }
 
     @SuppressLint("NewApi")
@@ -436,6 +436,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
 
     @Override
     public boolean onInfo(int what, int extra) {
+        Log.i(TAG, "onInfo:" + what);
         switch (what) {
 	        case 1002:
 	        {
@@ -447,9 +448,9 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
 	        case 1003:
 	        {
 	        	if (mHandler != null) {
-	        		mHandler.post(autoExitRunnable);	
+	        		mHandler.post(autoExitRunnable);
 				}
-	        		        	
+
 	        }
 	        break;
             /**
@@ -481,11 +482,12 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
      */
     @Override
     public boolean onError(int what, int extra) {
-        Log.v(TAG, "onError");
+        Log.i(TAG, "onError:" + what);
         synchronized (SYNC_Playing) {
             SYNC_Playing.notify();
         }
         mPlayerStatus = PLAYER_STATUS.PLAYER_IDLE;
+
         return true;
     }
 
