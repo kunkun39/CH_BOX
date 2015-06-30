@@ -8,8 +8,13 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.View;
 
 /**
  * Created by wangxiufeng
@@ -18,7 +23,7 @@ public class ShareUtil {
 
 	private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 	public static final String DEFAUT_DATE_FORMAT = "yyyy-MM-dd";
-	public static final String DEFAUT_TIME_FORMAT = "HH:mm";
+	public static final String DEFAUT_TIME_FORMAT = "HH:mm:ss";
 	public static final String TAG = "ShareFileUtil  ";
 
 	public static File getCutScreenImgDirectory(Context context) {
@@ -91,4 +96,35 @@ public class ShareUtil {
 				DEFAUT_DATE_FORMAT + DEFAUT_TIME_FORMAT);
 		return simpleDateFormat.format(day);
 	}
+
+	/**
+	 * 获取view的map
+	 * 
+	 * @param view
+	 * @return
+	 */
+	public static Bitmap screenshot(View view) {
+		view.setDrawingCacheEnabled(true);
+		view.buildDrawingCache();
+		Bitmap bmp = Bitmap.createBitmap(view.getDrawingCache());
+		view.setDrawingCacheEnabled(false);
+		return bmp;
+	}
+
+	public static LayerDrawable getLayerDrawable(Bitmap... bitmaps) {
+		if (bitmaps != null && bitmaps.length > 0) {
+			Drawable[] array = new Drawable[bitmaps.length];
+
+			for (int j = 0; j < array.length; j++) {
+				array[j] = new BitmapDrawable(bitmaps[j]);
+			}
+			LayerDrawable la = new LayerDrawable(array);
+			for (int i = 0; i < array.length; i++) {
+				la.setLayerInset(i, 0, 0, 0, 0);
+			}
+			return la;
+		}
+		return null;
+	}
+
 }

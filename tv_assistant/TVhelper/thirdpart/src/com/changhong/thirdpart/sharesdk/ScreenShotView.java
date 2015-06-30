@@ -19,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -79,7 +80,7 @@ public class ScreenShotView extends RelativeLayout {
 
 	/************************** 参数配置 ****************************************/
 	/** 截屏时候是否替换掉上一张图片，true截图时候会删掉上一张截图，false 已时间命名，截图永远保存 **/
-	public boolean isReplaceLastImage = true;
+	public boolean isReplaceLastImage = false;
 	/** 截屏图片显示停留时间 **/
 	public int imgShowTime = 1000;
 	/** 截屏按钮是否在其它页面 **/
@@ -103,6 +104,7 @@ public class ScreenShotView extends RelativeLayout {
 	}
 
 	private void init() {
+		
 		// 最底层view
 		RelativeLayout.LayoutParams rootParams = new RelativeLayout.LayoutParams(
 				RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -206,12 +208,14 @@ public class ScreenShotView extends RelativeLayout {
 	}
 
 	/**
-	 * 截图分享			
+	 * 截图分享
+	 * 
 	 * @param title
 	 * @param titleurl
 	 * @param text
 	 * @param platformActionListener
-	 * @param bitmaps 传入的图片层，
+	 * @param bitmaps
+	 *            传入的图片层，
 	 */
 	public void cutScreenAndShare(String title, String titleurl, String text,
 			PlatformActionListener platformActionListener, Bitmap... bitmaps) {
@@ -219,23 +223,9 @@ public class ScreenShotView extends RelativeLayout {
 		this.titleUrl = titleurl;
 		this.text = text;
 		this.platformActionListener = platformActionListener;
-		if (bitmaps != null && bitmaps.length > 0) {
-			Drawable[] array = new Drawable[bitmaps.length];
-
-			for (int j = 0; j < array.length; j++) {
-				array[j] = new BitmapDrawable(bitmaps[j]);
-			}
-			LayerDrawable la = new LayerDrawable(array);
-			for (int i = 0; i < array.length; i++) {
-				la.setLayerInset(i, 0, 0, 0, 0);
-			}
-//			Drawable drawable = (Drawable) la;
-//			BitmapDrawable bd = (BitmapDrawable) drawable;
-//			mScreenBitmap = bd.getBitmap();
-			 iv_imgcut.setImageDrawable(la);
-			 mScreenBitmap =screenshot(iv_imgcut);
-		}
-
+		LayerDrawable la=ShareUtil.getLayerDrawable(bitmaps);
+		iv_imgcut.setImageDrawable(la);
+		mScreenBitmap = ShareUtil.screenshot(iv_imgcut);
 		cutScreenAndShare();
 	}
 
@@ -243,151 +233,39 @@ public class ScreenShotView extends RelativeLayout {
 	 * 截图并发送消息显示动画
 	 */
 	public void cutScreenAndShare() {
-		if (isSaving) {
-			showToast("图片正在保存中，请稍后");
-			return;
-		} else {
-			isSaving = !isSaving;
+		if (!isSaving) {
+			isSaving = true;
 		}
 		if (mScreenBitmap == null) {
-			mScreenBitmap = screenshot(((Activity) context).getWindow()
+			mScreenBitmap = ShareUtil.screenshot(((Activity) context).getWindow()
 					.getDecorView());
+			iv_imgcut.setImageBitmap(mScreenBitmap);
 		}
 		if (mScreenBitmap == null) {
 			showToast("截屏图片为空");
 			return;
 		}
-		mScreenBitmap.setHasAlpha(false);
-		mScreenBitmap.prepareToDraw();
 		iv_imgalpha.setVisibility(VISIBLE);
 		iv_imgcut.setVisibility(VISIBLE);
 
-		// Bitmap bgBitmap=BitmapFactory.decodeResource(context.getResources(),
-		// R.drawable.ic_launcher);
-		// Drawable[] array = new Drawable[3];
-		// array[2] = new BitmapDrawable(bgBitmap);
-		// array[1] = new BitmapDrawable(mScreenBitmap);
-		// array[0] = new BitmapDrawable(bgBitmap);
-		// LayerDrawable la = new LayerDrawable(array);
-		// la.setLayerInset(2, 0, 0, 0, 0);
-		// la.setLayerInset(1, 0, 0, 0, 0);
-		// la.setLayerInset(0, 80, 80, 0, 0);
-		// iv_imgcut.setImageDrawable(la);
-		// mScreenBitmap =screenshot(iv_imgcut);
-
-		iv_imgcut.setImageBitmap(mScreenBitmap);
 		handler.sendEmptyMessageDelayed(SHOW_ANIMATION, imgShowTime);// 发送消息显示动画
 	}
 
-	/**
-	 * 截屏
-	 * 
-	 * @param view
-	 * @return
-	 */
-	public Bitmap screenshot(View view) {
-		view.setDrawingCacheEnabled(true);
-		view.buildDrawingCache();
-		Bitmap bmp = view.getDrawingCache();
-		return bmp;
-	}
 
 	/**
 	 * 调用分享接口分享
 	 */
 	private void doShare() {
-		{// TODO 电视助手调用例子（弹出意见分享对话框）。
-			ShareFactory.getShareCenter(context, paListener).showShareMenu(
-					title, titleUrl, text, imgPath);
-			// ShareFactory.getShareCenter(context,
-			// paListener).showShareMenuWithImgurl(title, titleUrl, text,
-			// imageUrl);
-		}
-		// ShareFactory.getShareQQ(context, paListener).shareImgByPath(title,
-		// titleUrl, text, imgPath);
-		// ShareFactory.getShareQQ(context,
-		// paListener).shareMusicWithImgurl(title, titleUrl, text, imgPath,
-		// musicUrl);
-		// ShareFactory.getShareQZone(context, paListener).shareText(title,
-		// titleUrl, text, "site", musicUrl);
-		// ShareFactory.getShareQZone(context, paListener).shareImageUrl(title,
-		// titleUrl, text, imageUrl, "site", musicUrl);
-		// ShareFactory.getShareSinaWeiBo(context,
-		// paListener).shareImagePath(text, imgPath);
-		// ShareFactory.getShareTencentWeiBo(context,
-		// paListener).shareImageArray(text, new
-		// String[]{imgPath,imgPath,imageUrl,imageUrl}, 1, 1);
+		// 电视助手调用例子（弹出意见分享对话框）。
+		ShareFactory.getShareCenter(context, paListener).showShareMenu(title,
+				titleUrl, text, imgPath);
+		isSaving = false;
 	}
-
-	// String imageUrl="http://ytqmp.qiniudn.com/biaoqing/bairen12_qmp.gif";
-	// String
-	// musicUrl="http://media.ringring.vn/ringtone/realtone/0/0/161/165346.mp3";
-	// Bitmap imageData=null;
-	// String url="http://tv.sohu.com/20150625/n415583961.shtml";
-	// public void shareWeiXinHaoyou() {
-	// imageData=BitmapFactory.decodeResource(context.getResources(),
-	// R.drawable.ic_launcher);
-	// ShareFactory.getShareWeiXin(context, paListener).shareText(WeiXin.Wechat,
-	// title, text);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByPath(WeiXin.Wechat, title, text, imgPath);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByUrl(WeiXin.Wechat, title, text, imageUrl);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByData(WeiXin.Wechat, title, text, imageData);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareVideoOrPageWithImgurl(WeiXin.Wechat, title, text,
-	// imageUrl, url, true);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareMusicWithImgUrl(WeiXin.Wechat, title, text, imageUrl,
-	// musicUrl, url);
-
-	// }
-	// public void shareWeiXinFriends() {
-	// imageData=BitmapFactory.decodeResource(context.getResources(),
-	// R.drawable.ic_launcher);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareText(WeiXin.WechatMoments, title, text);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByPath(WeiXin.WechatMoments, title, text, imgPath);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByUrl(WeiXin.WechatMoments, title, text, imageUrl);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByData(WeiXin.WechatMoments, title, text,
-	// imageData);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareVideoOrPageWithImgurl(WeiXin.WechatMoments, title, text,
-	// imageUrl, url, true);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareMusicWithImgUrl(WeiXin.WechatMoments, title, text,
-	// imageUrl, musicUrl, url);
-	// }
-	// public void shareWeiXinConnect() {
-	// imageData=BitmapFactory.decodeResource(context.getResources(),
-	// R.drawable.ic_launcher);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareText(WeiXin.WechatFavorite, title, text);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByPath(WeiXin.WechatFavorite, title, text,
-	// imgPath);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByUrl(WeiXin.WechatFavorite, title, text,
-	// imageUrl);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareImageByData(WeiXin.WechatFavorite, title, text,
-	// imageData);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareVideoOrPageWithImgurl(WeiXin.WechatFavorite, title,
-	// text, imageUrl, url, true);
-	// ShareFactory.getShareWeiXin(context,
-	// paListener).shareMusicWithImgUrl(WeiXin.WechatFavorite, title, text,
-	// imageUrl, musicUrl, url);
-	// }
 
 	public void setmScreenBitmap(Bitmap mScreenBitmap) {
 		this.mScreenBitmap = mScreenBitmap;
 	}
-	
+
 	public boolean isSaving() {
 		return isSaving;
 	}
@@ -395,8 +273,7 @@ public class ScreenShotView extends RelativeLayout {
 	public void setSaving(boolean isSaving) {
 		this.isSaving = isSaving;
 	}
-
-	private void saveImageFile() {
+	public void saveImageFile() {
 		new Thread(new Runnable() {
 
 			@Override
@@ -426,7 +303,6 @@ public class ScreenShotView extends RelativeLayout {
 					// doShare();
 				} catch (Exception e) {
 					e.printStackTrace();
-				} finally {
 					isSaving = false;
 				}
 			}
