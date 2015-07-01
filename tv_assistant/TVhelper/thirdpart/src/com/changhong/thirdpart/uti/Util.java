@@ -39,16 +39,24 @@ public class Util {
 	
 	private class ToastRunable implements Runnable
 	{
-		Dialog dlg = null;
+		private Dialog dialog = null;
+		
 		ToastRunable(Dialog dialog)
 		{
-			dlg = dialog;
+			this.dialog = dialog;
 		}
+		
 		@Override
 		public void run() {
-			if (dlg != null) {
-				dlg.dismiss();
-				dlg = null;
+			if (dialog != null) {
+				if (dialog.isShowing()) {
+					try {
+						dialog.dismiss();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}					
+				}				
+				dialog = null;
 			}
 		}
 		
