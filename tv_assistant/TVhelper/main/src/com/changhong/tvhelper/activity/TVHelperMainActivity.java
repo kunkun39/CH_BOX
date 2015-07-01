@@ -1,9 +1,6 @@
 package com.changhong.tvhelper.activity;
 
 import java.io.*;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -269,9 +266,7 @@ public class TVHelperMainActivity extends Activity {
                                 ClientSendCommandService.titletxt = "未连接";
                                 title.setText(ClientSendCommandService.titletxt);
                                 mhandler.sendEmptyMessage(2);
-                                dialog.dismiss();
-
-                                System.exit(0);
+                                dialog.dismiss();                                                                
                             }
                         });
                 builder.setNegativeButton("取消",
