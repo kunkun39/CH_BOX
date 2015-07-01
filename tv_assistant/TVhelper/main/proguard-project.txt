@@ -46,15 +46,15 @@
 -keep class io.vov.**{*;}
 -dontwarn io.vov.**
 
+-keep class com.baidu.**{*;}
+-keep class com.igexin.**{*;}
+-dontwarn com.baidu.**
+-dontwarn com.igexin.**
 
 -keep class cn.**{*;}
 -keep class com.changhong.tvhelper.wxapi.**{*;}
 -keep class com.changhong.thirdpart.**{*;}
 -keep class com.mob.**{*;}
--keep class com.igexin.**{*;}
--dontwarn com.igexin.**
--keep class com.baidu.location.**{*;}
--dontwarn com.baidu.location.**
 -keep class com.sina.**{*;}
 -keep class **.R$* {*;}
 -keep class **.R{*;}
