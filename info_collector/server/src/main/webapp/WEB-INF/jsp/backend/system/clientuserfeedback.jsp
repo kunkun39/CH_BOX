@@ -75,11 +75,7 @@
                         &nbsp;月
                     </span>
                     <span>
-                        报表类型:
-                        <select id="reportType" style="width: 100px;">
-                            <option value="1" <c:if test="${reportType=='1'}">selected="true"</c:if>>曲线图</option>
-                        </select>
-                        &nbsp;
+                        报表类型:&nbsp;曲线图
                     </span>
                     <input type="button" value="统计" onclick="generateReport(); "/>
                 </div>
@@ -95,7 +91,7 @@
                     <td>
                         <div id="container1" style="width:80%; height: 350px; padding-left: 20px"></div>
                         <p style="margin-left:20px;">
-                            <button id="feedbackcsv">获取CVS数据</button> <button id="feedbackexcel">导出Excel文件</button>
+                            <button id="feedbackexcel">导出Excel文件</button>
                         </p>
                     </td>
                 </tr>
@@ -111,7 +107,7 @@
 
 <script type="text/javascript">
 
-    function renew_sta_container(status, year, month, reportType) {
+    function renew_sta_container(status, year, month) {
         jQuery("#container1_tr").show();
 
             if("0" == month) {
@@ -183,8 +179,7 @@
         var status = jQuery("#status").val();
         var year = jQuery("#reportYear").val();
         var month = jQuery("#reportMonth").val();
-        var reportType = jQuery("#reportType").val();
-        renew_sta_container(status, year, month, reportType);
+        renew_sta_container(status, year, month);
     }
 
 </script>

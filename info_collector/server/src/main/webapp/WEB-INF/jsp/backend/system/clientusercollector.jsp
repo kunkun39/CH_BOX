@@ -76,11 +76,7 @@
                         &nbsp;月
                     </span>
                     <span>
-                        报表类型:
-                        <select id="reportType" style="width: 100px;">
-                            <option value="1" <c:if test="${reportType=='1'}">selected="true"</c:if>>柱状图</option>
-                        </select>
-                        &nbsp;
+                        报表类型:&nbsp;柱状图
                     </span>
                     <input type="button" value="统计" onclick="generateReport(); "/>
                 </div>
@@ -96,7 +92,7 @@
                     <td>
                         <div id="container2" style="width:80%; height: 350px; padding-left: 20px"></div>
                         <p style="margin-left:20px;">
-                            <button id="collectorcsv">获取CVS数据</button> <button id="collectorexcel">导出Excel文件</button>
+                            <button id="collectorexcel">导出Excel文件</button>
                         </p>
                     </td>
                 </tr>
@@ -112,7 +108,7 @@
 
 <script type="text/javascript">
 
-    function renew_sta_container(tvChannelName, year, month, reportType) {
+    function renew_sta_container(tvChannelName, year, month) {
         jQuery("#container2_tr").show();
 
         if("0" == month) {
@@ -171,8 +167,7 @@
         var tvChannelName=jQuery("#tvChannelName").val();
         var year = jQuery("#reportYear").val();
         var month = jQuery("#reportMonth").val();
-        var reportType = jQuery("#reportType").val();
-        renew_sta_container(tvChannelName, year, month, reportType);
+        renew_sta_container(tvChannelName, year, month);
     }
 
 </script>
