@@ -2,45 +2,30 @@ package com.changhong.thirdpart.sharesdk;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.Platform.ShareParams;
 import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.tencent.weibo.TencentWeibo;
-import cn.sharesdk.wechat.friends.Wechat;
 
 import com.changhong.thirdpart.R;
 import com.changhong.thirdpart.sharesdk.util.L;
-import com.changhong.thirdpart.sharesdk.util.ShareCenter;
 import com.changhong.thirdpart.sharesdk.util.ShareUtil;
-import com.changhong.thirdpart.sharesdk.util.ShareWeiXin.WeiXin;
 
 /**
  * 截屏View 截屏按钮可隐藏加在其它页面然后手动调用cutScreenAndShare()截屏。
@@ -50,7 +35,7 @@ import com.changhong.thirdpart.sharesdk.util.ShareWeiXin.WeiXin;
  * 
  */
 public class ScreenShotView extends RelativeLayout {
-	private static final String TAG = "screenshotview  ";
+	private static final String TAG = "cutscreen";
 	private static final int SHOW_ANIMATION = 100;
 	private static final int SHOW_TOAST = 101;
 	private static final int DO_SHARE = 102;
@@ -60,8 +45,6 @@ public class ScreenShotView extends RelativeLayout {
 	private RelativeLayout rootLayout;
 	/** 半透明背景，截图图片 */
 	private ImageView iv_imgalpha, iv_imgcut;
-	/** 按钮 */
-	private Button bt_screenshot;
 	private ScaleAnimation scaleAnimation;
 	/** 截图图片 */
 	private Bitmap mScreenBitmap;// 截屏图片
@@ -80,13 +63,11 @@ public class ScreenShotView extends RelativeLayout {
 
 	/************************** 参数配置 ****************************************/
 	/** 截屏时候是否替换掉上一张图片，true截图时候会删掉上一张截图，false 已时间命名，截图永远保存 **/
-	public boolean isReplaceLastImage = false;
+	public boolean isReplaceLastImage = true;
 	/** 截屏图片显示停留时间 **/
 	public int imgShowTime = 1000;
-	/** 截屏按钮是否在其它页面 **/
-	public boolean isButtonOutside = true;
 	/** 是否在该页面显示回调toast **/
-	public boolean isShowCallBackToast = true;
+	public boolean isShowCallBackToast = false;
 
 	// /** 图片地址 */
 	// public String outimagepath;
@@ -104,63 +85,14 @@ public class ScreenShotView extends RelativeLayout {
 	}
 
 	private void init() {
-		
-		// 最底层view
-		RelativeLayout.LayoutParams rootParams = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
-		setLayoutParams(rootParams);
-		rootLayout = new RelativeLayout(context);
-		rootLayout.setLayoutParams(rootParams);
-
-		// 半透明背景
-		iv_imgalpha = new ImageView(context);
-		iv_imgalpha.setLayoutParams(rootParams);
-		iv_imgalpha.setBackgroundColor(0x77000000);
-		rootLayout.addView(iv_imgalpha);
-
-		WindowManager wm = (WindowManager) context
-				.getSystemService(Context.WINDOW_SERVICE);
-		int width = wm.getDefaultDisplay().getWidth();
-		int height = wm.getDefaultDisplay().getHeight();
-		L.d(TAG + " screenwidth= " + width + " screenheight=  " + height);
-
-		// 截屏图片
-		iv_imgcut = new ImageView(context);
-		RelativeLayout.LayoutParams imgcutParams = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.MATCH_PARENT,
-				RelativeLayout.LayoutParams.MATCH_PARENT);
-		imgcutParams.width = width * 4 / 5;
-		imgcutParams.height = height * 4 / 5;
-		// imgcutParams.setMargins(100, 100, 100, 100);
-		imgcutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-		iv_imgcut.setLayoutParams(imgcutParams);
-		rootLayout.addView(iv_imgcut);
-
-		// 按钮
-		bt_screenshot = new Button(context);
-		bt_screenshot.setText("截屏分享");
-		RelativeLayout.LayoutParams bt_params = new RelativeLayout.LayoutParams(
-				RelativeLayout.LayoutParams.WRAP_CONTENT,
-				RelativeLayout.LayoutParams.WRAP_CONTENT);
-		bt_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		bt_params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		bt_screenshot.setLayoutParams(bt_params);
-		rootLayout.addView(bt_screenshot);
-
-		bt_screenshot.setVisibility(isButtonOutside ? GONE : VISIBLE);
+		rootLayout = (RelativeLayout) LayoutInflater.from(context).inflate(
+				R.layout.view_screenshot, null);
+		addView(rootLayout);
+		iv_imgalpha = (ImageView) rootLayout.findViewById(R.id.iv_alpha);
+		iv_imgcut = (ImageView) rootLayout.findViewById(R.id.iv_imgcut);
 		iv_imgalpha.setVisibility(INVISIBLE);
 		iv_imgcut.setVisibility(INVISIBLE);
-		addView(rootLayout);
 		initAnimation();
-
-		bt_screenshot.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				cutScreenAndShare();
-			}
-		});
 	}
 
 	private Handler handler = new Handler() {
@@ -178,7 +110,6 @@ public class ScreenShotView extends RelativeLayout {
 			case DO_SHARE:
 				// 分享操作
 				doShare();
-				break;
 			default:
 				break;
 			}
@@ -223,7 +154,7 @@ public class ScreenShotView extends RelativeLayout {
 		this.titleUrl = titleurl;
 		this.text = text;
 		this.platformActionListener = platformActionListener;
-		LayerDrawable la=ShareUtil.getLayerDrawable(bitmaps);
+		LayerDrawable la = ShareUtil.getLayerDrawable(bitmaps);
 		iv_imgcut.setImageDrawable(la);
 		mScreenBitmap = ShareUtil.screenshot(iv_imgcut);
 		cutScreenAndShare();
@@ -237,8 +168,8 @@ public class ScreenShotView extends RelativeLayout {
 			isSaving = true;
 		}
 		if (mScreenBitmap == null) {
-			mScreenBitmap = ShareUtil.screenshot(((Activity) context).getWindow()
-					.getDecorView());
+			mScreenBitmap = ShareUtil.screenshot(((Activity) context)
+					.getWindow().getDecorView());
 			iv_imgcut.setImageBitmap(mScreenBitmap);
 		}
 		if (mScreenBitmap == null) {
@@ -250,7 +181,6 @@ public class ScreenShotView extends RelativeLayout {
 
 		handler.sendEmptyMessageDelayed(SHOW_ANIMATION, imgShowTime);// 发送消息显示动画
 	}
-
 
 	/**
 	 * 调用分享接口分享
@@ -273,6 +203,7 @@ public class ScreenShotView extends RelativeLayout {
 	public void setSaving(boolean isSaving) {
 		this.isSaving = isSaving;
 	}
+
 	public void saveImageFile() {
 		new Thread(new Runnable() {
 
@@ -318,11 +249,22 @@ public class ScreenShotView extends RelativeLayout {
 		@Override
 		public void onError(Platform arg0, int arg1, Throwable arg2) {
 			L.e(TAG + " onError " + arg0.toString() + "  arg1= " + arg1
-					+ " arg2.msg=" + arg2.getMessage() + " arg2=="
+					+ " isShowCallBackToast=" + isShowCallBackToast + " arg2=="
 					+ arg2.toString());
 			if (isShowCallBackToast) {
 				Message msg = handler.obtainMessage(SHOW_TOAST);
-				msg.obj = "分享发生异常";
+				// String expName = msg.obj.getClass().getSimpleName();
+				String expName = arg2.toString();
+				L.d(TAG + " onError expName=" + expName);
+				if (!TextUtils.isEmpty(expName)
+						&& (expName.contains("WechatClientNotExistException")
+								|| expName
+										.contains("WechatTimelineNotSupportedException") || expName
+									.contains("WechatFavoriteNotSupportedException"))) {
+					msg.obj = "分享失败，请安装微信客户端";
+				} else {
+					msg.obj = "分享发生异常";
+				}
 				handler.sendMessage(msg);
 			}
 			if (platformActionListener != null) {
@@ -333,7 +275,7 @@ public class ScreenShotView extends RelativeLayout {
 		@Override
 		public void onComplete(Platform arg0, int arg1,
 				HashMap<String, Object> arg2) {
-			L.e(TAG + " onComplete " + arg0.toString() + "  arg1= " + arg1);
+			L.d(TAG + " onComplete " + arg0.toString() + "  arg1= " + arg1);
 			if (isShowCallBackToast) {
 				Message msg = handler.obtainMessage(SHOW_TOAST);
 				msg.obj = "分享完成";
@@ -346,7 +288,7 @@ public class ScreenShotView extends RelativeLayout {
 
 		@Override
 		public void onCancel(Platform arg0, int arg1) {
-			L.e(TAG + " onCancel " + arg0.toString() + "  arg1= " + arg1 + "");
+			L.d(TAG + " onCancel " + arg0.toString() + "  arg1= " + arg1 + "");
 			if (isShowCallBackToast) {
 				Message msg = handler.obtainMessage(SHOW_TOAST);
 				msg.obj = "分享取消";
@@ -408,4 +350,78 @@ public class ScreenShotView extends RelativeLayout {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
+	// private void init() {//代码布局方式
+	//
+	// // 最底层view
+	// RelativeLayout.LayoutParams rootParams = new RelativeLayout.LayoutParams(
+	// RelativeLayout.LayoutParams.MATCH_PARENT,
+	// RelativeLayout.LayoutParams.MATCH_PARENT);
+	// setLayoutParams(rootParams);
+	// rootLayout = new RelativeLayout(context);
+	// rootLayout.setLayoutParams(rootParams);
+	//
+	// // 半透明背景
+	// iv_imgalpha = new ImageView(context);
+	// iv_imgalpha.setLayoutParams(rootParams);
+	// iv_imgalpha.setBackgroundColor(0x77000000);
+	// rootLayout.addView(iv_imgalpha);
+	//
+	// WindowManager wm = (WindowManager) context
+	// .getSystemService(Context.WINDOW_SERVICE);
+	// int width = wm.getDefaultDisplay().getWidth();
+	// int height = wm.getDefaultDisplay().getHeight();
+	// L.d(TAG + " screenwidth= " + width + " screenheight=  " + height);
+	//
+	// // 截屏图片
+	// iv_imgcut = new ImageView(context);
+	// RelativeLayout.LayoutParams imgcutParams = new
+	// RelativeLayout.LayoutParams(
+	// RelativeLayout.LayoutParams.MATCH_PARENT,
+	// RelativeLayout.LayoutParams.MATCH_PARENT);
+	// imgcutParams.width = width * 4 / 5;
+	// imgcutParams.height = height * 4 / 5;
+	// // imgcutParams.setMargins(100, 100, 100, 100);
+	// imgcutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+	// iv_imgcut.setLayoutParams(imgcutParams);
+	// rootLayout.addView(iv_imgcut);
+	//
+	// // 按钮
+	// bt_screenshot = new Button(context);
+	// bt_screenshot.setText("截屏分享");
+	// RelativeLayout.LayoutParams bt_params = new RelativeLayout.LayoutParams(
+	// RelativeLayout.LayoutParams.WRAP_CONTENT,
+	// RelativeLayout.LayoutParams.WRAP_CONTENT);
+	// bt_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+	// bt_params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+	// bt_screenshot.setLayoutParams(bt_params);
+	// rootLayout.addView(bt_screenshot);
+	//
+	// //toastView
+	// tv_toast=new TextView(context);
+	// tv_toast.setText("分享成功");
+	// RelativeLayout.LayoutParams tv_toast_params = new
+	// RelativeLayout.LayoutParams(
+	// RelativeLayout.LayoutParams.WRAP_CONTENT,
+	// RelativeLayout.LayoutParams.WRAP_CONTENT);
+	// tv_toast_params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+	// tv_toast_params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+	// tv_toast.setLayoutParams(tv_toast_params);
+	// tv_toast_params.bottomMargin=20;
+	// tv_toast.setVisibility(INVISIBLE);
+	// rootLayout.addView(tv_toast);
+	//
+	// bt_screenshot.setVisibility(isButtonOutside ? GONE : VISIBLE);
+	// iv_imgalpha.setVisibility(INVISIBLE);
+	// iv_imgcut.setVisibility(INVISIBLE);
+	// addView(rootLayout);
+	// initAnimation();
+	//
+	// bt_screenshot.setOnClickListener(new OnClickListener() {
+	//
+	// @Override
+	// public void onClick(View v) {
+	// cutScreenAndShare();
+	// }
+	// });
+	// }
 }

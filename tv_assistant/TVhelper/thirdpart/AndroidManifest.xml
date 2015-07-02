@@ -174,10 +174,10 @@
         <!-- 微信分享回调 微信回调条件必须满足：以工程包名+wxapi的包下面创建该WXEntryActivity -->
         <activity
             android:name="com.changhong.tvhelper.wxapi.WXEntryActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.Dialog" />
         <activity android:name="com.changhong.thirdpart.test.CutScreenActivity" />
         <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity" >
             <intent-filter>

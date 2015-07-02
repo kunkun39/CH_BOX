@@ -3,6 +3,8 @@
  */
 package com.changhong.thirdpart.uti;
 
+import com.changhong.thirdpart.R;
+
 import android.R.integer;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -28,7 +30,7 @@ public class Util {
 		
 		Util util = new Util();
 		Dialog dlg = null;
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);			
+		AlertDialog.Builder builder = new AlertDialog.Builder(context,R.style.ToastDialog);			
 		dlg = builder.setMessage(content).create();
 		dlg.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
 		dlg.getWindow().setGravity(Gravity.BOTTOM);

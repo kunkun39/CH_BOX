@@ -533,6 +533,9 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 	}
 
 	public void onClick(View v) {
+		if (platformList.length<=0&&views.length>0) {
+			return;
+		}
 		if (v.equals(llTitle.getBtnBack())) {
 			Platform plat = null;
 			for (int i = 0; i < views.length; i++) {
@@ -573,7 +576,9 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 		}
 
 		if (v instanceof FrameLayout) {
-			((FrameLayout) v).getChildAt(1).performClick();
+			if (((FrameLayout) v).getChildCount()>1&& ((FrameLayout) v).getChildAt(1)!=null){
+				((FrameLayout) v).getChildAt(1).performClick();
+			}
 			return;
 		}
 

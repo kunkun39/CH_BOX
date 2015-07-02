@@ -70,7 +70,7 @@ public class ThirdpartTestActivity extends Activity implements OnClickListener {
 			LocationAttribute location = LocationUtil.getInstance()
 					.getLocationAttribute();
 			
-			if (location.getAddress() != null) {
+			if (location!=null &&location.getAddress() != null) {
 				Util.showToast(this, location.getAddress(), 3000);
 			}
 		}
