@@ -16,17 +16,19 @@
 
 package com.changhong.tvhelper.activity;
 
-import com.changhong.common.utils.SystemUtils;
+import io.vov.vitamio.MediaMetadataRetriever;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
 import io.vov.vitamio.widget.VideoView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,20 +37,21 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -56,19 +59,27 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.SystemUtils;
+import com.changhong.thirdpart.sharesdk.ScreenShotView;
+import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.sharesdk.util.ShareUtil;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
@@ -165,6 +176,7 @@ public class TVChannelPlayActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle icicle) {
+		L.d(TAG+" on onCreate----");
 		super.onCreate(icicle);
 		this.getWindow().addFlags(
 				WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -310,6 +322,7 @@ public class TVChannelPlayActivity extends Activity {
 		seekbarWidget = (LinearLayout) findViewById(R.id.seekbarWidget);
 		sound = (SeekBar) findViewById(R.id.sound);
 		bright = (SeekBar) findViewById(R.id.bright);
+		initshareView();//TODO 初始化分享
 	}
 
 	private void initEvent() {
@@ -807,12 +820,23 @@ public class TVChannelPlayActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		TVChannelPlayActivity.this.finish();
+		L.d(TAG+" on onPause----");
+//		mVideoView.pause();
+//		TVChannelPlayActivity.this.finish();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		L.d(TAG+" on onResume----");
+//		if (mVideoView!=null) {
+//			mVideoView.start();
+//		}
+	}
+	@Override
+	protected void onStart() {
+		L.d(TAG+" on onStart----");
+		super.onStart();
 	}
 
 	@Override
@@ -826,5 +850,130 @@ public class TVChannelPlayActivity extends Activity {
 			}
 			SwitchReceiver = null;
 		}
+		if (dd!=null&&dd.isShowing()) {
+			dd.dismiss();
+			dd=null;
+		}
+		L.d(TAG+" on destroy----");
 	}
+	
+	
+	/*******************************截屏分享代码***********************************/
+	private Button bt_share;
+	private ScreenShotView view_cutscreen;
+	private String title="长虹电视助手",text;//我正在观看XXX台，XXX节目，好精彩呀！
+	private String TAG="cutscreen";
+	private RelativeLayout rl_content;
+	private ProgressBar pb_cutscreen;
+	private Bitmap bitmapVideo;
+	private static final int DO_SHARE=222;
+	private static final int SHOW_TOAST=223;
+	private void initshareView() {
+		bt_share = (Button) findViewById(R.id.bt_cutandshare);
+		view_cutscreen = (ScreenShotView) findViewById(R.id.viewshare_video);
+		rl_content = (RelativeLayout) findViewById(R.id.rl_cutscreencontent);
+		pb_cutscreen = (ProgressBar) findViewById(R.id.pb_cutscreen);
+		pb_cutscreen.setVisibility(View.INVISIBLE);
+		bt_share.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (view_cutscreen.isSaving()) {
+					return;
+				}
+				view_cutscreen.setSaving(true);
+				pb_cutscreen.setVisibility(View.VISIBLE);
+
+				if (programList != null && programList.size() > 0
+						&& programList.get(0) != null) {
+					text = "我正在观看" + name + "台，"
+							+ programList.get(0).getProgramName() + "节目，好精彩呀！";
+				} else {
+					text = "我正在观看" + name + "台，好精彩呀！";
+				}
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						 bitmapVideo = createVideoThumbnail(path);
+						 shareToastHandler.sendEmptyMessage(DO_SHARE);
+					}
+				}).start();
+				
+			}
+		});
+	}
+	
+	private Bitmap createVideoThumbnail(String filePath) {
+		Bitmap bitmap = null;
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever(
+				TVChannelPlayActivity.this);
+		try {
+			retriever.setDataSource(filePath);
+//			 String timeString =
+//			 retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+//			 long time = Long.parseLong(timeString) * 1000;
+//			 bitmap = retriever.getFrameAtTime(time*31/160); //按视频长度比例选择帧
+			bitmap = retriever.getFrameAtTime(mVideoView.getCurrentPosition()*1000); // 按视频长度比例选择帧
+			L.d(TAG+" getvideo frame time=="+mVideoView.getCurrentPosition()+" bitmap is null? "+(bitmap==null));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			L.d(TAG+" getvideo frame error  "+ex);
+		} finally {
+			try {
+				retriever.release();
+			} catch (RuntimeException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return bitmap;
+	} 
+
+	private PlatformActionListener paListener = new PlatformActionListener() {
+
+		@Override
+		public void onError(Platform arg0, int arg1, Throwable arg2) {
+			Message msg = handler.obtainMessage(SHOW_TOAST);
+//			msg.obj = "分享发生异常";
+//			shareToastHandler.sendMessage(msg);
+			String expName = arg2.toString();
+			if (!TextUtils.isEmpty(expName)
+					&& (expName.contains("WechatClientNotExistException")
+							|| expName
+									.contains("WechatTimelineNotSupportedException") || expName
+								.contains("WechatFavoriteNotSupportedException"))) {
+				msg.obj = "分享失败，请安装微信客户端";
+			} else {
+				msg.obj = "分享发生异常";
+			}
+			shareToastHandler.sendMessage(msg);
+		}
+
+		@Override
+		public void onComplete(Platform arg0, int arg1,
+				HashMap<String, Object> arg2) {
+			Message msg = handler.obtainMessage(SHOW_TOAST);
+			msg.obj = "分享成功";
+			shareToastHandler.sendMessage(msg);
+		}
+
+		@Override
+		public void onCancel(Platform arg0, int arg1) {
+			Message msg = handler.obtainMessage(SHOW_TOAST);
+			msg.obj = "分享取消";
+			shareToastHandler.sendMessage(msg);
+		}
+	};
+	Handler shareToastHandler=new Handler(){
+		public void handleMessage(Message msg) {
+			if (msg.what==DO_SHARE) {
+				Bitmap bitActivity = ShareUtil.screenshot(rl_content);
+				pb_cutscreen.setVisibility(View.GONE);
+				view_cutscreen.cutScreenAndShare(title, null, text, paListener,
+						bitmapVideo, bitActivity);
+			}else if(msg.what==SHOW_TOAST){
+				com.changhong.thirdpart.uti.Util.showToast(
+						TVChannelPlayActivity.this, ""+msg.obj, 2000);
+			}
+		};
+	};
 }
