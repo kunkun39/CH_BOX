@@ -27,6 +27,7 @@ import java.util.Map;
 public class AppManagementController extends AbstractController {
 
     private AppService appService;
+//    private String applicationWebAddress;
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.getSession().setAttribute(SessionKey.BROSWER_LOCATION, "USER");
@@ -40,7 +41,7 @@ public class AppManagementController extends AbstractController {
         List<AppDTO> apps = paging.getItems();
         model.put("apps", apps);
         model.put("paging", paging);
-
+//        model.put("applicationWebAddress",applicationWebAddress);
         return new ModelAndView("backend/system/appoverview", model);
     }
 
@@ -51,4 +52,8 @@ public class AppManagementController extends AbstractController {
     public void setAppService(AppService appService) {
         this.appService = appService;
     }
+
+//    public void setApplicationWebAddress(String applicationWebAddress) {
+//        this.applicationWebAddress = applicationWebAddress;
+//    }
 }

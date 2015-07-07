@@ -1,7 +1,9 @@
 package com.changhong.system.web.facade.assember;
 
 import com.changhong.system.domain.App;
+import com.changhong.system.domain.AppIcon;
 import com.changhong.system.web.facade.dto.AppDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,6 +15,10 @@ import java.util.List;
  * Time: 上午10:58
  */
 public class AppWebAssember {
+
+    public static AppIcon toAppIconDomain(MultipartFile file) {
+        return new AppIcon(file);
+    }
 
     public static App toAppDomain(AppDTO appDTO) {
         App app = null;
@@ -39,7 +45,12 @@ public class AppWebAssember {
         String appdes=app.getAppdes();
         Date dateTime=app.getTimestamp();
 
-        AppDTO dto=new AppDTO(id,appname,appkey,appdes,dateTime);
+        AppIcon file=app.getAppIcon();
+        int appIconId = file != null ? file.getId() : -1;
+        String uploadFileName=file!=null?file.getUploadFileName():"";
+        String actualFileName = file != null ? file.getActualFileName() : "";
+
+        AppDTO dto=new AppDTO(id,appname,appkey,appdes,dateTime,appIconId,uploadFileName,actualFileName);
         return dto;
     }
 

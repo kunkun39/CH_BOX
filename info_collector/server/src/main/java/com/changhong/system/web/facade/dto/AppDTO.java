@@ -2,6 +2,7 @@ package com.changhong.system.web.facade.dto;
 
 import com.changhong.common.utils.CHDateUtils;
 import com.changhong.common.utils.CHStringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,16 +18,24 @@ public class AppDTO implements Serializable {
     private String appdes;
     private Date dateTime;
 
+    private int appIconId;
+    private String uploadFileName;
+    private String actualFileName;
+    private MultipartFile appIconFile;
+
     public AppDTO() {
         this.appkey= getRandomApiKey(24);
     }
 
-    public AppDTO(int id, String appname, String appkey, String appdes, Date dateTime) {
+    public AppDTO(int id, String appname, String appkey, String appdes, Date dateTime,int appIconId,String uploadFileName,String actualFileNa) {
         this.id = id;
         this.appname = appname;
         this.appkey = appkey;
         this.appdes = appdes;
         this.dateTime = dateTime;
+        this.appIconId=appIconId;
+        this.uploadFileName=uploadFileName;
+        this.actualFileName=actualFileName;
     }
 
     public int getId() {
@@ -67,6 +76,22 @@ public class AppDTO implements Serializable {
 
     public void setDateTime(Date dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public int getAppIconId() {
+        return appIconId;
+    }
+
+    public void setAppIconId(int appIconId) {
+        this.appIconId = appIconId;
+    }
+
+    public MultipartFile getAppIconFile() {
+        return appIconFile;
+    }
+
+    public void setAppIconFile(MultipartFile appIconFile) {
+        this.appIconFile = appIconFile;
     }
 
     public static String getRandomApiKey(int length) {

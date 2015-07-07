@@ -7,6 +7,8 @@ import com.changhong.system.web.facade.dto.UserDTO;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 import org.springframework.web.servlet.view.RedirectView;
@@ -22,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AppFormController extends SimpleFormController {
 
     private AppService appService;
-
+    private String applicationWebAddress;
     public AppFormController() {
         setCommandClass(AppDTO.class);
         setCommandName("app");
@@ -34,6 +36,7 @@ public class AppFormController extends SimpleFormController {
         int appId = ServletRequestUtils.getIntParameter(request, "appId", -1);
         String current = ServletRequestUtils.getStringParameter(request, "current", "");
         request.setAttribute("current", current);
+        request.setAttribute("applicationWebAddress", applicationWebAddress);
 
         if (appId > 0) {
             return appService.obtainAppById(appId);
@@ -45,6 +48,7 @@ public class AppFormController extends SimpleFormController {
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
         int appId = ServletRequestUtils.getIntParameter(request, "appId", -1);
         String appname = ServletRequestUtils.getStringParameter(request, "appname", "");
+        int appIconId=ServletRequestUtils.getIntParameter(request, "appIconId", -1);
         if (!StringUtils.hasText(appname)) {
             errors.rejectValue("appname", "user.name.empty");
         }
@@ -52,6 +56,14 @@ public class AppFormController extends SimpleFormController {
         String appdes = ServletRequestUtils.getStringParameter(request, "appdes", "");
         if (!StringUtils.hasText(appdes)) {
             errors.rejectValue("appdes", "user.username.empty");
+        }
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("appIconFile");
+        if (appIconId <= 0) {
+            if (file == null || file.getSize() == 0) {
+                errors.rejectValue("appIconFile", "user.username.empty");
+            }
         }
 //        else {
 //            boolean exist = userService.obtainUserExist(userId, username);
@@ -66,6 +78,12 @@ public class AppFormController extends SimpleFormController {
         String current = ServletRequestUtils.getStringParameter(request, "current", "");
 
         AppDTO appDTO = (AppDTO) command;
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        MultipartFile file = multipartRequest.getFile("appIconFile");
+        if (file != null && file.getSize() > 0) {
+            appDTO.setAppIconFile(file);
+        }
+
         appService.changeAppDetails(appDTO);
 
         return new ModelAndView(new RedirectView("appoverview.html?current="+current));
@@ -73,5 +91,9 @@ public class AppFormController extends SimpleFormController {
 
     public void setAppService(AppService appService) {
         this.appService = appService;
+    }
+
+    public void setApplicationWebAddress(String applicationWebAddress) {
+        this.applicationWebAddress = applicationWebAddress;
     }
 }

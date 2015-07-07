@@ -1,6 +1,7 @@
 package com.changhong.system.service;
 
 import com.changhong.system.domain.App;
+import com.changhong.system.domain.AppIcon;
 import com.changhong.system.domain.FeedBack;
 import com.changhong.system.domain.User;
 import com.changhong.system.repository.AppDao;
@@ -10,6 +11,7 @@ import com.changhong.system.web.facade.assember.UserWebAssember;
 import com.changhong.system.web.facade.dto.AppDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -21,6 +23,9 @@ public class AppServiceImpl implements AppService {
 
     @Autowired
     private AppDao appDao;
+
+    @Autowired
+    private FileManageService fileManageService;
 
     @Override
     public List<AppDTO> obtainApps(int startPosition, int pageSize) {
@@ -42,7 +47,31 @@ public class AppServiceImpl implements AppService {
     @Override
     public void changeAppDetails(AppDTO appDTO) {
         App app = AppWebAssember.toAppDomain(appDTO);
-        appDao.persist(app);
+
+        //获得上传的文件
+        MultipartFile file = appDTO.getAppIconFile();
+        AppIcon appIcon = null;
+        if(file != null && file.getSize() > 0) {
+            appIcon = AppWebAssember.toAppIconDomain(file);
+        }
+
+        if(file!=null&&file.getSize()>0){
+            fileManageService.uploadAppIconFile(appIcon);
+        }
+
+        //获得老的上传的文件，如果存在就删除
+        AppIcon oldAppIconFile = app.changeAppIconFile(appIcon);
+        if (oldAppIconFile != null) {
+            fileManageService.deleteAppIconFile(oldAppIconFile);
+        }
+        //如果新的文件存在，则从新上传
+        if(file != null && file.getSize() > 0) {
+            fileManageService.uploadAppIconFile(app.getAppIcon());
+        }
+
+        //设置AppIcon
+        app.setAppIcon(appIcon);
+        appDao.saveOrUpdate(app);
 
     }
 }

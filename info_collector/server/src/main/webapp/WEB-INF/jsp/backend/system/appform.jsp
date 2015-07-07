@@ -21,9 +21,10 @@
             <jsp:include page="../systemtype.jsp"/>
         </td>
         <td valign="top">
-            <spring-form:form commandName="app" method="POST" cssClass="form">
+            <spring-form:form commandName="app" method="POST" cssClass="form" enctype="multipart/form-data">
                 <table cellspacing="0" width="100%">
                     <input type="hidden" name="id" value="${app.id}"/>
+                    <input type="hidden" name="appIconId" value="${app.appIconId}"/>
 
                     <tr>
                         <td width="200px;">
@@ -41,6 +42,25 @@
                         </td>
                         <td>
                             <spring-form:input id="appdes" path="appdes" cssStyle="width:300px;"/>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            应用图标
+                        </td>
+
+                        <td>
+                            <input type="file" id="appIconFile" name="appIconFile" class="file" style="width:300px;"/>
+                            <c:if test="${app.appIconId > 0}">
+                                <br/>
+                                <br/>
+                                已上传文件:${app.uploadFileName}
+                                <br/>
+                                <br/>
+                                <img src="${applicationWebAddress}${app.actualFileName}" style="width: 600px;" />
+                            </c:if>
+                            <spring-form:errors path="appIconFile" cssClass="required"/>
                         </td>
                     </tr>
 

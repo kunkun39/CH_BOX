@@ -9,6 +9,7 @@ public class App extends EntityBase {
     private String appname;
     private String appkey;
     private String appdes;
+    private AppIcon appIcon;
 
     public App() {
     }
@@ -17,6 +18,29 @@ public class App extends EntityBase {
         this.appname = appname;
         this.appkey = appkey;
         this.appdes = appdes;
+    }
+
+    //提供一个更改appIcon的方法
+    public AppIcon changeAppIconFile(AppIcon newAppIconFile) {
+        AppIcon oldAppIconFile = null;
+
+        if (appIcon != null) {
+            if (newAppIconFile != null) {
+                oldAppIconFile = new AppIcon();
+                oldAppIconFile.setUploadTime(appIcon.getUploadTime());
+                oldAppIconFile.setUploadFileName(appIcon.getUploadFileName());
+                oldAppIconFile.setActualFileName(appIcon.getActualFileName());
+
+                appIcon.setUploadFileName(newAppIconFile.getUploadFileName());
+                appIcon.setActualFileName(newAppIconFile.getActualFileName());
+                appIcon.setUploadTime(newAppIconFile.getUploadTime());
+                appIcon.setFile(newAppIconFile.getFile());
+            }
+        } else {
+            this.appIcon = newAppIconFile;
+        }
+
+        return oldAppIconFile;
     }
 
     public String getAppname() {
@@ -41,5 +65,13 @@ public class App extends EntityBase {
 
     public void setAppdes(String appdes) {
         this.appdes = appdes;
+    }
+
+    public AppIcon getAppIcon() {
+        return appIcon;
+    }
+
+    public void setAppIcon(AppIcon appIcon) {
+        this.appIcon = appIcon;
     }
 }
