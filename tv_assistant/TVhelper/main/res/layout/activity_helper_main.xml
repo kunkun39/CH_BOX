@@ -38,174 +38,190 @@
             android:layout_height="match_parent"
             android:layout_below="@id/banner">
 
+
+
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp">
-
-                <ImageView
-                        android:id="@+id/menu_bg"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:src="@drawable/nofocus"/>
-            </LinearLayout>
-
-            <!--第一部分-->
-            <LinearLayout
-                    android:id="@+id/first_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp">
-
-                <Button
-                    android:id="@+id/btn_tvplayer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/up_back"/>
-            </LinearLayout>
-
-            <!--第二部分-->
-            <LinearLayout
-                android:id="@+id/second_area"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:paddingLeft="25dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="20dp"
                 android:paddingRight="25dp"
-                android:orientation="horizontal"
-                android:layout_below="@id/first_area">
+                android:paddingTop="50dp"
+                android:paddingBottom="50dp"
+                android:orientation="vertical">
 
-
-                <!--四个小的部分-->
+                <!--第一部分-->
                 <LinearLayout
-                        android:id="@+id/four_small_area"
-                        android:layout_width="180dp"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="5dp"
+                    android:layout_weight="1">
 
-                    <LinearLayout
-                            android:layout_width="180dp"
-                            android:layout_height="90dp"
-                            android:orientation="horizontal">
-
-                            <Button
-                                    android:id="@+id/btn_music_touying"
-                                    android:layout_width="90dp"
-                                    android:layout_height="90dp"
-                                    android:background="@drawable/up_back"/>
-                            <Button
-                                    android:id="@+id/btn_video_touying"
-                                    android:layout_width="90dp"
-                                    android:layout_height="90dp"
-                                    android:background="@drawable/up_back"/>
-                            </LinearLayout>
-
-                    <LinearLayout
-                            android:layout_width="180dp"
-                            android:layout_height="90dp"
-                            android:orientation="horizontal">
-
-                        <Button
-                                android:id="@+id/btn_setting"
-                                android:layout_width="90dp"
-                                android:layout_height="90dp"
-                                android:background="@drawable/up_back"/>
-                        <Button
-                            android:id="@+id/btn_picture_touying"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
-                            android:background="@drawable/up_back"/>
-
-                        </LinearLayout>
+                    <Button
+                            android:id="@+id/main_player"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:background="@drawable/main_player"/>
                 </LinearLayout>
 
-                <Button
-                        android:id="@+id/btn_controller"
-                        android:layout_width="180dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/up_back"/>
-            </LinearLayout>
-
-            <!--第三部分-->
-            <LinearLayout
-                    android:id="@+id/third_area"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="25dp"
-                    android:orientation="horizontal"
-                    android:layout_below="@id/second_area">
-
-                <Button
-                        android:id="@+id/btn_sousuo"
-                        android:layout_width="178dp"
-                        android:layout_height="fill_parent"
-                        android:background="@drawable/up_back"/>
-
-                <Button
-                        android:id="@+id/btn_shoucang"
+                <!--第二部分-->
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/up_back"/>
+                        android:layout_weight="1">
+
+                    <!--第二部分，第一行-->
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="5dp"
+                                    android:paddingTop="5dp"
+                                    android:layout_weight="1">
+                                <Button
+                                        android:id="@+id/main_music_touying"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/main_music_touying"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="5dp"
+                                    android:paddingTop="5dp"
+                                    android:layout_weight="1">
+                                <Button
+                                        android:id="@+id/main_vedio_touying"
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="fill_parent"
+                                        android:layout_weight="1"
+                                        android:background="@drawable/main_vedio_touying"/>
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <!--第二部分，第二行-->
+                        <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal"
+                                android:layout_weight="1">
+
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="horizontal"
+                                    android:layout_weight="1">
+                                <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="horizontal"
+                                        android:paddingTop="5dp"
+                                        android:paddingLeft="5dp"
+                                        android:layout_weight="1">
+                                    <Button
+                                            android:id="@+id/main_setting"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/main_setting"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:orientation="horizontal"
+                                        android:paddingTop="5dp"
+                                        android:paddingLeft="5dp"
+                                        android:layout_weight="1">
+                                    <Button
+                                            android:id="@+id/main_picture_touying"
+                                            android:layout_width="fill_parent"
+                                            android:layout_height="fill_parent"
+                                            android:layout_weight="1"
+                                            android:background="@drawable/main_picture_touying"/>
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1">
+
+                        <Button
+                                android:id="@+id/main_control"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/main_control"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--第三部分-->
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:paddingTop="5dp"
+                        android:paddingLeft="5dp"
+                        android:layout_weight="1">
+
+                        <Button
+                                android:id="@+id/main_sousuo"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/main_sousuo"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:paddingTop="5dp"
+                            android:paddingLeft="5dp"
+                            android:layout_weight="1">
+
+                        <Button
+                                android:id="@+id/main_soucang"
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_weight="1"
+                                android:background="@drawable/main_soucang"/>
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
-            <!--<Button-->
-                <!--android:id="@+id/btn_shoucang"-->
-                <!--android:layout_width="100dip"-->
-                <!--android:layout_height="100dip"-->
-                <!--android:layout_below="@id/btn_tvplayer"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:background="@drawable/up_back"-->
-                <!--android:textSize="18sp" />-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toLeftOf="@id/btn_tvplayer"-->
-                <!--android:orientation="vertical" android:id="@+id/linearLayout">-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btn_shezhi"-->
-                    <!--android:layout_width="100dip"-->
-                    <!--android:layout_height="100dip"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@drawable/up_back"-->
-                    <!--android:textSize="18sp" />-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btn_fankui"-->
-                    <!--android:layout_width="100dip"-->
-                    <!--android:layout_height="100dip"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@drawable/up_back"-->
-                    <!--android:textSize="18sp" />-->
-            <!--</LinearLayout>-->
-
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_toRightOf="@id/btn_tvplayer"-->
-                <!--android:orientation="vertical" android:id="@+id/linearLayout2">-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btn_touying"-->
-                    <!--android:layout_width="100dip"-->
-                    <!--android:layout_height="100dip"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@drawable/up_back"-->
-                    <!--android:textSize="18sp" />-->
-
-                <!--<Button-->
-                    <!--android:id="@+id/btn_sousuo"-->
-                    <!--android:layout_width="100dip"-->
-                    <!--android:layout_height="100dip"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@drawable/up_back"-->
-                    <!--android:textSize="18sp" />-->
-            <!--</LinearLayout>-->
         </RelativeLayout>
 
         <!-- IP选择 -->

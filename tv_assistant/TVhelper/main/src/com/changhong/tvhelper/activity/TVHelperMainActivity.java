@@ -109,14 +109,14 @@ public class TVHelperMainActivity extends Activity {
         clients = (ListView) findViewById(R.id.clients);
         list = (Button) findViewById(R.id.btn_list);
 
-        Button controller = (Button) findViewById(R.id.btn_controller);
-        Button tvplayer = (Button) findViewById(R.id.btn_tvplayer);
-        Button setting = (Button) findViewById(R.id.btn_setting);
-        Button shoucang = (Button) findViewById(R.id.btn_shoucang);
-        Button sousuo = (Button) findViewById(R.id.btn_sousuo);
-        Button musicTouYing = (Button) findViewById(R.id.btn_music_touying);
-        Button vedioTouYing = (Button) findViewById(R.id.btn_video_touying);
-        Button pictureTouYing = (Button) findViewById(R.id.btn_picture_touying);
+        Button controller = (Button) findViewById(R.id.main_control);
+        Button tvplayer = (Button) findViewById(R.id.main_player);
+        Button setting = (Button) findViewById(R.id.main_setting);
+        Button shoucang = (Button) findViewById(R.id.main_soucang);
+        Button sousuo = (Button) findViewById(R.id.main_sousuo);
+        Button musicTouYing = (Button) findViewById(R.id.main_music_touying);
+        Button vedioTouYing = (Button) findViewById(R.id.main_vedio_touying);
+        Button pictureTouYing = (Button) findViewById(R.id.main_picture_touying);
         /**
          * init all event for every view
          */
