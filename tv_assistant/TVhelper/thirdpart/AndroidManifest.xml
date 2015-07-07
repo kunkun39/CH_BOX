@@ -175,17 +175,11 @@
         <activity
             android:name="com.changhong.tvhelper.wxapi.WXEntryActivity"
             android:exported="true"
-            android:screenOrientation="landscape"
+            android:screenOrientation="behind"
             android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name="com.changhong.thirdpart.test.CutScreenActivity" />
         <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <data android:mimeType="image/*" />  
-                <data android:mimeType="text/plain" />  
-                 <category android:name="android.intent.category.DEFAULT" /> 
-            </intent-filter>
         </activity>
 
         <service android:name="com.changhong.thirdpart.test.MainService" />

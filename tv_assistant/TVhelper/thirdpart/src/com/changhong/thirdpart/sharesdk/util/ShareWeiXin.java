@@ -17,6 +17,9 @@ public class ShareWeiXin extends ShareCenter {
 		Wechat, WechatMoments, WechatFavorite
 	}
 
+	public ShareWeiXin(Context context) {
+		super(context);
+	}
 	public ShareWeiXin(Context context, PlatformActionListener paListener) {
 		super(context, paListener);
 	}

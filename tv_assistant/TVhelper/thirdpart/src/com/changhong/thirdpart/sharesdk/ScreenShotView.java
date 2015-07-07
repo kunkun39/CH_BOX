@@ -25,6 +25,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 
 import com.changhong.thirdpart.R;
 import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.sharesdk.util.ShareCenter;
 import com.changhong.thirdpart.sharesdk.util.ShareUtil;
 
 /**
@@ -129,13 +130,24 @@ public class ScreenShotView extends RelativeLayout {
 	 * @param platformActionListener
 	 *            回调函数
 	 */
-	public void cutScreenAndShare(String title, String titleurl, String text,
-			PlatformActionListener platformActionListener) {
+	public void cutScreenAndShare(String title, String titleurl, String text) {
 		this.title = title;
 		this.titleUrl = titleurl;
 		this.text = text;
-		this.platformActionListener = platformActionListener;
 		cutScreenAndShare();
+	}
+
+	/**
+	 * 截图分享
+	 * 
+	 * @param title
+	 * @param text
+	 * @param platformActionListener
+	 * @param bitmaps
+	 *            传入的图片层，
+	 */
+	public void cutScreenAndShare(String title, String text, Bitmap... bitmaps) {
+		cutScreenAndShare(title, null, text, bitmaps);
 	}
 
 	/**
@@ -149,11 +161,10 @@ public class ScreenShotView extends RelativeLayout {
 	 *            传入的图片层，
 	 */
 	public void cutScreenAndShare(String title, String titleurl, String text,
-			PlatformActionListener platformActionListener, Bitmap... bitmaps) {
+			Bitmap... bitmaps) {
 		this.title = title;
 		this.titleUrl = titleurl;
 		this.text = text;
-		this.platformActionListener = platformActionListener;
 		LayerDrawable la = ShareUtil.getLayerDrawable(bitmaps);
 		iv_imgcut.setImageDrawable(la);
 		mScreenBitmap = ShareUtil.screenshot(iv_imgcut);
@@ -187,8 +198,11 @@ public class ScreenShotView extends RelativeLayout {
 	 */
 	private void doShare() {
 		// 电视助手调用例子（弹出意见分享对话框）。
-		ShareFactory.getShareCenter(context, paListener).showShareMenu(title,
-				titleUrl, text, imgPath);
+		ShareCenter shareCenter = ShareFactory.getShareCenter(context);
+		if (platformActionListener != null) {
+			shareCenter.setMyplatformActionListener(platformActionListener);
+		}
+		shareCenter.showShareMenu(title, titleUrl, text, imgPath);
 		isSaving = false;
 	}
 
@@ -244,61 +258,14 @@ public class ScreenShotView extends RelativeLayout {
 		Toast.makeText(context, content, Toast.LENGTH_LONG).show();
 	}
 
-	private PlatformActionListener paListener = new PlatformActionListener() {
+	public PlatformActionListener getPlatformActionListener() {
+		return platformActionListener;
+	}
 
-		@Override
-		public void onError(Platform arg0, int arg1, Throwable arg2) {
-			L.e(TAG + " onError " + arg0.toString() + "  arg1= " + arg1
-					+ " isShowCallBackToast=" + isShowCallBackToast + " arg2=="
-					+ arg2.toString());
-			if (isShowCallBackToast) {
-				Message msg = handler.obtainMessage(SHOW_TOAST);
-				// String expName = msg.obj.getClass().getSimpleName();
-				String expName = arg2.toString();
-				L.d(TAG + " onError expName=" + expName);
-				if (!TextUtils.isEmpty(expName)
-						&& (expName.contains("WechatClientNotExistException")
-								|| expName
-										.contains("WechatTimelineNotSupportedException") || expName
-									.contains("WechatFavoriteNotSupportedException"))) {
-					msg.obj = "分享失败，请安装微信客户端";
-				} else {
-					msg.obj = "分享发生异常";
-				}
-				handler.sendMessage(msg);
-			}
-			if (platformActionListener != null) {
-				platformActionListener.onError(arg0, arg1, arg2);
-			}
-		}
-
-		@Override
-		public void onComplete(Platform arg0, int arg1,
-				HashMap<String, Object> arg2) {
-			L.d(TAG + " onComplete " + arg0.toString() + "  arg1= " + arg1);
-			if (isShowCallBackToast) {
-				Message msg = handler.obtainMessage(SHOW_TOAST);
-				msg.obj = "分享完成";
-				handler.sendMessage(msg);
-			}
-			if (platformActionListener != null) {
-				platformActionListener.onComplete(arg0, arg1, arg2);
-			}
-		}
-
-		@Override
-		public void onCancel(Platform arg0, int arg1) {
-			L.d(TAG + " onCancel " + arg0.toString() + "  arg1= " + arg1 + "");
-			if (isShowCallBackToast) {
-				Message msg = handler.obtainMessage(SHOW_TOAST);
-				msg.obj = "分享取消";
-				handler.sendMessage(msg);
-			}
-			if (platformActionListener != null) {
-				platformActionListener.onCancel(arg0, arg1);
-			}
-		}
-	};
+	public void setPlatformActionListener(
+			PlatformActionListener platformActionListener) {
+		this.platformActionListener = platformActionListener;
+	}
 
 	private void initAnimation() {
 		scaleAnimation = new ScaleAnimation(1.0f, 0.0f, 1.0f, 0.0f,

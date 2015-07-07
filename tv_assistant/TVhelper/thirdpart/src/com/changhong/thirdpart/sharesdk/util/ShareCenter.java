@@ -1,8 +1,12 @@
 package com.changhong.thirdpart.sharesdk.util;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -19,6 +23,8 @@ import cn.sharesdk.wechat.favorite.WechatFavorite;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
+import com.changhong.thirdpart.uti.Util;
+
 /**
  * ShareCenter 分享工具类 各个平台分享参数shareParam见官网http
  * ://wiki.mob.com/%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%
@@ -33,14 +39,16 @@ import cn.sharesdk.wechat.moments.WechatMoments;
  */
 public class ShareCenter {
 	public static final String SHAREBEGIN = "正在启动分享中...";
-
+	private static final int SHOW_TOAST = 223;
 	/** context */
 	public Context context = null;
 	/** share callback */
-	public PlatformActionListener paListener = null;
+	public PlatformActionListener myplatformActionListener = null;
+	/** 是否只使用外部传来myplatformActionListener回调函数？ */
+	public boolean isOnlyMypaListener = false;
 
-	/** 微博分享的编辑页面是否采用对话框方式？true对话框；false全屏 */
-	public boolean isDialogModel = true;
+	/** Toast提示是否对话框方式？true对话框；false默认toast */
+	public boolean isDialogToast = true;
 
 	/** 一键分享微博否采用编辑方式？true编辑；false直接分享 */
 	public boolean isEdit = true;
@@ -111,6 +119,12 @@ public class ShareCenter {
 		// WechatFavorite.NAME;
 	}
 
+	public ShareCenter(Context context) {
+		super();
+		isOnlyMypaListener = false;
+		this.context = context;
+	}
+
 	public ShareCenter(Context context, PlatformActionListener paListener) {
 		super();
 		this.context = context;
@@ -165,6 +179,23 @@ public class ShareCenter {
 		this.context = context;
 		this.paListener = paListener;
 		shareByShareParams(shareParam, platFrom);
+	}
+
+	/**
+	 * 弹出一键分享对话框分享本地图片和文本信息
+	 * 
+	 * @param context
+	 * @param title
+	 *            分享内容显示的标题
+	 * @param text
+	 *            分享内容文本
+	 * @param imagePath
+	 *            本地图片路径
+	 * @param paListener
+	 *            回调监听器
+	 */
+	public void showShareMenu(String title, String text, String imagePath) {
+		shareByOnekeyshare(title, null, text, imagePath, null, null);
 	}
 
 	/**
@@ -239,9 +270,7 @@ public class ShareCenter {
 		}
 		// 关闭sso授权
 		oks.disableSSOWhenAuthorize();
-		if (isDialogModel) {
-			oks.setDialogMode();// 编辑采用对话框模式
-		}
+		oks.setDialogMode();// 编辑采用对话框模式
 		if (!TextUtils.isEmpty(titleUrl)) {
 			oks.setTitleUrl(titleUrl);// QQ分享时候titleurl不能为空
 			oks.setUrl(titleUrl);
@@ -257,7 +286,7 @@ public class ShareCenter {
 		oks.setCallback(paListener);// 分享回调
 		oks.setTitle(title);
 		oks.setSite(title);
-		oks.setText(TextUtils.isEmpty(text)?"  ":text);
+		oks.setText(TextUtils.isEmpty(text) ? "  " : text);
 		oks.show(context);// 启动分享GUI
 	}
 
@@ -269,8 +298,6 @@ public class ShareCenter {
 	 *            com/%E4%B8%8D%E5%90%8C
 	 *            %E5%B9%B3%E5%8F%B0%E5%88%86%E4%BA%AB%E5%86%85%E5%AE%B9%E7%9A%
 	 *            84%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/ 分享数据模型
-	 * @param silent
-	 *            是否直接分享， true直接分享 ，false打开编辑对话框
 	 * @param platFrom
 	 *            platform为空，显示一键分享对话框。
 	 *            platFrom平台对应的NAME，直接分享到指定品台，NAME值取可参考assert文件下ShareSDK
@@ -290,9 +317,7 @@ public class ShareCenter {
 			checkParams(context, shareParams, platform);
 		}
 
-		if (isDialogModel) {
-			oks.setDialogMode();// 编辑采用对话框模式
-		}
+		oks.setDialogMode();// 编辑采用对话框模式
 		oks.setSilent(!isEdit);// 是否直接分享
 		oks.setCallback(paListener);// 回调监听器
 		oks.disableSSOWhenAuthorize();// 关闭sso授权
@@ -459,20 +484,29 @@ public class ShareCenter {
 		this.context = context;
 	}
 
-	public PlatformActionListener getPaListener() {
-		return paListener;
+	public PlatformActionListener getMyplatformActionListener() {
+		return myplatformActionListener;
 	}
 
-	public void setPaListener(PlatformActionListener paListener) {
-		this.paListener = paListener;
+	public void setMyplatformActionListener(
+			PlatformActionListener myplatformActionListener) {
+		this.myplatformActionListener = myplatformActionListener;
 	}
 
-	public boolean isDialogModel() {
-		return isDialogModel;
+	public boolean isOnlyMypaListener() {
+		return isOnlyMypaListener;
 	}
 
-	public void setDialogModel(boolean isDialogModel) {
-		this.isDialogModel = isDialogModel;
+	public void setOnlyMypaListener(boolean isOnlyMypaListener) {
+		this.isOnlyMypaListener = isOnlyMypaListener;
+	}
+
+	public boolean isDialogToast() {
+		return isDialogToast;
+	}
+
+	public void setDialogToast(boolean isDialogToast) {
+		this.isDialogToast = isDialogToast;
 	}
 
 	public boolean isEdit() {
@@ -483,14 +517,74 @@ public class ShareCenter {
 		this.isEdit = isEdit;
 	}
 
-	public static void showToast(Context context, String content, boolean islong) {
+	protected PlatformActionListener paListener = new PlatformActionListener() {
+
+		@Override
+		public void onError(Platform arg0, int arg1, Throwable arg2) {
+
+			if (myplatformActionListener != null) {
+				myplatformActionListener.onError(arg0, arg1, arg2);
+			}
+			if (!isOnlyMypaListener) {
+				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
+				String expName = arg2.toString();
+				if (!TextUtils.isEmpty(expName)
+						&& (expName.contains("WechatClientNotExistException")
+								|| expName
+										.contains("WechatTimelineNotSupportedException") || expName
+									.contains("WechatFavoriteNotSupportedException"))) {
+					msg.obj = "分享失败，请安装微信客户端";
+				} else {
+					msg.obj = "分享发生异常";
+				}
+				shareToastHandler.sendMessage(msg);
+			}
+		}
+
+		@Override
+		public void onComplete(Platform arg0, int arg1,
+				HashMap<String, Object> arg2) {
+			if (myplatformActionListener != null) {
+				myplatformActionListener.onComplete(arg0, arg1, arg2);
+			}
+			if (!isOnlyMypaListener) {
+				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
+				msg.obj = "分享成功";
+				shareToastHandler.sendMessage(msg);
+			}
+		}
+
+		@Override
+		public void onCancel(Platform arg0, int arg1) {
+			if (myplatformActionListener != null) {
+				myplatformActionListener.onCancel(arg0, arg1);
+			}
+			if (!isOnlyMypaListener) {
+				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
+				msg.obj = "分享取消";
+				shareToastHandler.sendMessage(msg);
+			}
+		}
+	};
+	Handler shareToastHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == SHOW_TOAST) {
+				showToast(context, "" + msg.obj, true);
+			}
+		};
+	};
+
+	public void showToast(Context context, String content, boolean islong) {
 		if (context != null) {
-			Toast.makeText(context, content,
-					islong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+			if (isDialogToast) {
+				Util.showToast(context, "" + content, islong ? 2000 : 3000);
+			} else {
+				Toast.makeText(context, content,
+						islong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
+			}
 		} else {
 			Log.e("", "context is null can not show toast; the content is "
 					+ content);
 		}
 	}
-
 }

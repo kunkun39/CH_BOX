@@ -25,6 +25,9 @@ public class ShareQQ extends ShareCenter{
 	public ShareQQ(Context context, PlatformActionListener paListener) {
 		super(context, paListener);
 	}
+	public ShareQQ(Context context) {
+		super(context);
+	}
 
 	/**
 	 * 分享图片

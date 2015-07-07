@@ -14,6 +14,9 @@ import com.changhong.thirdpart.sharesdk.util.ShareCenter;
  */
 public class ShareSinaWeiBo extends ShareCenter {
 
+	public ShareSinaWeiBo(Context context) {
+		super(context);
+	}
 	public ShareSinaWeiBo(Context context, PlatformActionListener paListener) {
 		super(context, paListener);
 	}

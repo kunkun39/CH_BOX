@@ -8,6 +8,9 @@ import cn.sharesdk.tencent.qzone.QZone;
 
 public class ShareQZone extends ShareCenter{
 
+	public ShareQZone(Context context) {
+		super(context);
+	}
 	public ShareQZone(Context context, PlatformActionListener paListener) {
 		super(context, paListener);
 	}

@@ -72,7 +72,7 @@ public class PlatformListPage extends PlatformListFakeActivity implements View.O
 			}
 		};
 		llPage.setOrientation(LinearLayout.VERTICAL);
-		llPage.setBackgroundDrawable(new ColorDrawable(0xffffffff));
+		llPage.setBackgroundDrawable(new ColorDrawable(0x99ffffff));
 		FrameLayout.LayoutParams lpLl = new FrameLayout.LayoutParams(
 				FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
 		lpLl.gravity = Gravity.BOTTOM;
