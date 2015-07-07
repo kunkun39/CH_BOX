@@ -12,7 +12,6 @@
         android:label="touying part" >
 
         <!--问投影部分-->
-        <activity android:name="com.changhong.touying.activity.TouYingCategoryActivity"/>
         <activity android:name=".activity.PictureCategoryActivity" />
         <activity android:name="com.changhong.touying.activity.PictureViewActivity" />
         <activity android:name="com.changhong.touying.activity.PictureDetailsActivity" />

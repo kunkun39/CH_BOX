@@ -9,9 +9,12 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
+import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.*;
 import android.text.TextUtils;
 import android.util.JsonReader;
 
@@ -20,19 +23,18 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.setting.view.AppHelpDialog;
-import com.changhong.touying.activity.TouYingCategoryActivity;
+import com.changhong.touying.activity.MusicCategoryActivity;
+import com.changhong.touying.activity.PictureCategoryActivity;
+import com.changhong.touying.activity.VedioCategoryActivity;
+import com.changhong.touying.nanohttpd.NanoHTTPDService;
+import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
 import com.changhong.faq.activity.QuestionListActivity;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -59,15 +61,12 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.IntentFilter;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.NetworkUtils;
 
 public class TVHelperMainActivity extends Activity {
 
-    private static final String TAG = "TVhelper";
+    private static final String TAG = "TVHelperMainActivity";
 
     /**************************************************IP连接部分*******************************************************/
 
@@ -80,6 +79,16 @@ public class TVHelperMainActivity extends Activity {
      */
     public static Handler mhandler = null;
 
+    ServiceConnection conn=new ServiceConnection() {
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
+
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +97,8 @@ public class TVHelperMainActivity extends Activity {
         initViewAndEvent();
 
         initUpdateThread();
+
+        initMedia();
     }
 
     private void initViewAndEvent() {
@@ -100,16 +111,16 @@ public class TVHelperMainActivity extends Activity {
 
         Button controller = (Button) findViewById(R.id.btn_controller);
         Button tvplayer = (Button) findViewById(R.id.btn_tvplayer);
-        Button shezhi = (Button) findViewById(R.id.btn_shezhi);
-        Button fankui = (Button) findViewById(R.id.btn_fankui);
+        Button setting = (Button) findViewById(R.id.btn_setting);
         Button shoucang = (Button) findViewById(R.id.btn_shoucang);
-        Button touying = (Button) findViewById(R.id.btn_touying);
         Button sousuo = (Button) findViewById(R.id.btn_sousuo);
+        Button musicTouYing = (Button) findViewById(R.id.btn_music_touying);
+        Button vedioTouYing = (Button) findViewById(R.id.btn_video_touying);
+        Button pictureTouYing = (Button) findViewById(R.id.btn_picture_touying);
         /**
          * init all event for every view
          */
         controller.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
@@ -117,6 +128,7 @@ public class TVHelperMainActivity extends Activity {
                 startActivity(intent);
             }
         });
+
         tvplayer.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -126,21 +138,12 @@ public class TVHelperMainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        shezhi.setOnClickListener(new OnClickListener() {
 
+        setting.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
                 Intent intent = new Intent(TVHelperMainActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
-        });
-        fankui.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, QuestionListActivity.class);
                 startActivity(intent);
             }
         });
@@ -152,21 +155,37 @@ public class TVHelperMainActivity extends Activity {
                 startActivity(intent);
             }
         });
-        touying.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, TouYingCategoryActivity.class);
-                startActivity(intent);
-            }
-        });
         sousuo.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
                 Intent intent = new Intent(TVHelperMainActivity.this, TVChannelSearchActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        musicTouYing.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(TVHelperMainActivity.this, MusicCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+        vedioTouYing.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(TVHelperMainActivity.this, VedioCategoryActivity.class);
+                startActivity(intent);
+            }
+        });
+        pictureTouYing.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(TVHelperMainActivity.this, PictureCategoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -208,7 +227,6 @@ public class TVHelperMainActivity extends Activity {
         });
 
         mhandler = new Handler() {
-
             @Override
             public void handleMessage(Message msg1) {
                 switch (msg1.what) {
@@ -226,6 +244,24 @@ public class TVHelperMainActivity extends Activity {
                 super.handleMessage(msg1);
             }
         };
+    }
+
+    private void initMedia() {
+        /**
+         * 启动Http服务
+         */
+        Intent http = new Intent(TVHelperMainActivity.this, NanoHTTPDService.class);
+        startService(http);
+
+        /**
+         * 通知系统媒体去更新媒体库
+         */
+        String[] types = {"video/3gpp", "video/x-msvideo", "video/mp4", "video/mpeg", "video/quicktime",
+                "audio/x-wav", "audio/x-pn-realaudio", "audio/x-ms-wma", "audio/x-ms-wmv", "audio/x-mpeg", "image/jpeg", "image/png"};
+        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()}, types, null);
+
+        Intent intent = new Intent(getApplicationContext(), M3UListProviderService.class);
+        bindService(intent, conn, BIND_AUTO_CREATE);
     }
 
     /********************************************系统方法重载部分*******************************************************/

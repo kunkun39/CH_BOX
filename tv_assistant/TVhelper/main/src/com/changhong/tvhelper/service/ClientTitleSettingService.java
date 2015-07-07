@@ -29,9 +29,6 @@ public class ClientTitleSettingService {
             TVChannelShouCangShowActivity.title.setText(ClientSendCommandService.titletxt);
         }
 
-        if (TouYingCategoryActivity.title != null) {
-            TouYingCategoryActivity.title.setText(ClientSendCommandService.titletxt);
-        }
         if (PictureCategoryActivity.title != null) {
             PictureCategoryActivity.title.setText(ClientSendCommandService.titletxt);
         }

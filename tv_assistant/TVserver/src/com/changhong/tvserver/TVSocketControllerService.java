@@ -274,15 +274,17 @@ public class TVSocketControllerService extends Service {
                                     }
                                 }
                             } else if(msgCpy.equals("key:dtv")){
-                                Intent mIntent = getPackageManager().getLaunchIntentForPackage("Com.smarttv_doggle_newui");
-                                mIntent.putExtra("forceresume", true);
                                 try {
+                                    Intent mIntent = getPackageManager().getLaunchIntentForPackage("Com.smarttv_doggle_newui");
+                                    mIntent.putExtra("forceresume", true);
                                     startActivity(mIntent);
                                 } catch (Exception e) {
                                     Log.i(TAG, "startActivity Com.smarttv_doggle_newui  err ! ");
                                 }
+
                                 Intent intent=new Intent("com.action.startDTV");
                                 sendBroadcast(intent);
+                                Log.i(TAG, "startActivity send com.action.startDTV broadcast");
                             } else if(msgCpy.startsWith("app_open:")){
                                 Log.e(TAG, "Location:" + msgCpy);
                                 openYuYingApplication(msgCpy);

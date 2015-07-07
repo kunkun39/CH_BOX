@@ -32,7 +32,6 @@ public class BidirSlidingLayout extends RelativeLayout implements
 	private String settingClass = "com.changhong.setting.activity.SettingActivity";
 	private String faqClass = "com.changhong.faq.activity.QuestionListActivity";
 	private String collectionClass = "com.changhong.tvhelper.activity.TVChannelShouCangShowActivity";
-	private String projectionClass = "com.changhong.touying.activity.TouYingCategoryActivity";
 	private String searchClass = "com.changhong.tvhelper.activity.TVChannelSearchActivity";
 	private ScrollView commonsidemenu;
 	/**
@@ -284,14 +283,6 @@ public class BidirSlidingLayout extends RelativeLayout implements
 				public void onClick(View v) {
 					// TODO Auto-generated method stub
 					startMenu(controllPack, TVClass);
-				}
-			});
-			menu_touying.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					startMenu(controllPack, projectionClass);
 				}
 			});
 			menu_search.setOnClickListener(new OnClickListener() {

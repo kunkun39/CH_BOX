@@ -33,16 +33,13 @@ public class MusicDataAdapter extends BaseAdapter {
 
 	public MusicDataAdapter(Context context) {
 		this.context = context;
-		this.inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 		MusicProvider provider = new MusicProvider(context);
 		musics = provider.getList();
 		model = provider.getMapStructure(musics);
 		musicList = provider.getMusicList(model);
-//		Log.i("mmmm", "MusicDataAdapter=musics=" + musics + "     model=" + model
-//				+ "    musicList=" + musicList);
-	}
+    }
 
 	public int getCount() {
 		return musicList.size();

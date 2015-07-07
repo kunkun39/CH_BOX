@@ -93,10 +93,6 @@
 
         <!-- 投影部分 -->
         <activity
-	android:name="com.changhong.touying.activity.TouYingCategoryActivity" 
-	android:exported="true"
-	android:screenOrientation="portrait"/>
-        <activity 
             android:name="com.changhong.touying.activity.PictureCategoryActivity"
             android:screenOrientation="portrait" />
         <activity
