@@ -867,7 +867,6 @@ public class TVChannelPlayActivity extends Activity {
 	private ProgressBar pb_cutscreen;
 	private Bitmap bitmapVideo;
 	private static final int DO_SHARE=222;
-	private static final int SHOW_TOAST=223;
 	private void initshareView() {
 		bt_share = (Button) findViewById(R.id.bt_cutandshare);
 		view_cutscreen = (ScreenShotView) findViewById(R.id.viewshare_video);
@@ -928,51 +927,13 @@ public class TVChannelPlayActivity extends Activity {
 		return bitmap;
 	} 
 
-	private PlatformActionListener paListener = new PlatformActionListener() {
-
-		@Override
-		public void onError(Platform arg0, int arg1, Throwable arg2) {
-			Message msg = handler.obtainMessage(SHOW_TOAST);
-//			msg.obj = "分享发生异常";
-//			shareToastHandler.sendMessage(msg);
-			String expName = arg2.toString();
-			if (!TextUtils.isEmpty(expName)
-					&& (expName.contains("WechatClientNotExistException")
-							|| expName
-									.contains("WechatTimelineNotSupportedException") || expName
-								.contains("WechatFavoriteNotSupportedException"))) {
-				msg.obj = "分享失败，请安装微信客户端";
-			} else {
-				msg.obj = "分享发生异常";
-			}
-			shareToastHandler.sendMessage(msg);
-		}
-
-		@Override
-		public void onComplete(Platform arg0, int arg1,
-				HashMap<String, Object> arg2) {
-			Message msg = handler.obtainMessage(SHOW_TOAST);
-			msg.obj = "分享成功";
-			shareToastHandler.sendMessage(msg);
-		}
-
-		@Override
-		public void onCancel(Platform arg0, int arg1) {
-			Message msg = handler.obtainMessage(SHOW_TOAST);
-			msg.obj = "分享取消";
-			shareToastHandler.sendMessage(msg);
-		}
-	};
-	Handler shareToastHandler=new Handler(){
+	Handler shareToastHandler = new Handler() {
 		public void handleMessage(Message msg) {
-			if (msg.what==DO_SHARE) {
+			if (msg.what == DO_SHARE) {
 				Bitmap bitActivity = ShareUtil.screenshot(rl_content);
 				pb_cutscreen.setVisibility(View.GONE);
-				view_cutscreen.cutScreenAndShare(title, null, text, paListener,
+				view_cutscreen.cutScreenAndShare(title, text,
 						bitmapVideo, bitActivity);
-			}else if(msg.what==SHOW_TOAST){
-				com.changhong.thirdpart.uti.Util.showToast(
-						TVChannelPlayActivity.this, ""+msg.obj, 2000);
 			}
 		};
 	};
