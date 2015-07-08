@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
+import android.app.Dialog;
 import android.content.*;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -117,6 +118,7 @@ public class TVHelperMainActivity extends Activity {
         Button musicTouYing = (Button) findViewById(R.id.main_music_touying);
         Button vedioTouYing = (Button) findViewById(R.id.main_vedio_touying);
         Button pictureTouYing = (Button) findViewById(R.id.main_picture_touying);
+        Button power = (Button) findViewById(R.id.power);
         /**
          * init all event for every view
          */
@@ -187,6 +189,33 @@ public class TVHelperMainActivity extends Activity {
                 MyApplication.vibrator.vibrate(100);
                 Intent intent = new Intent(TVHelperMainActivity.this, PictureCategoryActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        /**关闭电源键**/
+        power.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Dialog dialog = new AlertDialog.Builder(TVHelperMainActivity.this)
+                        .setTitle("是否打开或关闭机顶盒？")
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ClientSendCommandService.msg = "key:power";
+                                ClientSendCommandService.handler.sendEmptyMessage(1);
+                            }
+                        })
+                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .create();
+                dialog.show();
             }
         });
 
