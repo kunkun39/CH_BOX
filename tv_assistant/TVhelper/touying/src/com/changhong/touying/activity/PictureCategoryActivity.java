@@ -272,7 +272,6 @@ public class PictureCategoryActivity extends Activity {
                 holder = new PackageViewHolder();
 
                 holder.packageName = (TextView) view.findViewById(R.id.package_name);
-                holder.packageFileSize = (TextView) view.findViewById(R.id.package_file_size);
 
                 holder.imageView1 = (ImageView) view.findViewById(R.id.package_picture_1);
                 holder.imageView2 = (ImageView) view.findViewById(R.id.package_picture_2);
@@ -288,8 +287,7 @@ public class PictureCategoryActivity extends Activity {
                 int size = images.size();
 
                 //设置文字
-                holder.packageName.setText(StringUtils.getShortString(packageName, 12));
-                holder.packageFileSize.setText(size + "张");
+                holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + "张");
 
                 //设置图片
                 try {
@@ -334,8 +332,6 @@ public class PictureCategoryActivity extends Activity {
     static class PackageViewHolder {
 
         TextView packageName;
-
-        TextView packageFileSize;
 
         ImageView imageView1;
 

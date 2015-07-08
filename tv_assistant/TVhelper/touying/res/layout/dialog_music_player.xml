@@ -45,20 +45,20 @@
         <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
-                android:paddingTop="10dp"
                 android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
                 android:layout_below="@+id/music_time_info">
 
             <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"                    
+                    android:layout_height="match_parent"   
+                    android:gravity="center_vertical"                 
                     android:layout_weight="1">
                 <ImageView
                     android:id="@+id/control_volume_small"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
                     android:background="@drawable/control_volume_small"/>
             </RelativeLayout>
 
@@ -67,6 +67,7 @@
             <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:layout_weight="1">
                 <ImageButton
                     android:id="@+id/music_control_button"
@@ -80,13 +81,13 @@
             <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:layout_weight="1">
                 <ImageView
                     android:id="@+id/control_volume_bigger"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
                     android:background="@drawable/control_volume_bigger"/>
             </RelativeLayout>
 

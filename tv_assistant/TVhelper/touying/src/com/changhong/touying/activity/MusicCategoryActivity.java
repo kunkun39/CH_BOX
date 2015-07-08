@@ -1,13 +1,9 @@
 package com.changhong.touying.activity;
 
-import java.util.List;
-
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,15 +18,11 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
-import com.changhong.touying.music.MediaUtil;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
 import com.changhong.touying.tab.MusicCategoryAllTab;
 import com.changhong.touying.tab.MusicCategoryPlaylistTab;
 import com.changhong.touying.tab.MusicCategorySpecialTab;
-import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 /**
  * Created by Jack Wang

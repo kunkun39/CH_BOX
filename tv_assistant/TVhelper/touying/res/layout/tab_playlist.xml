@@ -34,9 +34,10 @@
 	            android:id="@+id/music_list_list"
 	            android:layout_width="match_parent"
 	            android:layout_height="match_parent"
-	            android:divider="@drawable/playlist_divider"
+	            android:divider="@null"
 	            android:layout_alignParentTop="true"
-	            android:layout_above="@id/divider_line"	            	            
+	            android:layout_above="@id/divider_line"	    
+	            android:layout_marginTop="10dp"        	            
 	            />
 	         
     	</RelativeLayout>
