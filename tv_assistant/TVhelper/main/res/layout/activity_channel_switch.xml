@@ -49,11 +49,6 @@
                             android:textSize="18sp"
                             android:singleLine="true"
                             android:gravity="center"/>
-                    <!--<LinearLayout-->
-                            <!--android:layout_width="5dip"-->
-                            <!--android:layout_height="fill_parent"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:background="@drawable/channel_title_splitline"/>-->
                 </LinearLayout>
 
                 <!--高清频道TAB-->
@@ -74,11 +69,6 @@
                         android:textSize="18sp"
                         android:singleLine="true"
                         android:gravity="center"/>
-                    <!--<LinearLayout-->
-                            <!--android:layout_width="1dip"-->
-                            <!--android:layout_height="fill_parent"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:background="@drawable/channel_title_splitline"/>-->
                 </LinearLayout>
 
                 <!--卫视频道TAB-->
@@ -100,11 +90,6 @@
                         android:singleLine="true"
                         android:gravity="center"
                         />
-                    <!--<LinearLayout-->
-                            <!--android:layout_width="1dip"-->
-                            <!--android:layout_height="fill_parent"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:background="@drawable/channel_title_splitline"/>-->
                 </LinearLayout>
 
                 <!--少儿频道TAB-->
@@ -126,11 +111,6 @@
                         android:singleLine="true"
                         android:gravity="center"
                         />
-                    <!--<LinearLayout-->
-                            <!--android:layout_width="1dip"-->
-                            <!--android:layout_height="fill_parent"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:background="@drawable/channel_title_splitline"/>-->
                 </LinearLayout>
 
                 <!--央视频道TAB-->
