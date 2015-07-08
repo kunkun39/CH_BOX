@@ -19,7 +19,7 @@ public class TVNumInputDialog extends Dialog {
         super(context, R.style.InputTheme);
         Window window = this.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.alpha = 0.75f;
+        wlp.alpha = 0.85f;
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wlp);
         window.setGravity(Gravity.BOTTOM);

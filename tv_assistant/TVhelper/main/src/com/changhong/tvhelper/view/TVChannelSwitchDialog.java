@@ -77,7 +77,7 @@ public class TVChannelSwitchDialog extends Dialog {
          */
         Window window = this.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.alpha = 0.75f;
+        wlp.alpha = 0.85f;
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(wlp);
         window.setGravity(Gravity.BOTTOM);
@@ -104,7 +104,8 @@ public class TVChannelSwitchDialog extends Dialog {
                 ClientSendCommandService.msg = "key:dtv";
                 ClientSendCommandService.handler.sendEmptyMessage(1);
 
-                ClientSendCommandService.msgSwitchChannel = searchData.get(arg2).get("service_id") + "#" + searchData.get(arg2).get("tsId") + "#" + searchData.get(arg2).get("orgNId");
+                Map<String, Object> channelInfo = searchData.get(arg2);
+                ClientSendCommandService.msgSwitchChannel = channelInfo.get("service_id") + "#" + channelInfo.get("tsId") + "#" + channelInfo.get("orgNId");
                 ClientSendCommandService.handler.sendEmptyMessage(3);
             }
         });
@@ -169,42 +170,48 @@ public class TVChannelSwitchDialog extends Dialog {
                 switch (msg.what) {
                     case 0:
                         searchData.clear();
+                        int size = ClientSendCommandService.channelData.size();
+
                         switch (selectedChanncelTabIndex) {
                             case 0://全部频道
-                                for (int j = 0; j < ClientSendCommandService.channelData.size(); j++) {
+                                for (int j = 0; j < size; j++) {
                                     searchData.add(ClientSendCommandService.channelData.get(j));
                                 }
                                 break;
                             case 1://高清频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
-                                        searchData.add(ClientSendCommandService.channelData.get(i));
+                                for (int i = 0; i < size; i++) {
+                                    Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(i);
+                                    if (((String) channelInfo.get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
+                                            || ((String) channelInfo.get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
+                                        searchData.add(channelInfo);
                                     }
                                 }
                                 break;
                             case 2://卫视频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卫视".toLowerCase()) >= 0) {
-                                        searchData.add(ClientSendCommandService.channelData.get(i));
+                                for (int i = 0; i < size; i++) {
+                                    Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(i);
+                                    if (((String) channelInfo.get("service_name")).toLowerCase().indexOf("卫视".toLowerCase()) >= 0) {
+                                        searchData.add(channelInfo);
                                     }
                                 }
                                 break;
                             case 3://少儿频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("少儿".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卡通".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("动漫".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("成长".toLowerCase()) >= 0) {
-                                        searchData.add(ClientSendCommandService.channelData.get(i));
+                                for (int i = 0; i < size; i++) {
+                                    Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(i);
+                                    if (((String) channelInfo.get("service_name")).toLowerCase().indexOf("少儿".toLowerCase()) >= 0
+                                            || ((String) channelInfo.get("service_name")).toLowerCase().indexOf("卡通".toLowerCase()) >= 0
+                                            || ((String) channelInfo.get("service_name")).toLowerCase().indexOf("动漫".toLowerCase()) >= 0
+                                            || ((String) channelInfo.get("service_name")).toLowerCase().indexOf("成长".toLowerCase()) >= 0) {
+                                        searchData.add(channelInfo);
                                     }
                                 }
                                 break;
                             case 4://央视频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("中央".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("cctv".toLowerCase()) >= 0) {
-                                        searchData.add(ClientSendCommandService.channelData.get(i));
+                                for (int i = 0; i < size; i++) {
+                                    Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(i);
+                                    if (((String) channelInfo.get("service_name")).toLowerCase().indexOf("中央".toLowerCase()) >= 0
+                                            || ((String) channelInfo.get("service_name")).toLowerCase().indexOf("cctv".toLowerCase()) >= 0) {
+                                        searchData.add(channelInfo);
                                     }
                                 }
                                 break;
@@ -301,12 +308,14 @@ public class TVChannelSwitchDialog extends Dialog {
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
-            if (ClientGetCommandService.channelLogoMapping.get((String) mData.get(position).get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) mData.get(position).get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) mData.get(position).get("service_name")).equals("")) {
-                vh._v1.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) mData.get(position).get("service_name")));
+
+            Map<String, Object> channelInfo = mData.get(position);
+            if (ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("")) {
+                vh._v1.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")));
             } else {
                 vh._v1.setImageResource(R.drawable.logotv);
             }
-            vh.txt1.setText((String) mData.get(position).get("service_name"));
+            vh.txt1.setText((position + 1) + "  " + (String)channelInfo.get("service_name"));
 
             return convertView;
         }
