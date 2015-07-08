@@ -1,27 +1,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bk"
-                android:descendantFocusability="blocksDescendants">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bk"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
 
-    <LinearLayout	           
-            android:id="@+id/music_seek_layout_all"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"        
-            android:layout_alignParentBottom="true"/>
-    
-        <ListView
-            android:id="@+id/music_list_view_all"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/music_seek_layout_all"
-            android:layout_marginTop="10dp"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/transparent"
-            android:divider="@null" />
+    <ListView
+        android:id="@+id/music_list_view_all"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
+        android:divider="@null" />
+
+    <LinearLayout
+        android:id="@+id/music_seek_layout_all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" />
 
 </RelativeLayout>
-
