@@ -1,4 +1,4 @@
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bidir_sliding_layout"
     android:layout_width="match_parent"
@@ -56,75 +56,85 @@
             android:layout_height="77.3dip"
             android:layout_marginLeft="0dip"
             android:background="@drawable/title_btn_back_selector" />
+
         <ImageButton
             android:id="@+id/collection_sidemunubutton"
             android:layout_width="40dip"
             android:layout_height="50dip"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="310dip"
-            android:visibility="gone"
-            android:background="@drawable/sidemenubutton" />
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sidemenubutton"
+            android:visibility="gone" />
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:layout_marginTop="67.7dip"
             android:background="@android:color/white"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/linearLayout_sort"
             android:layout_width="match_parent"
-            android:layout_height="30dip"
-            android:layout_below="@id/linearLayout_ip"
+            android:layout_height="40dip"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal"
-            android:weightSum="1" >
+            android:weightSum="2" >
 
             <TextView
                 android:id="@+id/text_channel_shoucang"
-                android:layout_width="180dip"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="频道收藏"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/channel_title_textsize" />
 
             <LinearLayout
                 android:layout_width="1dp"
                 android:layout_height="40dp"
-                android:background="@color/white" >
+                android:background="@color/white"
+                android:visibility="gone" >
             </LinearLayout>
 
             <TextView
                 android:id="@+id/text_channel_program_yuyue"
-                android:layout_width="match_parent"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
                 android:text="节目预约"
                 android:textColor="@color/white"
-                android:textSize="15sp" />
+                android:textSize="@dimen/channel_title_textsize" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout_line"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/linearLayout_sort"
+            android:layout_above="@id/linearLayout_sort"
+            android:layout_below="@id/linearLayout_ip"
             android:background="@color/white"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="gone" >
         </LinearLayout>
 
-    <!--频道显示部分-->
-    <ListView
+        <!-- 频道显示部分 -->
+
+        <ListView
             android:id="@+id/channel_program_list"
-            android:layout_below="@id/linearLayout_line"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:listSelector="@drawable/title_ip_list"
-            />
+            android:layout_above="@id/linearLayout_sort"
+            android:layout_below="@id/linearLayout_ip"
+            android:listSelector="@drawable/title_ip_list" />
 
         <!-- IP选择部分 -->
 

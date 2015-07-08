@@ -25,6 +25,7 @@
         <!-- ip选择部分 -->
 
         <LinearLayout
+            android:id="@+id/ll_ip_channelview"
             android:layout_width="fill_parent"
             android:layout_height="67.6dip"
             android:background="@drawable/title_banner"
@@ -60,153 +61,10 @@
             android:id="@+id/tv_sidemunubutton"
             android:layout_width="40dip"
             android:layout_height="50dip"
-            android:layout_marginTop="8dp"
             android:layout_marginLeft="310dip"
-            android:visibility="gone"
-            android:background="@drawable/sidemenubutton" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_marginTop="67.7dip"
-            android:background="@android:color/white"
-            android:orientation="horizontal" />
-
-        <!-- 频道栏目部分 -->
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="30dip"
-            android:layout_marginTop="67.7dip"
-            android:orientation="horizontal" >
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/all"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="全部"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/hd"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="高清"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/ws"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="卫视"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/se"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="少儿"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/ys"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="央视"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/ts"
-                android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="同时看"
-                android:textColor="@android:color/white"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="1dip"
-                android:layout_height="fill_parent"
-                android:background="@android:color/white"
-                android:orientation="horizontal" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:layout_marginTop="96.6dip"
-            android:background="@android:color/white"
-            android:orientation="horizontal" />
+            android:layout_marginTop="8dp"
+            android:background="@drawable/sidemenubutton"
+            android:visibility="gone" />
 
         <!-- 频道显示部分 -->
 
@@ -214,8 +72,152 @@
             android:id="@+id/channellist"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginTop="96.6dip"
+            android:layout_below="@id/ll_ip_channelview"
+            android:layout_above="@+id/ll_channeltitles"
             android:listSelector="@drawable/title_ip_list" />
+        <!-- 频道栏目部分 -->
+
+        <LinearLayout
+            android:id="@+id/ll_channeltitles"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/all"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="全部"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/hd"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="高清"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/ws"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="卫视"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/se"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="少儿"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/ys"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="央视"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/ts"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/channel_titlebg"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="同时看"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_title_textsize"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="1dip"
+                android:layout_height="fill_parent"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:visibility="gone" />
+        </LinearLayout>
 
         <!-- IP选择部分 -->
 

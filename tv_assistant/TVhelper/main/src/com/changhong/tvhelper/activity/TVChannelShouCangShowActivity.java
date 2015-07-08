@@ -460,11 +460,11 @@ public class TVChannelShouCangShowActivity extends Activity {
                 } else {
                     vh.channelLogo.setImageResource(R.drawable.logotv);
                 }
-                vh.channelName.setText(channelName);
+                vh.channelName.setText((position+1)+" "+channelName);
                 
                 Program program = currentChannelPlayData.get(channelName);
                 if (program != null) {
-                    String time = "正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + StringUtils.getShortString(program.getProgramName(), 12);
+                    String time = "正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n\n" + StringUtils.getShortString(program.getProgramName(), 12);
                     vh.channelPlayInfo.setText(time);
                 } else {
                     vh.channelPlayInfo.setText("无节目信息");
@@ -524,8 +524,8 @@ public class TVChannelShouCangShowActivity extends Activity {
             }
 
             final OrderProgram orderProgram = orderProgramList.get(position);
-            vh.channelName.setText(orderProgram.getChannelName());
-            vh.channelPlayInfo.setText(orderProgram.getWeekIndex() + "  " + orderProgram.getProgramStartTime() + "-" + orderProgram.getProgramEndTime() + "\n" + StringUtils.getShortString(orderProgram.getProgramName(), 12));
+            vh.channelName.setText((position+1)+" "+orderProgram.getChannelName());
+            vh.channelPlayInfo.setText(orderProgram.getWeekIndex() + "  " + orderProgram.getProgramStartTime() + "-" + orderProgram.getProgramEndTime() + "\n\n" + StringUtils.getShortString(orderProgram.getProgramName(), 12));
             //捕获异常，代表没有这个频道
             try {
                 vh.channelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(orderProgram.getChannelName()));

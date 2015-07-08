@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <dimen name="channel_title_textsize">18sp</dimen> 
+   <dimen name="channel_item_textsize">12sp</dimen> 
+   <dimen name="channel_item_height">70dip</dimen> 
+</resources>
