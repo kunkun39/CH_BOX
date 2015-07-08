@@ -16,7 +16,7 @@ public class AppDTO implements Serializable {
     private String appname;
     private String appkey;
     private String appdes;
-    private Date dateTime;
+    private String dateTime;
 
     private int appIconId;
     private String uploadFileName;
@@ -25,9 +25,11 @@ public class AppDTO implements Serializable {
 
     public AppDTO() {
         this.appkey= getRandomApiKey(24);
+        this.dateTime=CHDateUtils.getDateFormat(new Date());
+
     }
 
-    public AppDTO(int id, String appname, String appkey, String appdes, Date dateTime,int appIconId,String uploadFileName,String actualFileNa) {
+    public AppDTO(int id, String appname, String appkey, String appdes, String dateTime,int appIconId,String uploadFileName,String actualFileName) {
         this.id = id;
         this.appname = appname;
         this.appkey = appkey;
@@ -66,15 +68,19 @@ public class AppDTO implements Serializable {
         return appdes;
     }
 
-    public void setappdes(String appdes) {
+    public String getAppdes() {
+        return appdes;
+    }
+
+    public void setAppdes(String appdes) {
         this.appdes = appdes;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -84,6 +90,22 @@ public class AppDTO implements Serializable {
 
     public void setAppIconId(int appIconId) {
         this.appIconId = appIconId;
+    }
+
+    public String getActualFileName() {
+        return actualFileName;
+    }
+
+    public void setActualFileName(String actualFileName) {
+        this.actualFileName = actualFileName;
+    }
+
+    public String getUploadFileName() {
+        return uploadFileName;
+    }
+
+    public void setUploadFileName(String uploadFileName) {
+        this.uploadFileName = uploadFileName;
     }
 
     public MultipartFile getAppIconFile() {

@@ -21,6 +21,7 @@
             <jsp:include page="../systemtype.jsp"/>
         </td>
         <td valign="top">
+
             <spring-form:form commandName="app" method="POST" cssClass="form" enctype="multipart/form-data">
                 <table cellspacing="0" width="100%">
                     <input type="hidden" name="id" value="${app.id}"/>
@@ -31,7 +32,7 @@
                              应用名称 <span class="required">*</span>
                         </td>
                         <td>
-                            <spring-form:input path="appname" maxlength="30" cssStyle="width:300px;"/>&nbsp;
+                            <spring-form:input  id="appname"  path="appname" maxlength="30" cssStyle="width:300px;"/>&nbsp;
                             <spring-form:errors path="appname" cssClass="required"/>
                         </td>
                     </tr>
@@ -42,14 +43,35 @@
                         </td>
                         <td>
                             <spring-form:input id="appdes" path="appdes" cssStyle="width:300px;"/>
+                            <spring-form:errors path="appname" cssClass="required"/>
                         </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            时间
+                        </td>
+                        <td>
+                            ${app.dateTime}
+                        </td>
+
                     </tr>
 
                     <tr>
                         <td>
+                            appKey
                             应用图标
                         </td>
 
+                        <td>
+                            ${app.appkey}
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td>
+                        </td>
                         <td>
                             <input type="file" id="appIconFile" name="appIconFile" class="file" style="width:300px;"/>
                             <c:if test="${app.appIconId > 0}">
@@ -63,7 +85,6 @@
                             <spring-form:errors path="appIconFile" cssClass="required"/>
                         </td>
                     </tr>
-
                     <tr>
                         <td>
                         </td>
@@ -71,7 +92,7 @@
                             <button type="button" class="thoughtbotform" onclick="window.location.href='${pageContext.request.contextPath}/backend/appoverview.html?&current=${current}'">
                                 返回
                             </button>
-                        	<button name="" type="submit" class="thoughtbotform" onclick="javascript: return validate();">保存</button>
+                            <button name="" type="submit" class="thoughtbotform" onclick="javascript: return validate();">保存</button>
                         </td>
                     </tr>
                 </table>

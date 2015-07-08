@@ -1,9 +1,13 @@
 package com.changhong.system.domain;
 
 import com.changhong.common.domain.EntityBase;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 /**
  * Created by kerio on 2015/6/26.
+ * 应用
  */
 public class App extends EntityBase {
     private String appname;
@@ -14,12 +18,14 @@ public class App extends EntityBase {
     public App() {
     }
 
-    public App(String appname, String appkey, String appdes) {
+
+
+    public App(String appname, String appkey, String appdes ) {
         this.appname = appname;
         this.appkey = appkey;
         this.appdes = appdes;
-    }
 
+    }
     //提供一个更改appIcon的方法
     public AppIcon changeAppIconFile(AppIcon newAppIconFile) {
         AppIcon oldAppIconFile = null;

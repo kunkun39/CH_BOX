@@ -10,6 +10,7 @@ CREATE TABLE `system_user` (
   `password` varchar(48) default '',
   `enabled` tinyint(1) default '0' COMMENT '1 for YES or 0 for NO',
   PRIMARY KEY  (`id`)
+
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 ALTER TABLE `system_user` ADD INDEX  system_user_index_name(`name`);
 
@@ -54,7 +55,7 @@ CREATE TABLE `tv_channel_info`(
   PRIMARY KEY(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-DROP TABLE IF EXISTS `app_info`
+DROP TABLE IF EXISTS `app_info`;
 CREATE TABLE `app_info` (
    `id` int(11) NOT NULL auto_increment,
    `timestamp` timestamp default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,

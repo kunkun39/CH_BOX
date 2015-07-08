@@ -1,14 +1,17 @@
 package com.changhong.system.service;
 
 import com.changhong.system.domain.FeedBack;
+import com.changhong.system.domain.TvChannel;
 import com.changhong.system.domain.TvChannelInfo;
 import com.changhong.system.domain.User;
 import com.changhong.system.repository.FeedBackDao;
 import com.changhong.system.web.facade.assember.TvChannelWebAssember;
+import com.changhong.system.web.facade.dto.TvChannelDTO;
 import com.changhong.system.web.facade.assember.UserWebAssember;
 import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.facade.assember.FeedBackWebAssember;
 import com.changhong.system.web.facade.dto.FeedBackDTO;
+import com.changhong.system.web.facade.dto.UserDTO;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,20 +86,14 @@ public class FeedBackServiceImpl implements FeedBackService{
     }
 
     @Override
-    public List<TvChannelInfo> obtainTvChannelInfo(String channelName, String year, String month, String day, String hour) {
-        return null;
-    }
-
-    @Override
     public List<TvChannelInfo> obtainAllTvChannelInfo() {
         return feedBackDao.obtainAllTvChannelInfo();
-//        return TvChannelWebAssember.toTvChannelInfoDTOList(tvChannelInfos);
     }
 
     @Override
-    public List<TvChannelInfoDTO> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName) {
-        List<TvChannelInfo> tvChannelInfos= feedBackDao.obtainAllTvChannelInfo(startPosition,pageSize,channelName);
-        return TvChannelWebAssember.toTvChannelInfoDTOList(tvChannelInfos);
+    public List<TvChannelDTO> obtainAllTvChannel(int startPosition,int pageSize,String channelName) {
+        List<TvChannel> tvChannels= feedBackDao.obtainAllTvChannel(startPosition, pageSize, channelName);
+        return TvChannelWebAssember.toTvChannelDTOList(tvChannels);
     }
 
     @Override
@@ -108,4 +105,14 @@ public class FeedBackServiceImpl implements FeedBackService{
         return feedBackDao.obtainCollectorInfoAmountByProgram(tvChannelName, year, month);
     }
 
+    @Override
+    public TvChannelDTO obtainChannelById(int channelId) {
+        TvChannel tvChannel = (TvChannel) feedBackDao.findById(channelId, TvChannel.class);
+        return TvChannelWebAssember.toTvChannelDTO(tvChannel);
+    }
+
+    public void changeChannelDetails(TvChannelDTO tvChannelDTO) {
+        TvChannel tvChannel = TvChannelWebAssember.toTvChannelDomain(tvChannelDTO);
+        feedBackDao.persist(tvChannel);
+    }
 }

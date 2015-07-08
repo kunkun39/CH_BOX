@@ -3,6 +3,7 @@ package com.changhong.system.repository;
 import com.changhong.common.domain.EntityBase;
 import com.changhong.common.repository.HibernateEntityObjectDao;
 import com.changhong.common.utils.CHDateUtils;
+import com.changhong.system.domain.TvChannel;
 import com.changhong.system.domain.TvChannelInfo;
 import org.hibernate.Query;
 import com.changhong.system.domain.ClientUser;
@@ -216,32 +217,33 @@ public class FeedBackDaoImpl extends HibernateEntityObjectDao implements FeedBac
 //        String sql="select * from tv_channel_info u where u.id in (select Max(id) from tv_channel_info group by tv_channel_name)";
 //        Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
 //        SQLQuery query = session.createSQLQuery(sql);
-
+        query.setMaxResults(10);
 
         List<TvChannelInfo> tvChannelInfos = query.list();
         return tvChannelInfos;
     }
 
     @Override
-    public List<TvChannelInfo> obtainAllTvChannelInfo(int startPosition,int pageSize,String name) {
+    public List<TvChannel> obtainAllTvChannel(int startPosition,int pageSize,String name) {
         StringBuilder builder = new StringBuilder();
-        builder.append("from TvChannelInfo u");
+        builder.append("from TvChannel t");
         if (StringUtils.hasText(name)) {
-            builder.append(" where u.tvChannelName like '" + name +"%'" );
+            builder.append(" where t.channelName like '" + name +"%'" );
         }
+        builder.append(" order by t.channelSequence+1");
         org.hibernate.Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
         Query query = session.createQuery(builder.toString());
         query.setMaxResults(pageSize);
         query.setFirstResult(startPosition);
 
-        List<TvChannelInfo> tvChannelInfos = query.list();
-        return tvChannelInfos;
+        List<TvChannel> tvChannels = query.list();
+        return tvChannels;
     }
 
     @Override
     public int loadAllTvChannelInfoSize() {
         StringBuilder builder = new StringBuilder();
-        builder.append("select count(u.id) from TvChannelInfo u");
+        builder.append("select count(u.id) from TvChannel u");
         List list =  getHibernateTemplate().find(builder.toString());
         return ((Long)list.get(0)).intValue();
     }

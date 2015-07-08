@@ -1,8 +1,12 @@
 package com.changhong.client.web.servlet;
 
+import com.alibaba.fastjson.JSONArray;
 import com.changhong.client.dao.IbatisFeedBackInfoDaoImpl;
 import com.changhong.client.dao.IbatisMovieDao;
 import com.changhong.client.dao.IbatisMovieDaoImpl;
+import com.changhong.system.domain.TvChannelInfo;
+import com.changhong.system.service.FeedBackServiceImpl;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by maren on 2015/6/11.
@@ -24,6 +29,10 @@ public class UserServiceServlet extends HttpServlet {
 
     @Autowired(required = true)
     IbatisFeedBackInfoDaoImpl ibatisFeedBackInfoDao;
+
+    @Autowired(required = true)
+    FeedBackServiceImpl feedBackService;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String requestURL=req.getRequestURI();
@@ -39,11 +48,28 @@ public class UserServiceServlet extends HttpServlet {
             responseJSON = "success";
 
         }   else if ("/feedBack/client/tvChannelFeedCommit".equals(requestURL)) {
+
             String tvChannelInfo=req.getParameter("tvChannelInfo");
             ibatisFeedBackInfoDao.saveTvChannelInfo(tvChannelInfo);
             responseJSON = "success";
 
+        }  else if ("/feedBack/client/audienceObtain".equals(requestURL)) {
+             String selectChannelName=req.getParameter("selectChannelName");
+             String selectYear=req.getParameter("selectYear");
+             String selectMonth=req.getParameter("selectMonth");
+            try {
+               org.json.JSONArray jsonArray= feedBackService.obtainCollectorInfoAmountByProgram(selectChannelName, selectYear, selectMonth);
+                JSONObject jsonObject=new JSONObject();
+                jsonObject.put("audience",jsonArray);
+                responseJSON =jsonObject.toString();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
         }
+
 
         //返回结果
         resp.setContentType("application/json; charset=utf-8");

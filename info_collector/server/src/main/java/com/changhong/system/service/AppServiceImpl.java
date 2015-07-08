@@ -47,7 +47,6 @@ public class AppServiceImpl implements AppService {
     @Override
     public void changeAppDetails(AppDTO appDTO) {
         App app = AppWebAssember.toAppDomain(appDTO);
-
         //获得上传的文件
         MultipartFile file = appDTO.getAppIconFile();
         AppIcon appIcon = null;

@@ -35,4 +35,14 @@
 
     </class>
 
+    <class name="com.changhong.system.domain.TvChannel" table="tv_channel">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+
+        <property name="channelSequence" column="channel_sequence" insert="true" update="true" type="java.lang.String"/>
+        <property name="channelName" column="channel_name" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
 </hibernate-mapping>

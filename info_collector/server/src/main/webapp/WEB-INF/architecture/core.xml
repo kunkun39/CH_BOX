@@ -21,8 +21,18 @@
 
     <bean id="entityLoadHolder" class="com.changhong.common.repository.EntityLoadHolder">
         <property name="userDao" ref="userDao"/>
+        <property name="feedBackDao" ref="feedBackDao"/>
     </bean>
 
+
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:database.properties</value>
+                <value>classpath:application.properties</value>
+            </list>
+        </property>
+    </bean>
 
     <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
         <property name="basenames">

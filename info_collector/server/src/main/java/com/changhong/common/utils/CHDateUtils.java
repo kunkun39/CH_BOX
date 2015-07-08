@@ -1,6 +1,7 @@
 package com.changhong.common.utils;
 
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -9,6 +10,13 @@ import java.util.Date;
  * Time: 下午1:37
  */
 public class CHDateUtils {
+
+    public static String getDateFormat(Date date){
+        SimpleDateFormat time=new SimpleDateFormat("yyyy-MM-dd HH: mm: ss");
+        String formatString=time.format(date);
+        return formatString;
+
+    }
 
     public static int getCurrentYear() {
         Date current = new Date();

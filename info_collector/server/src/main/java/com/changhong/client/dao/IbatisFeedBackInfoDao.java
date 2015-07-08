@@ -15,6 +15,8 @@ public interface IbatisFeedBackInfoDao {
 
     public void saveClientInfo(String userInfo);
     public void saveFeedBackInfo(String feedInfo);
+    public void saveBatchClientInfo(String userInfo);
+
 
     /**
      * 统计模块

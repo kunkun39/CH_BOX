@@ -1,5 +1,6 @@
 package com.changhong.system.web.controller;
 
+import com.changhong.client.service.ChannelService;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 
@@ -16,6 +17,7 @@ public class BackendLoginController extends AbstractController {
 
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ChannelService.initChannels();
         return new ModelAndView("backend/index");
     }
 }

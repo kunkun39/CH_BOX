@@ -2,10 +2,6 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
 <div class="type">
     <div class="users">
-        <a href="${pageContext.request.contextPath}/backend/tvchannelinfooverview.html">频道反馈信息</a>
+        <a href="${pageContext.request.contextPath}/backend/clientusercollector.html">频道反馈统计</a>
     </div>
-    <div class="users">
-        <a href="${pageContext.request.contextPath}/backend/clientusercollector.html">用户信息收集</a>
-    </div>
-
 </div>

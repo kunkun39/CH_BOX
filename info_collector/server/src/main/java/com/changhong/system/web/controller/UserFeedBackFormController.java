@@ -78,7 +78,6 @@ public class UserFeedBackFormController extends SimpleFormController {
     @Override
     protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         String current = ServletRequestUtils.getStringParameter(request, "current", "");
-
         FeedBackDTO feedBackDTO = (FeedBackDTO) command;
         feedBackService.persistReply(feedBackDTO);
 

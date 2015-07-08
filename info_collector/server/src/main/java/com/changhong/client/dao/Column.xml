@@ -48,8 +48,24 @@
         VALUES (#feedInfoContent:VARCHAR#,#userMac:VARCHAR#,#status:VARCHAR#,#fd_year:VARCHAR#,#fd_month:VARCHAR#,#fd_day:VARCHAR#)
     </insert>
 
+    <typeAlias alias="record" type="com.changhong.system.domain.ClientUser" />
+    <insert id="insertRecord"  parameterClass="record">
+        insert into client_user(
+        username,
+        contactway,
+        usermac
+        )
+        values(name,contactway,mac)
+    </insert>
 
     <!--统计部分-->
+    <insert id="insertTvChannel" parameterClass="java.util.HashMap">
+        INSERT INTO tv_channel (
+        channel_name,
+        channel_sequence
+        )
+        VALUES(#channelName:VARCHAR#,#channelSequence:VARCHAR#)
+    </insert>
 
     <insert id="insertTvChannelInfo" parameterClass="java.util.HashMap">
         INSERT INTO tv_channel_info (

@@ -39,7 +39,6 @@ public class FileManageServiceImpl implements FileManageService {
                 OutputStream dataOut = new FileOutputStream(saveFile);
                 FileCopyUtils.copy(file.getFile().getInputStream(), dataOut);
             } catch (Exception e) {
-
                 logger.error(e);
                 throw new CHDocumentOperationException("exception update file", e);
             }

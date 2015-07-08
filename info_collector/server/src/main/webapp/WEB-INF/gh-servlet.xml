@@ -50,6 +50,8 @@
                 <prop key="/backend/userchangepassword.html">userChangePasswordController</prop>
                 <prop key="/backend/appoverview.html">appManagementController</prop>
                 <prop key="/backend/appform.html">appFormController</prop>
+                <prop key="/backend/tvchannelform.html">channelFromController</prop>
+
                 <!--client collector-->
                 <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
                 <prop key="/backend/clientusercollector.html">userCollectorController</prop>
@@ -87,6 +89,7 @@
 
     <bean id="appManagementController" class="com.changhong.system.web.controller.AppManagementController">
         <property name="appService" ref="appService"/>
+        <property name="applicationWebAddress" value="${application.image.url}"/>
     </bean>
 
     <bean id="appFormController" class="com.changhong.system.web.controller.AppFormController">
@@ -116,4 +119,9 @@
     <bean id="userFeedBackChangeStatusController" class="com.changhong.system.web.controller.UserFeedBackChangeStatusController">
         <property name="feedBackService" ref="feedBackService"/>
     </bean>
+
+    <bean id="channelFromController" class="com.changhong.system.web.controller.ChannelFormController">
+        <property name="feedBackService" ref="feedBackService"/>
+    </bean>
+
 </beans>

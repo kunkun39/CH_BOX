@@ -1,8 +1,10 @@
 package com.changhong.system.service;
 
 import com.changhong.system.domain.TvChannelInfo;
+import com.changhong.system.web.facade.dto.TvChannelDTO;
 import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.facade.dto.FeedBackDTO;
+import com.changhong.system.web.facade.dto.UserDTO;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -24,8 +26,9 @@ public interface FeedBackService {
 
     JSONArray obtainFeedBackInfoByMonth(String status,String year,String month) throws JSONException;
     JSONArray obtainCollectorInfoAmountByProgram(String tvChannelName,String year,String month) throws JSONException;
-    List<TvChannelInfo> obtainTvChannelInfo(String channelName,String year,String month,String day,String hour);
     List<TvChannelInfo> obtainAllTvChannelInfo();
-    List<TvChannelInfoDTO> obtainAllTvChannelInfo(int startPosition,int pageSize,String channelName);
+    List<TvChannelDTO> obtainAllTvChannel(int startPosition,int pageSize,String channelName);
     int loadAllTvChannelInfoSize();
+
+    TvChannelDTO obtainChannelById(int channelId);
 }

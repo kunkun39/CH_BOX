@@ -1,5 +1,6 @@
 package com.changhong.system.web.facade.assember;
 
+import com.changhong.common.utils.CHDateUtils;
 import com.changhong.system.domain.App;
 import com.changhong.system.domain.AppIcon;
 import com.changhong.system.web.facade.dto.AppDTO;
@@ -30,7 +31,6 @@ public class AppWebAssember {
             app.setAppname(appDTO.getAppname());
             app.setAppkey(appDTO.getAppkey());
             app.setAppdes(appDTO.getappdes());
-            app.setTimestamp(appDTO.getDateTime());
 
         } else {
             app = new App(appDTO.getAppname(),appDTO.getAppkey(),appDTO.getappdes());
@@ -43,8 +43,7 @@ public class AppWebAssember {
         String appname=app.getAppname();
         String appkey=app.getAppkey();
         String appdes=app.getAppdes();
-        Date dateTime=app.getTimestamp();
-
+        String dateTime= CHDateUtils.getDateFormat(app.getTimestamp());
         AppIcon file=app.getAppIcon();
         int appIconId = file != null ? file.getId() : -1;
         String uploadFileName=file!=null?file.getUploadFileName():"";

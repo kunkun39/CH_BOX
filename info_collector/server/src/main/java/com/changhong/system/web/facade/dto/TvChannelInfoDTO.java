@@ -13,6 +13,10 @@ public class TvChannelInfoDTO {
     private String day;
     private String hour;
 
+    public TvChannelInfoDTO() {
+
+    }
+
     public TvChannelInfoDTO(String day, String hour, String month, String tvChannelName, String tvProgramName, String userMac, String year) {
         this.day = day;
         this.hour = hour;

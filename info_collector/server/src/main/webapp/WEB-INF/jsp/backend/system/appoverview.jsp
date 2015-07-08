@@ -4,6 +4,7 @@
 <html>
 <head>
     <title>后台管理平台</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/theme/default/module.css" type="text/css"/>
 </head>
 <body>
 <div class="action">
@@ -15,44 +16,36 @@
             <jsp:include page="../systemtype.jsp"/>
         </td>
         <td valign="top">
-            <div style="float: left; padding-right: 5px; padding-top: 5px; padding-left: 5px; padding-bottom: 5px">
-                <a href="${pageContext.request.contextPath}/backend/appform.html"><button class="thoughtbot">添加应用</button></a>
-            </div>
-            <%--<form action="${pageContext.request.contextPath}/backend/useroverview.html" class="search_form" method="POST">--%>
-                <%--<div class="search">--%>
-                    <%--<span><label>姓名:</label><input type="text" name="filername" class="text" value="${paging.name}"/></span>--%>
-                    <%--<input type="button" value="查询" onclick="this.form.submit();"/>--%>
-                <%--</div>--%>
-            <%--</form>--%>
 
-            <table width="100%" cellpadding="0" cellspacing="0" class="list">
-                <thead>
-                <td width="10%">&nbsp;&nbsp;应用名</td>
-                <td width="20%">API Key</td>
-                <td width="20%">描述</td>
-                <td width="10%">创建时间</td>
-                </thead>
-                <tbody>
-                <c:set var="turns" value="true"/>
-                <c:forEach items="${apps}" var="app">
-                    <c:set var="color" value="${turns ? 'r1' :'r2'}"/>
-                    <tr class="${color}" onmouseover="this.className='over'" onmouseout="this.className='${color}'">
-                    <c:set var="turns" value="${!turns}"/>
-                        <td>&nbsp;&nbsp;${app.appname}</td>
-                        <td>${app.appkey} </td>
-                        <td>${app.appdes}</td>
-                        <td>${app.dateTime}</td>
-                        <td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-
-            <div class="paging">
-                <ch:paging urlMapping="${pageContext.request.contextPath}/backend/appoverview.html" showGoTo="false" paging="${paging}"/>
+            <div style="float: left; padding-right: 5px;margin-top: 10px; padding-left: 5px; padding-bottom: 5px">
+                <a href="${pageContext.request.contextPath}/backend/appform.html">
+                    <button class="thoughtbot">添加应用</button>
+                </a>
             </div>
-        </td>
-    </tr>
+            <div class="tv_main">
+                <div class="channel">
+                    <ul class="list">
+                        <c:forEach items="${apps}" var="app">
+                            <li class="c1">
+                                <a class="edit"
+                                   href="${pageContext.request.contextPath}/backend/appform.html?appId=${app.id}">编辑</a>
+
+                                <p class="icon ico1"></p>
+                                <p ><a href="${applicationWebAddress}${app.actualFileName}" target="_blank">${applicationWebAddress}${app.actualFileName}</a></p>
+
+                                <p class="name">${app.appname}</p>
+                                </a>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
+
+
+        <td/>
+    <tr/>
+
+
 </table>
 </body>
 </html>

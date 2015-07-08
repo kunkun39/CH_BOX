@@ -15,6 +15,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * User: Jack Wang
@@ -58,6 +59,7 @@ public class AppFormController extends SimpleFormController {
             errors.rejectValue("appdes", "user.username.empty");
         }
 
+
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         MultipartFile file = multipartRequest.getFile("appIconFile");
         if (appIconId <= 0) {
@@ -65,12 +67,13 @@ public class AppFormController extends SimpleFormController {
                 errors.rejectValue("appIconFile", "user.username.empty");
             }
         }
-//        else {
-//            boolean exist = userService.obtainUserExist(userId, username);
-//            if (exist) {
-//                errors.rejectValue("username", "user.username.exist");
-//            }
+
 //        }
+//        String appkey = ServletRequestUtils.getStringParameter(request, "appkey", "");
+//        if (!StringUtils.hasText(appkey)) {
+//            errors.rejectValue("appdes", "user.username.empty");
+//        }
+
     }
 
     @Override
@@ -86,7 +89,7 @@ public class AppFormController extends SimpleFormController {
 
         appService.changeAppDetails(appDTO);
 
-        return new ModelAndView(new RedirectView("appoverview.html?current="+current));
+        return new ModelAndView(new RedirectView("tvchannelinfooverview.html?current="+current));
     }
 
     public void setAppService(AppService appService) {

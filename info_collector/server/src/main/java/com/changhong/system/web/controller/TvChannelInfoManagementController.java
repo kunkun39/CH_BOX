@@ -2,6 +2,7 @@ package com.changhong.system.web.controller;
 
 import com.changhong.common.web.session.SessionKey;
 import com.changhong.system.service.FeedBackServiceImpl;
+import com.changhong.system.web.facade.dto.TvChannelDTO;
 import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.paging.TvChannelOverViewPaging;
 import org.springframework.util.StringUtils;
@@ -22,7 +23,7 @@ public class TvChannelInfoManagementController extends AbstractController{
     private FeedBackServiceImpl feedBackService;
     @Override
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.getSession().setAttribute(SessionKey.BROSWER_LOCATION, "COLLECTOR");
+        request.getSession().setAttribute(SessionKey.BROSWER_LOCATION, "USER");
 
         Map<String, Object> model = new HashMap<String, Object>();
         int current = ServletRequestUtils.getIntParameter(request, "current", 1);
@@ -31,8 +32,8 @@ public class TvChannelInfoManagementController extends AbstractController{
         request.setAttribute("filername", filername);
         TvChannelOverViewPaging paging=new TvChannelOverViewPaging(feedBackService);
         constructPaging(paging, current, filername);
-        List<TvChannelInfoDTO> tvChannelInfoDTOs=paging.getItems();
-        model.put("tvChannelInfos",tvChannelInfoDTOs);
+        List<TvChannelDTO> tvChannelDTOs=paging.getItems();
+        model.put("tvChannels",tvChannelDTOs);
         model.put("paging", paging);
         return new ModelAndView("/backend/system/tvchannelinfooverview",model);
     }
