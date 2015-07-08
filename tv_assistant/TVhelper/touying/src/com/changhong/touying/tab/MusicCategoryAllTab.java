@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -103,6 +105,7 @@ public class MusicCategoryAllTab extends Fragment {
 	 */
 	private void initPlayer() {
 		player = new MusicPlayer();
+		
 		getActivity().getSupportFragmentManager().beginTransaction()
 				.add(R.id.music_seek_layout_all, player, MusicPlayer.TAG)
 				.show(player).commitAllowingStateLoss();

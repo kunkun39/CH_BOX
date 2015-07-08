@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/bk" >
 
     <LinearLayout
@@ -14,7 +14,7 @@
         <ImageButton
             android:id="@+id/d_btn_return"
             android:layout_width="80.5dip"
-        android:layout_height="77.3dip"
+            android:layout_height="77.3dip"
             android:layout_marginTop="4dp"
             android:background="@drawable/title_btn_back_selector" />
     </LinearLayout>
@@ -64,12 +64,13 @@
     </LinearLayout>
 
     <!-- 歌曲播放控制部分 -->
-    
-    <LinearLayout	           
-            android:id="@+id/music_seek_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"                  
-            android:layout_alignParentBottom="true"/>    
+
+    <LinearLayout
+        android:id="@+id/music_seek_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d0000000"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" />
 
 </RelativeLayout>

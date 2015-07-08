@@ -22,6 +22,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
@@ -285,6 +287,7 @@ public class MusicPlayer extends DialogFragment{
     	return this;
     }
     
+    
     /**
      * 播放歌曲列表
      * 参数:music为列表里的歌曲，如果参数存在，那么就会从选择了的歌曲处播放  
@@ -414,6 +417,7 @@ public class MusicPlayer extends DialogFragment{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		
 		if (isSimpleStyle) {
 			view = inflater.inflate(R.layout.dialog_music_player_simple, container, false);
 		}
@@ -422,6 +426,7 @@ public class MusicPlayer extends DialogFragment{
 		}
 		initialViews(view);		
 		initialEvents();
+		
 		return view;
 	}
 	

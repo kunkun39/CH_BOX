@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_height="100dp"
             android:layout_width="match_parent"
-            android:background="#25000000"
             android:visibility="invisible"
             android:layout_alignParentBottom="true">
 
@@ -10,6 +9,7 @@
                 android:id="@+id/music_time_info"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
+                android:background="#d8000000"
                 >
 
             <TextView
@@ -32,8 +32,8 @@
                     android:id="@+id/music_seek"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:paddingTop="14dp"
                     android:paddingLeft="5dp"
+                    android:paddingTop="14dp"
                     android:paddingRight="5dp"
                     android:progressDrawable="@drawable/progress_holo_light"
                     android:thumb="@drawable/detail_icon_schedule_ball"
@@ -46,13 +46,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
+                android:background="#d8000000"
                 android:layout_below="@+id/music_time_info">
 
             <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"   
-                    android:gravity="center_vertical"                 
+                    android:gravity="center_vertical"     
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1">
                 <ImageView
                     android:id="@+id/control_volume_small"
@@ -68,6 +69,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1">
                 <ImageButton
                     android:id="@+id/music_control_button"
@@ -82,6 +84,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1">
                 <ImageView
                     android:id="@+id/control_volume_bigger"
