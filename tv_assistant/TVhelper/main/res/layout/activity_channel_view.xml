@@ -72,6 +72,7 @@
             android:id="@+id/channellist"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:divider="@null"
             android:layout_below="@id/ll_ip_channelview"
             android:layout_above="@+id/ll_channeltitles"
             android:listSelector="@drawable/title_ip_list" />

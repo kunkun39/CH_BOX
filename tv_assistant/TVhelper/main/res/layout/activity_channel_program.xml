@@ -36,6 +36,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="67.6dip"
+        android:divider="@null"
         android:layout_above="@+id/ll_programtitles"
         android:listSelector="@drawable/title_ip_list" />
 

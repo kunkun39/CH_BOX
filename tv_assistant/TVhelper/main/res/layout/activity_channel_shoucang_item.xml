@@ -12,7 +12,7 @@
         <!-- 第一部分，台标和频道名 -->
 
         <LinearLayout
-            android:layout_width="115dp"
+            android:layout_width="@dimen/channel_item_logowidth"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="5dp"
@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/channel_logo"
-                android:layout_width="115dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dip"
                 android:layout_gravity="center|center_vertical"
                 android:focusable="false"
@@ -29,9 +29,9 @@
 
             <TextView
                 android:id="@+id/channel_name"
-                android:layout_width="115dp"
+                android:layout_width="match_parent"
                 android:layout_height="20dip"
-                android:layout_marginTop="-3dip"
+                android:layout_marginTop="@dimen/channel_item_name_margintop"
                 android:focusable="false"
                 android:gravity="center|center_vertical"
                 android:singleLine="true"
