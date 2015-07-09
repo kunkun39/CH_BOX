@@ -272,7 +272,6 @@ public class PictureCategoryActivity extends Activity {
                 holder = new PackageViewHolder();
 
                 holder.packageName = (TextView) view.findViewById(R.id.package_name);
-
                 holder.imageView1 = (ImageView) view.findViewById(R.id.package_picture_1);
                 holder.imageView2 = (ImageView) view.findViewById(R.id.package_picture_2);
                 holder.imageView3 = (ImageView) view.findViewById(R.id.package_picture_3);
