@@ -46,7 +46,9 @@ public class TVChannelShowActivity extends Activity {
      */
     public static Handler mHandler = null;
 
-    /**************************************************IP连接部分*******************************************************/
+    /**
+     * ***********************************************IP连接部分******************************************************
+     */
 
     private BoxSelectAdapter ipAdapter = null;
     public static TextView title = null;
@@ -54,7 +56,9 @@ public class TVChannelShowActivity extends Activity {
     private Button list = null;
     private Button back = null;
 
-    /**************************************************频道部分*******************************************************/
+    /**
+     * ***********************************************频道部分******************************************************
+     */
 
     private List<Map<String, Object>> channelShowData = new ArrayList<Map<String, Object>>();
     private ListView channels = null;
@@ -133,7 +137,7 @@ public class TVChannelShowActivity extends Activity {
 //				bidirSlidingLayout.closeRightMenu();
 //			}
 //		});
-        
+
         ALL.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -383,7 +387,7 @@ public class TVChannelShowActivity extends Activity {
                 break;
             case 5:
                 TS.setTextColor(this.getResources().getColor(R.color.orange));
-            break;
+                break;
             default:
                 break;
         }
@@ -477,7 +481,11 @@ public class TVChannelShowActivity extends Activity {
             });
 
             final String channelServiceId = (String) channelShowData.get(position).get("service_id");
-            final String channelName = (String) channelShowData.get(position).get("service_name");
+            String serviceName = (String) channelShowData.get(position).get("service_name");
+            if(StringUtils.hasLength(serviceName)) {
+                serviceName = serviceName.trim();
+            }
+            final String channelName = serviceName;
             final String channelIndex = (String) channelShowData.get(position).get("channel_index");
 
             /**
@@ -542,12 +550,13 @@ public class TVChannelShowActivity extends Activity {
             /**
              * 设置数据
              */
-            if (ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")).equals("")) {
-                vh.channelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")));
+            if (ClientGetCommandService.channelLogoMapping.get(channelName) != null && !ClientGetCommandService.channelLogoMapping.get(channelName).equals("null") &&
+                    !ClientGetCommandService.channelLogoMapping.get(channelName).equals("")) {
+                vh.channelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(channelName));
             } else {
                 vh.channelLogo.setImageResource(R.drawable.logotv);
             }
-            vh.channelName.setText((position+1)+" "+channelName);
+            vh.channelName.setText((position + 1) + "  " + channelName);
             Program program = currentChannelPlayData.get(channelName);
             if (program != null) {
                 String time = "正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n\n" + StringUtils.getShortString(program.getProgramName(), 12);

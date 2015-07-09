@@ -455,8 +455,13 @@ public class TVChannelShouCangShowActivity extends Activity {
              * 设置数据
              */
             try {
-                if (ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")).equals("")) {
-                    vh.channelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) channelShowData.get(position).get("service_name")));
+                String serviceName = (String) channelShowData.get(position).get("service_name");
+                if(StringUtils.hasLength(serviceName)) {
+                    serviceName = serviceName.trim();
+                }
+                if (ClientGetCommandService.channelLogoMapping.get(serviceName) != null && !ClientGetCommandService.channelLogoMapping.get(serviceName).equals("null") &&
+                        !ClientGetCommandService.channelLogoMapping.get(serviceName).equals("")) {
+                    vh.channelLogo.setImageResource(ClientGetCommandService.channelLogoMapping.get(serviceName));
                 } else {
                     vh.channelLogo.setImageResource(R.drawable.logotv);
                 }
