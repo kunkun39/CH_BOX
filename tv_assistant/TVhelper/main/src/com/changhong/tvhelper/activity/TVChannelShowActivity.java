@@ -484,10 +484,10 @@ public class TVChannelShowActivity extends Activity {
              * 收藏频道和取消收藏
              */
             if (allShouChangChannel.contains(channelServiceId)) {
-                vh.channelShouCang.setText("取消\n\n收藏");
+                vh.channelShouCang.setText("取消\n收藏");
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
             } else {
-                vh.channelShouCang.setText("收藏\n\n频道");
+                vh.channelShouCang.setText("收藏\n频道");
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
             }
 
@@ -500,7 +500,7 @@ public class TVChannelShowActivity extends Activity {
                         //取消收藏操作
                         boolean success = channelService.cancelChannelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("收藏\n\n频道");
+                            vh.channelShouCang.setText("收藏\n频道");
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
                             allShouChangChannel.remove(channelServiceId);
 
@@ -512,7 +512,7 @@ public class TVChannelShowActivity extends Activity {
                         //收藏操作
                         boolean success = channelService.channelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("取消\n\n收藏");
+                            vh.channelShouCang.setText("取消\n收藏");
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
                             allShouChangChannel.add(channelServiceId);
 

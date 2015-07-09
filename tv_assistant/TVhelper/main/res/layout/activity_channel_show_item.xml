@@ -37,7 +37,7 @@
                 android:gravity="center_horizontal"
                 android:text="CCTV"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/channel_item_textsize" />
         </LinearLayout>
 
         <!-- 第二部分，台标和频道名 -->
@@ -62,22 +62,22 @@
             <TextView
                 android:id="@+id/channel_shoucang"
                 android:layout_width="32dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="收藏\n\n频道"
+                android:text="收藏\n频道"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
             <TextView
                 android:id="@+id/channel_play_button"
                 android:layout_width="32dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="节目\n\n信息"
+                android:text="节目\n信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
         </LinearLayout>

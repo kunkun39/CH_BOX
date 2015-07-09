@@ -14,9 +14,9 @@
         <LinearLayout
             android:layout_width="115dp"
             android:layout_height="match_parent"
-            android:paddingTop="5dp"
+            android:orientation="vertical"
             android:paddingBottom="5dp"
-            android:orientation="vertical" >
+            android:paddingTop="5dp" >
 
             <ImageView
                 android:id="@+id/channel_logo"
@@ -33,11 +33,11 @@
                 android:layout_height="20dip"
                 android:layout_marginTop="-3dip"
                 android:focusable="false"
-                android:singleLine="true"
                 android:gravity="center|center_vertical"
+                android:singleLine="true"
                 android:text="CCTV"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/channel_item_textsize" />
         </LinearLayout>
 
         <!-- 第二部分，台标和频道名 -->
@@ -51,9 +51,9 @@
                 android:id="@+id/channel_play_info"
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:layout_gravity="center_vertical"
                 android:text="无节目信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
@@ -61,22 +61,22 @@
             <TextView
                 android:id="@+id/channel_shoucang"
                 android:layout_width="32dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="取消\n\n收藏"
+                android:text="取消\n收藏"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
             <TextView
                 android:id="@+id/channel_play_button"
                 android:layout_width="32dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dip"
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="节目\n\n信息"
+                android:text="节目\n信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
         </LinearLayout>
