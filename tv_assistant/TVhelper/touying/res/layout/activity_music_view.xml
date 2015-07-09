@@ -16,6 +16,7 @@
             android:stretchMode="columnWidth"
             android:gravity="center"
             android:background="@android:color/transparent"
+            android:listSelector="@drawable/title_btn_list_selector"
             />
 
 </LinearLayout>

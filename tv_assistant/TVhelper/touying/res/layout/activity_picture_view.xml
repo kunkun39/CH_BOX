@@ -58,6 +58,7 @@
             android:verticalSpacing="2dp"
             android:gravity="center"
             android:stretchMode="columnWidth"
+            android:listSelector="@drawable/title_btn_list_selector"
             />
     </LinearLayout>
 

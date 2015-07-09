@@ -142,5 +142,6 @@
             android:layout_height="fill_parent"
             android:numColumns="2"
             android:verticalSpacing="5dp"
-            android:horizontalSpacing="5dp"/>
+            android:horizontalSpacing="5dp"
+            android:listSelector="@drawable/title_btn_list_selector"/>
 </FrameLayout>

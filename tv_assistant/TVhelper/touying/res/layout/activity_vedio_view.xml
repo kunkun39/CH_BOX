@@ -62,6 +62,7 @@
                 android:stretchMode="columnWidth"
                 android:gravity="left"
                 android:background="@android:color/transparent"
+                android:listSelector="@drawable/title_btn_list_selector"
                 />
     </LinearLayout>
 
