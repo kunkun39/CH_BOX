@@ -82,10 +82,10 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                             Log.e(TAG, "刷新...");
                             TVChannelShowActivity.mHandler.sendEmptyMessage(0);
                         }
-                        if (TVChannelSearchActivity.mHandler != null) {
-                            Log.e(TAG, "刷新...");
-                            TVChannelSearchActivity.mHandler.sendEmptyMessage(0);
-                        }
+//                        if (TVChannelSearchActivity.mHandler != null) {
+//                            Log.e(TAG, "刷新...");
+//                            TVChannelSearchActivity.mHandler.sendEmptyMessage(0);
+//                        }
                         break;
                     case 2:
                         //异频点换台以后操作

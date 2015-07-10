@@ -18,6 +18,8 @@ public class DatabaseContainer extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "tvhelper.db";
 
     private final static String EPG_DATABASE_NAME = "epg_database.db";
+    
+    public final static String TABLE_NAME_SEARCH_HEAT = "search_heat";
 
     private static int CURRENT_VERSION = 2;
 
@@ -76,6 +78,12 @@ public class DatabaseContainer extends SQLiteOpenHelper {
                 "status VARCHAR(100),"+
                 "program_name VARCHAR(200),"+
                 "channel_name VARCHAR(200))");
+        db.execSQL("CREATE TABLE " + TABLE_NAME_SEARCH_HEAT
+                +"("
+        		+	"search_name VARCHAR(100) PRIMARY KEY,"
+                +	"search_time DATE,"
+                +	"search_count INTEGER"
+                + ")");
 
     }
 
@@ -97,5 +105,13 @@ public class DatabaseContainer extends SQLiteOpenHelper {
                 "status VARCHAR(100),"+
                 "program_name VARCHAR(200),"+
                 "channel_name VARCHAR(200))");
+        db.execSQL(
+        		"CREATE TABLE " + TABLE_NAME_SEARCH_HEAT 
+                +"("
+        		+	"search_name VARCHAR(100) PRIMARY KEY,"
+                +	"search_time DATE,"
+                +	"search_count INTEGER"
+                + ")"
+                );
     }
 }

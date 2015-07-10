@@ -11,9 +11,13 @@ import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Created by Jack Wang
@@ -195,6 +199,42 @@ public class ChannelService {
 
         return programs;
     }
+    
+
+    public static synchronized Collection<Map<String, Object>> searchProgramByText(String text)
+    {
+    	HashMap<String,String> map = new HashMap<String,String>();
+    	Set<Map<String, Object>> listMap = new HashSet<Map<String, Object>>();
+    	
+    	SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+    	if (database == null) {
+			return listMap;
+		}
+    	
+    	Cursor cursor = null;
+    	String currentTime = DateUtils.getCurrentTimeStamp();
+    	try {
+    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? AND str_startTime < ? AND str_endTime > ? COLLATE NOCASE", new String[]{"%" + text + "%",currentTime,currentTime});
+	    	while (cursor.moveToNext()) {			
+				map.put(cursor.getString(0),cursor.getString(1));			
+			}
+    	} catch (Exception e) {
+    		cursor.close();
+    		return listMap;
+		}
+    	
+    	if(cursor != null)
+    		cursor.close();
+    	
+    	for (Entry<String, String> mapTemp : map.entrySet()) {
+    		HashMap<String, Object> temp = new HashMap<String, Object>();
+    		temp.put("channel_index", mapTemp.getKey());
+    		temp.put("service_name", mapTemp.getValue());
+    		listMap.add(temp);
+		}
+    	return listMap;
+    }
+    
 
     /**
      * 保存频道收藏信息
