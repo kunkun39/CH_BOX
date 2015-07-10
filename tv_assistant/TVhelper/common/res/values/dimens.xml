@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- **************对话框相关尺寸***************8 -->
+    <dimen name="dialog_btn_width">100dp</dimen>
+    <dimen name="dialog_btn_height">35dp</dimen>
+    <dimen name="dialog_btn_textsize">18sp</dimen>
+    <dimen name="dialog_btn_marginBottom">10dp</dimen>
+    <dimen name="dialog_btn_marginLeft">35dp</dimen>
+</resources>
