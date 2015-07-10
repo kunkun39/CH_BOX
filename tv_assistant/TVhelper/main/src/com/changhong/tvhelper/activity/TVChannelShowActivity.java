@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -556,6 +557,7 @@ public class TVChannelShowActivity extends Activity {
             } else {
                 vh.channelLogo.setImageResource(R.drawable.logotv);
             }
+            Log.e("", "channel Name "+channelName+" \n");
             vh.channelName.setText((position + 1) + "  " + channelName);
             Program program = currentChannelPlayData.get(channelName);
             if (program != null) {
