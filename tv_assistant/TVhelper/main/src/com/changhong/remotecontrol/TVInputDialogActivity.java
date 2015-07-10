@@ -3,6 +3,7 @@ package com.changhong.remotecontrol;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -46,7 +47,7 @@ public class TVInputDialogActivity extends Activity {
 
     private static final String TAG = "TVInputDialogActivity";
     public static EditText mEditText = null;
-    AlertDialog mDialog = null;
+    Dialog mDialog = null;
     BroadcastReceiver mReceiver = null;
     int mTextIputType = 0;
     Messenger mMessenger = null, rMessenger = null;
@@ -311,9 +312,9 @@ public class TVInputDialogActivity extends Activity {
             }
         });
 
-        mDialog = new AlertDialog.Builder(this,R.style.Dialog_nowindowbg)
-                .setCancelable(false)
-                .setOnKeyListener(new OnKeyListener() {
+        mDialog = new Dialog(this,R.style.Dialog_nowindowbg);
+        mDialog.setCancelable(false);
+                mDialog.setOnKeyListener(new OnKeyListener() {
 
                     @Override
                     public boolean onKey(DialogInterface dialog, int key,
@@ -329,8 +330,8 @@ public class TVInputDialogActivity extends Activity {
                         return false;
                     }
 
-                }).create();
-        mDialog.setView(view,0,0,0,0);
+                });
+        mDialog.setContentView(view);
         mDialog.show();
 //        mDialog.getWindow().setContentView(view);
         
