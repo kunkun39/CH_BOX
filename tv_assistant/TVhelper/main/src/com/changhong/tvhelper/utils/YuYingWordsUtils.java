@@ -126,11 +126,11 @@ public class YuYingWordsUtils {
 
     static {
         //baidu yuyin charaters, which is different from normal char, so replace it to normal one
-        TV_CHANNEL_REPLACE_KEYWORDS.put("ｃｃｔｖ", "CCTV-");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("cctv", "CCTV-");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("中央", "CCTV-");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("四川", "SCTV-");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("成都", "CDTV-");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("ｃｃｔｖ", "CCTV");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("cctv", "CCTV");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("中央", "CCTV");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("四川", "SCTV");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("成都", "CDTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("一", "1");
         TV_CHANNEL_REPLACE_KEYWORDS.put("二", "2");
         TV_CHANNEL_REPLACE_KEYWORDS.put("三", "3");
@@ -144,8 +144,6 @@ public class YuYingWordsUtils {
         TV_CHANNEL_REPLACE_KEYWORDS.put("十一", "11");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("台", "");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("套", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("卫视", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("电视", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("电视台", "");
@@ -165,7 +163,7 @@ public class YuYingWordsUtils {
          * 保证标清关键字的转化在卫视的后面，所以在这里转化一次，而没有配置在上面的MAP中
          */
         needConvert = needConvert.replace("标清", "卫视");
-        if (needConvert.contains("CCTV-")) {
+        if (needConvert.contains("CCTV")) {
             needConvert = needConvert + "高清";
         }
         return needConvert;

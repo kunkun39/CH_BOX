@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
@@ -204,21 +202,21 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				Dialog dialog = DialogUtil.showAlertDialog(
-						TVRemoteControlActivity.this, "", "是否打开或关闭机顶盒?",
-						new DialogBtnOnClickListener() {
+                        TVRemoteControlActivity.this, "", "是否打开或关闭机顶盒?",
+                        new DialogBtnOnClickListener() {
 
-							@Override
-							public void onSubmit(Dialog dialog) {
-								ClientSendCommandService.msg = "key:power";
-								ClientSendCommandService.handler
-										.sendEmptyMessage(1);
-							}
+                            @Override
+                            public void onSubmit(Dialog dialog) {
+                                ClientSendCommandService.msg = "key:power";
+                                ClientSendCommandService.handler
+                                        .sendEmptyMessage(1);
+                            }
 
-							@Override
-							public void onCancel(Dialog dialog) {
-								dialog.cancel();
-							}
-						});
+                            @Override
+                            public void onCancel(Dialog dialog) {
+                                dialog.cancel();
+                            }
+                        });
 			}
         });
 
@@ -998,7 +996,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         int size = ClientSendCommandService.channelData.size();
                         for (int i = 0; i < recognitionResult.length(); i++) {
                             for (int j = 0; j < size; j++) {
-                                String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
+                                String channelName = ((String) ClientSendCommandService.channelData.get(j).get("service_name")).replace("卫视高清", "高清");
                                 channelName = YuYingWordsUtils.getSpecialWordsChannel(channelName);
                                 if (channelName.indexOf(recognitionResult.charAt(i)) >= 0) {
                                     Integer count = matchChannel.get(String.valueOf(j));
@@ -1027,8 +1025,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                     bestCounter = value;
                                     bestPostion = position;
                                 } else if (value == bestCounter) {
-                                    String bestChannel = (String) ClientSendCommandService.channelData.get(Integer.valueOf(bestPostion)).get("service_name");
-                                    String newChannel = (String) ClientSendCommandService.channelData.get(Integer.valueOf(position)).get("service_name");
+                                    String bestChannel = ((String) ClientSendCommandService.channelData.get(Integer.valueOf(bestPostion)).get("service_name")).replace("卫视高清", "高清");
+                                    String newChannel = ((String) ClientSendCommandService.channelData.get(Integer.valueOf(position)).get("service_name")).replace("卫视高清", "高清");
                                     bestChannel = YuYingWordsUtils.getSpecialWordsChannel(bestChannel);
                                     newChannel = YuYingWordsUtils.getSpecialWordsChannel(newChannel);
 

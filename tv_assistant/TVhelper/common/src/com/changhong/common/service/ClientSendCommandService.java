@@ -10,21 +10,13 @@ import android.os.Message;
 import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
-import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.NetworkUtils;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.WebUtils;
-import org.apache.commons.io.IOUtils;
+import com.changhong.common.utils.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Jack Wang
@@ -259,18 +251,17 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                         	DatagramSocket ndgSocket = null;
                             try {
                             	ndgSocket = new DatagramSocket();
-                            	byte b[] = new byte[1024],targetBuf[] = (((String)msg1.obj)+ DEVIDE_MEG).getBytes();                            	
+                            	byte b[] = new byte[1024], targetBuf[] = (((String)msg1.obj)+ DEVIDE_MEG).getBytes();
 
                             	int index = 0;
                             	DatagramPacket dgPacket = new DatagramPacket(b, b.length, InetAddress.getByName(serverIP), NEW_KEY_PORT);                            	
                             	
-                            	while((index + b.length) < targetBuf.length)
-                            	{                            		
-                            		dgPacket.setData(targetBuf,index,b.length);
-                            		ndgSocket.send(dgPacket);
-                            		index += b.length;
-                            	}                            	                            	
-                            	dgPacket.setData(targetBuf,index,targetBuf.length -index);
+                            	while ((index + b.length) < targetBuf.length) {
+                                    dgPacket.setData(targetBuf, index, b.length);
+                                    ndgSocket.send(dgPacket);
+                                    index += b.length;
+                                }
+                                dgPacket.setData(targetBuf,index,targetBuf.length -index);
                             	dgPacket.setLength(targetBuf.length -index);
                             	ndgSocket.send(dgPacket);                                                         
                             } catch (Exception e) {
@@ -502,20 +493,17 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
             e.printStackTrace();
         }
     }
-    
-    public static void sendMessage(String message)
-    {
-    	ClientSendCommandService.msg = message;
-    	if (ClientSendCommandService.handler != null) {
-    		ClientSendCommandService.handler.sendEmptyMessage(4);
-		}  
-    	
+
+    public static void sendMessage(String message) {
+        ClientSendCommandService.msg = message;
+        if (ClientSendCommandService.handler != null) {
+            ClientSendCommandService.handler.sendEmptyMessage(4);
+        }
     }
-    
-    public static void sendMessageNew(String message)
-    {    	
-    	if (ClientSendCommandService.handler != null) {    		
-    		ClientSendCommandService.handler.sendMessage(handler.obtainMessage(7, new String(message)));
-		}
+
+    public static void sendMessageNew(String message) {
+        if (ClientSendCommandService.handler != null) {
+            ClientSendCommandService.handler.sendMessage(handler.obtainMessage(7, new String(message)));
+        }
     }
 }
