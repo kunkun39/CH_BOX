@@ -80,6 +80,7 @@ public class ScoreDialog extends Dialog {
         ScoreItem item = scoreService.getItemDetails("NET");
         String netSuggestion = item.getCurrentSuggestion();
         textNetSuggestion.setText(String.valueOf(netSuggestion));
+        
         roundProgressBar.setMax(score);
 		handler.sendEmptyMessageDelayed(i++, 1);
         textScoreAll.setText(String.valueOf(score) + "分");

@@ -28,6 +28,8 @@ private Paint paint;
 	 * 圆环的颜色
 	 */
 	private int roundColor;
+	private int orange=0xFFFB6E00;
+	private int darkgreen=0xFF6FC438;
 	
 	/**
 	 * 圆环进度的颜色
@@ -89,9 +91,9 @@ private Paint paint;
 				R.styleable.RoundProgressBar);
 		
 		//获取自定义属性和默认值
-		roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, Color.RED);
-		roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, Color.GREEN);
-		textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, Color.GREEN);
+		roundColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundColor, darkgreen);
+		roundProgressColor = mTypedArray.getColor(R.styleable.RoundProgressBar_roundProgressColor, orange);
+		textColor = mTypedArray.getColor(R.styleable.RoundProgressBar_textColor, orange);
 		textSize = mTypedArray.getDimension(R.styleable.RoundProgressBar_textSize, 15);
 		roundWidth = mTypedArray.getDimension(R.styleable.RoundProgressBar_roundWidth*13, 26);
 		max = mTypedArray.getInteger(R.styleable.RoundProgressBar_max, 100);
@@ -110,7 +112,7 @@ private Paint paint;
 		 * 画最外层的大圆环
 		 */
 		int centre = getWidth()/2; //获取圆心的x坐标
-		int radius = (int) (centre - roundWidth/2-30); //圆环的半径
+		int radius = (int) (centre - roundWidth/2); //圆环的半径
 		paint.setColor(roundColor); //设置圆环的颜色
 		paint.setStyle(Paint.Style.STROKE); //设置空心
 		paint.setStrokeWidth(roundWidth); //设置圆环的宽度
@@ -147,13 +149,13 @@ private Paint paint;
 		switch (style) {
 		case STROKE:{
 			paint.setStyle(Paint.Style.STROKE);
-			canvas.drawArc(oval, 270, 360 * progress / 100, false, paint);  //根据进度画圆弧
+			canvas.drawArc(oval, 90, 360 * progress / 100, false, paint);  //根据进度画圆弧
 			break;
 		}
 		case FILL:{
 			paint.setStyle(Paint.Style.FILL_AND_STROKE);
 			if(progress !=0)
-				canvas.drawArc(oval, 270, 360 * progress / 100, true, paint);  //根据进度画圆弧
+				canvas.drawArc(oval, 90, 360 * progress / 100, true, paint);  //根据进度画圆弧
 			break;
 		}
 		}

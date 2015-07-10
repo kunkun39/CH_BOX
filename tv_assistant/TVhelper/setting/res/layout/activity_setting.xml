@@ -90,7 +90,7 @@
                 <!-- 下圆角 -->
 
                 <LinearLayout
-                    android:id="@+id/btn_sys_helop"
+                    android:id="@+id/btn_sys_help"
                     style="@style/bottom_layout" >
 
                     <TextView

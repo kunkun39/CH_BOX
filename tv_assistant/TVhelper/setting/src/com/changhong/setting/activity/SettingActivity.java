@@ -79,7 +79,7 @@ public class SettingActivity extends Activity {
 		updateInfo = (TextView) findViewById(R.id.update_info);
 		updateBtn = (LinearLayout) findViewById(R.id.update_info_btn);
 		scoreBtn = (LinearLayout) findViewById(R.id.btn_sys_score);
-		helpBtn = (LinearLayout) findViewById(R.id.btn_sys_helop);
+		helpBtn = (LinearLayout) findViewById(R.id.btn_sys_help);
 //		setting_smb = (ImageButton) findViewById(R.id.setting_sidemunubutton);
 
 		
