@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.*;
 import android.widget.*;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DialogUtil;
 import com.changhong.tvhelper.R;
 
 /**
@@ -32,14 +33,16 @@ public class BaiDuVoiceChannelControlDialog extends Dialog {
     }
 
     private void initView() {
+    	setContentView(R.layout.yunying_voice_help_dialog);
+    	
         Window window = this.getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+//        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        wlp.width = DialogUtil.dipTopx(context, 300f);
+        wlp.height = DialogUtil.dipTopx(context, 330f);
         window.setAttributes(wlp);
-        window.setGravity(Gravity.BOTTOM);
-
-        setContentView(R.layout.yunying_voice_help_dialog);
+        window.setGravity(Gravity.CENTER);
 
         iKnowButton = (TextView) findViewById(R.id.dialog_iknow);
     }

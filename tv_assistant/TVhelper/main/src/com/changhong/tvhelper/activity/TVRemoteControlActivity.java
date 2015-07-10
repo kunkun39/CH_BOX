@@ -41,6 +41,8 @@ import com.changhong.baidu.BaiDuVoiceConfiguration;
 import com.changhong.common.domain.AppInfo;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
@@ -199,27 +201,25 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         power.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Dialog dialog = new AlertDialog.Builder(TVRemoteControlActivity.this)
-                        .setTitle("是否打开或关闭机顶盒？")
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+				Dialog dialog = DialogUtil.showAlertDialog(
+						TVRemoteControlActivity.this, "", "是否打开或关闭机顶盒?",
+						new DialogBtnOnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClientSendCommandService.msg = "key:power";
-                                ClientSendCommandService.handler.sendEmptyMessage(1);
-                            }
-                        })
-                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .create();
-                dialog.show();
-            }
+							@Override
+							public void onSubmit(Dialog dialog) {
+								ClientSendCommandService.msg = "key:power";
+								ClientSendCommandService.handler
+										.sendEmptyMessage(1);
+							}
+
+							@Override
+							public void onCancel(Dialog dialog) {
+								dialog.cancel();
+							}
+						});
+			}
         });
 
         ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this, ClientSendCommandService.serverIpList);

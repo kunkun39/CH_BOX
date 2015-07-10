@@ -1,9 +1,6 @@
 package com.changhong.tvhelper.activity;
 
 import java.io.*;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
-import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -20,6 +17,8 @@ import android.text.TextUtils;
 import android.util.JsonReader;
 
 import android.view.MotionEvent;
+
+import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BoxSelectAdapter;
@@ -63,7 +62,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 
 public class TVHelperMainActivity extends Activity {
 
@@ -198,24 +199,20 @@ public class TVHelperMainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                Dialog dialog = new AlertDialog.Builder(TVHelperMainActivity.this)
-                        .setTitle("是否打开或关闭机顶盒？")
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClientSendCommandService.msg = "key:power";
-                                ClientSendCommandService.handler.sendEmptyMessage(1);
-                            }
-                        })
-                        .setNegativeButton("否", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .create();
-                dialog.show();
+                Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                		"是否打开或关闭机顶盒?","",new DialogBtnOnClickListener() {
+					
+					@Override
+					public void onSubmit(Dialog dialog) {
+						 ClientSendCommandService.msg = "key:power";
+                       ClientSendCommandService.handler.sendEmptyMessage(1);
+					}
+					
+					@Override
+					public void onCancel(Dialog dialog) {
+						dialog.cancel();
+					}
+				});
             }
         });
 
@@ -323,31 +320,23 @@ public class TVHelperMainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 Log.i(TAG, "KEYCODE_BACK");
-                AlertDialog.Builder builder = new Builder(TVHelperMainActivity.this);
-                builder.setMessage("确认退出助手？");
-                builder.setTitle("提示");
-                builder.setPositiveButton("退出",
-                        new DialogInterface.OnClickListener() {
+                Dialog dialog=DialogUtil.showAlertDialog(TVHelperMainActivity.this, "提示", "确认退出助手？","退    出","取    消", new DialogBtnOnClickListener() {
+					
+					@Override
+					public void onSubmit(Dialog dialog) {
+						ClientSendCommandService.titletxt = "未连接";
+                        title.setText(ClientSendCommandService.titletxt);
+                        mhandler.sendEmptyMessage(2);
+                        dialog.dismiss();
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ClientSendCommandService.titletxt = "未连接";
-                                title.setText(ClientSendCommandService.titletxt);
-                                mhandler.sendEmptyMessage(2);
-                                dialog.dismiss();
-
-                                System.exit(0);
-                            }
-                        });
-                builder.setNegativeButton("取消",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                builder.create().show();
+                        System.exit(0);
+					}
+					
+					@Override
+					public void onCancel(Dialog dialog) {
+						  dialog.dismiss();
+					}
+				});
                 return true;
             case KeyEvent.KEYCODE_MENU:
     			return true;
@@ -677,14 +666,11 @@ public class TVHelperMainActivity extends Activity {
                  * 如果用户点击的是直接下载，下载后直接更新，如果下载文件已经存在，就询问用户时候安�?
                  */
 
-                Builder builer = new Builder(TVHelperMainActivity.this) ;
-                builer.setTitle("已经为您准备好更新");
-                builer.setMessage("最新的版本已经下载完成,是否安装更新？");
-                builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-
+                Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                 		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
+ 					
+ 					@Override
+ 					public void onSubmit(Dialog dialog) {
                         //休息1秒安装
                         try {
                             Thread.sleep(1000);
@@ -698,17 +684,13 @@ public class TVHelperMainActivity extends Activity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setDataAndType(uri, "application/vnd.android.package-archive");
                         startActivity(intent);
-                    }
-                });
-
-                builer.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builer.create();
-                dialog.show();
+ 					}
+ 					
+ 					@Override
+ 					public void onCancel(Dialog dialog) {
+ 						dialog.dismiss();
+ 					}
+ 				});
             }
         }
     };

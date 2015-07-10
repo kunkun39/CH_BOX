@@ -19,6 +19,7 @@ import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.*;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.music.SetDefaultImage;
@@ -134,50 +135,47 @@ public class ClientLocalThreadRunningService extends Service {
                                 ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
                                 final String shortClassName = info.topActivity.getClassName();
 
-                                Dialog dialog = new AlertDialog.Builder(ClientLocalThreadRunningService.this)
-                                        .setTitle("电视助手：预约节目已开始")
-                                        .setMessage(program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime())
-                                        .setPositiveButton("播放", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                /**
-                                                 * 如果是正在播放，就直接切换频道，如果没有播放，就跳转到播放页面
-                                                 */
-                                                if ("com.changhong.tvhelper.activity.TVChannelPlayActivity".equals(shortClassName)) {
-                                                    Message message = new Message();
-                                                    message.obj = program.getChannelName();
-                                                    TVChannelPlayActivity.handler.sendMessage(message);
-                                                } else {
-                                                    Intent intent = new Intent();
-                                                    Bundle bundle = new Bundle();
-                                                    bundle.putString("channelname", program.getChannelName());
-                                                    String name = program.getChannelName();
-                                                    int channelSize = ClientSendCommandService.channelData.size();
-                                                    for (int i = 0; i < channelSize; i++) {
-                                                        Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                                        String channelName = (String) map.get("service_name");
-                                                        if (name.equals(channelName)) {
-                                                            TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
-                                                        }
-                                                    }
-
-                                                    intent.putExtras(bundle);
-                                                    intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    startActivity(intent);
+                                String content=program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime();
+                                Dialog  dialog =DialogUtil.showAlertDialog(ClientLocalThreadRunningService.this,"电视助手：预约节目已开始!",
+                                		content,"播    放","取    消",new DialogBtnOnClickListener() {
+                					
+                					@Override
+                					public void onSubmit(Dialog dialog) {
+                						 /**
+                                         * 如果是正在播放，就直接切换频道，如果没有播放，就跳转到播放页面
+                                         */
+                                        if ("com.changhong.tvhelper.activity.TVChannelPlayActivity".equals(shortClassName)) {
+                                            Message message = new Message();
+                                            message.obj = program.getChannelName();
+                                            TVChannelPlayActivity.handler.sendMessage(message);
+                                        } else {
+                                            Intent intent = new Intent();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("channelname", program.getChannelName());
+                                            String name = program.getChannelName();
+                                            int channelSize = ClientSendCommandService.channelData.size();
+                                            for (int i = 0; i < channelSize; i++) {
+                                                Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+                                                String channelName = (String) map.get("service_name");
+                                                if (name.equals(channelName)) {
+                                                    TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
                                                 }
                                             }
-                                        })
-                                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        }).create();
-                                dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+
+                                            intent.putExtras(bundle);
+                                            intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        }
+                					}
+                					
+                					@Override
+                					public void onCancel(Dialog dialog) {
+                						dialog.cancel();
+                					}
+                				});
                                 dialog.setCanceledOnTouchOutside(true);
-                                dialog.show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

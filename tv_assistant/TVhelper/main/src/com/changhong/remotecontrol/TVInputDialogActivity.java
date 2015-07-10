@@ -37,6 +37,7 @@ import com.changhong.baidu.BaiDuVoiceDialog;
 import com.changhong.common.service.ClientSocketInterface;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.PropertyUtil;
+import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.R.id;
 import com.changhong.tvhelper.R.layout;
 
@@ -310,8 +311,7 @@ public class TVInputDialogActivity extends Activity {
             }
         });
 
-        mDialog = new AlertDialog.Builder(this)
-                .setView(view)
+        mDialog = new AlertDialog.Builder(this,R.style.Dialog_nowindowbg)
                 .setCancelable(false)
                 .setOnKeyListener(new OnKeyListener() {
 
@@ -330,8 +330,10 @@ public class TVInputDialogActivity extends Activity {
                     }
 
                 }).create();
-
+        mDialog.setView(view,0,0,0,0);
         mDialog.show();
+//        mDialog.getWindow().setContentView(view);
+        
 
         LayoutParams param = mDialog.getWindow().getAttributes();
         param.width = this.getWindow().getAttributes().width;

@@ -16,6 +16,8 @@ import android.widget.*;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
@@ -383,45 +385,44 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                     //删除时间冲突的预约节目
                                     final OrderProgram orderProgramConflict = channelService.findOrderProgramByStartTime(programStartTime, weekIndexName);
                                     if (orderProgramConflict != null && orderProgramConflict.getProgramName() != null && orderProgramConflict.getProgramName().length() > 0) {
-                                        Dialog dialog = new AlertDialog.Builder(TVChannelProgramShowActivity.this)
-                                                .setTitle("您已预订该时段节目" + orderProgramConflict.getProgramName())
-                                                .setMessage("是否替换为" + program.getProgramName())
-                                                .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        channelService.deleteOrderProgram(orderProgramConflict.getProgramName(), orderProgramConflict.getOrderDate());
-                                                        OrderProgram orderProgramReplace = new OrderProgram();
-                                                        orderProgramReplace.setProgramName(program.getProgramName());
-                                                        orderProgramReplace.setChannelName(channelName);
-                                                        orderProgramReplace.setOrderDate(DateUtils.getDayOfToday());
-                                                        orderProgramReplace.setChannelIndex(program.getChannelIndex());
-                                                        orderProgramReplace.setProgramStartTime(program.getProgramStartTime());
-                                                        orderProgramReplace.setProgramEndTime(program.getProgramEndTime());
-                                                        orderProgramReplace.setWeekIndex(weekIndexName);
-                                                        orderProgramReplace.setStatus("已预约");
-                                                        if (channelService.saveOrderProgram(orderProgramReplace)) {
-                                                            orderProgramKeys.add(program.getProgramName() + "-" + program.getProgramStartTime() + "-" + weekIndexName);
-                                                            vh.programStatus.setText("已预约");
-                                                            vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
-                                                            vh.iv_programstate.setImageResource(R.drawable.program_ordered);
-                                                            Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
-                                                        } else {
-                                                            Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
-                                                        }
+                                      String dialogtitle="您已预订该时段节目" + orderProgramConflict.getProgramName();
+                                      String content="是否替换为：" + program.getProgramName()+"?";
+                                    	Dialog dialog=DialogUtil.showAlertDialog(TVChannelProgramShowActivity.this, dialogtitle, content,"是","NO", new DialogBtnOnClickListener() {
+										
+										@Override
+										public void onSubmit(Dialog dialog) {
 
-
-                                                    }
-                                                })
-                                                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        dialog.cancel();
-                                                        vh.programStatus.setText("可预约");
-                                                        vh.programStatus.setTextColor(getResources().getColor(R.color.white));
-                                                        vh.iv_programstate.setImageResource(R.drawable.program_order);
-                                                    }
-                                                }).create();
-                                        dialog.show();
+                                            channelService.deleteOrderProgram(orderProgramConflict.getProgramName(), orderProgramConflict.getOrderDate());
+                                            OrderProgram orderProgramReplace = new OrderProgram();
+                                            orderProgramReplace.setProgramName(program.getProgramName());
+                                            orderProgramReplace.setChannelName(channelName);
+                                            orderProgramReplace.setOrderDate(DateUtils.getDayOfToday());
+                                            orderProgramReplace.setChannelIndex(program.getChannelIndex());
+                                            orderProgramReplace.setProgramStartTime(program.getProgramStartTime());
+                                            orderProgramReplace.setProgramEndTime(program.getProgramEndTime());
+                                            orderProgramReplace.setWeekIndex(weekIndexName);
+                                            orderProgramReplace.setStatus("已预约");
+                                            if (channelService.saveOrderProgram(orderProgramReplace)) {
+                                                orderProgramKeys.add(program.getProgramName() + "-" + program.getProgramStartTime() + "-" + weekIndexName);
+                                                vh.programStatus.setText("已预约");
+                                                vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
+                                                vh.iv_programstate.setImageResource(R.drawable.program_ordered);
+                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                            }
+                                        
+										}
+										
+										@Override
+										public void onCancel(Dialog dialog) {
+											 dialog.cancel();
+                                             vh.programStatus.setText("可预约");
+                                             vh.programStatus.setTextColor(getResources().getColor(R.color.white));
+                                             vh.iv_programstate.setImageResource(R.drawable.program_order);
+										}
+									});
+                                    	
                                     } else {
                                         //保存预约信息
                                         try {
