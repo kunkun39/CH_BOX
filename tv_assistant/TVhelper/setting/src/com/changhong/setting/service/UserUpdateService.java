@@ -18,6 +18,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -35,7 +36,10 @@ import android.util.JsonReader;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 
 /**
  * Created by Jack Wang
@@ -78,8 +82,8 @@ public class UserUpdateService {
     /**
      * JSON和APK服务器URL
      */
-//   public final static String JSON_URL = "http://192.168.0.101:8080/update/download/update.json";
-//   public final static String UPDATE_URL = "http://192.168.0.101:8080/update/download/tvhelper.apk";
+//   public final static String JSON_URL = "http://192.168.0.107:8080/update/download/update.json";
+//   public final static String UPDATE_URL = "http://192.168.0.107:8080/update/download/tvhelper.apk";
     public final static String JSON_URL = "http://www.ottserver.com:8080/update/download/update.json";
     public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/download/tvhelper.apk";
 
@@ -368,20 +372,18 @@ public class UserUpdateService {
              * 升级文件下载
              */
             if (mIntent.getAction().equals("SETTING_UPDATE_DOWNLOAD")) {
-            	Builder builer = new Builder(context) ;
-                builer.setTitle("电视助手版本升级");  
-                //如果用户是连接的移动网络，需要提示用户
+            	String content=updateMsgContent;
+            	 //如果用户是连接的移动网络，需要提示用户
                 if (NetworkUtils.isWifiConnected(context)) {
-                	builer.setMessage(updateMsgContent);
+                	content=updateMsgContent;
                 } else {
-                	builer.setMessage("注意：您现在连接的是移动网络，运营商会收取费用\n\n" + updateMsgContent);
+                	content="注意：您现在连接的是移动网络，运营商会收取费用\n\n" + updateMsgContent;
                 }
-
-                //提示用户是否下载更新文件
-                builer.setPositiveButton("确定", new OnClickListener() {
-                    @Override
-
-                    public void onClick(DialogInterface dialog, int which) {
+            	Dialog  dialog =DialogUtil.showAlertDialog(context,
+                 		"电视助手版本升级",content,new DialogBtnOnClickListener() {
+ 					
+ 					@Override
+ 					public void onSubmit(Dialog dialog) {
                         m_pDialog.show();
                         directlyInstall = true;
 
@@ -496,18 +498,14 @@ public class UserUpdateService {
                         }).start();
 
                         dialog.dismiss();
-                    }
-                });
-
-                builer.setNegativeButton("取消", new OnClickListener() {  
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) { 
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog dialog = builer.create();  
-                dialog.show();
-
+ 					}
+ 					
+ 					@Override
+ 					public void onCancel(Dialog dialog) {
+ 						dialog.dismiss();
+ 					}
+ 				});
+            	
             } else if (mIntent.getAction().equals("SETTING_UPDATE_INSTALL")) {
                 //安装最新的apk文件
                 if (!updateFile.exists()) {
@@ -531,14 +529,12 @@ public class UserUpdateService {
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
                     context.startActivity(intent);
                 } else {
-                	Builder builer = new Builder(context) ;
-                    builer.setTitle("已经为您准备好更新");  
-                    builer.setMessage("最新的版本已经下载完成,是否安装更新？");
-                    builer.setPositiveButton("确定", new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            //休息1秒安装
+                	 Dialog  dialog =DialogUtil.showAlertDialog(context,
+                     		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
+     					
+     					@Override
+     					public void onSubmit(Dialog dialog) {
+     						//休息1秒安装
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
@@ -551,17 +547,13 @@ public class UserUpdateService {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setDataAndType(uri, "application/vnd.android.package-archive");
                             context.startActivity(intent);
-                        }
-                    });
-
-                    builer.setNegativeButton("取消", new OnClickListener() {  
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) { 
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog dialog = builer.create();  
-                    dialog.show();
+     					}
+     					
+     					@Override
+     					public void onCancel(Dialog dialog) {
+     						dialog.dismiss();
+     					}
+     				});
                 }
 
                 /**
