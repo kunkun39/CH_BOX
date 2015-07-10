@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tv_ime_bg" >
+
+    <TextView
+        android:id="@+id/tv_alertdia_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="20dp"
+        android:singleLine="true"
+        android:text="电视助手信息提示："
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/iv_alertdia_dilver"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_below="@id/tv_alertdia_title"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_blue_light" />
+
+    <ScrollView
+        android:id="@+id/sc_alertdia_content"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:scrollbars="none"
+        android:layout_below="@id/iv_alertdia_dilver" >
+
+        <TextView
+            android:id="@+id/tv_alertdia_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:singleLine="false"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </ScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp" >
+
+        <Button
+            android:id="@+id/bt_alertdia_submit"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:background="@drawable/btn_notext"
+            android:gravity="center"
+            android:text="确    认"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bt_alertdia_cancel"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_alignTop="@id/bt_alertdia_submit"
+            android:layout_marginLeft="35dp"
+            android:layout_toRightOf="@id/bt_alertdia_submit"
+            android:background="@drawable/btn_notext"
+            android:gravity="center"
+            android:src="@drawable/btn_notext"
+            android:text="取    消"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+</RelativeLayout>
