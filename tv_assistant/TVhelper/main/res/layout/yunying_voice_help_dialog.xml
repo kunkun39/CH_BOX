@@ -50,10 +50,10 @@
 
         <Button
             android:id="@+id/dialog_iknow"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/dialog_btn_marginBottom"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:background="@drawable/btn_notext"
@@ -62,7 +62,7 @@
             android:singleLine="false"
             android:text="我知道了"
             android:textColor="@android:color/white"
-            android:textSize="22sp" />
+            android:textSize="@dimen/dialog_btn_textsize" />
     </RelativeLayout>
 
 </RelativeLayout>
