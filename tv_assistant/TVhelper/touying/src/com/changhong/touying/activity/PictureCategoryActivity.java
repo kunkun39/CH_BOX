@@ -164,7 +164,7 @@ public class PictureCategoryActivity extends Activity {
          */
         listPackageView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyApplication.vibrator.vibrate(100);
                 String packageName = (String) packageNames.get(position);
                 List<String> imagePaths = packageList.get(packageName);
