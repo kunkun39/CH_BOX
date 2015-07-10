@@ -6,10 +6,11 @@
     <TextView
             android:id="@+id/channel_name"
             android:text="cctv-1"
-            android:textSize="12sp"
+            android:textSize="11sp"
+            android:gravity="center_vertical" 
             android:textColor="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:layout_height="35dp"/>
 
 </LinearLayout>
 

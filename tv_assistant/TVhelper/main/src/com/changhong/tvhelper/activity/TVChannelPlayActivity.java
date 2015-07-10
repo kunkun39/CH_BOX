@@ -16,7 +16,6 @@
 
 package com.changhong.tvhelper.activity;
 
-import com.changhong.common.utils.SystemUtils;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
@@ -36,7 +35,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.media.AudioManager;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,11 +42,11 @@ import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -69,6 +67,8 @@ import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.SystemUtils;
+import com.changhong.common.widgets.VerticalSeekBar;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
@@ -126,9 +126,16 @@ public class TVChannelPlayActivity extends Activity {
 	 * 
 	 * 亮度条和音量条
 	 */
-	private SeekBar sound, bright;
+	private VerticalSeekBar sound, bright;
 	private LinearLayout seekbarWidget;
 
+	/**
+	 * 收藏
+	 */
+	private TextView collection;
+	private List<String> allShouChangChannel = new ArrayList<String>();
+	private ChannelService channelService;
+	 private List<Map<String, Object>> channelShowData = new ArrayList<Map<String, Object>>();
 	/**
 	 * 
 	 * 动画效果
@@ -313,10 +320,35 @@ public class TVChannelPlayActivity extends Activity {
 		 * 音量条和亮度条
 		 */
 		seekbarWidget = (LinearLayout) findViewById(R.id.seekbarWidget);
-		sound = (SeekBar) findViewById(R.id.sound);
-		bright = (SeekBar) findViewById(R.id.bright);
+		sound = (VerticalSeekBar) findViewById(R.id.sound);
+//		bright = (VerticalSeekBar) findViewById(R.id.bright);
+		collection=(TextView)findViewById(R.id.play_collection);
+		initCollectionData();
 	}
 
+	private void initCollectionData(){
+		channelService = new ChannelService();
+		channelShowData.clear();
+        channelShowData.addAll(ClientSendCommandService.channelData);
+		new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /**
+                 * 初始化DB
+                 */
+                if (MyApplication.databaseContainer == null) {
+                    MyApplication.databaseContainer = new DatabaseContainer(TVChannelPlayActivity.this);
+                }
+
+                try {
+                    allShouChangChannel = channelService.getAllChannelShouCangs();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+	}
+	
 	private void initEvent() {
 		/**
 		 * 
@@ -347,40 +379,75 @@ public class TVChannelPlayActivity extends Activity {
 		 * 
 		 * 亮度调节
 		 */
-		bright.setMax(255);
-		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
-		bright.setProgress(normal);
-
-		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-
+//		bright.setMax(255);
+//		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
+//		bright.setProgress(normal);
+//
+//		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+//
+//			@Override
+//			public void onStopTrackingTouch(SeekBar seekBar) {
+//			}
+//
+//			@Override
+//			public void onStartTrackingTouch(SeekBar seekBar) {
+//			}
+//
+//			@Override
+//			public void onProgressChanged(SeekBar seekBar, int progress,
+//					boolean fromUser) {
+//				// 取得当前进度
+//				int tmpInt = seekBar.getProgress();
+//
+//				// 根据当前进度改变亮度
+//				Settings.System.putInt(getContentResolver(),
+//						Settings.System.SCREEN_BRIGHTNESS, tmpInt);
+//				tmpInt = Settings.System.getInt(getContentResolver(),
+//						Settings.System.SCREEN_BRIGHTNESS, -1);
+//				WindowManager.LayoutParams wl = getWindow().getAttributes();
+//
+//				float tmpFloat = (float) tmpInt / 255;
+//				if (tmpFloat > 0 && tmpFloat <= 1) {
+//					wl.screenBrightness = tmpFloat;
+//				}
+//				getWindow().setAttributes(wl);
+//			}
+//		});
+		
+		//收藏监听器
+		collection.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-			}
-
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				// 取得当前进度
-				int tmpInt = seekBar.getProgress();
-
-				// 根据当前进度改变亮度
-				Settings.System.putInt(getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS, tmpInt);
-				tmpInt = Settings.System.getInt(getContentResolver(),
-						Settings.System.SCREEN_BRIGHTNESS, -1);
-				WindowManager.LayoutParams wl = getWindow().getAttributes();
-
-				float tmpFloat = (float) tmpInt / 255;
-				if (tmpFloat > 0 && tmpFloat <= 1) {
-					wl.screenBrightness = tmpFloat;
-				}
-				getWindow().setAttributes(wl);
-			}
-		});
+            public void onClick(View v) {
+//				MyApplication.vibrator.vibrate(100);
+//                try {
+//                    //取消收藏操作
+//                    boolean success = channelService.cancelChannelShouCang(channelServiceId);
+//                    if (success) {
+//                        //更新数据
+//                        allShouChangChannel.remove(channelServiceId);
+//                        Map<String, Object> removeMap = null;
+//                        for (Map<String, Object> loop : channelShowData) {
+//                            String loopChannelServiceId = (String) loop.get("service_id");
+//                            if (channelServiceId.equals(loopChannelServiceId)) {
+//                                removeMap = loop;
+//                                break;
+//                            }
+//                        }
+//                        channelShowData.remove(removeMap);
+//
+//                        //通知adapter更新数据
+//                        mHandler.sendEmptyMessage(0);
+//
+//                       Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+            }
+        });
 
 	}
 
