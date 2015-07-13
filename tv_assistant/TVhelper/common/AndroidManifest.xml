@@ -8,7 +8,6 @@
         android:targetSdkVersion="17" />
 
     <application
-        android:icon="@drawable/ic_launcher"
         android:allowBackup="true"
         android:name="com.changhong.common.system.MyApplication"
         android:label="common part" >
