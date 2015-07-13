@@ -8,22 +8,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.system.MyApplication;
 import com.changhong.tvhelper.R;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.provider.Telephony.Mms.Addr;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -60,7 +55,7 @@ public class SearchPageDefault extends Fragment{
 			
 			@Override
 			public void onGlobalLayout() {
-				// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+				// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				if(SearchPageDefault.this.activity != null && !SearchPageDefault.this.view.isLayoutRequested())
 				{
 //					View view = SearchPageDefault.this.activity.findViewById(R.id.search_page_content);
@@ -99,7 +94,7 @@ public class SearchPageDefault extends Fragment{
 
 	@Override
 	public void onResume() {
-		// TODO ×Ô¶¯Éú³ÉµÄ·½·¨´æ¸ù
+		// TODO ï¿½Ô¶ï¿½ï¿½ï¿½ÉµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		super.onResume();
 		
 	}
