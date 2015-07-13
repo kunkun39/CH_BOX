@@ -95,28 +95,33 @@ public class DatabaseContainer extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("CREATE TABLE channel_shoucang" +
-//                "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                "service_id VARCHAR(30))");
-//
-//        db.execSQL("CREATE TABLE order_program" +
-//                "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                "order_date VARCHAR(100), " +
-//                "channel_index VARCHAR(100), " +
-//                "week_index VARCHAR(100), " +
-//                "program_start_time VARCHAR(100)," +
-//                "program_end_time VARCHAR(100)," +
-//                "status VARCHAR(100)," +
-//                "program_name VARCHAR(200)," +
-//                "channel_name VARCHAR(200))");
+    	if (newVersion == 1) {
+			db.execSQL("CREATE TABLE channel_shoucang" +
+	                "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+	                "service_id VARCHAR(30))");
 
-        db.execSQL(
-                "CREATE TABLE search_heat" + TABLE_NAME_SEARCH_HEAT
-                        + "("
-                        + "search_name VARCHAR(100) PRIMARY KEY,"
-                        + "search_time DATE,"
-                        + "search_count INTEGER"
-                        + ")"
-        );
+	        db.execSQL("CREATE TABLE order_program" +
+	                "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+	                "order_date VARCHAR(100), " +
+	                "channel_index VARCHAR(100), " +
+	                "week_index VARCHAR(100), " +
+	                "program_start_time VARCHAR(100)," +
+	                "program_end_time VARCHAR(100)," +
+	                "status VARCHAR(100)," +
+	                "program_name VARCHAR(200)," +
+	                "channel_name VARCHAR(200))");
+		}
+    	else {
+			if (oldVersion < 4 && newVersion >= 4) {
+				db.execSQL(
+		                "CREATE TABLE search_heat" + TABLE_NAME_SEARCH_HEAT
+		                        + "("
+		                        + "search_name VARCHAR(100) PRIMARY KEY,"
+		                        + "search_time DATE,"
+		                        + "search_count INTEGER"
+		                        + ")"
+		        );
+			}
+		}        
     }
 }
