@@ -21,7 +21,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
     
     public final static String TABLE_NAME_SEARCH_HEAT = "search_heat";
 
-    private static int CURRENT_VERSION = 2;
+    private static int CURRENT_VERSION = 3;
 
     private SQLiteDatabase epgDatabase;
 
