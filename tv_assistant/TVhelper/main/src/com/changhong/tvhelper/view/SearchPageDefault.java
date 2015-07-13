@@ -1,33 +1,21 @@
 package com.changhong.tvhelper.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
-import com.changhong.common.db.sqlite.DatabaseContainer;
-import com.changhong.common.system.MyApplication;
-import com.changhong.tvhelper.R;
-
-import android.R.integer;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.provider.Telephony.Mms.Addr;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -36,12 +24,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+
+import com.changhong.common.db.sqlite.DatabaseContainer;
+import com.changhong.common.system.MyApplication;
+import com.changhong.tvhelper.R;
 
 public class SearchPageDefault extends Fragment{
 	
