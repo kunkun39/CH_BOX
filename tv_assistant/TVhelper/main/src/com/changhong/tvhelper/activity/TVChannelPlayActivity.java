@@ -541,9 +541,13 @@ public class TVChannelPlayActivity extends Activity {
 
 		if (null == SKBInAnimationSet) {
 			SKBInAnimationSet = new AnimationSet(true);
+//			TranslateAnimation SKBIAnimation = new TranslateAnimation(
+//					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+//					0f, Animation.RELATIVE_TO_SELF, -0.5f,
+//					Animation.RELATIVE_TO_SELF, 0f);
 			TranslateAnimation SKBIAnimation = new TranslateAnimation(
-					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					0f, Animation.RELATIVE_TO_SELF, -0.5f,
+					Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, 0f,
 					Animation.RELATIVE_TO_SELF, 0f);
 			SKBIAnimation.setDuration(500);
 			SKBInAnimationSet.addAnimation(SKBIAnimation);
@@ -551,10 +555,14 @@ public class TVChannelPlayActivity extends Activity {
 
 		if (null == SKBOutAnimationSet) {
 			SKBOutAnimationSet = new AnimationSet(true);
+//			TranslateAnimation SKBOAnimation = new TranslateAnimation(
+//					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+//					0f, Animation.RELATIVE_TO_SELF, 0f,
+//					Animation.RELATIVE_TO_SELF, -0.5f);
 			TranslateAnimation SKBOAnimation = new TranslateAnimation(
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-					0f, Animation.RELATIVE_TO_SELF, 0f,
-					Animation.RELATIVE_TO_SELF, -0.5f);
+					1f, Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, 0f);
 			SKBOAnimation.setDuration(500);
 			SKBOutAnimationSet.addAnimation(SKBOAnimation);
 		}

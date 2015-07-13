@@ -1,17 +1,11 @@
 package com.changhong.tvhelper.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.changhong.common.db.sqlite.DatabaseContainer;
-import com.changhong.common.system.MyApplication;
-import com.changhong.tvhelper.R;
 
 import android.app.Activity;
 import android.content.Context;
@@ -26,12 +20,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
+
+import com.changhong.common.db.sqlite.DatabaseContainer;
+import com.changhong.common.system.MyApplication;
+import com.changhong.tvhelper.R;
 
 public class SearchPageDefault extends Fragment {
 
