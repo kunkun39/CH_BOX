@@ -45,7 +45,7 @@
                 android:singleLine="false"
                 android:text="@string/dialog_baidu_voice_help"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
         </ScrollView>
 
         <Button

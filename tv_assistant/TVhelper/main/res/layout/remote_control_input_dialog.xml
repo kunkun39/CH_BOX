@@ -64,13 +64,13 @@
 		            android:background="@drawable/sendinput"
                     android:visibility="gone"/>
 	        <Button
-                    android:id="@+id/send"
+                    android:id="@+id/cancel"
                     android:layout_height="@dimen/dialog_btn_height"
                     android:layout_width="@dimen/dialog_btn_width"
                     android:background="@drawable/btn_notext"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="发    送"
+                    android:text="取    消"
                     android:textSize="@dimen/dialog_btn_textsize"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -78,8 +78,8 @@
                     android:textColor="@color/white"
                     android:gravity="center"/>
 	        <Button
-		            android:id="@+id/cancel"
-		            android:text="取    消"
+		            android:id="@+id/send"
+		            android:text="发    送"
 		            android:background="@drawable/btn_notext"
                     android:textSize="@dimen/dialog_btn_textsize"
                     android:textColor="@color/white"
