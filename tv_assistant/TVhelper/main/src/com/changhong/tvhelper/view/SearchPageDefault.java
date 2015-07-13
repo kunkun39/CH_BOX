@@ -3,6 +3,7 @@ package com.changhong.tvhelper.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,12 +25,15 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.Telephony.Mms.Addr;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -37,13 +41,13 @@ import android.widget.LinearLayout.LayoutParams;
 public class SearchPageDefault extends Fragment{
 	
 	private static final int MAX_ITEM_COUNT = 6;
-	
+	private static final String TEST_WORDS = "abcd...";
 	
 	View view = null;
 	LinearLayout contentView = null;
 	DatabaseContainer database =  MyApplication.databaseContainer;
 	
-	private Map<String,Integer> values = new HashMap<String,Integer>();
+	private Map<String,Integer> values = new LinkedHashMap<String, Integer>();	
 	private List<LinearLayout> layouts = new LinkedList<LinearLayout>();
 	private Map<View,LinearLayout> views = new HashMap<View, LinearLayout>();
 	Rect viewRect = new Rect();
@@ -120,8 +124,18 @@ public class SearchPageDefault extends Fragment{
 	{
 		LinearLayout layout;
 		LinearLayout view = contentView;
+		View testView = generalItem(activity, TEST_WORDS);
+		int testWidth = getViewRect(testView).width();
+		
 		if (layouts.size() == 0) {
 			layout = generalLayout(activity);
+			if(getViewRect(v).width() + testWidth > view.getWidth())
+			{
+				android.view.ViewGroup.LayoutParams params = v.getLayoutParams();
+				params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+				v.setLayoutParams(params);
+			}
+			
 			layout.addView(v);			
 			views.put(v, layout);
 			layouts.add(layout);
@@ -140,17 +154,39 @@ public class SearchPageDefault extends Fragment{
 
 		boolean isSuccess = spaceLeft > getViewRect(v).width();
 		if (isSuccess) {
-			layout.addView(v);
-			views.put(v, layout);
+			if (spaceLeft > getViewRect(v).width() + testWidth) {
+				layout.addView(v);
+				views.put(v, layout);
+			}
+			else {
+				layout.addView(v);
+				android.view.ViewGroup.LayoutParams params = v.getLayoutParams();
+				params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+				views.put(v, layout);
+				v.setLayoutParams(params);
+			}
+			
 			return true;			
 		}
 		else {
-			layout = generalLayout(activity);
-			layout.addView(v);
-			layouts.add(layout);
-			views.put(v, layout);
-			this.contentView.addView(layout);
-			
+			if(spaceLeft > testWidth)
+			{
+				layout.addView(v);
+				views.put(v, layout);
+			}
+			else {
+				layout = generalLayout(activity);
+				layout.addView(v);
+				if(getViewRect(v).width() + testWidth > view.getWidth())
+				{
+					android.view.ViewGroup.LayoutParams params = v.getLayoutParams();
+					params.width = android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+					v.setLayoutParams(params);
+				}
+				layouts.add(layout);
+				views.put(v, layout);
+				this.contentView.addView(layout);
+			}			
 		}		
 		return true;
 	}
@@ -206,12 +242,25 @@ public class SearchPageDefault extends Fragment{
 	}
 	
 	private View generalItem(Context context,String text) {
-		TextView view = new TextView(context);
-		MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		params.setMargins(15, 10, 15, 10);				
+		final TextView view = new TextView(context);
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		params.setMargins(0, 10, 15, 10);				
 		view.setLayoutParams(params);
 		view.setText(text);
-		view.setPadding(0, 10, 20, 10);
+		view.setSingleLine(true);
+		view.setEllipsize(TruncateAt.END);
+		view.setPadding(20, 10, 20, 10);
+		view.setGravity(Gravity.CENTER);
+		view.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Button searchButton = (Button) activity.findViewById(R.id.btn_search);
+				TextView textView = (TextView)activity.findViewById(R.id.searchstring);
+				textView.setText(view.getText());
+				searchButton.performClick();
+			}
+		});
 		view.setBackgroundResource(R.drawable.recommend);
 		return view;
 	}
@@ -237,7 +286,7 @@ public class SearchPageDefault extends Fragment{
 			}
 			else {
 				sqlString = "UPDATE " + DatabaseContainer.TABLE_NAME_SEARCH_HEAT 
-						+ " SET ( search_time=DATE('NOW'), search_count=(search_count+1))" 
+						+ " SET search_time=DATE('NOW'), search_count=search_count+1" 
 						+ " WHERE search_name=?";
 				sqLiteDatabase.execSQL(sqlString, new String[]{text});
 			}
@@ -268,8 +317,7 @@ public class SearchPageDefault extends Fragment{
 		
 		while (cursor.moveToNext()
 				&&((count--) > 0)) {
-			values.put(cursor.getString(0), cursor.getInt(2));
-			cursor.moveToNext();			
+			values.put(cursor.getString(0), cursor.getInt(2));					
 		}
 		
 		

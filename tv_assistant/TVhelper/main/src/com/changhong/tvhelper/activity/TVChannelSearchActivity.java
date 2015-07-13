@@ -121,8 +121,9 @@ public class TVChannelSearchActivity extends FragmentActivity {
 		// channel
 //		channelText = (TextView) findViewById(R.id.text_channel);
 		
-		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content,fragmentDefault, "default").show(fragmentDefault).commitAllowingStateLoss();		
+				
 		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content, fragmentList, "list").commitAllowingStateLoss();
+		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content,fragmentDefault, "default").show(fragmentDefault).commitAllowingStateLoss();
 
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -137,24 +138,15 @@ public class TVChannelSearchActivity extends FragmentActivity {
             }
 		});
 		
-		searchEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
+		searchEditText.setOnClickListener(new OnClickListener() {
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onClick(View v) {
 				// TODO 自动生成的方法存根
-				if (hasFocus) {
-					SearchPageList searchPageList = (SearchPageList) getSupportFragmentManager().findFragmentByTag("list");
-					if(searchPageList != null)
-					{
-						getSupportFragmentManager().beginTransaction().hide(fragmentList).show(fragmentDefault).commitAllowingStateLoss();
-					}					
-				}
-				else {
-					SearchPageList searchPageList = (SearchPageList) getSupportFragmentManager().findFragmentByTag("list");
-					if (searchPageList != null) {
-						getSupportFragmentManager().beginTransaction().hide(fragmentDefault).show(fragmentList).commitAllowingStateLoss();	
-					}
-					
+				SearchPageList searchPageList = (SearchPageList) getSupportFragmentManager().findFragmentByTag("list");
+				if(searchPageList != null)
+				{
+					getSupportFragmentManager().beginTransaction().hide(fragmentList).show(fragmentDefault).commitAllowingStateLoss();
 				}
 			}
 		});
