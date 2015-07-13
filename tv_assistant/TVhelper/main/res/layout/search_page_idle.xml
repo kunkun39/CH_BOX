@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="大家都在搜"
+            android:text="历史搜索记录:"
 			/>
         <LinearLayout 
             android:id="@+id/search_idle_content"

@@ -10,7 +10,7 @@ import java.io.File;
 
 /**
  * Created by Jack Wang
- *
+ * <p/>
  * 数据库支持的数据类型，TEXT，VARCHAR, INTEGER, REAL, BLOG,
  */
 public class DatabaseContainer extends SQLiteOpenHelper {
@@ -18,7 +18,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
     private final static String DATABASE_NAME = "tvhelper.db";
 
     private final static String EPG_DATABASE_NAME = "epg_database.db";
-    
+
     public final static String TABLE_NAME_SEARCH_HEAT = "search_heat";
 
     private static int CURRENT_VERSION = 3;
@@ -65,24 +65,27 @@ public class DatabaseContainer extends SQLiteOpenHelper {
                 "singer VARCHAR(30), " +
                 "name VARCHAR(100), " +
                 "path VARCHAR(200))");
+
         db.execSQL("CREATE TABLE channel_shoucang" +
                 "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "service_id VARCHAR(30))");
+
         db.execSQL("CREATE TABLE order_program" +
                 "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "order_date VARCHAR(100), " +
                 "channel_index VARCHAR(100), " +
                 "week_index VARCHAR(100), " +
-                "program_start_time VARCHAR(100),"+
-                "program_end_time VARCHAR(100),"+
-                "status VARCHAR(100),"+
-                "program_name VARCHAR(200),"+
+                "program_start_time VARCHAR(100)," +
+                "program_end_time VARCHAR(100)," +
+                "status VARCHAR(100)," +
+                "program_name VARCHAR(200)," +
                 "channel_name VARCHAR(200))");
+
         db.execSQL("CREATE TABLE " + TABLE_NAME_SEARCH_HEAT
-                +"("
-        		+	"search_name VARCHAR(100) PRIMARY KEY,"
-                +	"search_time DATE,"
-                +	"search_count INTEGER"
+                + "("
+                + "search_name VARCHAR(100) PRIMARY KEY,"
+                + "search_time DATE,"
+                + "search_count INTEGER"
                 + ")");
 
     }
@@ -95,23 +98,25 @@ public class DatabaseContainer extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE channel_shoucang" +
                 "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "service_id VARCHAR(30))");
+
         db.execSQL("CREATE TABLE order_program" +
                 "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "order_date VARCHAR(100), " +
                 "channel_index VARCHAR(100), " +
                 "week_index VARCHAR(100), " +
-                "program_start_time VARCHAR(100),"+
-                "program_end_time VARCHAR(100),"+
-                "status VARCHAR(100),"+
-                "program_name VARCHAR(200),"+
+                "program_start_time VARCHAR(100)," +
+                "program_end_time VARCHAR(100)," +
+                "status VARCHAR(100)," +
+                "program_name VARCHAR(200)," +
                 "channel_name VARCHAR(200))");
+
         db.execSQL(
-        		"CREATE TABLE " + TABLE_NAME_SEARCH_HEAT 
-                +"("
-        		+	"search_name VARCHAR(100) PRIMARY KEY,"
-                +	"search_time DATE,"
-                +	"search_count INTEGER"
-                + ")"
-                );
+                "CREATE TABLE search_heat" + TABLE_NAME_SEARCH_HEAT
+                        + "("
+                        + "search_name VARCHAR(100) PRIMARY KEY,"
+                        + "search_time DATE,"
+                        + "search_count INTEGER"
+                        + ")"
+        );
     }
 }

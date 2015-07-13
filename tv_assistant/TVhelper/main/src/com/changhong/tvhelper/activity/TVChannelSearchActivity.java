@@ -114,14 +114,6 @@ public class TVChannelSearchActivity extends FragmentActivity {
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
 
-//        channelSearchList = (ListView) findViewById(R.id.list_channels);
-//        musicSearchList = (ListView) findViewById(R.id.list_musics);
-//        vedioSearchList = (ListView) findViewById(R.id.list_vedios);
-
-		// channel
-//		channelText = (TextView) findViewById(R.id.text_channel);
-		
-				
 		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content, fragmentList, "list").commitAllowingStateLoss();
 		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content,fragmentDefault, "default").show(fragmentDefault).commitAllowingStateLoss();
 
