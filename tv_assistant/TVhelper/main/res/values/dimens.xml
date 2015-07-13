@@ -3,7 +3,7 @@
    <dimen name="channel_title_textsize">18sp</dimen> 
    <dimen name="channel_item_textsize">12sp</dimen> 
    <dimen name="channel_item_height">70dip</dimen> 
-   <dimen name="channel_item_name_width">120dip</dimen> 
+   <dimen name="channel_item_name_width">125dip</dimen>
    <dimen name="channel_item_logo_width">115dip</dimen> 
    <dimen name="channel_item_name_margintop">0dip</dimen> 
 </resources>
