@@ -148,12 +148,12 @@ private Paint paint;
 		
 		switch (style) {
 		case STROKE:{
-			paint.setStyle(Paint.Style.STROKE);
+			paint.setStyle(Paint.Style.STROKE);//申明是空心
 			canvas.drawArc(oval, 90, 360 * progress / 100, false, paint);  //根据进度画圆弧
 			break;
 		}
 		case FILL:{
-			paint.setStyle(Paint.Style.FILL_AND_STROKE);
+			paint.setStyle(Paint.Style.FILL_AND_STROKE);//申明是实心和空心
 			if(progress !=0)
 				canvas.drawArc(oval, 90, 360 * progress / 100, true, paint);  //根据进度画圆弧
 			break;
