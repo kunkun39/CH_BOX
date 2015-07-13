@@ -53,26 +53,26 @@
         android:layout_marginBottom="@dimen/dialog_btn_marginBottom" >
 
         <Button
-            android:id="@+id/bt_alertdia_submit"
+            android:id="@+id/bt_alertdia_cancel"
             android:layout_width="@dimen/dialog_btn_width"
             android:layout_height="@dimen/dialog_btn_height"
             android:background="@drawable/btn_notext"
             android:gravity="center"
-            android:text="确    认"
+            android:text="取    消"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
 
         <Button
-            android:id="@+id/bt_alertdia_cancel"
+            android:id="@+id/bt_alertdia_submit"
             android:layout_width="@dimen/dialog_btn_width"
             android:layout_height="@dimen/dialog_btn_height"
-            android:layout_alignTop="@id/bt_alertdia_submit"
+            android:layout_alignTop="@id/bt_alertdia_cancel"
             android:layout_marginLeft="@dimen/dialog_btn_marginLeft"
-            android:layout_toRightOf="@id/bt_alertdia_submit"
+            android:layout_toRightOf="@id/bt_alertdia_cancel"
             android:background="@drawable/btn_notext"
             android:gravity="center"
             android:src="@drawable/btn_notext"
-            android:text="取    消"
+            android:text="确    认"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
     </RelativeLayout>
