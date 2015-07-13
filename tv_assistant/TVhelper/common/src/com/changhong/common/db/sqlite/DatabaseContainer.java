@@ -21,7 +21,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
 
     public final static String TABLE_NAME_SEARCH_HEAT = "search_heat";
 
-    private static int CURRENT_VERSION = 3;
+    private static int CURRENT_VERSION = 4;
 
     private SQLiteDatabase epgDatabase;
 
@@ -95,20 +95,20 @@ public class DatabaseContainer extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("CREATE TABLE channel_shoucang" +
-                "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "service_id VARCHAR(30))");
-
-        db.execSQL("CREATE TABLE order_program" +
-                "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "order_date VARCHAR(100), " +
-                "channel_index VARCHAR(100), " +
-                "week_index VARCHAR(100), " +
-                "program_start_time VARCHAR(100)," +
-                "program_end_time VARCHAR(100)," +
-                "status VARCHAR(100)," +
-                "program_name VARCHAR(200)," +
-                "channel_name VARCHAR(200))");
+//        db.execSQL("CREATE TABLE channel_shoucang" +
+//                "(shoucang_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "service_id VARCHAR(30))");
+//
+//        db.execSQL("CREATE TABLE order_program" +
+//                "(channel_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                "order_date VARCHAR(100), " +
+//                "channel_index VARCHAR(100), " +
+//                "week_index VARCHAR(100), " +
+//                "program_start_time VARCHAR(100)," +
+//                "program_end_time VARCHAR(100)," +
+//                "status VARCHAR(100)," +
+//                "program_name VARCHAR(200)," +
+//                "channel_name VARCHAR(200))");
 
         db.execSQL(
                 "CREATE TABLE search_heat" + TABLE_NAME_SEARCH_HEAT
