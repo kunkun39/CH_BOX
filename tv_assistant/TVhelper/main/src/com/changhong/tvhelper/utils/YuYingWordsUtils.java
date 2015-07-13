@@ -145,8 +145,6 @@ public class YuYingWordsUtils {
         TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
         TV_CHANNEL_REPLACE_KEYWORDS.put("卫视", "");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("电视", "");
-        TV_CHANNEL_REPLACE_KEYWORDS.put("电视台", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("高清", "");
     }
 
@@ -160,10 +158,10 @@ public class YuYingWordsUtils {
         }
 
         /**
-         * 保证标清关键字的转化在卫视的后面，所以在这里转化一次，而没有配置在上面的MAP中
+         * 保证标清关键字的转化在卫视的后面，所以在这里转化一次，而没有配置在上面的MAP中, 没有CCTV-4高清频道，所以去掉
          */
         needConvert = needConvert.replace("标清", "卫视");
-        if (needConvert.contains("CCTV")) {
+        if (needConvert.contains("CCTV") && !needConvert.startsWith("CCTV-4") && !needConvert.startsWith("CCTV4")) {
             needConvert = needConvert + "高清";
         }
         return needConvert;
@@ -194,17 +192,21 @@ public class YuYingWordsUtils {
     /**
      * 地方台的卫视一般都是一台，这个需要做一下处理
      */
-    private final static Map<String, String> TV_CHANNEL_LOCATION_WORDS = new HashMap<String, String>();
+    private final static Map<String, List<String>> TV_CHANNEL_LOCATION_WORDS = new HashMap<String, List<String>>();
 
     static {
         //baidu yuyin charaters, which is different from normal char, so replace it to normal one
-        TV_CHANNEL_LOCATION_WORDS.put("四川卫视", "SCTV-1");
+        List<String> otherNames = new ArrayList<String>();
+        otherNames.add("SCTV-1");
+        otherNames.add("四川卫视高清");
+        otherNames.add("四川卫视");
+        TV_CHANNEL_LOCATION_WORDS.put("四川卫视", otherNames);
     }
 
     /**
      * 判断
      */
-    public static String getLocationWordsChannel(String needCheck) {
+    public static List<String> getLocationWordsChannel(String needCheck) {
         return TV_CHANNEL_LOCATION_WORDS.get(needCheck);
     }
 

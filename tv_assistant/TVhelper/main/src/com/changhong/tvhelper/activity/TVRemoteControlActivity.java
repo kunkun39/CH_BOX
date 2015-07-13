@@ -1056,12 +1056,22 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         /**
                          * 特殊地方台处理逻辑
                          */
-                        String locationChannel = YuYingWordsUtils.getLocationWordsChannel(beforeConvertRecognitionResult);
-                        if (StringUtils.hasLength(locationChannel)) {
-                            for (int j = 0; j < size; j++) {
-                                String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
-                                if (channelName.equals(locationChannel)) {
-                                    bestPostion = String.valueOf(j);
+                        boolean findSpecial = false;
+                        List<String> locationChannels = YuYingWordsUtils.getLocationWordsChannel(beforeConvertRecognitionResult);
+                        if (locationChannels != null) {
+                            for (String locationChannel : locationChannels) {
+
+                                for (int j = 0; j < size; j++) {
+                                    String channelName = (String) ClientSendCommandService.channelData.get(j).get("service_name");
+                                    if (channelName.equals(locationChannel)) {
+                                        bestPostion = String.valueOf(j);
+                                        findSpecial = true;
+                                        break;
+                                    }
+                                }
+
+                                if(findSpecial) {
+                                    break;
                                 }
                             }
                         }
