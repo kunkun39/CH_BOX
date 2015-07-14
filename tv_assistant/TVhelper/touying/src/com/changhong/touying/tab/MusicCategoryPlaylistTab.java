@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -26,6 +27,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.touying.R;
 import com.changhong.touying.activity.MusicPlayListActivity;
 import com.changhong.touying.activity.MusicViewActivity;
@@ -156,7 +160,14 @@ public class MusicCategoryPlaylistTab extends Fragment{
 			@Override
 			public boolean onItemLongClick(final AdapterView<?> adapterView, final View v,
 					final int arg2, long arg3) {
-								
+//					Dialog dialog =new Dialog(getActivity(), R.style.Dialog_nowindowbg);
+//					View dialogView=LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify, null);
+//					dialog.setContentView(dialogView);
+//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
+//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
+//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
+					
+					
 				AlertDialog.Builder dlgBuilder = new AlertDialog.Builder(getActivity());
 				
 				dlgBuilder.setTitle(R.string.whatdoyouwanttodo);
@@ -251,19 +262,18 @@ public class MusicCategoryPlaylistTab extends Fragment{
     
     private void addPlayList()
     {
-    	final EditText editText = new EditText(getActivity());
-    	AlertDialog.Builder dlgBuilder = new AlertDialog.Builder(getActivity());
-    	dlgBuilder.setTitle(R.string.playlistname);
-    	dlgBuilder.setView(editText);
-    	dlgBuilder.setPositiveButton(android.R.string.yes, new OnClickListener() {				
+//    	final EditText editText = new EditText(getActivity());
+    	Dialog dialog =DialogUtil.showEditDialog(getActivity(), "播放列表名", "确    认", "取    消", new DialogBtnOnClickListener() {
+
 			@Override
-			public void onClick(DialogInterface dialog, int which) {	
-				String playListName = editText.getText().toString();
+			public void onSubmit(DialogMessage dialogMessage) {
+				String playListName = dialogMessage.msg;
 				if (playListName == null
-						|| playListName.isEmpty()) {											
+						|| playListName.isEmpty()) {
+					Toast.makeText(getActivity(), "未输入任何信息", Toast.LENGTH_SHORT).show();						
 					return ; 
 				}
-				MusicPlayList list = M3UPlayList.generalplaylist(MusicCategoryPlaylistTab.this.getActivity(), editText.getText().toString());					
+				MusicPlayList list = M3UPlayList.generalplaylist(MusicCategoryPlaylistTab.this.getActivity(), playListName);					
 				if (list == null) {
 					Toast.makeText(getActivity(), R.string.playlist_createfile_failed, Toast.LENGTH_SHORT).show();						
 					return ;
@@ -275,15 +285,13 @@ public class MusicCategoryPlaylistTab extends Fragment{
 		    	intent.putExtra(MusicPlayListActivity.SERIALIZABLE_OBJECT, list);
 		    	
 		    	startActivityForResult(intent, RETURN_ACTIVITY_ADD);
+			}
+			@Override
+			public void onCancel(DialogMessage dialogMessage) {
 				
 			}
+
 		});
-		dlgBuilder.setNegativeButton(android.R.string.cancel, new OnClickListener() {				
-			@Override
-			public void onClick(DialogInterface dialog, int which) {}
-		});
-		
-		dlgBuilder.create().show();
     }
     
     private void modifyPlayList(int index)
