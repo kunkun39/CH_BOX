@@ -10,13 +10,15 @@ import java.util.List;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager.LayoutParams;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -160,38 +162,49 @@ public class MusicCategoryPlaylistTab extends Fragment{
 			@Override
 			public boolean onItemLongClick(final AdapterView<?> adapterView, final View v,
 					final int arg2, long arg3) {
-//					Dialog dialog =new Dialog(getActivity(), R.style.Dialog_nowindowbg);
-//					View dialogView=LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify, null);
-//					dialog.setContentView(dialogView);
-//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
-//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
-//					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
+					final Dialog dialog =new Dialog(getActivity(), R.style.Dialog_nowindowbg);
+					View dialogView=LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify, null);
+					dialog.setContentView(dialogView);
+					Button bt_modify=(Button) dialogView.findViewById(R.id.bt_modifydia_modify);
+					Button bt_delete=(Button) dialogView.findViewById(R.id.bt_modifydia_delete);
+					Button bt_cancel=(Button) dialogView.findViewById(R.id.bt_modifydia_cancel);
+					bt_modify.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							modifyPlayList(arg2);
+							if (dialog!=null && dialog.isShowing()) {
+								dialog.dismiss();
+							}
+						}
+					});
+					bt_delete.setOnClickListener(new OnClickListener() {
+											
+						@Override
+						public void onClick(View v) {
+							delPlayList(arg2);	
+							if (dialog!=null && dialog.isShowing()) {
+								dialog.dismiss();
+							}
+						}
+					});
+					bt_cancel.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
+							if (dialog!=null && dialog.isShowing()) {
+								dialog.dismiss();
+							}
+						}
+					});
 					
+					LayoutParams param = dialog.getWindow().getAttributes();
+					param.gravity = Gravity.CENTER;
+					param.width =   (int) getActivity().getResources().getDimension(R.dimen.dialog_modify_width);
+					param.height =  (int) getActivity().getResources().getDimension(R.dimen.dialog_modify_height);
+					dialog.getWindow().setAttributes(param);
+					dialog.show();
 					
-				AlertDialog.Builder dlgBuilder = new AlertDialog.Builder(getActivity());
-				
-				dlgBuilder.setTitle(R.string.whatdoyouwanttodo);
-				dlgBuilder.setPositiveButton(R.string.PlayList_modify, new OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						modifyPlayList(arg2);
-					}
-				});
-				dlgBuilder.setNeutralButton(R.string.playlist_del, new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						delPlayList(arg2);						
-					}
-				});
-				dlgBuilder.setNegativeButton(android.R.string.cancel, new OnClickListener() {					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						;
-					}
-				});
-				
-				dlgBuilder.create().show();
 				
 				return true;
 			}
