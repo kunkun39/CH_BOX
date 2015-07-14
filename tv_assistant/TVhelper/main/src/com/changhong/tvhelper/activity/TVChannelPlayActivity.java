@@ -321,7 +321,6 @@ public class TVChannelPlayActivity extends Activity {
 		 */
 		seekbarWidget = (LinearLayout) findViewById(R.id.seekbarWidget);
 		sound = (VerticalSeekBar) findViewById(R.id.sound);
-//		bright = (VerticalSeekBar) findViewById(R.id.bright);
 		collection=(TextView)findViewById(R.id.play_collection);
 		initCollectionData();
 	}
@@ -375,77 +374,11 @@ public class TVChannelPlayActivity extends Activity {
 			}
 		});
 
-		/**
-		 * 
-		 * 亮度调节
-		 */
-//		bright.setMax(255);
-//		int normal = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, 255);
-//		bright.setProgress(normal);
-//
-//		bright.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-//
-//			@Override
-//			public void onStopTrackingTouch(SeekBar seekBar) {
-//			}
-//
-//			@Override
-//			public void onStartTrackingTouch(SeekBar seekBar) {
-//			}
-//
-//			@Override
-//			public void onProgressChanged(SeekBar seekBar, int progress,
-//					boolean fromUser) {
-//				// 取得当前进度
-//				int tmpInt = seekBar.getProgress();
-//
-//				// 根据当前进度改变亮度
-//				Settings.System.putInt(getContentResolver(),
-//						Settings.System.SCREEN_BRIGHTNESS, tmpInt);
-//				tmpInt = Settings.System.getInt(getContentResolver(),
-//						Settings.System.SCREEN_BRIGHTNESS, -1);
-//				WindowManager.LayoutParams wl = getWindow().getAttributes();
-//
-//				float tmpFloat = (float) tmpInt / 255;
-//				if (tmpFloat > 0 && tmpFloat <= 1) {
-//					wl.screenBrightness = tmpFloat;
-//				}
-//				getWindow().setAttributes(wl);
-//			}
-//		});
-		
 		//收藏监听器
 		collection.setOnClickListener(new OnClickListener() {
 			
 			@Override
             public void onClick(View v) {
-//				MyApplication.vibrator.vibrate(100);
-//                try {
-//                    //取消收藏操作
-//                    boolean success = channelService.cancelChannelShouCang(channelServiceId);
-//                    if (success) {
-//                        //更新数据
-//                        allShouChangChannel.remove(channelServiceId);
-//                        Map<String, Object> removeMap = null;
-//                        for (Map<String, Object> loop : channelShowData) {
-//                            String loopChannelServiceId = (String) loop.get("service_id");
-//                            if (channelServiceId.equals(loopChannelServiceId)) {
-//                                removeMap = loop;
-//                                break;
-//                            }
-//                        }
-//                        channelShowData.remove(removeMap);
-//
-//                        //通知adapter更新数据
-//                        mHandler.sendEmptyMessage(0);
-//
-//                       Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
             }
         });
 
@@ -541,10 +474,6 @@ public class TVChannelPlayActivity extends Activity {
 
 		if (null == SKBInAnimationSet) {
 			SKBInAnimationSet = new AnimationSet(true);
-//			TranslateAnimation SKBIAnimation = new TranslateAnimation(
-//					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-//					0f, Animation.RELATIVE_TO_SELF, -0.5f,
-//					Animation.RELATIVE_TO_SELF, 0f);
 			TranslateAnimation SKBIAnimation = new TranslateAnimation(
 					Animation.RELATIVE_TO_SELF, 1f, Animation.RELATIVE_TO_SELF,
 					0f, Animation.RELATIVE_TO_SELF, 0f,
@@ -555,10 +484,6 @@ public class TVChannelPlayActivity extends Activity {
 
 		if (null == SKBOutAnimationSet) {
 			SKBOutAnimationSet = new AnimationSet(true);
-//			TranslateAnimation SKBOAnimation = new TranslateAnimation(
-//					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
-//					0f, Animation.RELATIVE_TO_SELF, 0f,
-//					Animation.RELATIVE_TO_SELF, -0.5f);
 			TranslateAnimation SKBOAnimation = new TranslateAnimation(
 					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
 					1f, Animation.RELATIVE_TO_SELF, 0f,
