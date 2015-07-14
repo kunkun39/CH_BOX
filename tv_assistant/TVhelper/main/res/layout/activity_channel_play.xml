@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:background="@drawable/tv_play_stroke"
-            android:paddingLeft="5dp"
             android:gravity="center"
+            android:paddingLeft="5dp"
             android:text="全部频道"
             android:textColor="@color/white"
             android:textSize="15sp" />
@@ -40,12 +40,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_all"
             android:background="@drawable/tv_play_stroke"
-            android:divider="#FF20527a"
-            android:dividerHeight="1dp"
-            >
+            android:divider="#FFA7A7A5"
+            android:dividerHeight="1dp" >
         </ListView>
     </RelativeLayout>
-    
+
     <!-- 正下方频道信息栏 -->
 
     <RelativeLayout
@@ -59,15 +58,19 @@
 
         <RelativeLayout
             android:id="@+id/layout_logo_text"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content" >
 
             <TextView
                 android:id="@+id/text_channel_name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:lines="1"
                 android:text=""
                 android:textSize="12sp" />
 
@@ -110,8 +113,9 @@
             android:text="下一节目："
             android:textSize="12sp" />
     </RelativeLayout>
-    
-<!-- 右侧音量、亮度、收藏栏 -->
+
+    <!-- 右侧音量、亮度、收藏栏 -->
+
     <LinearLayout
         android:id="@+id/seekbarWidget"
         android:layout_width="100dp"
@@ -122,28 +126,25 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:visibility="invisible" >
-        
-        <TextView 
+
+        <TextView
+            android:id="@+id/play_collection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/play_collection"
-            android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:textColor="@color/white"
-            android:visibility="invisible"
+            android:gravity="center_horizontal"
             android:text="收藏"
-            />
+            android:textColor="@color/white"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="50dp"
-            android:gravity="center_horizontal"
+            android:layout_weight="1"
             android:background="@drawable/tv_play_stroke"
-            android:layout_weight="1" >
-
-            
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
 
             <com.changhong.common.widgets.VerticalSeekBar
                 android:id="@+id/sound"
@@ -151,18 +152,18 @@
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
                 android:progressDrawable="@drawable/progress_holo_light"
-                android:thumb="@drawable/detail_icon_schedule_ball"
-                 />
+                android:thumb="@drawable/detail_icon_schedule_ball" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="0dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
                 android:background="@drawable/channle_play_sound"
                 android:textColor="@color/white" />
         </LinearLayout>
-<!--  
+        <!--
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="fill_parent"
@@ -185,7 +186,8 @@
                 android:progressDrawable="@drawable/progress_holo_light"
                 android:thumb="@drawable/detail_icon_schedule_ball"
                  />
-        </LinearLayout>-->
+        </LinearLayout>
+        -->
     </LinearLayout>
 
 </RelativeLayout>
