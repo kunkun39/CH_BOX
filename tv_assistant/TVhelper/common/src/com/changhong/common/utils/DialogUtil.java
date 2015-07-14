@@ -138,7 +138,11 @@ public class DialogUtil {
 		dialog.getWindow().setAttributes(param);
 		dialog.getWindow()
 				.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-		dialog.show();
+		try {
+			dialog.show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return dialog;
 	}
 
@@ -200,7 +204,11 @@ public class DialogUtil {
 		dialog.getWindow().setAttributes(param);
 		dialog.getWindow()
 				.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-		dialog.show();
+		try {
+			dialog.show();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return dialog;
 	}
 
