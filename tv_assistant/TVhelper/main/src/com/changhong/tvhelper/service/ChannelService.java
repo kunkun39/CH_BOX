@@ -2,6 +2,7 @@ package com.changhong.tvhelper.service;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.StaticLayout;
 import android.util.Log;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
@@ -203,6 +204,7 @@ public class ChannelService {
 
     public static synchronized Collection<Map<String, Object>> searchProgramByText(String text)
     {
+    	final int MAX_COLLECTION_COUNT = 20;
     	HashMap<String,String> map = new HashMap<String,String>();
     	Set<Map<String, Object>> listMap = new HashSet<Map<String, Object>>();
     	
@@ -213,9 +215,11 @@ public class ChannelService {
     	
     	Cursor cursor = null;
     	String currentTime = DateUtils.getCurrentTimeStamp();
+    	int count = MAX_COLLECTION_COUNT;
     	try {
-    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? AND str_startTime < ? AND str_endTime > ? COLLATE NOCASE", new String[]{"%" + text + "%",currentTime,currentTime});
-	    	while (cursor.moveToNext()) {			
+    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? "/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
+	    	while (cursor.moveToNext()
+	    			&& (count-- > 0)) {			
 				map.put(cursor.getString(0),cursor.getString(1));			
 			}
     	} catch (Exception e) {
