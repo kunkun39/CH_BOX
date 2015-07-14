@@ -40,6 +40,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 
 /**
  * Created by Jack Wang
@@ -383,7 +384,7 @@ public class UserUpdateService {
                  		"电视助手版本升级",content,new DialogBtnOnClickListener() {
  					
  					@Override
- 					public void onSubmit(Dialog dialog) {
+ 					public void onSubmit(DialogMessage dialogMessage) {
                         m_pDialog.show();
                         directlyInstall = true;
 
@@ -497,12 +498,10 @@ public class UserUpdateService {
                             }
                         }).start();
 
-                        dialog.dismiss();
  					}
  					
  					@Override
- 					public void onCancel(Dialog dialog) {
- 						dialog.dismiss();
+ 					public void onCancel(DialogMessage dialogMessage) {
  					}
  				});
             	
@@ -533,7 +532,7 @@ public class UserUpdateService {
                      		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
      					
      					@Override
-     					public void onSubmit(Dialog dialog) {
+     					public void onSubmit(DialogMessage dialogMessage) {
      						//休息1秒安装
                             try {
                                 Thread.sleep(1000);
@@ -550,8 +549,7 @@ public class UserUpdateService {
      					}
      					
      					@Override
-     					public void onCancel(Dialog dialog) {
-     						dialog.dismiss();
+     					public void onCancel(DialogMessage dialogMessage) {
      					}
      				});
                 }
