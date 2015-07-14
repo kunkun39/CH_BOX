@@ -18,6 +18,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
@@ -390,7 +391,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                     	Dialog dialog=DialogUtil.showAlertDialog(TVChannelProgramShowActivity.this, dialogtitle, content,"是","NO", new DialogBtnOnClickListener() {
 										
 										@Override
-										public void onSubmit(Dialog dialog) {
+										public void onSubmit(DialogMessage dialogMessage) {
 
                                             channelService.deleteOrderProgram(orderProgramConflict.getProgramName(), orderProgramConflict.getOrderDate());
                                             OrderProgram orderProgramReplace = new OrderProgram();
@@ -415,8 +416,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 										}
 										
 										@Override
-										public void onCancel(Dialog dialog) {
-											 dialog.cancel();
+										public void onCancel(DialogMessage dialogMessage) {
                                              vh.programStatus.setText("可预约");
                                              vh.programStatus.setTextColor(getResources().getColor(R.color.white));
                                              vh.iv_programstate.setImageResource(R.drawable.program_order);

@@ -24,7 +24,7 @@
             android:width="130dp"
             android:height="90dp"
             android:maxLines="4"
-            android:singleLine="false"                   
+            android:singleLine="true"                   
             android:gravity="top|left"/>
             
         <LinearLayout         

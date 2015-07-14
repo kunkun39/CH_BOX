@@ -65,6 +65,7 @@ import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 
 public class TVHelperMainActivity extends Activity {
 
@@ -203,14 +204,13 @@ public class TVHelperMainActivity extends Activity {
                 		"是否打开或关闭机顶盒?","",new DialogBtnOnClickListener() {
 					
 					@Override
-					public void onSubmit(Dialog dialog) {
+					public void onSubmit(DialogMessage dialogMessage) {
 						 ClientSendCommandService.msg = "key:power";
                        ClientSendCommandService.handler.sendEmptyMessage(1);
 					}
 					
 					@Override
-					public void onCancel(Dialog dialog) {
-						dialog.cancel();
+					public void onCancel(DialogMessage dialogMessage) {
 					}
 				});
             }
@@ -320,21 +320,22 @@ public class TVHelperMainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 Log.i(TAG, "KEYCODE_BACK");
-                Dialog dialog=DialogUtil.showAlertDialog(TVHelperMainActivity.this, "提示", "确认退出助手？","退    出","取    消", new DialogBtnOnClickListener() {
+                Dialog dialog=DialogUtil.showAlertDialog(TVHelperMainActivity.this, null, "确认退出助手？","退    出","取    消", new DialogBtnOnClickListener() {
 					
 					@Override
-					public void onSubmit(Dialog dialog) {
+					public void onSubmit(DialogMessage dialogMessage) {
 						ClientSendCommandService.titletxt = "未连接";
                         title.setText(ClientSendCommandService.titletxt);
                         mhandler.sendEmptyMessage(2);
-                        dialog.dismiss();
+                        if (dialogMessage.dialog!=null) {
+                        	dialogMessage.dialog.dismiss();
+						}
 
                         System.exit(0);
 					}
 					
 					@Override
-					public void onCancel(Dialog dialog) {
-						  dialog.dismiss();
+					public void onCancel(DialogMessage dialogMessage) {
 					}
 				});
                 return true;
@@ -670,7 +671,7 @@ public class TVHelperMainActivity extends Activity {
                  		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
  					
  					@Override
- 					public void onSubmit(Dialog dialog) {
+ 					public void onSubmit(DialogMessage dialogMessage) {
                         //休息1秒安装
                         try {
                             Thread.sleep(1000);
@@ -687,8 +688,7 @@ public class TVHelperMainActivity extends Activity {
  					}
  					
  					@Override
- 					public void onCancel(Dialog dialog) {
- 						dialog.dismiss();
+ 					public void onCancel(DialogMessage dialogMessage) {
  					}
  				});
             }

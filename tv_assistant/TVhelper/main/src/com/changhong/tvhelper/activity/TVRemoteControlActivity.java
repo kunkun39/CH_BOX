@@ -41,6 +41,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
@@ -206,15 +207,14 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         new DialogBtnOnClickListener() {
 
                             @Override
-                            public void onSubmit(Dialog dialog) {
+                            public void onSubmit(DialogMessage dialogMessage) {
                                 ClientSendCommandService.msg = "key:power";
                                 ClientSendCommandService.handler
                                         .sendEmptyMessage(1);
                             }
 
                             @Override
-                            public void onCancel(Dialog dialog) {
-                                dialog.cancel();
+                            public void onCancel(DialogMessage dialogMessage) {
                             }
                         });
 			}
