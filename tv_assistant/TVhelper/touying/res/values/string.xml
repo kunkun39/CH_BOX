@@ -12,7 +12,7 @@
     <string name="PlayList_play">播放</string>
     <string name="music_view_playlist">播放列表</string>
     <string name="playlist_del">删除</string>
-    <string name="whatdoyouwanttodo">您准备？</string>
+    <string name="whatdoyouwanttodo">你对该歌单准备进行什么操作？</string>
     <string name="PlayList_modify">修改</string>
     <string name="byplaylist">按播放列表</string>
     <string name="byspecial">按专辑</string>
