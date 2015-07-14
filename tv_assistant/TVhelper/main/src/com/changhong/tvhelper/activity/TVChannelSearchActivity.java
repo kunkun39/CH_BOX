@@ -121,7 +121,8 @@ public class TVChannelSearchActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
-				searchString = searchEditText.getText().toString();
+				//fix bug:
+				searchString = searchEditText.getText().toString().trim();
 				getSupportFragmentManager().beginTransaction().hide(fragmentDefault).show(fragmentList).commitAllowingStateLoss();
 				fragmentDefault.saveSentences(TVChannelSearchActivity.this, searchString);
 				fragmentList.setCondition(searchString);
