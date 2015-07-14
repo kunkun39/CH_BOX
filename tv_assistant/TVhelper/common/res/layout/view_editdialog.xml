@@ -12,6 +12,8 @@
         android:layout_marginTop="@dimen/dialog_title_margintop"
         android:singleLine="true"
         android:text="电视助手信息提示"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:textColor="@android:color/holo_blue_light"
         android:textSize="@dimen/dialog_title_textsize" />
 
