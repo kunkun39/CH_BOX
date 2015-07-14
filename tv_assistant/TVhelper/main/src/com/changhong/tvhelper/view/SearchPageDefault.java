@@ -32,6 +32,9 @@ import android.widget.TextView;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.tvhelper.R;
 
 public class SearchPageDefault extends Fragment{
@@ -358,32 +361,25 @@ public class SearchPageDefault extends Fragment{
 			}
 		});
 		//长按删除
+		
 		view.setOnLongClickListener(new OnLongClickListener() {
 			
 			@Override
 			public boolean onLongClick(View v) {
-				
-				AlertDialog dialog = new AlertDialog.Builder(activity)
-						.setMessage("纭畾瑕佸垹闄n" + view.getText() + "?")
-						.setPositiveButton(android.R.string.yes, new Dialog.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								deleteSentences(activity,String.valueOf(view.getText()));
-								addViews(SearchPageDefault.this.contentView);
-							}
-						})
-						.setNegativeButton(android.R.string.cancel, new Dialog.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								// TODO 鑷姩鐢熸垚鐨勬柟娉曞瓨鏍�
-								dialog.dismiss();
-							}
-						})	
-						.create();
-				dialog.show();
-				
+				DialogUtil.showAlertDialog(activity, "确定要删除?", String.valueOf(view.getText()), new DialogBtnOnClickListener()
+				{				
+					@Override
+					public void onSubmit(DialogMessage dialogMessage) {
+						deleteSentences(activity,String.valueOf(view.getText()));
+						addViews(SearchPageDefault.this.contentView);
+					}
+
+					@Override
+					public void onCancel(DialogMessage dialogMessage) {
+						dialogMessage.dialog.dismiss();
+					}
+					
+				});				
 				return true;
 			}
 		});
