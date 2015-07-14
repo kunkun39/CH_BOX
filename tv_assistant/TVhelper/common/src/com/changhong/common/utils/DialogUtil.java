@@ -84,8 +84,8 @@ public class DialogUtil {
 		dialog.setContentView(view);
 		LayoutParams param = dialog.getWindow().getAttributes();
 		param.gravity = Gravity.CENTER;
-		param.width = dipTopx(context, 280);
-		param.height = dipTopx(context, 170);
+		param.width = (int) context.getResources().getDimension(R.dimen.dialog_width);
+		param.height = (int) context.getResources().getDimension(R.dimen.dialog_height);
 
 		Button bt_submit = (Button) view.findViewById(R.id.bt_alertdia_submit);
 		Button bt_cancel = (Button) view.findViewById(R.id.bt_alertdia_cancel);
@@ -152,8 +152,8 @@ public class DialogUtil {
 		dialog.setContentView(view);
 		LayoutParams param = dialog.getWindow().getAttributes();
 		param.gravity = Gravity.CENTER;
-		param.width = dipTopx(context, 280);
-		param.height = dipTopx(context, 170);
+		param.width = (int) context.getResources().getDimension(R.dimen.dialog_width);
+		param.height = (int) context.getResources().getDimension(R.dimen.dialog_height);
 
 		Button bt_submit = (Button) view.findViewById(R.id.bt_editdia_submit);
 		Button bt_cancel = (Button) view.findViewById(R.id.bt_editdia_cancel);
