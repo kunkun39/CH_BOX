@@ -12,12 +12,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/dialog_baidudia_title_margintop"
             android:singleLine="true"
             android:text="电视助手信息提示："
             android:textColor="@android:color/holo_blue_dark"
-            android:textSize="20sp" />
+            android:textSize="@dimen/dialog_title_textsize" />
 
         <ImageView
             android:id="@+id/iv_voicehelp_dilver"
@@ -45,7 +44,7 @@
                 android:singleLine="false"
                 android:text="@string/dialog_baidu_voice_help"
                 android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/dialog_baidudia_content_textsize" />
         </ScrollView>
 
         <Button
