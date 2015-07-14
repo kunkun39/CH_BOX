@@ -42,16 +42,18 @@
 
         <!-- 第二部分，台标和频道名 -->
 
-        <LinearLayout
-            android:layout_width="270dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/channel_play_info"
-                android:layout_width="170dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/channel_shoucang"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
                 android:text="无节目信息"
@@ -62,7 +64,8 @@
                 android:id="@+id/channel_shoucang"
                 android:layout_width="32dp"
                 android:layout_height="40dip"
-                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/channel_play_button"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
                 android:text="取消\n收藏"
@@ -73,13 +76,14 @@
                 android:id="@+id/channel_play_button"
                 android:layout_width="32dp"
                 android:layout_height="40dip"
-                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
                 android:text="节目\n信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>
