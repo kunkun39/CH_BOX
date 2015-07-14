@@ -14,16 +14,30 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class DialogUtil {
 	public static interface DialogBtnOnClickListener {
 
-		public void onSubmit(Dialog dialog);
+		public void onSubmit(DialogMessage dialogMessage);
 
-		public void onCancel(Dialog dialog);
+		public void onCancel(DialogMessage dialogMessage);
 
+	}
+
+	public static class DialogMessage {
+		public Dialog dialog;// 弹出的对话框对象
+		public String msg;// 文本信息
+
+		public DialogMessage() {
+		}
+
+		public DialogMessage(Dialog dialog) {
+			this.dialog = dialog;
+		}
 	}
 
 	/**
@@ -40,7 +54,8 @@ public class DialogUtil {
 	 */
 	public static Dialog showAlertDialog(Context context, String title,
 			String content, final DialogBtnOnClickListener listener) {
-		return showAlertDialog(context, title, content, "确    认", "取    消", listener);
+		return showAlertDialog(context, title, content, "确    认", "取    消",
+				listener);
 	}
 
 	/**
@@ -85,7 +100,7 @@ public class DialogUtil {
 			@Override
 			public void onClick(View v) {
 				if (listener != null) {
-					listener.onSubmit(dialog);
+					listener.onSubmit(new DialogMessage(dialog));
 				}
 				if (dialog != null && dialog.isShowing()) {
 					dialog.cancel();
@@ -97,7 +112,7 @@ public class DialogUtil {
 			@Override
 			public void onClick(View v) {
 				if (listener != null) {
-					listener.onCancel(dialog);
+					listener.onCancel(new DialogMessage(dialog));
 				}
 				if (dialog != null && dialog.isShowing()) {
 					dialog.cancel();
@@ -118,6 +133,68 @@ public class DialogUtil {
 			if (!TextUtils.isEmpty(title)) {
 				tv_content.setText(title);
 			}
+		}
+
+		dialog.getWindow().setAttributes(param);
+		dialog.getWindow()
+				.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		dialog.show();
+		return dialog;
+	}
+
+	public static Dialog showEditDialog(Context context, String title,
+			String positiveBtnName, String negtiveBtnName,
+			final DialogBtnOnClickListener listener) {
+		final Dialog dialog = new Dialog(context, R.style.Dialog_nowindowbg);
+
+		View view = LayoutInflater.from(context).inflate(
+				R.layout.view_editdialog, null);
+		dialog.setContentView(view);
+		LayoutParams param = dialog.getWindow().getAttributes();
+		param.gravity = Gravity.CENTER;
+		param.width = dipTopx(context, 280);
+		param.height = dipTopx(context, 170);
+
+		Button bt_submit = (Button) view.findViewById(R.id.bt_editdia_submit);
+		Button bt_cancel = (Button) view.findViewById(R.id.bt_editdia_cancel);
+		if (!TextUtils.isEmpty(positiveBtnName)) {
+			bt_submit.setText(positiveBtnName);
+		}
+		if (!TextUtils.isEmpty(negtiveBtnName)) {
+			bt_cancel.setText(negtiveBtnName);
+		}
+		final EditText edText=(EditText)view.findViewById(R.id.edt_editdia_content);
+		bt_submit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DialogMessage dialogMessage=new DialogMessage(dialog);
+				dialogMessage.msg=edText.getText().toString().trim();
+				if (listener != null) {
+					listener.onSubmit(dialogMessage);
+				}
+				if (dialog != null && dialog.isShowing()) {
+					dialog.cancel();
+				}
+			}
+		});
+		bt_cancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DialogMessage dialogMessage=new DialogMessage(dialog);
+				dialogMessage.msg=edText.getText().toString().trim();
+				if (listener != null) {
+					listener.onCancel(dialogMessage);
+				}
+				if (dialog != null && dialog.isShowing()) {
+					dialog.cancel();
+				}
+			}
+		});
+		TextView tv_title = (TextView) view.findViewById(R.id.tv_editdia_title);
+		if (!TextUtils.isEmpty(title)) {
+			tv_title.setText(title);
 		}
 
 		dialog.getWindow().setAttributes(param);
