@@ -22,6 +22,26 @@ public class OrderProgram {
 
     private String status;
 
+    public OrderProgram()
+    {
+    	
+    }
+    
+    public OrderProgram(Program program)
+    {        
+        this.channelName = program.getChannelName();
+
+        this.channelIndex = program.getChannelIndex();
+
+        this.weekIndex = program.getWeekIndex();
+
+        this.programName = program.getProgramName();
+
+        this.programStartTime = program.getProgramStartTime();
+
+        this.programEndTime = program.getProgramEndTime();
+    }
+    
     public int getId() {
         return id;
     }

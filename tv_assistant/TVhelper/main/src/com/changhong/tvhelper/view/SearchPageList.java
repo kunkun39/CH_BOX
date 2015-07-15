@@ -249,7 +249,7 @@ public class SearchPageList extends Fragment{
 			 * 观看直播
 			 */
             List<OrderProgram> orderPrograms = channelService.findAllOrderPrograms();
-            Program program = new Program((String)map.get("channel_index")
+            final Program program = new Program((String)map.get("channel_index")
             		, (String)map.get("week_index")
             		, (String)map.get("program_name")
             		, (String)map.get("str_startTime")
@@ -445,7 +445,9 @@ public class SearchPageList extends Fragment{
 
                         } else if (vh.channelPlayButton.getText().equals("已经预约"))
                         {
-                        	if (channelService.deleteOrderProgramByWeek((String)map.get("program_name"), DateUtils.getWeekIndexName(weekIndexOffset))) {
+                        	OrderProgram orderProgram = new OrderProgram(program);
+                        	orderProgram.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
+                        	if (channelService.deleteOrderProgram(orderProgram)) {
                             	vh.channelPlayButton.setText("可以预约"); 
                                 vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
                                 Toast.makeText(activity, "取消预约成功", Toast.LENGTH_SHORT).show();
@@ -485,9 +487,9 @@ public class SearchPageList extends Fragment{
 				vh.channelPlayInfo.setText(time);
 			}
 			else {
-				program=currentChannelPlayData.get(channelName);
-	            if(program != null){
-	                String time="正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + program.getProgramName();
+				Program currentProgram=currentChannelPlayData.get(channelName);
+	            if(currentProgram != null){
+	                String time="正在播放:" + currentProgram.getProgramStartTime() + " - " + currentProgram.getProgramEndTime() + "\n" + currentProgram.getProgramName();
 	                vh.channelPlayInfo.setText(time);
 	            }else {
 	                vh.channelPlayInfo.setText("无节目信息");

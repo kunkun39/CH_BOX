@@ -326,6 +326,19 @@ public class ChannelService {
         }
 
     }
+    
+    public boolean deleteOrderProgram(OrderProgram orderProgram) {
+        try {
+            String delete = "DELETE FROM order_program WHERE week_index = ? AND program_start_time = ? AND program_end_time = ? AND program_name = ? AND channel_name = ?";
+            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            database.execSQL(delete, new Object[]{orderProgram.getWeekIndex(), orderProgram.getProgramStartTime(), orderProgram.getProgramEndTime(), orderProgram.getProgramName(), orderProgram.getChannelName()});
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 
     public boolean deleteOrderProgramByWeek(String programName, String weekName) {
         try {
