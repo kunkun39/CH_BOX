@@ -2,6 +2,7 @@ package com.changhong.tvhelper.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,11 @@ import java.util.Map;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.activity.TVChannelPlayActivity;
@@ -17,12 +22,15 @@ import com.changhong.tvhelper.activity.TVChannelProgramShowActivity;
 import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.activity.TVChannelShouCangShowActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
+import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
 
+import android.R.integer;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -162,14 +170,13 @@ public class SearchPageList extends Fragment{
                                 }
                             }
 							
-
 							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)ChannelService.searchProgramByText(searchString);
 							for (Map<String, Object> channel : channelList) {								
-								for (Map<String, Object> tempMap : searchChannel) {
-									if (tempMap.containsValue(channel.get("service_name"))) {
-										continue;
-									}									
-								}
+//								for (Map<String, Object> tempMap : searchChannel) {
+//									if (tempMap.containsValue(channel.get("service_name"))) {
+//										continue;
+//									}									
+//								}
 								searchChannel.add(channel);								
 							}
 							
@@ -198,9 +205,11 @@ public class SearchPageList extends Fragment{
 
 	class ChannelAdapter extends BaseAdapter {
 		private LayoutInflater minflater;
-
+		
+		
 		public ChannelAdapter(Context context) {
 			this.minflater = LayoutInflater.from(context);
+			
 		}
 
 		public int getCount() {
@@ -239,6 +248,14 @@ public class SearchPageList extends Fragment{
 			/**
 			 * 观看直播
 			 */
+            List<OrderProgram> orderPrograms = channelService.findAllOrderPrograms();
+            Program program = new Program((String)map.get("channel_index")
+            		, (String)map.get("week_index")
+            		, (String)map.get("program_name")
+            		, (String)map.get("str_startTime")
+            		, (String)map.get("str_endTime")
+            		, (String)map.get("service_name"));
+            
 			final String serviceName = (String) map.get("service_name");
 			vh.channelLogo.setOnClickListener(new OnClickListener() {
 				@Override
@@ -252,10 +269,10 @@ public class SearchPageList extends Fragment{
                     startActivity(intent);
 				}
 			});
-			final String channelServiceId = (String) map.get("service_id");
+			final String channelServiceId = ((String) map.get("service_id") == null)? (String) map.get("channel_index") : (String) map.get("service_id");
             final String channelName = (String) map.get("service_name");
             final String channelIndex = (String) map.get("channel_index");
-
+            
             /**
              *收藏频道和取消收藏
              */
@@ -297,34 +314,186 @@ public class SearchPageList extends Fragment{
                             Toast.makeText(activity, "收藏频道失败", Toast.LENGTH_SHORT).show();
                         }
                     }
+                    notifyDataSetChanged();
                 }
             });
 
             /**
              *查看频道节目
              */
-            vh.channelPlayButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    MyApplication.vibrator.vibrate(100);
+            final int weekIndexOffset;
+            if(map.containsKey("program_name"))
+            {		
+            	weekIndexOffset = Integer.valueOf((String) map.get("week_index")) >= DateUtils.getWeekIndex(0)
+                		? Integer.valueOf((String) map.get("week_index")) - DateUtils.getWeekIndex(0)
+                		: 7 - DateUtils.getWeekIndex(0) + Integer.valueOf((String) map.get("week_index"));
+                
+                
+            	if(weekIndexOffset == 0 )
+            	{            		
 
-                    Intent intent = new Intent(activity, TVChannelProgramShowActivity.class);
-                    intent.putExtra("channelName", channelName);
-                    intent.putExtra("channelIndex", channelIndex);
-                    startActivity(intent);
-                }
-            });
+            		if (0 < DateUtils.getCurrentTimeStamp().compareTo((String)map.get("str_endTime"))) {
+            			vh.channelPlayButton.setText("已经结束");	
+					}
+            		else if (0 < DateUtils.getCurrentTimeStamp().compareTo((String)map.get("str_startTime"))) {
+            			vh.channelPlayButton.setText("正在播放");	
+					}
+            		else {
+            			if(findOrderProgram(orderPrograms,program))
+            			{
+            				vh.channelPlayButton.setText("已经预约");
+            				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
+            			}
+            			else {
+            				vh.channelPlayButton.setText("可以预约");
+            				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+						}
+					}            		
+            	}
+            	else {
+            		if(findOrderProgram(orderPrograms,program))
+            		{
+            			vh.channelPlayButton.setText("已经预约");
+        				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
+        			}
+        			else {
+        				vh.channelPlayButton.setText("可以预约");
+        				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+					}
+				}
+            		
+            	
+            	
+            	vh.channelPlayButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MyApplication.vibrator.vibrate(100);
+
+                        if (vh.channelPlayButton.getText().equals("可以预约")) {
+
+                            try {
+                                //删除时间冲突的预约节目
+                                final OrderProgram orderProgramConflict = channelService.findOrderProgramByStartTime((String)map.get("str_startTime"), DateUtils.getWeekIndexName(weekIndexOffset));
+                                if (orderProgramConflict != null && orderProgramConflict.getProgramName() != null && orderProgramConflict.getProgramName().length() > 0) {
+                                  String dialogtitle="您已预订该时段节目" + orderProgramConflict.getProgramName();
+                                  String content="是否替换为：" + (String)map.get("program_name")+"?";
+                                	DialogUtil.showAlertDialog(activity, dialogtitle, content,"是","NO", new DialogBtnOnClickListener() {
+									
+									@Override
+									public void onSubmit(DialogMessage dialogMessage) {
+
+                                        channelService.deleteOrderProgram(orderProgramConflict.getProgramName(), orderProgramConflict.getOrderDate());
+                                        OrderProgram orderProgramReplace = new OrderProgram();
+                                        orderProgramReplace.setProgramName((String)map.get("program_name"));
+                                        orderProgramReplace.setChannelName(channelName);
+                                        orderProgramReplace.setOrderDate(DateUtils.getDayOfToday());
+                                        orderProgramReplace.setChannelIndex((String)map.get("channel_index"));
+                                        orderProgramReplace.setProgramStartTime((String)map.get("str_startTime"));
+                                        orderProgramReplace.setProgramEndTime((String)map.get("str_endTime"));
+                                        orderProgramReplace.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
+                                        orderProgramReplace.setStatus("已预约");
+                                        if (channelService.saveOrderProgram(orderProgramReplace)) {
+                                            vh.channelPlayButton.setText("已经预约");
+                                            vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));                                            
+                                            Toast.makeText(activity, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(activity, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    
+									}
+									
+									@Override
+									public void onCancel(DialogMessage dialogMessage) {
+                                         vh.channelPlayButton.setText("可以预约");
+                                         vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+									}
+								});
+                                	
+                                } else {
+                                    //保存预约信息
+                                    try {
+                                        OrderProgram orderProgram = new OrderProgram();
+                                        orderProgram.setChannelIndex((String)map.get("channel_index"));
+                                        orderProgram.setStatus("已预约");
+                                        orderProgram.setChannelName(channelName);
+                                        
+                                        
+                                        
+                                        String orderDate = DateUtils.getOrderDate(weekIndexOffset);
+                                        orderProgram.setOrderDate(orderDate + (String)map.get("str_startTime"));
+                                        orderProgram.setProgramName((String)map.get("program_name"));
+                                        orderProgram.setProgramStartTime((String)map.get("str_startTime"));
+                                        orderProgram.setProgramEndTime((String)map.get("str_endTime"));
+                                        orderProgram.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
+
+                                        if (channelService.saveOrderProgram(orderProgram)) {                                            
+                                            vh.channelPlayButton.setText("已经预约");
+                                            vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
+                                            Toast.makeText(activity, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            vh.channelPlayButton.setText("可以预约");
+                                            vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+                                            Toast.makeText(activity, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        } else if (vh.channelPlayButton.getText().equals("已经预约"))
+                        {
+                        	if (channelService.deleteOrderProgramByWeek((String)map.get("program_name"), DateUtils.getWeekIndexName(weekIndexOffset))) {
+                            	vh.channelPlayButton.setText("可以预约"); 
+                                vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+                                Toast.makeText(activity, "取消预约成功", Toast.LENGTH_SHORT).show();
+	                        } else {
+	                            Toast.makeText(activity, "取消预约失败", Toast.LENGTH_SHORT).show();
+	                        }
+                        }
+                        notifyDataSetChanged();
+                    }
+                    
+                });
+            }
+            else {
+            	weekIndexOffset = 0;
+            	vh.channelPlayButton.setText("节目信息"); 
+            	vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+            	vh.channelPlayButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        MyApplication.vibrator.vibrate(100);
+
+                        Intent intent = new Intent(activity, TVChannelProgramShowActivity.class);
+                        intent.putExtra("channelName", channelName);
+                        intent.putExtra("channelIndex", channelIndex);
+                        startActivity(intent);
+                    }
+                });
+			}
+            
 
 			vh.channelName.setText(serviceName);
-
+			
+            
             //设置数据
-            Program program=currentChannelPlayData.get(channelName);
-            if(program != null){
-                String time="正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + program.getProgramName();
-                vh.channelPlayInfo.setText(time);
-            }else {
-                vh.channelPlayInfo.setText("无节目信息");
-            }
+			if (map.containsKey("program_name")) {				
+				String time="于" + DateUtils.getOrderDate(weekIndexOffset) + " " + map.get("str_startTime") + " - " + map.get("str_endTime") + "\n将要播放：\n" + map.get("program_name");
+				vh.channelPlayInfo.setText(time);
+			}
+			else {
+				program=currentChannelPlayData.get(channelName);
+	            if(program != null){
+	                String time="正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n" + program.getProgramName();
+	                vh.channelPlayInfo.setText(time);
+	            }else {
+	                vh.channelPlayInfo.setText("无节目信息");
+	            }
+			}
+            
 
 			return convertView;
 		}
@@ -335,6 +504,24 @@ public class SearchPageList extends Fragment{
 			public TextView channelPlayInfo;
 			public TextView channelShouCang;
 			public TextView channelPlayButton;
+		}				
+	}
+	
+	private boolean findOrderProgram(List<OrderProgram> programs,Program program)
+	{
+		int weekIndexOffset = Integer.valueOf(program.getWeekIndex()) >= DateUtils.getWeekIndex(0)
+        		? Integer.valueOf(program.getWeekIndex()) - DateUtils.getWeekIndex(0)
+        		: 7 - DateUtils.getWeekIndex(0) + Integer.valueOf(program.getWeekIndex());
+		
+		for (OrderProgram orderProgram : programs) {
+			if (orderProgram.getProgramName().equalsIgnoreCase(program.getProgramName())
+					&& orderProgram.getChannelName().equalsIgnoreCase(program.getChannelName())
+					&& orderProgram.getProgramEndTime().equalsIgnoreCase(program.getProgramEndTime())
+					&& orderProgram.getProgramStartTime().equalsIgnoreCase(program.getProgramStartTime())
+					&& orderProgram.getWeekIndex().equalsIgnoreCase(DateUtils.getWeekIndexName(weekIndexOffset))) {
+				return true;
+			}
 		}
+		return false;
 	}
 }

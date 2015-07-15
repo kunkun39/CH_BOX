@@ -199,13 +199,11 @@ public class ChannelService {
         }
 
         return programs;
-    }
-    
+    } 
 
     public static synchronized Collection<Map<String, Object>> searchProgramByText(String text)
     {
-    	final int MAX_COLLECTION_COUNT = 20;
-    	HashMap<String,String> map = new HashMap<String,String>();
+    	final int MAX_COLLECTION_COUNT = 20;    	
     	Set<Map<String, Object>> listMap = new HashSet<Map<String, Object>>();
     	
     	SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
@@ -217,10 +215,18 @@ public class ChannelService {
     	String currentTime = DateUtils.getCurrentTimeStamp();
     	int count = MAX_COLLECTION_COUNT;
     	try {
-    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? "/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
+    		//cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? "/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
+    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName,str_eventName,i_weekindex,str_startTime,str_endTime FROM epg_information WHERE str_eventName LIKE ?"/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
 	    	while (cursor.moveToNext()
-	    			&& (count-- > 0)) {			
-				map.put(cursor.getString(0),cursor.getString(1));			
+	    			&& (count-- > 0)) {							
+				HashMap<String, Object> temp = new HashMap<String, Object>();
+	    		temp.put("channel_index", cursor.getString(0));
+	    		temp.put("service_name", cursor.getString(1));
+	    		temp.put("program_name", cursor.getString(2));
+	    		temp.put("week_index", cursor.getString(3));
+	    		temp.put("str_startTime", cursor.getString(4));
+	    		temp.put("str_endTime", cursor.getString(5));
+	    		listMap.add(temp);
 			}
     	} catch (Exception e) {
     		cursor.close();
@@ -230,12 +236,6 @@ public class ChannelService {
     	if(cursor != null)
     		cursor.close();
     	
-    	for (Entry<String, String> mapTemp : map.entrySet()) {
-    		HashMap<String, Object> temp = new HashMap<String, Object>();
-    		temp.put("channel_index", mapTemp.getKey());
-    		temp.put("service_name", mapTemp.getValue());
-    		listMap.add(temp);
-		}
     	return listMap;
     }
     
