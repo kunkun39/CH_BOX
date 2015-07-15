@@ -27,12 +27,13 @@
                     <ul class="list">
                         <c:forEach items="${apps}" var="app">
                             <li class="c1">
-                                <a class="edit"
-                                   href="${pageContext.request.contextPath}/backend/appform.html?appId=${app.id}">编辑</a>
+                                <p>
+                                    <a class="edit" href="${pageContext.request.contextPath}/backend/appform.html?appId=${app.id}">编辑</a>
+                                </p>
 
-                                <p class="icon ico1"></p>
-                                <p ><a href="${applicationWebAddress}${app.actualFileName}" target="_blank">${applicationWebAddress}${app.actualFileName}</a></p>
-
+                                <p>
+                                    <img src="${applicationWebAddress}${app.actualFileName}" style="margin-top:0px;margin-left:0px; height:80px; width: 80px;" />
+                                </p>
                                 <p class="name">${app.appname}</p>
                                 </a>
                             </li>

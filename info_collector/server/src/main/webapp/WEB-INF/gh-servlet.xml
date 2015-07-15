@@ -48,17 +48,25 @@
                 <prop key="/backend/userform.html">userFormController</prop>
                 <prop key="/backend/userchangeenable.html">userChangeEnableController</prop>
                 <prop key="/backend/userchangepassword.html">userChangePasswordController</prop>
+
+                <!--app part-->
                 <prop key="/backend/appoverview.html">appManagementController</prop>
                 <prop key="/backend/appform.html">appFormController</prop>
+
+                <!--tvChannel part-->
                 <prop key="/backend/tvchannelform.html">channelFromController</prop>
+                <prop key="/backend/tvchannelinfooverview.html">tvChannelInfoManagementController</prop>
 
                 <!--client collector-->
                 <prop key="/backend/clientuserfeedback.html">userFeedBackController</prop>
                 <prop key="/backend/clientusercollector.html">userCollectorController</prop>
-                <prop key="/backend/tvchannelinfooverview.html">tvChannelInfoManagementController</prop>
                 <prop key="/backend/clientuserfeedbackoverview.html">userFeedBackManagementCotroller</prop>
                 <prop key="/backend/clientuserfeedbackform.html">userFeedBackFormController</prop>
                 <prop key="/backend/clientuserfeedbackchangestatus.html">userFeedBackChangeStatusController</prop>
+
+                <!--location part-->
+                <prop key="/backend/clientlocationoverview.html">clientLocationManagementController</prop>
+
             </props>
         </property>
     </bean>
@@ -123,5 +131,10 @@
     <bean id="channelFromController" class="com.changhong.system.web.controller.ChannelFormController">
         <property name="feedBackService" ref="feedBackService"/>
     </bean>
+
+    <bean id="clientLocationManagementController" class="com.changhong.system.web.controller.ClientLocationManagementController">
+        <property name="feedBackService" ref="feedBackService"/>
+    </bean>
+
 
 </beans>

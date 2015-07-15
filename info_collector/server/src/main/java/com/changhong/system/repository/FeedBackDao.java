@@ -2,12 +2,15 @@ package com.changhong.system.repository;
 
 import com.changhong.common.domain.EntityBase;
 import com.changhong.common.repository.EntityObjectDao;
+import com.changhong.system.domain.ClientLocationInfo;
+import com.changhong.system.domain.TvChannel;
 import com.changhong.system.domain.TvChannel;
 import com.changhong.system.domain.TvChannelInfo;
 import com.changhong.system.domain.FeedBack;
 import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import org.json.JSONArray;
 import org.json.JSONException;
+import sun.reflect.annotation.TypeAnnotation;
 
 import java.util.List;
 
@@ -26,4 +29,7 @@ public interface FeedBackDao extends EntityObjectDao {
     List<TvChannelInfo> obtainAllTvChannelInfo();
     List<TvChannel> obtainAllTvChannel(int startPosition,int pageSize,String channelName);
     int loadAllTvChannelInfoSize();
+
+    int loadLocationInfoSize();
+    List<ClientLocationInfo> obtainAllLocationInfo(int startPosition,int pageSize,String clientName);
 }

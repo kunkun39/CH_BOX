@@ -30,6 +30,9 @@
 
         <a href="${pageContext.request.contextPath}/backend/clientusercollector.html" <c:if test="${'COLLECTOR' eq BROSWER_LOCATION}">style="font-weight:bold;background:#5d5c5c;"</c:if>>收视统计</a>
 
+        <a href="${pageContext.request.contextPath}/backend/clientlocationoverview.html" <c:if test="${'Location' eq BROSWER_LOCATION}">style="font-weight:bold;background:#5d5c5c;"</c:if>>用户定位</a>
+
+
         <a href="${pageContext.request.contextPath}/backend/useroverview.html" <c:if test="${'USER' eq BROSWER_LOCATION}">style="font-weight:bold;background:#5d5c5c;"</c:if>>系统设置</a>
     </div>
 

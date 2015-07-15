@@ -1,16 +1,17 @@
 package com.changhong.system.service;
 
+import com.changhong.system.domain.*;
 import com.changhong.system.domain.FeedBack;
 import com.changhong.system.domain.TvChannel;
 import com.changhong.system.domain.TvChannelInfo;
 import com.changhong.system.domain.User;
 import com.changhong.system.repository.FeedBackDao;
+import com.changhong.system.web.facade.assember.ClientLocationInfoWebAssember;
 import com.changhong.system.web.facade.assember.TvChannelWebAssember;
+import com.changhong.system.web.facade.dto.*;
 import com.changhong.system.web.facade.dto.TvChannelDTO;
 import com.changhong.system.web.facade.assember.UserWebAssember;
-import com.changhong.system.web.facade.dto.TvChannelInfoDTO;
 import com.changhong.system.web.facade.assember.FeedBackWebAssember;
-import com.changhong.system.web.facade.dto.FeedBackDTO;
 import com.changhong.system.web.facade.dto.UserDTO;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +30,8 @@ public class FeedBackServiceImpl implements FeedBackService{
 
     @Autowired
     private FeedBackDao feedBackDao;
+
+
 
     @Override
     public List<FeedBackDTO> obtainUserFeedBacks( int startPosition, int pageSize) {
@@ -115,4 +118,27 @@ public class FeedBackServiceImpl implements FeedBackService{
         TvChannel tvChannel = TvChannelWebAssember.toTvChannelDomain(tvChannelDTO);
         feedBackDao.persist(tvChannel);
     }
+
+    @Override
+    public int loadAllClientLocationInfoSize() {
+        return feedBackDao.loadAllTvChannelInfoSize();
+    }
+
+    @Override
+    public List<ClientLocationInfoDTO> obtainClientLocationInfos(int startPosition, int pageSize, String clientName) {
+        List<ClientLocationInfo> clientLocationInfos=feedBackDao.obtainAllLocationInfo(startPosition, pageSize, clientName);
+        HashMap<String,String> userNames=new HashMap<String,String>();
+        if (clientLocationInfos != null) {
+            for (ClientLocationInfo clientLocationInfo : clientLocationInfos) {
+                String usemac=clientLocationInfo.getUserMac();
+                String usename=feedBackDao.obtainUsernameByMac(usemac);
+                userNames.put(usemac,usename);
+            }
+            return ClientLocationInfoWebAssember.toClientLocationInfoDTOs(clientLocationInfos, userNames);
+
+        }else {
+            return null;
+        }
+    }
+
 }

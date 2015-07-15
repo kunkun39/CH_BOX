@@ -45,4 +45,14 @@
         <property name="channelName" column="channel_name" insert="true" update="true" type="java.lang.String"/>
     </class>
 
+    <class name="com.changhong.system.domain.ClientLocationInfo" table="client_location">
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+        <property name="timestamp" column="timestamp" type="java.util.Date"/>
+        <property name="userMac" column="user_mac" insert="true" update="true" type="java.lang.String"/>
+        <property name="lon" column="lon" insert="true" update="true" type="java.lang.String"/>
+        <property name="lat" column="lat" insert="true" update="true" type="java.lang.String"/>
+    </class>
+
 </hibernate-mapping>

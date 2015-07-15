@@ -60,7 +60,7 @@
                     <tr>
                         <td>
                             appKey
-                            应用图标
+
                         </td>
 
                         <td>
@@ -69,8 +69,10 @@
 
                     </tr>
 
+
                     <tr>
                         <td>
+                            应用图标
                         </td>
                         <td>
                             <input type="file" id="appIconFile" name="appIconFile" class="file" style="width:300px;"/>
