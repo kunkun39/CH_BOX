@@ -3,7 +3,10 @@ package com.changhong.touying.music;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.vedio.AbstructProvider;
 
 import java.util.ArrayList;
@@ -47,7 +50,21 @@ public class MusicProvider implements AbstructProvider {
                     int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                     long createTime = cursor .getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED));
                     Music music = new Music(id, title, path, albumId, artist,artistId, duration, createTime);
-                    list.add(music);
+                    
+                    //除开NanoHTTPD映射目录外的其它目录歌曲不再添加
+                    boolean otheradded=false;
+                    if (NanoHTTPDService.otherHttpServerPaths!=null&&NanoHTTPDService.otherHttpServerPaths.size()>0) {
+						for (String otherpath:NanoHTTPDService.otherHttpServerPaths) {
+							if (path.startsWith(otherpath)) {
+								list.add(music);
+								otheradded=true;
+								break;
+							}
+						}
+					}
+                    if (!otheradded &&!TextUtils.isEmpty(NanoHTTPDService.defaultHttpServerPath)&&path.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
+                    	list.add(music);
+					}
                 }
                 cursor.close();
             }
