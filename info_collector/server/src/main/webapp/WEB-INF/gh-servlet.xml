@@ -66,7 +66,7 @@
 
                 <!--location part-->
                 <prop key="/backend/clientlocationoverview.html">clientLocationManagementController</prop>
-
+                <prop key="/backend/clientlocationmap.html">clientLocationMap</prop>
             </props>
         </property>
     </bean>
@@ -135,6 +135,6 @@
     <bean id="clientLocationManagementController" class="com.changhong.system.web.controller.ClientLocationManagementController">
         <property name="feedBackService" ref="feedBackService"/>
     </bean>
-
-
+    <bean id="clientLocationMap" class="com.changhong.system.web.controller.ClientLocationFormController">
+    </bean>
 </beans>
