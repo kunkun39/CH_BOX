@@ -34,6 +34,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -126,7 +127,7 @@ public class TVChannelPlayActivity extends Activity {
 	 * 亮度条和音量条
 	 */
 	private VerticalSeekBar sound, bright;
-	private LinearLayout seekbarWidget;
+	private RelativeLayout seekbarWidget;
 
 	/**
 	 * 收藏
@@ -135,7 +136,8 @@ public class TVChannelPlayActivity extends Activity {
 	private List<String> allShouChangChannel = new ArrayList<String>();
 	private ChannelService channelService;
 	 private List<Map<String, Object>> channelShowData = new ArrayList<Map<String, Object>>();
-	/**
+	private String channelServiceId="";
+	 /**
 	 * 
 	 * 动画效果
 	 */
@@ -318,7 +320,7 @@ public class TVChannelPlayActivity extends Activity {
 		 * 
 		 * 音量条和亮度条
 		 */
-		seekbarWidget = (LinearLayout) findViewById(R.id.seekbarWidget);
+		seekbarWidget = (RelativeLayout) findViewById(R.id.seekbarWidget);
 		sound = (VerticalSeekBar) findViewById(R.id.sound);
 		collection=(TextView)findViewById(R.id.play_collection);
 		initCollectionData();
@@ -340,6 +342,7 @@ public class TVChannelPlayActivity extends Activity {
 
                 try {
                     allShouChangChannel = channelService.getAllChannelShouCangs();
+                    updateShouChangView(!allShouChangChannel.contains(channelServiceId));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -378,6 +381,33 @@ public class TVChannelPlayActivity extends Activity {
 			
 			@Override
             public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+              try {
+            	  if (allShouChangChannel.contains(channelServiceId)) {
+                      //取消收藏操作
+                      boolean success = channelService.cancelChannelShouCang(channelServiceId);
+                      if (success) {
+                          allShouChangChannel.remove(channelServiceId);
+                          Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+                      } else {
+                          Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+                      }
+                      updateShouChangView(!allShouChangChannel.contains(channelServiceId));
+                  } else {
+                      //收藏操作
+                      boolean success = channelService.channelShouCang(channelServiceId);
+                      if (success) {
+                    	  allShouChangChannel.add(channelServiceId);
+                          Toast.makeText(TVChannelPlayActivity.this, "频道收藏成功", Toast.LENGTH_SHORT).show();
+                      } else {
+                          Toast.makeText(TVChannelPlayActivity.this, "频道收藏失败", Toast.LENGTH_SHORT).show();
+                      }
+                      updateShouChangView(!allShouChangChannel.contains(channelServiceId));
+                  }
+                  
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
             }
         });
 
@@ -570,6 +600,9 @@ public class TVChannelPlayActivity extends Activity {
 						} catch (Exception e) {
 							imageViewChannelLogo.setImageResource(R.drawable.logotv);
 						}
+						
+						channelServiceId=(String)map.get("service_id");
+						updateShouChangView(!allShouChangChannel.contains(channelServiceId));
 						break;
 					}
 				}
@@ -666,6 +699,18 @@ public class TVChannelPlayActivity extends Activity {
 			}
 		}
 	};
+	
+	/**
+	 * 显示是否收藏频道
+	 * @param isshouchang true显示收藏频道，false显示取消收藏
+	 */
+	private void updateShouChangView(boolean isshouchang) {
+		if (isshouchang) {
+			collection.setText("收藏\n频道");
+		} else {
+			collection.setText("取消\n收藏");
+		}
+	}
 
 	private class PlayerIsPlayingMinitorThread extends Thread {
 		public void run() {
