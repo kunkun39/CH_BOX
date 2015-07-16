@@ -141,8 +141,19 @@ public class DragImageView extends ImageView {
     }
 
     public float getDistance(MotionEvent event) {
-        float x = event.getX(0) - event.getX(1);
-        float y = event.getY(0) - event.getY(1);
+    	float x = 0;
+    	float y = 0;
+    	try
+    	{
+	        x = event.getX(0) - event.getX(1);
+	        y = event.getY(0) - event.getY(1);
+    	}
+    	catch(Exception e)
+    	{
+    		e.printStackTrace();
+    		// false value
+    		return 1;
+    	}
 
         return FloatMath.sqrt(x * x + y * y);
     }
