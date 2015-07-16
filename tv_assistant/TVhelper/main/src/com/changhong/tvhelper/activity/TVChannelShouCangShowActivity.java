@@ -291,13 +291,14 @@ public class TVChannelShouCangShowActivity extends Activity {
                              channelShowData.add(map);
                          }
                      }
+                     mHandler.sendEmptyMessage(0);
                  }
              } catch (Exception e) {
                  e.printStackTrace();
              }
 
              // 通知Handler扫描收藏节目完成
-             mHandler.sendEmptyMessage(2);
+//             mHandler.sendEmptyMessage(2);
          }
     }
 
@@ -322,12 +323,13 @@ public class TVChannelShouCangShowActivity extends Activity {
                             }
                         }
                     }
+                    mHandler.sendEmptyMessage(1);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
           //通知Handler扫描预约节目完成
-            mHandler.sendEmptyMessage(3);
+//            mHandler.sendEmptyMessage(3);
         }
     }
 
