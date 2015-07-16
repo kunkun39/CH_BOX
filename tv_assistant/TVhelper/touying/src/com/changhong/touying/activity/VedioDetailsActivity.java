@@ -184,7 +184,8 @@ public class VedioDetailsActivity extends Activity {
                     MobilePerformanceUtils.httpServerUsing = true;
 
                     String[] content = StringUtils.delimitedListToStringArray(((String) msg.obj), "|");
-                    if (selectedVedio.getDisplayName().equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
+                    //有可能出现空指向错误，
+                    if (content!=null&&content.length>0&&selectedVedio!=null &&selectedVedio.getDisplayName().equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
                         /**
                          * set the play ui and play process
                          */
