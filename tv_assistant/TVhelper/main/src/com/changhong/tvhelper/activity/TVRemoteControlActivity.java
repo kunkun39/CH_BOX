@@ -782,6 +782,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
          * channel match list, integer value stand for match time, compare han zi one by one
          */
         private Map<String, Integer> matchChannel = new HashMap<String, Integer>();
+        
+        
 
         @Override
         public void onClientStatusChange(int status, Object obj) {
@@ -813,9 +815,16 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             }
         }
 
+        
         @Override
         public void onError(int errorType, int errorCode) {
-            Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，我们不能识别空指令" , Toast.LENGTH_LONG).show();
+        	if (errorCode == VoiceRecognitionClient.ERROR_NETWORK_CONNECT_ERROR) {
+        		Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，网络状态不好，识别失败" , Toast.LENGTH_LONG).show();
+			}
+        	else {
+        		Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，我们不能识别空指令" , Toast.LENGTH_LONG).show();
+			}
+            
             isRecognitioning = false;
             recognitionClient.stopVoiceRecognition();
         }
