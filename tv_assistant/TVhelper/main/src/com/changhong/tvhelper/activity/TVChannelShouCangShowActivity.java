@@ -85,7 +85,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 
         initViewAndEvent();
 
-        initData();
+        
     }
 
     private void initViewAndEvent() {
@@ -627,13 +627,13 @@ public class TVChannelShouCangShowActivity extends Activity {
      */
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
-        
-        }
+	protected void onResume() {
+		super.onResume();
+		if (ClientSendCommandService.titletxt != null) {
+			title.setText(ClientSendCommandService.titletxt);
+		}
+		initData();
+	}
 
 
     @Override
