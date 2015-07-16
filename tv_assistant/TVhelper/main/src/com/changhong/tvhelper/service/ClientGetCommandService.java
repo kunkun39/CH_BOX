@@ -256,7 +256,9 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                    } finally {
+                    } catch (IllegalStateException e) {
+                        e.printStackTrace();
+                    }finally {
                         dgPacket = null;
                     }
                 }
