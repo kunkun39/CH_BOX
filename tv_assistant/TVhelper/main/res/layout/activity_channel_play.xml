@@ -182,12 +182,13 @@
 
         <TextView
             android:id="@+id/play_collection"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_alignParentBottom="true"
             android:text="收藏\n频道"
+            android:textSize="12sp"
             android:textColor="@color/white"
             android:visibility="visible" />
 
