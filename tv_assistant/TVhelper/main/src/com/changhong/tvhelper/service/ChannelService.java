@@ -4,6 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.StaticLayout;
 import android.util.Log;
+
+import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
@@ -398,6 +400,9 @@ public class ChannelService {
 
     public List<OrderProgram> findAllOrderPrograms() {
         String findAll = "SELECT * FROM order_program ORDER BY order_program.order_date";
+        if (MyApplication.databaseContainer == null) {
+        	return null;
+        }
         SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
         Cursor cursor = database.rawQuery(findAll, null);
         List<OrderProgram> orderPrograms = new ArrayList<OrderProgram>();

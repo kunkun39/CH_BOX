@@ -453,11 +453,11 @@ public class ClientLocalThreadRunningService extends Service {
 
                         if (orderProgram.getProgramStartTime().compareTo(currentTime) == 0) {
                             channelService.deleteOrderProgram(orderProgram.getProgramName(), date);
-                            //更新收藏界面
-                            if (TVChannelShouCangShowActivity.mHandler != null) {
-                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
-                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(0);
-                            }
+                            //更新收藏界面 上面代码直接对数据库进行了修改，让收藏界面自己从数据库去更新，这里就不再进行操作。2015.7.15.debug-by-cym
+//                            if (TVChannelShouCangShowActivity.mHandler != null) {
+//                                TVChannelShouCangShowActivity.orderProgramList.remove(orderProgram);
+//                                TVChannelShouCangShowActivity.mHandler.sendEmptyMessage(1);
+//                            }
                             Log.e("OrderProgram", orderProgram.getProgramStartTime());
                             Message msg = new Message();
                             msg.what = 0;

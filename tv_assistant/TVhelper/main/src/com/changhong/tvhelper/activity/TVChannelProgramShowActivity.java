@@ -96,7 +96,10 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
         selectedWeekIndex = DateUtils.getWeekIndex(0);
         weekIndexName = DateUtils.getWeekIndexName(0);
         orderDate = DateUtils.getOrderDate(0);
-        orderProgramList = channelService.findAllOrderPrograms(); 
+        orderProgramList = channelService.findAllOrderPrograms();
+        if(null==orderProgramList){
+        	finish();
+        }
     }
 
     private void initView() {
