@@ -483,7 +483,7 @@ public class SearchPageList extends Fragment{
             
             //设置数据
 			if (map.containsKey("program_name")) {				
-				String time="于" + DateUtils.getOrderDate(weekIndexOffset) + " " + map.get("str_startTime") + " - " + map.get("str_endTime") + "\n将要播放：\n" + map.get("program_name");
+				String time="播放时间：" + DateUtils.getOrderDate(weekIndexOffset) + "\n" + map.get("str_startTime") + " - " + map.get("str_endTime") + "\n" + map.get("program_name");
 				vh.channelPlayInfo.setText(time);
 			}
 			else {
