@@ -42,6 +42,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.DialogUtil.DialogMessage;
+import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
@@ -312,7 +313,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                  */
                 int code = recognitionClient.startVoiceRecognition(recogListener, config);
                 if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-                    Toast.makeText(TVRemoteControlActivity.this, "网络连接出错，请重新尝试" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(TVRemoteControlActivity.this, "请检查网络连接" , Toast.LENGTH_LONG).show();
                 }
 
                 return true;

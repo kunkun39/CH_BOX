@@ -129,6 +129,7 @@ public class YuYingWordsUtils {
         TV_CHANNEL_REPLACE_KEYWORDS.put("ｃｃｔｖ", "CCTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("cctv", "CCTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("中央", "CCTV");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("央视", "CCTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("四川", "SCTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("成都", "CDTV");
         TV_CHANNEL_REPLACE_KEYWORDS.put("一", "1");
@@ -222,6 +223,25 @@ public class YuYingWordsUtils {
         otherNames4.add("CCTV2");
         otherNames4.add("CCTV-2");
         TV_CHANNEL_LOCATION_WORDS.put("中央财经", otherNames4);
+
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        List<String> otherNames5 = new ArrayList<String>();
+        otherNames5.add("CCTV-新闻");
+        TV_CHANNEL_LOCATION_WORDS.put("中央新闻", otherNames5);
+        TV_CHANNEL_LOCATION_WORDS.put("央视新闻", otherNames5);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV新闻", otherNames5);
+
+        List<String> otherNames6 = new ArrayList<String>();
+        otherNames6.add("CCTV-少儿");
+        TV_CHANNEL_LOCATION_WORDS.put("中央少儿", otherNames6);
+        TV_CHANNEL_LOCATION_WORDS.put("央视少儿", otherNames6);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV少儿", otherNames6);
+
+        List<String> otherNames7 = new ArrayList<String>();
+        otherNames7.add("CCTV-音乐");
+        TV_CHANNEL_LOCATION_WORDS.put("中央音乐", otherNames7);
+        TV_CHANNEL_LOCATION_WORDS.put("央视音乐", otherNames7);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV音乐", otherNames7);
     }
 
     /**
