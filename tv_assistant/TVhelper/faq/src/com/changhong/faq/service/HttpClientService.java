@@ -68,7 +68,7 @@ public class HttpClientService {
 
             PostMethod method = new PostMethod(HOSTS + "faq/ott/sendexamination.html");
             method.addParameter("result", o.toString());
-            WebUtils.httpPostRequest(method);
+            WebUtils.httpPostRequest(method.toString());
 
             Log.i(TAG, "httpPostRequest------>");
             Log.i(TAG, "result=" + result);
