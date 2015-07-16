@@ -327,7 +327,7 @@ public class TVChannelShouCangShowActivity extends Activity {
                 e.printStackTrace();
             }
           //通知Handler扫描预约节目完成
-//            mHandler.sendEmptyMessage(3);
+            mHandler.sendEmptyMessage(3);
         }
     }
 
