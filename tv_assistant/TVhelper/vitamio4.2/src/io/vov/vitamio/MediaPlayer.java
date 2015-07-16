@@ -729,9 +729,14 @@ public class MediaPlayer {
    * method, you will have to initialize it again by setting the data source and
    * calling prepare().
    */
-  public void reset() {
+  public void reset(){
     stayAwake(false);
-    _reset();
+    
+    try {
+    	_reset();
+	} catch (IllegalStateException e) {
+		// TODO: handle exception
+	}
     mEventHandler.removeCallbacksAndMessages(null);
     closeFD();
   }
