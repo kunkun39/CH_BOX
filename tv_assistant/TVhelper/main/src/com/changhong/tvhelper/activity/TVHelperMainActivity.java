@@ -331,7 +331,7 @@ public class TVHelperMainActivity extends Activity {
                         	dialogMessage.dialog.dismiss();
 						}
 
-                        System.exit(0);
+                        //System.exit(0);
 					}
 					
 					@Override
