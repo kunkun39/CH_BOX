@@ -168,16 +168,15 @@ public class SearchPageList extends Fragment{
                                 }
                             }
 							
-							
-//							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)channelService.searchProgramByText(searchString);
-//							for (Map<String, Object> channel : channelList) {								
-////								for (Map<String, Object> tempMap : searchChannel) {
-////									if (tempMap.containsValue(channel.get("service_name"))) {
-////										continue;
-////									}									
-////								}
-//								searchChannel.add(channel);								
-//							}
+							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)channelService.searchProgramByText(searchString);
+							for (Map<String, Object> channel : channelList) {								
+//								for (Map<String, Object> tempMap : searchChannel) {
+//									if (tempMap.containsValue(channel.get("service_name"))) {
+//										continue;
+//									}									
+//								}
+								searchChannel.add(channel);								
+							}
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -318,6 +317,7 @@ public class SearchPageList extends Fragment{
             final int weekIndexOffset;
             if(map.containsKey("program_name"))
             {		
+            	vh.channelShouCang.setVisibility(View.GONE);
             	weekIndexOffset = Integer.valueOf((String) map.get("week_index")) >= DateUtils.getWeekIndex(0)
                 		? Integer.valueOf((String) map.get("week_index")) - DateUtils.getWeekIndex(0)
                 		: 7 - DateUtils.getWeekIndex(0) + Integer.valueOf((String) map.get("week_index"));
@@ -458,6 +458,7 @@ public class SearchPageList extends Fragment{
             	weekIndexOffset = 0;
             	vh.channelPlayButton.setText("节目信息"); 
             	vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+            	vh.channelShouCang.setVisibility(View.VISIBLE);
             	vh.channelPlayButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
