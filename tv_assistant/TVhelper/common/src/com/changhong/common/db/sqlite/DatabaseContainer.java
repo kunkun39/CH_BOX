@@ -29,20 +29,14 @@ public class DatabaseContainer extends SQLiteOpenHelper {
 
     protected DatabaseContainer(Context context) {
         super(context, DATABASE_NAME, null, CURRENT_VERSION);
-    }    
-    
-    public static DatabaseContainer getInstance(Context context)
-    {
-    	if(databaseContainer == null)
-    	{
-    		synchronized (databaseContainer) {
-    			if (databaseContainer == null) {
-    				databaseContainer = new DatabaseContainer(context);
-				}    			
-			}    		
-    	}
-    	
-    	return databaseContainer;
+    }
+
+    public static DatabaseContainer getInstance(Context context) {
+        if (databaseContainer == null) {
+            databaseContainer = new DatabaseContainer(context);
+        }
+
+        return databaseContainer;
     }
     
     public SQLiteDatabase openEPGDatabase() {

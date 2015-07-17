@@ -77,7 +77,7 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         vibrator = (Vibrator) getSystemService(Service.VIBRATOR_SERVICE);
-        instance=this;
+        instance = this;
         viewOptions = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.ic_stub)
                 .showImageOnFail(R.drawable.ic_stub)
@@ -126,9 +126,8 @@ public class MyApplication extends Application {
         smallImageCachePath = StorageUtils.getCacheDirectory(this);
         epgDBCachePath = PathGenerateUtils.getEPGDirectory(this);
     }
-    
-    public static DatabaseContainer getDatabaseContainer(Context context)
-    {
-    	return DatabaseContainer.getInstance(context);
+
+    public static DatabaseContainer getDatabaseContainer(Context context) {
+        return DatabaseContainer.getInstance(context);
     }
 }

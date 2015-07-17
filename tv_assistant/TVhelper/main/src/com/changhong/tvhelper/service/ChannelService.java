@@ -386,8 +386,8 @@ public class ChannelService {
 
     public List<OrderProgram> findOrderProgramsByWeek(String weekIndex) {
         String findAll = "SELECT * FROM order_program where order_program.week_index = ?";
-        if(null==MyApplication.getDatabaseContainer(context)){
-        	return null;
+        if (null == MyApplication.getDatabaseContainer(context)) {
+            return null;
         }
         SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery(findAll, new String[]{weekIndex});
