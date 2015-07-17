@@ -26,6 +26,7 @@ import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.tvhelper.utils.CommonUtil;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
 
 import android.R.integer;
@@ -167,15 +168,16 @@ public class SearchPageList extends Fragment{
                                 }
                             }
 							
-							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)channelService.searchProgramByText(searchString);
-							for (Map<String, Object> channel : channelList) {								
-//								for (Map<String, Object> tempMap : searchChannel) {
-//									if (tempMap.containsValue(channel.get("service_name"))) {
-//										continue;
-//									}									
-//								}
-								searchChannel.add(channel);								
-							}
+							
+//							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)channelService.searchProgramByText(searchString);
+//							for (Map<String, Object> channel : channelList) {								
+////								for (Map<String, Object> tempMap : searchChannel) {
+////									if (tempMap.containsValue(channel.get("service_name"))) {
+////										continue;
+////									}									
+////								}
+//								searchChannel.add(channel);								
+//							}
 							
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -246,12 +248,7 @@ public class SearchPageList extends Fragment{
 			 * 观看直播
 			 */
             List<OrderProgram> orderPrograms = channelService.findAllOrderPrograms();
-            final Program program = new Program((String)map.get("channel_index")
-            		, (String)map.get("week_index")
-            		, (String)map.get("program_name")
-            		, (String)map.get("str_startTime")
-            		, (String)map.get("str_endTime")
-            		, (String)map.get("service_name"));
+            final Program program = CommonUtil.RawDataToProgram(map);
             
 			final String serviceName = (String) map.get("service_name");
 			vh.channelLogo.setOnClickListener(new OnClickListener() {
