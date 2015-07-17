@@ -60,8 +60,6 @@ public class TVChannelSearchActivity extends FragmentActivity {
 
 	private static final String TAG = "tvplayer";
 
-	
-
 	/**
 	 * *****************************************Server IP Part ******************************************************
 	 */
@@ -70,9 +68,6 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	private ListView clients = null;
 	private Button list = null;
 	private Button back = null;
-
-
-
 
 	/**
 	 * **********************************************Vedio Part******************************************************
@@ -94,8 +89,6 @@ public class TVChannelSearchActivity extends FragmentActivity {
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 		initData();
-
-//		initTVchannel();//hs修改为使用ClientGetCommandService.channelLogoMapping
 
 		initViewAndEvent();
 	}
