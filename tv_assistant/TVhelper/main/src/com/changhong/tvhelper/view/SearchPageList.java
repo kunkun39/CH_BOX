@@ -120,16 +120,13 @@ public class SearchPageList extends Fragment{
 		searchChannel.clear();	
 		
 		// channel
-		channelService = new ChannelService();
+		channelService = new ChannelService(activity);
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				/**
 				 *初始化DB
 				 */
-				if (MyApplication.databaseContainer == null) {
-                    MyApplication.databaseContainer = new DatabaseContainer(activity);
-				}
 
 				try {
 					allShouChangChannel = channelService.getAllChannelShouCangs();
@@ -170,7 +167,7 @@ public class SearchPageList extends Fragment{
                                 }
                             }
 							
-							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)ChannelService.searchProgramByText(searchString);
+							Collection<Map<String, Object>> channelList = (Collection<Map<String, Object>>)channelService.searchProgramByText(searchString);
 							for (Map<String, Object> channel : channelList) {								
 //								for (Map<String, Object> tempMap : searchChannel) {
 //									if (tempMap.containsValue(channel.get("service_name"))) {

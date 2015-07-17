@@ -52,7 +52,7 @@ public class SearchPageDefault extends Fragment{
 	LinearLayout contentView = null;
 	
 	// 相关数据库
-	DatabaseContainer database =  MyApplication.databaseContainer;
+	DatabaseContainer database =  null;
 	
 	// 短语数据集
 	private Map<String,Integer> values = new LinkedHashMap<String, Integer>();	
@@ -75,6 +75,7 @@ public class SearchPageDefault extends Fragment{
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		this.activity = activity;
+		database = MyApplication.getDatabaseContainer(activity);
 						
 	}
 		
@@ -135,9 +136,6 @@ public class SearchPageDefault extends Fragment{
 	public boolean saveSentences(Activity activity,String text)
 	{
 		boolean isSuccess = true;
-		if (database == null) {
-			database = new DatabaseContainer(activity);
-		}
 		
 		SQLiteDatabase sqLiteDatabase = database.getWritableDatabase();
 		sqLiteDatabase.beginTransaction();
@@ -177,9 +175,7 @@ public class SearchPageDefault extends Fragment{
 				+ " ORDER BY search_count DESC";
 		
 		values.clear();
-		if (database == null) {
-			database = new DatabaseContainer(activity);
-		}
+
 		Cursor cursor = database.getReadableDatabase().rawQuery(sqlString, null);
 		int count = MAX_ITEM_COUNT;		
 		
@@ -194,9 +190,7 @@ public class SearchPageDefault extends Fragment{
 	public void deleteSentences(Activity activity,String sentence)
 	{
 		String sqlString = "DELETE FROM " + DatabaseContainer.TABLE_NAME_SEARCH_HEAT + " WHERE search_name=?";
-		if (database == null) {
-			database = new DatabaseContainer(activity);
-		}
+
 		database.getReadableDatabase().execSQL(sqlString, new Object[]{sentence});		
 	}
 	
@@ -204,9 +198,6 @@ public class SearchPageDefault extends Fragment{
 	public void updateDatabase(Activity activity)
 	{
 		String sqlString = "DELETE FROM " + DatabaseContainer.TABLE_NAME_SEARCH_HEAT + " WHERE search_time BETWEEN 'NOW' AND DATE('-30 DAY')";
-		if (database == null) {
-			database = new DatabaseContainer(activity);
-		}
 		database.getReadableDatabase().execSQL(sqlString, new Object[]{});
 	}
 	

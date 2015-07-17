@@ -410,10 +410,7 @@ public class ClientLocalThreadRunningService extends Service {
                         /**
                          * 重新初始化DB
                          */
-                        if (MyApplication.databaseContainer == null) {
-                            MyApplication.databaseContainer = new DatabaseContainer(ClientLocalThreadRunningService.this);
-                        }
-                        MyApplication.databaseContainer.reopenEPGDatabase();
+                        MyApplication.getDatabaseContainer(ClientLocalThreadRunningService.this).reopenEPGDatabase();
                         Log.e(TAG, "update epg database to version " + serverVersion);
                     }
                 } else {
@@ -436,13 +433,9 @@ public class ClientLocalThreadRunningService extends Service {
             while (true) {
                 try {
                     String currentTime = DateUtils.getCurrentTimeStamp();
-                    ChannelService channelService = new ChannelService();
+                    ChannelService channelService = new ChannelService(ClientLocalThreadRunningService.this);
                     String weekIndexName = DateUtils.getWeekIndexName(0);
                     String date = DateUtils.getDayOfToday();
-
-                    if (MyApplication.databaseContainer == null) {
-                        MyApplication.databaseContainer = new DatabaseContainer(ClientLocalThreadRunningService.this);
-                    }
 
                     //删除已经过期的预约节目
                     channelService.deleteOrderProgram(date);

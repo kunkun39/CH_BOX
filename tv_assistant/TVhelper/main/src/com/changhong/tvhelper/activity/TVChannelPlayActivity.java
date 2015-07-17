@@ -327,7 +327,7 @@ public class TVChannelPlayActivity extends Activity {
 	}
 
 	private void initCollectionData(){
-		channelService = new ChannelService();
+		channelService = new ChannelService(this);
 		channelShowData.clear();
         channelShowData.addAll(ClientSendCommandService.channelData);
 		new Thread(new Runnable() {
@@ -336,9 +336,6 @@ public class TVChannelPlayActivity extends Activity {
                 /**
                  * 初始化DB
                  */
-                if (MyApplication.databaseContainer == null) {
-                    MyApplication.databaseContainer = new DatabaseContainer(TVChannelPlayActivity.this);
-                }
 
                 try {
                     allShouChangChannel = channelService.getAllChannelShouCangs();
@@ -613,12 +610,9 @@ public class TVChannelPlayActivity extends Activity {
 						/**
 						 * 初始化DB
 						 */
-						if (MyApplication.databaseContainer == null) {
-							MyApplication.databaseContainer = new DatabaseContainer(TVChannelPlayActivity.this);
-						}
 
 						try {
-							ChannelService channelService = new ChannelService();
+							ChannelService channelService = new ChannelService(TVChannelPlayActivity.this);
 							programList = channelService.searchCurrentChannelPlayByName(name);
 							// 得到节目信息，发送消息更新UI
 							mDismissHandler.sendEmptyMessage(3);

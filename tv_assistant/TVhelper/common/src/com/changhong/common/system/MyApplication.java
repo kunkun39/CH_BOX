@@ -4,6 +4,7 @@ import java.io.File;
 
 import android.app.Application;
 import android.app.Service;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Vibrator;
 
@@ -24,7 +25,7 @@ import java.io.File;
  */
 public class MyApplication extends Application {
 
-    public static DatabaseContainer databaseContainer;
+    //private static DatabaseContainer databaseContainer = null;
 
     /**
      * vibrator for every action button
@@ -124,5 +125,10 @@ public class MyApplication extends Application {
          */
         smallImageCachePath = StorageUtils.getCacheDirectory(this);
         epgDBCachePath = PathGenerateUtils.getEPGDirectory(this);
+    }
+    
+    public static DatabaseContainer getDatabaseContainer(Context context)
+    {
+    	return DatabaseContainer.getInstance(context);
     }
 }

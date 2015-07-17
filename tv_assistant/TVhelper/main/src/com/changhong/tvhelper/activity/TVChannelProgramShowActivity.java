@@ -80,7 +80,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        channelService = new ChannelService();
+        channelService = new ChannelService(this);
 
         initData();
 
@@ -173,9 +173,6 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 /**
                  * 初始化DB
                  */
-                if (MyApplication.databaseContainer == null) {
-                    MyApplication.databaseContainer = new DatabaseContainer(TVChannelProgramShowActivity.this);
-                }
 
                 try {
                     programInfos = channelService.searchProgramInfosByName(channelName);

@@ -81,7 +81,7 @@ public class TVChannelShouCangShowActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        channelService = new ChannelService();
+        channelService = new ChannelService(this);
 
         initViewAndEvent();
 
@@ -274,9 +274,6 @@ public class TVChannelShouCangShowActivity extends Activity {
          	/**
               * 初始化DB
               */
-             if (MyApplication.databaseContainer == null) {
-                 MyApplication.databaseContainer = new DatabaseContainer(TVChannelShouCangShowActivity.this);
-             }
 
              try {
                  if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
@@ -306,10 +303,6 @@ public class TVChannelShouCangShowActivity extends Activity {
     class OrderProgramThread extends Thread {
         @Override
         public void run() {
-
-            if (MyApplication.databaseContainer == null) {
-                MyApplication.databaseContainer = new DatabaseContainer(TVChannelShouCangShowActivity.this);
-            }
             try {
                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
                     orderProgramList = channelService.findAllOrderPrograms();

@@ -1,5 +1,6 @@
 package com.changhong.tvhelper.service;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.StaticLayout;
@@ -28,6 +29,13 @@ import java.util.Set;
 public class ChannelService {
 
     private static final String TAG = "ChannelService";
+    
+    private Context context;
+    
+    public ChannelService(Context context)
+    {
+    	this.context = context;
+    }
 
     /*******************************************处理频道相关***********************************************************/
 
@@ -118,7 +126,7 @@ public class ChannelService {
         Map<String, Program> currentPlaying = new HashMap<String, Program>();
 
         try {
-            SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
             if (database != null) {
                 String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
                 String currentTime = DateUtils.getCurrentTimeStamp();
@@ -147,7 +155,7 @@ public class ChannelService {
 
     public List<Program> searchCurrentChannelPlayByName(String channelName) {
         List<Program> programList = new ArrayList<Program>();
-        SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
         if (database != null) {
             String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
             String currentTime = DateUtils.getCurrentTimeStamp();
@@ -175,7 +183,7 @@ public class ChannelService {
     public Map<String, List<Program>> searchProgramInfosByName (String channelName) {
         Map<String, List<Program>> programs = new HashMap<String, List<Program>>();
 
-        SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
         if (database != null) {
             Cursor cursor = database.rawQuery("select i_ChannelIndex,i_weekIndex, str_eventName, str_startTime, str_endTime from epg_information where str_ChannelName = ? " +
                             "order by str_startTime asc",
@@ -203,12 +211,12 @@ public class ChannelService {
         return programs;
     } 
 
-    public static synchronized Collection<Map<String, Object>> searchProgramByText(String text)
+    public synchronized Collection<Map<String, Object>> searchProgramByText(String text)
     {
     	final int MAX_COLLECTION_COUNT = 20;    	
     	Set<Map<String, Object>> listMap = new HashSet<Map<String, Object>>();
     	
-    	SQLiteDatabase database = MyApplication.databaseContainer.openEPGDatabase();
+    	SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
     	if (database == null) {
 			return listMap;
 		}
@@ -248,7 +256,7 @@ public class ChannelService {
     public boolean channelShouCang(String channelServiceId) {
         try {
             String insert = "INSERT INTO channel_shoucang (service_id) VALUES (?)";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(insert, new Object[]{channelServiceId});
             return true;
         } catch (Exception e) {
@@ -263,7 +271,7 @@ public class ChannelService {
     public boolean cancelChannelShouCang(String channelServiceId) {
         try {
             String delete = "DELETE FROM channel_shoucang WHERE service_id = ?";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{channelServiceId});
             return true;
         } catch (Exception e) {
@@ -278,7 +286,7 @@ public class ChannelService {
     public List<String> getAllChannelShouCangs() {
         List<String> all = new ArrayList<String>();
 
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery("select service_id from channel_shoucang", null);
 
         while (cursor.moveToNext()) {
@@ -294,7 +302,7 @@ public class ChannelService {
     public boolean saveOrderProgram(OrderProgram orderProgram) {
         try {
             String insert = "INSERT INTO order_program (order_date, channel_index, week_index, program_start_time,program_end_time,status,program_name,channel_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(insert, new Object[]{orderProgram.getOrderDate(), orderProgram.getChannelIndex(), orderProgram.getWeekIndex(), orderProgram.getProgramStartTime(), orderProgram.getProgramEndTime(), orderProgram.getStatus(), orderProgram.getProgramName(), orderProgram.getChannelName()});
             return true;
         } catch (Exception e) {
@@ -307,7 +315,7 @@ public class ChannelService {
     public boolean deleteOrderProgram(String dateOfToday) {
         try {
             String delete = "DELETE FROM order_program WHERE order_date < '" + dateOfToday + "'";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete);
             return true;
         } catch (Exception e) {
@@ -319,7 +327,7 @@ public class ChannelService {
     public boolean deleteOrderProgram(String programName, String orderDate) {
         try {
             String delete = "DELETE FROM order_program WHERE order_program.program_name = ? AND order_program.order_date = ?";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{programName, orderDate});
             return true;
         } catch (Exception e) {
@@ -332,7 +340,7 @@ public class ChannelService {
     public boolean deleteOrderProgram(OrderProgram orderProgram) {
         try {
             String delete = "DELETE FROM order_program WHERE week_index = ? AND program_start_time = ? AND program_end_time = ? AND program_name = ? AND channel_name = ?";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{orderProgram.getWeekIndex(), orderProgram.getProgramStartTime(), orderProgram.getProgramEndTime(), orderProgram.getProgramName(), orderProgram.getChannelName()});
             return true;
         } catch (Exception e) {
@@ -345,7 +353,7 @@ public class ChannelService {
     public boolean deleteOrderProgramByWeek(String programName, String weekName) {
         try {
             String delete = "DELETE FROM order_program WHERE order_program.program_name = ? AND order_program.week_index = ?";
-            SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new String[]{programName, weekName});
             return true;
         } catch (Exception e) {
@@ -358,7 +366,7 @@ public class ChannelService {
 
     public OrderProgram findOrderProgramByStartTime(String startTime, String weekIndex) {
         String find = "SELECT * FROM order_program WHERE order_program.program_start_time = ? AND order_program.week_index = ?";
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery(find, new String[]{startTime, weekIndex});
         OrderProgram orderProgram = new OrderProgram();
         while (cursor.moveToNext()) {
@@ -378,10 +386,10 @@ public class ChannelService {
 
     public List<OrderProgram> findOrderProgramsByWeek(String weekIndex) {
         String findAll = "SELECT * FROM order_program where order_program.week_index = ?";
-        if(null==MyApplication.databaseContainer){
+        if(null==MyApplication.getDatabaseContainer(context)){
         	return null;
         }
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery(findAll, new String[]{weekIndex});
         List<OrderProgram> orderPrograms = new ArrayList<OrderProgram>();
         while (cursor.moveToNext()) {
@@ -403,10 +411,8 @@ public class ChannelService {
 
     public List<OrderProgram> findAllOrderPrograms() {
         String findAll = "SELECT * FROM order_program ORDER BY order_program.order_date";
-        if (MyApplication.databaseContainer == null) {
-        	return null;
-        }
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery(findAll, null);
         List<OrderProgram> orderPrograms = new ArrayList<OrderProgram>();
         while (cursor.moveToNext()) {

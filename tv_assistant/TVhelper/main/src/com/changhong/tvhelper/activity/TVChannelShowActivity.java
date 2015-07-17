@@ -98,7 +98,7 @@ public class TVChannelShowActivity extends Activity {
         //提示用户的网络连接情况，由于川网局域网内，只能通通过WIFI连接，所以用不着显示
         //NetEstimateUtils.noticeEndUserNetworkStatus(this);
 
-        channelService = new ChannelService();
+        channelService = new ChannelService(this);
 
         initViewAndEvent();
 
@@ -339,9 +339,6 @@ public class TVChannelShowActivity extends Activity {
                 /**
                  * 初始化DB
                  */
-                if (MyApplication.databaseContainer == null) {
-                    MyApplication.databaseContainer = new DatabaseContainer(TVChannelShowActivity.this);
-                }
 
                 try {
                     allShouChangChannel = channelService.getAllChannelShouCangs();

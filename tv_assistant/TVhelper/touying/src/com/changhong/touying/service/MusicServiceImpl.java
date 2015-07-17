@@ -24,9 +24,6 @@ public class MusicServiceImpl implements MusicService {
 
     public MusicServiceImpl(Context context) {
         this.context = context;
-        if (MyApplication.databaseContainer == null) {
-            MyApplication.databaseContainer = new DatabaseContainer(context);
-        }
     }
 
     @Override
@@ -89,13 +86,13 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public void saveMusicLrc(MusicLrc musicLrc) {
         String insert = "INSERT INTO music_lrc (singer, name, path) VALUES (?, ?, ?)";
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         database.execSQL(insert, new Object[]{musicLrc.getSinger(), musicLrc.getName(), musicLrc.getPath()});
     }
 
     @Override
     public MusicLrc findMusicLrc(String singer, String name) {
-        SQLiteDatabase database = MyApplication.databaseContainer.getWritableDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
         Cursor cursor = database.rawQuery("SELECT * FROM music_lrc WHERE singer = ? AND name = ? LIMIT 1", new String[]{singer, name});
 
         MusicLrc musicLrc = null;
