@@ -18,6 +18,10 @@
     </io.vov.vitamio.widget.CenterLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_cutscreencontent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    <RelativeLayout
         android:id="@+id/channel_list_layout"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
@@ -244,4 +248,24 @@
         -->
     </RelativeLayout>
 
+</RelativeLayout>
+    <Button
+        android:id="@+id/bt_cutandshare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:text="截屏分享" />
+
+    <com.changhong.thirdpart.sharesdk.ScreenShotView
+        android:id="@+id/viewshare_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+	<ProgressBar 
+       android:id="@+id/pb_cutscreen"
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:layout_centerInParent="true"
+      android:visibility="visible"
+       />
 </RelativeLayout>

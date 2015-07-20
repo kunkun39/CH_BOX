@@ -11,9 +11,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
 import android.view.GestureDetector.OnGestureListener;
+import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -22,6 +24,8 @@ import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.thirdpart.sharesdk.ShareFactory;
+import com.changhong.thirdpart.sharesdk.util.L;
 import com.changhong.touying.images.DragImageView;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.system.AppConfig;
@@ -145,6 +149,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         initData();
 
         initEvent();
+        initShare();
     }
 
     private void initView() {
@@ -748,6 +753,34 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             Toast.makeText(PictureDetailsActivity.this, "图片获取失败", Toast.LENGTH_SHORT).show();
         }
     }
+    
+    /**
+     * **********************************************分享相关********************************************************
+     */
+    
+    public void initShare() {
+		findViewById(R.id.bt_sharepic).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				doShare();
+			}
+		});
+		
+	}
+    public void doShare() {
+    	String title=getResources().getString(R.string.share_title);//标题
+    	String curImgPath=imagePaths.get(currentImagePosistion);
+    	String picName="";
+    	
+    	if (!TextUtils.isEmpty(curImgPath)) {
+			picName=curImgPath.substring(curImgPath.lastIndexOf("/")+1, curImgPath.length());
+		}
+    	L.d("sharepic "+picName+"  "+curImgPath);
+    	String text="我这里有一张好看的图片，分享给您看看！"+picName;
+		ShareFactory.getShareCenter(PictureDetailsActivity.this).showShareMenu(title, text, curImgPath);
+	}
+    
 
     /**
      * **********************************************系统重载********************************************************

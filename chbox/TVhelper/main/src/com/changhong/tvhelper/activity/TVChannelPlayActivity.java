@@ -16,6 +16,7 @@
 
 package com.changhong.tvhelper.activity;
 
+import io.vov.vitamio.MediaMetadataRetriever;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.MediaPlayer.OnBufferingUpdateListener;
 import io.vov.vitamio.MediaPlayer.OnPreparedListener;
@@ -34,6 +35,7 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -54,9 +56,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -69,6 +73,9 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.SystemUtils;
 import com.changhong.common.widgets.VerticalSeekBar;
+import com.changhong.thirdpart.sharesdk.ScreenShotView;
+import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.sharesdk.util.ShareUtil;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
@@ -883,4 +890,86 @@ public class TVChannelPlayActivity extends Activity {
 			SwitchReceiver = null;
 		}
 	}
+	
+	
+	/*******************************截屏分享代码***********************************/
+	
+	private Button bt_share;
+	private ScreenShotView view_cutscreen;
+	private String title="长虹电视助手",text;//我正在观看XXX台，XXX节目，好精彩呀！
+	private String TAG="cutscreen";
+	private RelativeLayout rl_content;
+	private ProgressBar pb_cutscreen;
+	private Bitmap bitmapVideo;
+	private static final int DO_SHARE=222;
+	private void initshareView() {
+		bt_share = (Button) findViewById(R.id.bt_cutandshare);
+		view_cutscreen = (ScreenShotView) findViewById(R.id.viewshare_video);
+		rl_content = (RelativeLayout) findViewById(R.id.rl_cutscreencontent);
+		pb_cutscreen = (ProgressBar) findViewById(R.id.pb_cutscreen);
+		pb_cutscreen.setVisibility(View.INVISIBLE);
+		bt_share.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (view_cutscreen.isSaving()) {
+					return;
+				}
+				view_cutscreen.setSaving(true);
+				pb_cutscreen.setVisibility(View.VISIBLE);
+
+				if (programList != null && programList.size() > 0
+						&& programList.get(0) != null) {
+					text = "我正在观看" + name + "台，"
+							+ programList.get(0).getProgramName() + "节目，好精彩呀！";
+				} else {
+					text = "我正在观看" + name + "台，好精彩呀！";
+				}
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						 bitmapVideo = createVideoThumbnail(path);
+						 shareToastHandler.sendEmptyMessage(DO_SHARE);
+					}
+				}).start();
+				
+			}
+		});
+	}
+	
+	private Bitmap createVideoThumbnail(String filePath) {
+		Bitmap bitmap = null;
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever(
+				TVChannelPlayActivity.this);
+		try {
+			retriever.setDataSource(filePath);
+//			 String timeString =
+//			 retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+//			 long time = Long.parseLong(timeString) * 1000;
+//			 bitmap = retriever.getFrameAtTime(time*31/160); //按视频长度比例选择帧
+			bitmap = retriever.getFrameAtTime(mVideoView.getCurrentPosition()*1000); // 按视频长度比例选择帧
+			L.d(TAG+" getvideo frame time=="+mVideoView.getCurrentPosition()+" bitmap is null? "+(bitmap==null));
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			L.d(TAG+" getvideo frame error  "+ex);
+		} finally {
+			try {
+				retriever.release();
+			} catch (RuntimeException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return bitmap;
+	} 
+
+	Handler shareToastHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == DO_SHARE) {
+				Bitmap bitActivity = ShareUtil.screenshot(rl_content);
+				pb_cutscreen.setVisibility(View.GONE);
+				view_cutscreen.cutScreenAndShare(title, text,
+						bitmapVideo, bitActivity);
+			}
+		};
+	};
 }

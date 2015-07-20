@@ -480,6 +480,9 @@ public class ClientLocalThreadRunningService extends Service {
 				MusicProvider provider = new MusicProvider(ClientLocalThreadRunningService.this);
 				List<Music> musics = (List<Music>) provider.getList();
 				SetDefaultImage.getInstance().setContext(ClientLocalThreadRunningService.this);
+				if (musics!=null) {
+					
+				
 				for (int i = 0; i < musics.size(); i++) {
 					Music music=musics.get(i);
 					
@@ -487,6 +490,7 @@ public class ClientLocalThreadRunningService extends Service {
 //					Bitmap bitmap = MediaUtil.getArtwork(ClientLocalThreadRunningService.this, music.getId(),
 //							music.getArtistId(), true, false);
 //					DiskCacheFileManager.saveSmallImage(bitmap, music.getPath());
+				}
 				}
 			}
 		}).start();
