@@ -1,23 +1,17 @@
 package com.changhong.touying.activity;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,16 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.widgets.BoxSelectAdapter;
-import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.widgets.BidirSlidingLayout;
+import com.changhong.common.widgets.BoxSelectAdapter;
 import com.changhong.touying.R;
-import com.changhong.touying.music.MediaUtil;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
-import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
+import com.changhong.touying.service.M3UListProviderService;
 
 /**
  * Created by Jack Wang
@@ -222,6 +211,8 @@ public class TouYingCategoryActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(TouYingCategoryActivity.this, "敬请期待中...", Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(TouYingCategoryActivity.this,PDFViewActivity.class);
+                startActivity(intent);
             }
         });
 

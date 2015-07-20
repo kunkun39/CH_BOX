@@ -71,5 +71,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"                  
             android:layout_alignParentBottom="true"/>    
-
+<Button 
+	    android:id="@+id/bt_sharemusic"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/share"
+	    android:layout_alignParentRight="true"
+	    android:layout_alignParentBottom="true"
+	    />
 </RelativeLayout>
