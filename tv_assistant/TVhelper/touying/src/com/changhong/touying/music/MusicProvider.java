@@ -42,7 +42,7 @@ public class MusicProvider implements AbstructProvider {
                     String path = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA));
                     long albumId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
                     String artist = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST));
-                    long artistId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM_ID));
+                    long artistId = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.ARTIST_ID));
                     int duration = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION));
                     long createTime = cursor .getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED));
                     Music music = new Music(id, title, path, albumId, artist,artistId, duration, createTime);
@@ -85,4 +85,28 @@ public class MusicProvider implements AbstructProvider {
         }
         return vedioList;
     }
+    
+	public String getAlbumName(long albumId) {
+		String album = "";
+		if (albumId < 0) {
+			return album;
+		}
+		StringBuffer select = new StringBuffer(" 1=1 ");
+		// 查询语句：检索出.mp3为后缀名，时长大于1分钟，文件大小大于1MB的媒体文件
+		select.append(" and " + MediaStore.Audio.Media.ALBUM_ID + " = "
+				+ albumId);
+		Cursor cursor = context.getContentResolver().query(
+				MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null,
+				select.toString(), null, MediaStore.Audio.Media.ARTIST_KEY);
+		if (cursor != null) {
+			while (cursor.moveToNext()) {
+				album = cursor.getString(cursor
+						.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM));
+				break;
+			}
+			cursor.close();
+		}
+		return album;
+
+	}
 }

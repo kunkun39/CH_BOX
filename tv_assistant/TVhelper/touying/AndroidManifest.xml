@@ -22,6 +22,7 @@
         <activity android:name="com.changhong.touying.activity.MusicCategoryActivity" />
         <activity android:name="com.changhong.touying.activity.MusicViewActivity" />
         <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
+        <activity android:name="com.changhong.touying.activity.MusicDetailsActivity"/>
         <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
             android:theme="@android:style/Theme.Translucent">
             <intent-filter>

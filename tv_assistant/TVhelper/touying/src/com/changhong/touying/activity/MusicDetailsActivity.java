@@ -7,14 +7,19 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.changhong.common.system.MyApplication;
+import com.changhong.thirdpart.sharesdk.ShareFactory;
+import com.changhong.thirdpart.sharesdk.util.L;
+import com.changhong.thirdpart.test.ThirdpartTestActivity;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.music.MediaUtil;
 import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
 
@@ -87,6 +92,7 @@ public class MusicDetailsActivity extends FragmentActivity {
 		initialViews();
 
 		initialEvents();
+		initShare();
 	}
 
 	private void initialViews() {
@@ -136,5 +142,28 @@ public class MusicDetailsActivity extends FragmentActivity {
 				finish();
 			}
 		});
+	}
+	 /**
+     * **********************************************分享相关********************************************************
+     */
+    public void initShare() {
+		findViewById(R.id.bt_sharemusic).setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				doShare();
+			}
+		});
+		
+	}
+    public void doShare() {
+    	String title=getResources().getString(R.string.share_title);//标题
+    	String artist=selectedMusic.getArtist();
+    	String musicname=selectedMusic.getTitle();
+    	String album=new MusicProvider(MusicDetailsActivity.this).getAlbumName(selectedMusic.getAlbumId());
+    	
+    	String text="分享一首好听的歌曲给您，\n 歌手："+artist+"\n专辑："+album+"\n 歌曲名字："+musicname;
+    	L.d("sharepic "+text+"  ");
+		ShareFactory.getShareCenter(MusicDetailsActivity.this).showShareMenu(title, "  ",text, "");
 	}
 }
