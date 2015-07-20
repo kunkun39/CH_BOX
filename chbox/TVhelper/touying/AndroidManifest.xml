@@ -11,16 +11,36 @@
         android:label="touying part" >
 
         <!--问投影部分-->
-        <activity android:name=".activity.PictureCategoryActivity" />
-        <activity android:name="com.changhong.touying.activity.PictureViewActivity" />
-        <activity android:name="com.changhong.touying.activity.PictureDetailsActivity" />
-        <activity android:name="com.changhong.touying.activity.VedioCategoryActivity" />
-        <activity android:name="com.changhong.touying.activity.VedioViewActivity" />
-        <activity android:name="com.changhong.touying.activity.VedioDetailsActivity" />
-        <activity android:name="com.changhong.touying.activity.MusicCategoryActivity" />
-        <activity android:name="com.changhong.touying.activity.MusicViewActivity" />
-        <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
+		<activity
+            android:name="com.changhong.touying.activity.PictureCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.PictureViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.PictureDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicDetailsActivity"
+            android:screenOrientation="portrait" />
+
         <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
+            android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />                
@@ -28,7 +48,6 @@
                 <data android:mimeType="audio/*"/>
             </intent-filter>
         </activity>
-
         <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
         <service android:name="com.changhong.touying.service.M3UListProviderService">
             <intent-filter>
@@ -36,6 +55,7 @@
                 <action android:name="android.intent.action.MEDIA_MOUNTED"/>
             </intent-filter>
         </service>
+        
     </application>
 
 </manifest>

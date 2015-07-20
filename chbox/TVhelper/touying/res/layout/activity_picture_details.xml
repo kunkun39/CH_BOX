@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-    <LinearLayout
+    <RelativeLayout
             android:id="@+id/top_linear"
             android:background="@drawable/title_banner"
             android:layout_height="67.6dip"
@@ -17,7 +17,20 @@
                 android:textSize="20sp"
                 android:gravity="center_horizontal|center_vertical"
                 android:text="取消投影"/>
-    </LinearLayout>
+        <Button 
+		    android:id="@+id/bt_sharepic"
+		    android:layout_width="40dp"
+		    android:layout_height="40dp"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		    android:layout_marginRight="8dp"
+		    android:background="@drawable/btn_shar_stroke"
+		    android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+		    android:text="@string/share"
+	    />
+    </RelativeLayout>
 
 
     <ViewFlipper
@@ -143,12 +156,4 @@
                 android:layout_above="@id/text_scale"
                 />
     </RelativeLayout>
-	<Button 
-	    android:id="@+id/bt_sharepic"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/share"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentBottom="true"
-	    />
 </RelativeLayout>

@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/bk" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="60dp"
         android:background="@drawable/title_banner"
@@ -17,7 +17,21 @@
             android:layout_height="77.3dip"
             android:layout_marginTop="4dp"
             android:background="@drawable/title_btn_back_selector" />
-    </LinearLayout>
+        <Button 
+		    android:id="@+id/bt_sharemusic"
+		    android:layout_width="40dp"
+		    android:layout_height="40dp"
+		    android:layout_alignParentRight="true"
+		    android:layout_centerVertical="true"
+		    android:layout_marginRight="8dp"
+		    android:background="@drawable/btn_shar_stroke"
+		    android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/white"
+		    android:text="@string/share"
+	    />
+        
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/music_name"
@@ -72,12 +86,5 @@
         android:background="#d0000000"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal" />
-<Button 
-	    android:id="@+id/bt_sharemusic"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:text="@string/share"
-	    android:layout_alignParentRight="true"
-	    android:layout_alignParentBottom="true"
-	    />
+
 </RelativeLayout>
