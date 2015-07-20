@@ -82,7 +82,6 @@ public class TVHelperMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_helper_main);
         initViewAndEvent();
-        initCutScreen();
         initUpdateThread();
     }
 
@@ -655,16 +654,4 @@ public class TVHelperMainActivity extends Activity {
         }
     }
 
-    /************************测试定位和通知******************************/
-	Button bt_cutscreen;
-	private void initCutScreen() {
-		bt_cutscreen=(Button)findViewById(R.id.cutscreen);
-		bt_cutscreen.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(TVHelperMainActivity.this,ThirdpartTestActivity.class));
-			}
-		});
-	}
 }
