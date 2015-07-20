@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/channel_item_height"
+        android:background="@drawable/transparent_line_bg"
+        android:orientation="horizontal" >
+
+        <!-- 第一部分，台标和频道名 -->
+
+        <LinearLayout
+            android:layout_width="@dimen/channel_item_name_width"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" >
+
+            <ImageView
+                android:id="@+id/channel_logo"
+                android:layout_width="@dimen/channel_item_logo_width"
+                android:layout_height="40dip"
+                android:layout_gravity="center|center_vertical"
+                android:focusable="false"
+                android:scaleType="centerInside"
+                android:src="@drawable/logotv" />
+
+            <TextView
+                android:id="@+id/channel_name"
+                android:layout_width="match_parent"
+                android:layout_height="20dip"
+                android:layout_marginTop="@dimen/channel_item_name_margintop"
+                android:focusable="false"
+                android:gravity="center|center_vertical"
+                android:singleLine="true"
+                android:text="CCTV"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_item_textsize" />
+        </LinearLayout>
+
+        <!-- 第二部分，台标和频道名 -->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/channel_play_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/channel_shoucang"
+                android:focusable="false"
+                android:gravity="left|center_vertical"
+                android:text="无节目信息"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_item_textsize" />
+
+            <TextView
+                android:id="@+id/channel_shoucang"
+                android:layout_width="32dp"
+                android:layout_height="40dip"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/channel_play_button"
+                android:focusable="false"
+                android:gravity="left|center_vertical"
+                android:text="取消\n收藏"
+                android:textColor="@color/white"
+                android:textSize="@dimen/channel_item_textsize" />
+
+            <TextView
+                android:id="@+id/channel_play_button"
+                android:layout_width="32dp"
+                android:layout_height="40dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:focusable="false"
+                android:gravity="left|center_vertical"
+                android:text="节目\n信息"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/channel_item_textsize" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

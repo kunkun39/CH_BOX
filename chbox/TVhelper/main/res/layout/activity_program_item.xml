@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dip"
+        android:background="@drawable/transparent_line_bg"
+        android:orientation="horizontal" >
+
+        <!-- 第一部分，台标和频道名 -->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="65dip"
+            android:layout_marginLeft="10dp" >
+
+            <TextView
+                android:id="@+id/program_play_info"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:focusable="false"
+                android:gravity="left|center_vertical"
+                android:text="无节目信息"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/program_status"
+                android:layout_width="60dp"
+                android:layout_height="40dip"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:clickable="false"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/iv_program_status"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="30dp"
+                android:clickable="true"
+                android:src="@drawable/program_order" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/tvback02"
+              android:gravity="bottom">
+    <!--音乐图像部分-->
+    <LinearLayout
+            android:layout_width="120dip"
+            android:layout_height="85dip"
+            android:orientation="vertical">
+        <ImageView
+                android:id="@+id/music_image"
+                android:layout_width="120dip"
+                android:layout_height="61dip"/>
+        <TextView
+                android:layout_width="120dip"
+                android:layout_height="20dip"
+                android:gravity="center"
+                android:textSize="14sp"/>
+
+    </LinearLayout>
+    <!--音乐介绍部分-->
+    <LinearLayout
+            android:layout_width="260dp"
+            android:layout_height="85dip"
+            android:orientation="vertical"
+            android:weightSum="1">
+        <TextView
+                android:layout_marginTop="5dip"
+                android:id="@+id/music_name"
+                android:layout_width="match_parent"
+                android:text="忘情水 "
+                android:layout_height="32dp"
+                android:layout_weight="0.49"
+                android:textSize="14sp"/>
+    </LinearLayout>
+
+
+</LinearLayout>
+

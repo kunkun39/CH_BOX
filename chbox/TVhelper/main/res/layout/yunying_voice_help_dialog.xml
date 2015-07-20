@@ -1,0 +1,67 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tv_ime_bg" >
+
+        <TextView
+            android:id="@+id/tv_voicehelp_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dialog_baidudia_title_margintop"
+            android:singleLine="true"
+            android:text="电视助手信息提示："
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="@dimen/dialog_title_textsize" />
+
+        <ImageView
+            android:id="@+id/iv_voicehelp_dilver"
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_below="@id/tv_voicehelp_title"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@android:color/holo_blue_light" />
+
+        <ScrollView
+            android:id="@+id/sc_notification"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/dialog_iknow"
+            android:layout_below="@+id/iv_voicehelp_dilver"
+            android:layout_margin="10dp"
+            android:scrollbars="none" >
+
+            <TextView
+                android:id="@+id/dialog_notification"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="@string/dialog_baidu_voice_help"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/dialog_baidudia_content_textsize" />
+        </ScrollView>
+
+        <Button
+            android:id="@+id/dialog_iknow"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dialog_btn_marginBottom"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/btn_notext"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:singleLine="false"
+            android:text="我知道了"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_btn_textsize" />
+    </RelativeLayout>
+
+</RelativeLayout>
