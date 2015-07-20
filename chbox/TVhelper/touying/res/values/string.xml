@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="vedio_description">使用 ： 选择音视频后点击播放可以使本手机上\n的视频资源直接投影到电视机上，播放控制条\n可以进行音量、停止和播放等操作。\n在播放时请保持手机处于wifi连接。</string>
+    <string name="add_list">新建播放列表</string>
+    <string name="devide">-</string>
+    <string name="playlistname">播放列表名</string>
+    <string name="playlistcomment_pre">有</string>
+    <string name="playlistcomment_end">首歌曲</string>
+    <string name="playlist_nameexist">名字已存在</string>
+    <string name="playlist_comfirmdel">确认删除?</string>
+    <string name="playlist_createfile_failed">文件创建失败</string>
+    <string name="PlayList_play">播放</string>
+    <string name="music_view_playlist">播放列表</string>
+    <string name="playlist_del">删除</string>
+    <string name="whatdoyouwanttodo">你对该歌单准备进行什么操作？</string>
+    <string name="PlayList_modify">修改</string>
+    <string name="byplaylist">按播放列表</string>
+    <string name="byspecial">按专辑</string>
+    <string name="nametoolong">名字过长,请重新取名字</string>
+    <string name="filenotfound">文件不存在，或名字起的太奇怪，勿要傲娇！</string>
+</resources>
