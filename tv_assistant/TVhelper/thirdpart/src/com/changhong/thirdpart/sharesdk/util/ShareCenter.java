@@ -2,13 +2,18 @@ package com.changhong.thirdpart.sharesdk.util;
 
 import java.util.HashMap;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Toast;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.Platform.ShareParams;
@@ -23,7 +28,12 @@ import cn.sharesdk.wechat.favorite.WechatFavorite;
 import cn.sharesdk.wechat.friends.Wechat;
 import cn.sharesdk.wechat.moments.WechatMoments;
 
+import com.changhong.thirdpart.R;
 import com.changhong.thirdpart.uti.Util;
+import com.tencent.connect.share.QQShare;
+import com.tencent.tauth.IUiListener;
+import com.tencent.tauth.Tencent;
+import com.tencent.tauth.UiError;
 
 /**
  * ShareCenter 分享工具类 各个平台分享参数shareParam见官网http
@@ -257,7 +267,7 @@ public class ShareCenter {
 	 *            .xml文件标签.如分享QQ空间是QZONE.NAME
 	 */
 	public void shareByOnekeyshare(String title, String titleUrl, String text,
-			String imagePath, String imageUrl, String platform) {
+			final String imagePath, final String imageUrl, String platform) {
 		if (Looper.myLooper() != Looper.getMainLooper()) {
 			Log.e("Not UIThreadError",
 					"You are not on Ui Thread,it may be take some error or can't shar success.At least the toast can't show.");
@@ -287,6 +297,36 @@ public class ShareCenter {
 		oks.setTitle(title);
 		oks.setSite(title);
 		oks.setText(TextUtils.isEmpty(text) ? "  " : text);
+
+		if (!TextUtils.isEmpty(imagePath) || !TextUtils.isEmpty(imageUrl)) {
+			Bitmap enableLogo = BitmapFactory.decodeResource(
+					context.getResources(), R.drawable.logo_qq);
+			Bitmap disableLogo = BitmapFactory.decodeResource(
+					context.getResources(), R.drawable.logo_qq);
+			String label = "QQ好友";
+			OnClickListener listener = new OnClickListener() {
+				public void onClick(View v) {
+					Tencent mTencent = Tencent.createInstance(
+							ShareConfig.QQPPID, context);
+					Bundle params = new Bundle();
+					if (!TextUtils.isEmpty(imagePath)) {
+						params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,
+								imagePath);
+					} else if (!TextUtils.isEmpty(imageUrl)) {
+						params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,
+								imageUrl);
+					}
+					params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "");
+					params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
+							QQShare.SHARE_TO_QQ_TYPE_IMAGE);
+					// params.putInt(QQShare.SHARE_TO_QQ_EXT_INT,
+					// QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
+					mTencent.shareToQQ((Activity) context, params,
+							qqShareListener);
+				}
+			};
+			oks.setCustomerLogo(enableLogo, disableLogo, label, listener);
+		}
 		oks.show(context);// 启动分享GUI
 	}
 
@@ -527,7 +567,7 @@ public class ShareCenter {
 			}
 			if (!isOnlyMypaListener) {
 				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
-				String expName = arg2.toString();
+				String expName = arg2 == null ? "" : arg2.toString();
 				if (!TextUtils.isEmpty(expName)
 						&& (expName.contains("WechatClientNotExistException")
 								|| expName
@@ -572,6 +612,25 @@ public class ShareCenter {
 				showToast(context, "" + msg.obj, true);
 			}
 		};
+	};
+	IUiListener qqShareListener = new IUiListener() {
+		@Override
+		public void onCancel() {
+			L.e("cutscreen QQonCancel");
+			paListener.onCancel(null, 0);
+		}
+
+		@Override
+		public void onComplete(Object response) {
+			L.e("cutscreen QQonComplete " + response.toString());
+			paListener.onComplete(null, 0, null);
+		}
+
+		@Override
+		public void onError(UiError e) {
+			L.e("cutscreen QQonerror " + e.toString());
+			paListener.onError(null, 0, null);
+		}
 	};
 
 	public void showToast(Context context, String content, boolean islong) {
