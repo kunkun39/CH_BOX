@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.changhong.common"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:name="com.changhong.common.system.MyApplication"
+        android:label="common part" >
+    </application>
+
+</manifest>
