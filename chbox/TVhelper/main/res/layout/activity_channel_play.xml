@@ -31,7 +31,7 @@
             android:id="@+id/text_all"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/tv_play_stroke"
+            android:background="@drawable/btn_shar_stroke"
             android:gravity="center"
             android:paddingLeft="5dp"
             android:text="全部频道"
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_all"
-            android:background="@drawable/tv_play_stroke"
+            android:background="@drawable/btn_shar_stroke"
             android:divider="#FFA7A7A5"
             android:dividerHeight="1dp"
             android:paddingLeft="3dp"
@@ -62,7 +62,7 @@
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/seekbarWidget"
         android:layout_toRightOf="@id/channel_list_layout"
-        android:background="@drawable/tv_play_stroke" >
+        android:background="@drawable/btn_shar_stroke" >
 
         <RelativeLayout
             android:id="@+id/layout_logo_text"
@@ -134,8 +134,8 @@
         android:layout_above="@+id/program_info_layout"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"
-        android:layout_marginTop="45dp"
-        android:background="@drawable/tv_play_stroke"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/btn_shar_stroke"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="visible" >
@@ -146,7 +146,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/ll_deliver_collection"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="3dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:layout_above="@+id/tv_soundimg"
@@ -171,7 +171,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="0dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="3dp"
                 android:background="@drawable/channle_play_sound"
                 android:textColor="@color/white" />
         </RelativeLayout>
@@ -190,37 +190,39 @@
         <TextView
             android:id="@+id/play_collection"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/ll_deliver_share"
             android:text="收藏\n频道"
             android:textSize="12sp"
             android:textColor="@color/white"
             android:visibility="visible" />
 
-<!--         <LinearLayout -->
-<!--             android:id="@+id/ll_deliver_share" -->
-<!--             android:layout_width="match_parent" -->
-<!--             android:layout_height="1dp" -->
-<!--             android:layout_above="@+id/play_share" -->
-<!--             android:layout_marginLeft="4dp" -->
-<!--             android:layout_marginRight="4dp" -->
-<!--             android:background="#FFA7A7A5" -->
-<!--             android:orientation="vertical" -->
-<!--             android:visibility="gone" > -->
-<!--         </LinearLayout> -->
+        <LinearLayout
+            android:id="@+id/ll_deliver_share"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@+id/bt_cutandshare"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="#FFA7A7A5"
+            android:orientation="vertical"
+            android:visibility="visible" >
+        </LinearLayout>
 
-<!--         <TextView -->
-<!--             android:id="@+id/play_share" -->
-<!--             android:layout_width="wrap_content" -->
-<!--             android:layout_height="50dp" -->
-<!--             android:layout_alignParentBottom="true" -->
-<!--             android:layout_centerHorizontal="true" -->
-<!--             android:gravity="center" -->
-<!--             android:text="分享" -->
-<!--             android:textColor="@color/white" -->
-<!--             android:visibility="gone" /> -->
+        <Button
+            android:id="@+id/bt_cutandshare"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="分享"
+            android:textSize="12sp"
+            android:background="@color/transparent"
+            android:textColor="@color/white"
+            android:visibility="visible" />
         <!--
         <LinearLayout
             android:layout_width="0dp"
@@ -249,16 +251,9 @@
     </RelativeLayout>
 
 </RelativeLayout>
-    <Button
-        android:id="@+id/bt_cutandshare"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="截屏分享" />
 
     <com.changhong.thirdpart.sharesdk.ScreenShotView
-        android:id="@+id/viewshare_video"
+        android:id="@+id/viewshare_video" android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 	<ProgressBar 
@@ -266,6 +261,6 @@
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
       android:layout_centerInParent="true"
-      android:visibility="visible"
+      android:visibility="invisible"
        />
 </RelativeLayout>

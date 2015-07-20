@@ -331,6 +331,7 @@ public class TVChannelPlayActivity extends Activity {
 		sound = (VerticalSeekBar) findViewById(R.id.sound);
 		collection=(TextView)findViewById(R.id.play_collection);
 		initCollectionData();
+		initshareView();//分享view
 	}
 
 	private void initCollectionData(){
@@ -870,7 +871,7 @@ public class TVChannelPlayActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		TVChannelPlayActivity.this.finish();
+//		TVChannelPlayActivity.this.finish();
 	}
 
 	@Override
@@ -914,6 +915,7 @@ public class TVChannelPlayActivity extends Activity {
 				if (view_cutscreen.isSaving()) {
 					return;
 				}
+				view_cutscreen.setVisibility(View.VISIBLE);
 				view_cutscreen.setSaving(true);
 				pb_cutscreen.setVisibility(View.VISIBLE);
 
