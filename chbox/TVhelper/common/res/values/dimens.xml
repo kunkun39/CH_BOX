@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ****************************对话框相关尺寸*****************************8 -->
+    <!-- alert对话框和对话框通用数据 -->
+    <dimen name="dialog_width">280dp</dimen>
+    <dimen name="dialog_height">170dp</dimen>
+    <dimen name="dialog_title_margintop">20dp</dimen>
+    <dimen name="dialog_title_textsize">18sp</dimen>
+    <dimen name="dialog_content_textsize">15sp</dimen>
+    <dimen name="dialog_btn_width">100dp</dimen>
+    <dimen name="dialog_btn_height">35dp</dimen>
+    <dimen name="dialog_btn_textsize">18sp</dimen>
+    <dimen name="dialog_btn_marginBottom">10dp</dimen>
+    <dimen name="dialog_btn_marginLeft">35dp</dimen>
+    <!-- 百度语音输入错误三次对话框 -->
+    <dimen name="dialog_baidudia_content_textsize">14sp</dimen>
+    <dimen name="dialog_baidudia_title_margintop">10dp</dimen>
+    <!-- 歌单编辑对话框（三个按钮） -->
+    <dimen name="dialog_modify_width">330dp</dimen>
+    <dimen name="dialog_modify_height">130dp</dimen>
+    <dimen name="dialog_modifybtn_width">85dp</dimen>
+    <dimen name="dialog_modifybtn_height">40dp</dimen>
+    <dimen name="dialog_modifybtn_marginLeftright">20dp</dimen>
+
+</resources>
