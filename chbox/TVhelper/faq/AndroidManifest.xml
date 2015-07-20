@@ -1,24 +1,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.changhong.faq"
-          android:versionCode="1"
-          android:versionName="1.0" >
+    package="com.changhong.faq"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
     <uses-sdk
-            android:minSdkVersion="16"
-            android:targetSdkVersion="17" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="17" />
 
     <application
-            android:icon="@drawable/ic_launcher"
-            android:label="faq part" >
-
-        <!--问卷部分-->
-        <activity android:name="com.changhong.faq.activity.QuestionListActivity"
-                  android:launchMode="singleTask"
-                  android:label="QuestionListActivity"
-                  android:theme="@android:style/Theme.NoTitleBar" >
+        android:icon="@drawable/ic_launcher"
+        android:label="faq part" >
+        <activity
+            android:name="com.changhong.faq.activity.QuestionListActivity"
+            android:exported="true"
+            android:label="QuestionListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
-        <activity android:name="com.changhong.faq.activity.VoteRuleActivity" android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name="com.changhong.faq.activity.VoteSubmitActivity" android:theme="@android:style/Theme.NoTitleBar">
+        <activity
+            android:name="com.changhong.faq.activity.VoteRuleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.changhong.faq.activity.VoteSubmitActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
         </activity>
     </application>
 
