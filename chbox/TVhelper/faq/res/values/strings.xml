@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_description">川网用户反馈平台</string>
+    <string name="title_activity_vote_list">VoteListActivity</string>
+    <string name="buttontext1">下一题</string>
+    <string name="buttontext2">进入</string>
+    <string name="rule_continue">继续</string>
+    <string name="buttonlist">进入</string>
+    <string name="buttonOK">提交</string>
+    <string name="buttonCancel">取消</string>
+    <string name="title_activity_question_list">QuestionListActivity</string>
+    <string name="rule_description">衷心的感谢你参加下面的问卷调查，我们将认真参考你的反馈意见，为你打造一个健康舒适的影视环境，谢谢</string>
+
+</resources>

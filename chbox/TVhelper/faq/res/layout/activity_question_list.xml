@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff">
+
+    <TextView
+            android:id="@+id/vote_submit_tabbar_title"
+            android:layout_width="fill_parent"
+            android:layout_height="100dip"
+            android:background="@color/orange"
+            android:gravity="center"
+            android:text="川网用户反馈问卷调查"
+            android:textColor="#000000"
+            android:textSize="@dimen/FONT_SIZE_NORMAL"/>
+ 
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vote_submit_tabbar_title"
+            android:layout_margin="15dp"
+            android:background="@drawable/vote_submit_bg"
+            android:orientation="vertical"
+            android:padding="10dp" >
+        <ListView
+                android:id="@+id/listView"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                >
+        </ListView>
+    </LinearLayout>
+
+</RelativeLayout>
