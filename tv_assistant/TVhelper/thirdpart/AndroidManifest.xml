@@ -152,7 +152,7 @@
             <!--
             	AuthorizeAdapter表示一个继承自cn.sharesdk.framework.authorize.AuthorizeAdapter
             	的类，这个类可以监听到页面的生命周期，也可以获取授权页面的各种UI控件。 
-            	开发者可以通过继承AuthorizeAdapter，重写其方法，并获取各种UI来自定义这个页面的行为。
+            	开发者可以通过继承AuthorizeAdapter，重写其方法，并获取各种UI来自定义这个页面的行为。
             -->
             <meta-data
                 android:name="AuthorizeAdapter"
@@ -160,7 +160,7 @@
             <!--
                    	如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个对ACTION_VIEW
             	事件的过滤器，其中的scheme是“tencent”前缀再开发者应用的加上appId。如果此过滤器不设置，
-            	则分享结束以后不能得到正确的回调
+            	则分享结束以后不能得到正确的回调
             -->
             <intent-filter>
                 <data android:scheme="tencent1104632449" />
@@ -174,13 +174,30 @@
         <!-- 微信分享回调 微信回调条件必须满足：以工程包名+wxapi的包下面创建该WXEntryActivity -->
         <activity
             android:name="com.changhong.tvhelper.wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:screenOrientation="behind"
-            android:configChanges="orientation|keyboardHidden"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name="com.changhong.thirdpart.test.CutScreenActivity" />
         <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity" >
         </activity>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1104632449" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service android:name="com.changhong.thirdpart.test.MainService" />
         <!-- shareSDK 分享功能添加 end -->
