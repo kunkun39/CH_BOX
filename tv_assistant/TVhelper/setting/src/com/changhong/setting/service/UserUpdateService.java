@@ -497,11 +497,16 @@ public class UserUpdateService {
                                 }
                             }
                         }).start();
-
+                        if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                        	dialogMessage.dialog.cancel();
+        				}
  					}
  					
  					@Override
  					public void onCancel(DialogMessage dialogMessage) {
+ 						if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                        	dialogMessage.dialog.cancel();
+        				}
  					}
  				});
             	
@@ -546,10 +551,16 @@ public class UserUpdateService {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             intent.setDataAndType(uri, "application/vnd.android.package-archive");
                             context.startActivity(intent);
+                            if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                            	dialogMessage.dialog.cancel();
+            				}
      					}
      					
      					@Override
      					public void onCancel(DialogMessage dialogMessage) {
+     						if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                            	dialogMessage.dialog.cancel();
+            				}
      					}
      				});
                 }
