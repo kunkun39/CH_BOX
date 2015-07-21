@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -205,7 +206,8 @@ public class PictureCategoryActivity extends Activity {
 
                 // 只查询jpeg和png的图片
                 Cursor mCursor = mContentResolver.query(mImageUri, null, MediaStore.Images.Media.MIME_TYPE + "=? or "
-                        + MediaStore.Images.Media.MIME_TYPE + "=?", new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED + " desc");
+                        + MediaStore.Images.Media.MIME_TYPE + "=?or "
+                        + MediaStore.Images.Media.MIME_TYPE + "=?", new String[]{"image/jpeg","image/jpg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED + " desc");
 
                 while (mCursor.moveToNext()) {
                     String imagePath = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.Media.DATA));
