@@ -212,10 +212,16 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                 ClientSendCommandService.msg = "key:power";
                                 ClientSendCommandService.handler
                                         .sendEmptyMessage(1);
+                                if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+									dialogMessage.dialog.cancel();
+								}
                             }
 
                             @Override
                             public void onCancel(DialogMessage dialogMessage) {
+                            	if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+									dialogMessage.dialog.cancel();
+								}
                             }
                         });
 			}

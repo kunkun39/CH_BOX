@@ -393,13 +393,18 @@ public class SearchPageList extends Fragment{
                                         } else {
                                             Toast.makeText(activity, "节目预约失败", Toast.LENGTH_SHORT).show();
                                         }
-                                    
+                                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+											dialogMessage.dialog.cancel();
+										}
 									}
 									
 									@Override
 									public void onCancel(DialogMessage dialogMessage) {
                                          vh.channelPlayButton.setText("可以预约");
                                          vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+                                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+												dialogMessage.dialog.cancel();
+											}
 									}
 								});
                                 	

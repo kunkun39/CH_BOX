@@ -19,6 +19,15 @@
 #   public *;
 #}
 
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.support.v4.app.Fragment
+-keep public class * extends android.support.v4.app.FragmentActivity
+
+-keep class com.changhong.touying.**{*;}
+-dontwarn com.changhong.touying.**
+
 -keep class android.support.v4.**{*;}
 -dontwarn android.support.v4.**
 
@@ -45,3 +54,7 @@
 
 -keep class io.vov.**{*;}
 -dontwarn io.vov.**
+
+-keep class **.R$* {*;}
+-keep class **.R{*;}
+-dontwarn **.R$*

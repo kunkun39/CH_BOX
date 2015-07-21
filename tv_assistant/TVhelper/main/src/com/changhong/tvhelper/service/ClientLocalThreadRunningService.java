@@ -169,10 +169,16 @@ public class ClientLocalThreadRunningService extends Service {
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                         }
+                                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+											dialogMessage.dialog.cancel();
+										}
                 					}
                 					
                 					@Override
                 					public void onCancel(DialogMessage dialogMessage) {
+                						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+											dialogMessage.dialog.cancel();
+										}
                 					}
                 				});
                                 dialog.setCanceledOnTouchOutside(true);

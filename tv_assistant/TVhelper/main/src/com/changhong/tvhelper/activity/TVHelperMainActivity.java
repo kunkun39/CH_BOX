@@ -207,10 +207,16 @@ public class TVHelperMainActivity extends Activity {
 					public void onSubmit(DialogMessage dialogMessage) {
 						 ClientSendCommandService.msg = "key:power";
                        ClientSendCommandService.handler.sendEmptyMessage(1);
+                       if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
 					}
 					
 					@Override
 					public void onCancel(DialogMessage dialogMessage) {
+						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
 					}
 				});
             }
@@ -330,15 +336,17 @@ public class TVHelperMainActivity extends Activity {
 						ClientSendCommandService.titletxt = "未连接";
                         title.setText(ClientSendCommandService.titletxt);
                         mhandler.sendEmptyMessage(2);
-                        if (dialogMessage.dialog!=null) {
-                        	dialogMessage.dialog.dismiss();
+                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
 						}
-
                         //System.exit(0);
 					}
 					
 					@Override
 					public void onCancel(DialogMessage dialogMessage) {
+						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
 					}
 				});
                 return true;
@@ -688,10 +696,16 @@ public class TVHelperMainActivity extends Activity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setDataAndType(uri, "application/vnd.android.package-archive");
                         startActivity(intent);
+                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
  					}
  					
  					@Override
  					public void onCancel(DialogMessage dialogMessage) {
+ 						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
  					}
  				});
             }

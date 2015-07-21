@@ -407,7 +407,9 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                             } else {
                                                 Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
                                             }
-                                        
+                                            if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+												dialogMessage.dialog.cancel();
+											}
 										}
 										
 										@Override
@@ -415,6 +417,9 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                              vh.programStatus.setText("可预约");
                                              vh.programStatus.setTextColor(getResources().getColor(R.color.white));
                                              vh.iv_programstate.setImageResource(R.drawable.program_order);
+                                             if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+ 												dialogMessage.dialog.cancel();
+ 											}
 										}
 									});
                                     	
