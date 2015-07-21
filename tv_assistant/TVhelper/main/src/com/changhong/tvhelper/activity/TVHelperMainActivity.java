@@ -239,6 +239,9 @@ public class TVHelperMainActivity extends Activity {
                 clients.setVisibility(View.GONE);
             }
         });
+        String boxName = ClientSendCommandService.getCurrentConnectBoxName();
+        ClientSendCommandService.titletxt = boxName;
+        title.setText(boxName);
         list.setOnClickListener(new OnClickListener() {
 
             @Override
