@@ -1,23 +1,19 @@
 package com.changhong.common.utils;
 
-import com.changhong.common.R;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.changhong.common.R;
 
 public class DialogUtil {
 	public static interface DialogBtnOnClickListener {
@@ -102,9 +98,6 @@ public class DialogUtil {
 				if (listener != null) {
 					listener.onSubmit(new DialogMessage(dialog));
 				}
-				if (dialog != null && dialog.isShowing()) {
-					dialog.cancel();
-				}
 			}
 		});
 		bt_cancel.setOnClickListener(new OnClickListener() {
@@ -113,9 +106,6 @@ public class DialogUtil {
 			public void onClick(View v) {
 				if (listener != null) {
 					listener.onCancel(new DialogMessage(dialog));
-				}
-				if (dialog != null && dialog.isShowing()) {
-					dialog.cancel();
 				}
 			}
 		});
@@ -177,9 +167,6 @@ public class DialogUtil {
 				if (listener != null) {
 					listener.onSubmit(dialogMessage);
 				}
-				if (dialog != null && dialog.isShowing()) {
-					dialog.cancel();
-				}
 			}
 		});
 		bt_cancel.setOnClickListener(new OnClickListener() {
@@ -190,9 +177,6 @@ public class DialogUtil {
 				dialogMessage.msg=edText.getText().toString().trim();
 				if (listener != null) {
 					listener.onCancel(dialogMessage);
-				}
-				if (dialog != null && dialog.isShowing()) {
-					dialog.cancel();
 				}
 			}
 		});
