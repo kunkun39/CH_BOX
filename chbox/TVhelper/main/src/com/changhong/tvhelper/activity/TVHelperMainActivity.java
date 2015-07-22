@@ -239,6 +239,10 @@ public class TVHelperMainActivity extends Activity {
                 clients.setVisibility(View.GONE);
             }
         });
+        //初始化设置链接名字，否则会显示未连接
+        String boxName = ClientSendCommandService.getCurrentConnectBoxName();
+        ClientSendCommandService.titletxt = boxName;
+        title.setText(boxName);
         list.setOnClickListener(new OnClickListener() {
 
             @Override
