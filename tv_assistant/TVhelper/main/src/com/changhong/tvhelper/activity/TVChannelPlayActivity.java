@@ -619,7 +619,7 @@ public class TVChannelPlayActivity extends Activity {
 
 							// 3秒后，节目信息显示框消失
 							Thread.sleep(3000);
-                            mDismissHandler.sendEmptyMessage(4);
+//                          mDismissHandler.sendEmptyMessage(4);//取消自动消失
 						} catch (Exception e) {
 							Log.e("TVChannelPlayActivity", e.toString());
 							e.printStackTrace();

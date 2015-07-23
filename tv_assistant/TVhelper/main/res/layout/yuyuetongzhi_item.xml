@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2dp"
+    android:layout_marginTop="2dp" >
+
+    <TextView
+        android:id="@+id/tv_programname"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:background="@android:color/transparent"
+        android:gravity="center_vertical"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp" />
+
+</RelativeLayout>
