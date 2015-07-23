@@ -279,7 +279,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
         public void run() {
             while (true) {
                 long during = System.currentTimeMillis() - time;
-                if (during > 4000 && time != 0l) {
+                if (during > 5000 && time != 0l) {
                     Log.e("COMMAND_CLEAN", String.valueOf(during));
                     clearIpList();
                 }
