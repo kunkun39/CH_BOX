@@ -335,11 +335,13 @@ public class TVHelperMainActivity extends Activity {
 					public void onSubmit(DialogMessage dialogMessage) {
 						ClientSendCommandService.titletxt = "未连接";
                         title.setText(ClientSendCommandService.titletxt);
+                        ClientSendCommandService.serverIpList.clear();
+                        ClientSendCommandService.serverIpListMap.clear();
+
                         mhandler.sendEmptyMessage(2);
                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 							dialogMessage.dialog.cancel();
 						}
-                        //System.exit(0);
 					}
 					
 					@Override
