@@ -79,7 +79,7 @@
                 android:textSize="36px"
                 android:textColor="@android:color/black"
                 android:gravity="center"
-                android:text="ANDROID" />
+                android:text="Android" />
                  />
 
         <TextView
