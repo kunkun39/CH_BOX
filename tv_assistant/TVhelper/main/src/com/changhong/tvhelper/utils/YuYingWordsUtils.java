@@ -31,10 +31,12 @@ public class YuYingWordsUtils {
 
         List<String> volumnUp = new ArrayList<String>();
         volumnUp.add("声音大点");volumnUp.add("大点声");volumnUp.add("大声点");volumnUp.add("加声音");volumnUp.add("开点声音");
+        volumnUp.add("声音大点儿");volumnUp.add("大点声儿");volumnUp.add("大声点儿");volumnUp.add("加点儿声音");volumnUp.add("开点儿声音");volumnUp.add("音量加");
         TV_CONTROL_KEYWORDS.put("key:volumeup|key:volumeup", volumnUp);
 
         List<String> volumnDown = new ArrayList<String>();
         volumnDown.add("声音小点");volumnDown.add("小点声");volumnDown.add("小声点");volumnDown.add("减声音");volumnDown.add("关点声音");volumnDown.add("观点声音");
+        volumnDown.add("声音小点儿");volumnDown.add("小点声儿");volumnDown.add("小声点儿");volumnDown.add("减儿声音");volumnDown.add("关点儿声音");volumnDown.add("观点儿声音");volumnDown.add("音量减");
         TV_CONTROL_KEYWORDS.put("key:volumedown|key:volumedown", volumnDown);
 
         List<String> tv = new ArrayList<String>();
@@ -42,12 +44,12 @@ public class YuYingWordsUtils {
         TV_CONTROL_KEYWORDS.put("key:dtv", tv);
 
         List<String> tvUp = new ArrayList<String>();
-        tvUp.add("上一台");tvUp.add("上1台");tvUp.add("上一个");tvUp.add("上1个");
+        tvUp.add("上一台");tvUp.add("上1台");tvUp.add("上一个");tvUp.add("上1个");tvUp.add("频道减");
         TV_CONTROL_KEYWORDS.put("key:dtv|key:up", tvUp);
 
         List<String> tvDown = new ArrayList<String>();
         tvDown.add("下一台");tvDown.add("下1台");tvDown.add("下一个");tvDown.add("下1个");
-        tvDown.add("换台");tvDown.add("换频道");tvDown.add("调台");tvDown.add("跳台");
+        tvDown.add("换台");tvDown.add("换频道");tvDown.add("调台");tvDown.add("跳台");tvDown.add("频道加");
         TV_CONTROL_KEYWORDS.put("key:dtv|key:down", tvDown);
 
         List<String> left = new ArrayList<String>();
@@ -65,6 +67,10 @@ public class YuYingWordsUtils {
         List<String> down = new ArrayList<String>();
         down.add("下");down.add("下面");down.add("下边");down.add("向下");down.add("向下边");down.add("往下");down.add("往下边");
         TV_CONTROL_KEYWORDS.put("key:down", down);
+        
+        List<String> mute = new ArrayList<String>();
+        mute.add("静音");mute.add("取消静音");
+        TV_CONTROL_KEYWORDS.put("key:volume_mute", mute);
     }
 
     /**
