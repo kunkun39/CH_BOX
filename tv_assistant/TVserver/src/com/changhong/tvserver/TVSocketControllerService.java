@@ -123,6 +123,9 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:volumedown")) {
                                 Log.e(TAG, "key:volumedown");
                                 t.vkey_input(114, 1);
+                            } else if (msgCpy.equals("key:volume_mute")) {
+                                Log.e(TAG, "key:volume_mute");
+                                t.vkey_input(113, 1);
                             } else if (msgCpy.equals("key:power")) {
                                 Log.e(TAG, "key:power");
                                 t.vkey_input(0x7f01, 1);
