@@ -77,8 +77,8 @@ public class YuYingWordsUtils {
             List<String> keywords = TV_CONTROL_KEYWORDS.get(key);
 
             for (String keyword : keywords) {
-                if(keyword.equals("key:volumeup|key:volumeup") || keyword.equals("key:volumedown|key:volumedown")) {
-                    if (searchWords.startsWith(keyword)) {
+                if(key.equals("key:volumeup|key:volumeup") || key.equals("key:volumedown|key:volumedown")) {
+                    if (searchWords.contains(keyword)) {
                         return key;
                     }
                 } else {
