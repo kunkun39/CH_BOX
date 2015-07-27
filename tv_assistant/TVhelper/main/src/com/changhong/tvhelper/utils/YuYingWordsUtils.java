@@ -257,6 +257,33 @@ public class YuYingWordsUtils {
         return TV_CHANNEL_LOCATION_WORDS.get(needCheck);
     }
 
+    /******************************************某些地方太不需要处理数字***********************************************************/
+
+    private final static Map<String, String> TV_CHANNEL_NUMBER_NOCONVERT = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_NUMBER_NOCONVERT.put("一", "1");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("二", "2");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("三", "3");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("四", "4");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("五", "5");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("六", "6");
+    }
+
+    /**
+     * 该方法主要用于手机上搜索频道的词语转化
+     */
+    public static String numNotNeedConvert(String needConvert) {
+        if (needConvert.contains("绵阳")) {
+            for (String key : TV_CHANNEL_NUMBER_NOCONVERT.keySet()) {
+                String value = TV_CHANNEL_NUMBER_NOCONVERT.get(key);
+                needConvert = needConvert.replace(key, value);
+            }
+        }
+        return needConvert;
+    }
+
     /******************************************频道查询部分***********************************************************/
 
     private final static Map<String, String> TV_CHANNEL_SEARCH_KEYWORDS = new HashMap<String, String>();

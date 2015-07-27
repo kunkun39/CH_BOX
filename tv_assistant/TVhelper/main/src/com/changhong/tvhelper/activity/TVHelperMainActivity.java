@@ -342,6 +342,8 @@ public class TVHelperMainActivity extends Activity {
                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 							dialogMessage.dialog.cancel();
 						}
+
+                        System.exit(0);
 					}
 					
 					@Override

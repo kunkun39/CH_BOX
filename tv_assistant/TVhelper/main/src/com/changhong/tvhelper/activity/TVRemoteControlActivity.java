@@ -1012,8 +1012,10 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         int size = ClientSendCommandService.channelData.size();
                         for (int i = 0; i < recognitionResult.length(); i++) {
                             for (int j = 0; j < size; j++) {
+                                //特殊频道对比的地方
                                 String channelName = ((String) ClientSendCommandService.channelData.get(j).get("service_name")).replace("卫视高清", "高清");
                                 channelName = YuYingWordsUtils.getSpecialWordsChannel(channelName);
+                                channelName = YuYingWordsUtils.numNotNeedConvert(channelName);
                                 if (channelName.indexOf(recognitionResult.charAt(i)) >= 0) {
                                     Integer count = matchChannel.get(String.valueOf(j));
                                     if (count == null) {
@@ -1045,6 +1047,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                     String newChannel = ((String) ClientSendCommandService.channelData.get(Integer.valueOf(position)).get("service_name")).replace("卫视高清", "高清");
                                     bestChannel = YuYingWordsUtils.getSpecialWordsChannel(bestChannel);
                                     newChannel = YuYingWordsUtils.getSpecialWordsChannel(newChannel);
+                                    bestChannel = YuYingWordsUtils.numNotNeedConvert(bestChannel);
+                                    newChannel = YuYingWordsUtils.numNotNeedConvert(newChannel);
 
                                     if (newChannel.length() < bestChannel.length()) {
                                         bestPostion = position;
