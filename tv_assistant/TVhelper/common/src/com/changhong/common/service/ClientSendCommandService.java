@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
@@ -361,6 +362,9 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                                 	reader.nextString();
                                 } else if (namesub.equals("service_name")) {
                                     String value = reader.nextString();
+                                    if (!TextUtils.isEmpty(value)) {
+                                    	value=value.trim();
+									}
                                     map.put("service_name", value);
                                 } else if (namesub.equals("sym")) {
                                 	reader.nextString();
