@@ -3,6 +3,8 @@ package com.changhong.touying.vedio;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+
 import com.changhong.common.utils.StringUtils;
 
 import java.io.File;
@@ -53,8 +55,10 @@ public class VedioProvider implements AbstructProvider {
                     long createTime = cursor
                             .getInt(cursor
                                     .getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED));
-                    Vedio video = new Vedio(id, title, displayName, mimeType, path, duration, createTime);
-                    list.add(video);
+                    if (!TextUtils.isEmpty(displayName)) {
+                   	 	Vedio video = new Vedio(id, title, displayName, mimeType, path, duration, createTime);
+                        list.add(video);
+					}
                 }
                 cursor.close();
             }
