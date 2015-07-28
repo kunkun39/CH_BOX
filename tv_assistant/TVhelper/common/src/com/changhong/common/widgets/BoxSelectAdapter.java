@@ -24,15 +24,23 @@ public class BoxSelectAdapter extends BaseAdapter {
         this.minflater = LayoutInflater.from(context);
         this.ipList = ipList;
     }
+    /**
+     * 更新数据，更新list后在调用notifyDataSetChanged()
+     * @param ipList
+     */
+    public void updateList(List<String> ipList) {
+		this.ipList=ipList;
+		notifyDataSetChanged();
+	}
 
     @Override
     public int getCount() {
-        return ipList.size();
+        return ipList==null?0:ipList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return position;
+        return ipList.get(position);
     }
 
     @Override
