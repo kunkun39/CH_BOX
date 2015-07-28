@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
@@ -341,76 +342,64 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                             reader.beginObject();
                             while (reader.hasNext()) {
                                 String namesub = reader.nextName();
-                                Log.i(TAG, namesub);
                                 if (namesub.equals("service_id")) {
                                     String value = reader.nextString();
                                     map = new HashMap<String, Object>();
                                     map.put("service_id", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("vEcmPid")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("video_pid")) {
                                     String value = reader.nextString();
                                     map.put("vPid", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("pmtPid")) {
                                     String value = reader.nextString();
                                     map.put("pmtPid", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("tuner_id")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("qam")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("aEcmPid")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("service_name")) {
                                     String value = reader.nextString();
+                                    if (!TextUtils.isEmpty(value)) {
+                                    	value=value.trim();
+									}
                                     map.put("service_name", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("sym")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("demux_id")) {
                                     String value = reader.nextString();
                                     map.put("dmxId", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("audio_pid")) {
                                     String value = reader.nextString();
                                     map.put("aPid", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("logic_number")) {
                                     String value = reader.nextString();
                                     map.put("logic_number", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("sType")) {
-                                    Log.i(TAG, reader.nextString());
+                                	reader.nextString();
                                 } else if (namesub.equals("tsId")) {
                                     String value = reader.nextString();
                                     map.put("tsId", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("orgNId")) {
                                     String value = reader.nextString();
                                     map.put("orgNId", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("pcr_pid")) {
                                     String value = reader.nextString();
                                     map.put("pcr_pid", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("freqKHz")) {
                                     String value = reader.nextString();
                                     map.put("freq", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("channel_index")) {
                                     String value = reader.nextString();
                                     map.put("channel_index", value);
-                                    Log.i(TAG, value);
                                 } else if (namesub.equals("aStreamType")) {
                                     String value = reader.nextString();
                                     map.put("aStreamType", value);
-                                    Log.i("aStreamType", value);
                                 } else if (namesub.equals("vStreamType")) {
                                     String value = reader.nextString();
                                     map.put("vStreamType", value);
-                                    Log.i("vStreamType", value);
                                 } else {
                                     reader.skipValue();
                                 }
