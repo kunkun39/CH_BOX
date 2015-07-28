@@ -2,36 +2,11 @@ package com.changhong.tvhelper.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.changhong.common.db.sqlite.DatabaseContainer;
-import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.DialogUtil;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
-import com.changhong.common.utils.DialogUtil.DialogMessage;
-import com.changhong.common.widgets.BoxSelectAdapter;
-import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.activity.TVChannelPlayActivity;
-import com.changhong.tvhelper.activity.TVChannelProgramShowActivity;
-import com.changhong.tvhelper.activity.TVChannelSearchActivity;
-import com.changhong.tvhelper.activity.TVChannelShouCangShowActivity;
-import com.changhong.tvhelper.activity.TVChannelShowActivity;
-import com.changhong.tvhelper.domain.OrderProgram;
-import com.changhong.tvhelper.domain.Program;
-import com.changhong.tvhelper.service.ChannelService;
-import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.tvhelper.utils.CommonUtil;
-import com.changhong.tvhelper.utils.YuYingWordsUtils;
-
-import android.R.integer;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,19 +14,31 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
+import com.changhong.common.utils.DialogUtil.DialogMessage;
+import com.changhong.common.utils.StringUtils;
+import com.changhong.tvhelper.R;
+import com.changhong.tvhelper.activity.TVChannelPlayActivity;
+import com.changhong.tvhelper.activity.TVChannelProgramShowActivity;
+import com.changhong.tvhelper.domain.OrderProgram;
+import com.changhong.tvhelper.domain.Program;
+import com.changhong.tvhelper.service.ChannelService;
+import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.tvhelper.utils.CommonUtil;
+import com.changhong.tvhelper.utils.YuYingWordsUtils;
 
 public class SearchPageList extends Fragment{
 
@@ -339,9 +326,15 @@ public class SearchPageList extends Fragment{
             				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
             			}
             			else {
-            				vh.channelPlayButton.setText("可以预约");
-            				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
-						}
+            				if (map.containsKey("program_name")&&map.get("program_name").equals("无节目信息")) {
+            					vh.channelPlayButton.setText("不可预约");
+                				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+                				vh.channelPlayButton.setVisibility(View.INVISIBLE);
+            				}else {
+            					vh.channelPlayButton.setText("可以预约");
+                				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+    						}
+            			}
 					}            		
             	}
             	else {
@@ -351,8 +344,14 @@ public class SearchPageList extends Fragment{
         				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
         			}
         			else {
-        				vh.channelPlayButton.setText("可以预约");
-        				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+        				if (map.containsKey("program_name")&&map.get("program_name").equals("无节目信息")) {
+        					vh.channelPlayButton.setText("不可预约");
+            				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+            				vh.channelPlayButton.setVisibility(View.INVISIBLE);
+        				}else {
+        					vh.channelPlayButton.setText("可以预约");
+            				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+						}
 					}
 				}
             		
@@ -396,6 +395,7 @@ public class SearchPageList extends Fragment{
                                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 											dialogMessage.dialog.cancel();
 										}
+                                        notifyDataSetChanged();
 									}
 									
 									@Override
