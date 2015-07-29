@@ -269,7 +269,6 @@ public class TVHelperMainActivity extends Activity {
                     case 1:
                         if (ipAdapter != null) {
                         	ipAdapter.updateList(ClientSendCommandService.serverIpList);
-                            ipAdapter.notifyDataSetChanged();
                         }
                         break;
                     case 2:
