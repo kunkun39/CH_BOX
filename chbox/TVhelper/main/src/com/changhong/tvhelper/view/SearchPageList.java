@@ -402,6 +402,9 @@ public class SearchPageList extends Fragment{
 									public void onCancel(DialogMessage dialogMessage) {
                                          vh.channelPlayButton.setText("可以预约");
                                          vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
+                                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+ 											dialogMessage.dialog.cancel();
+ 										}
 									}
 								});
                                 	

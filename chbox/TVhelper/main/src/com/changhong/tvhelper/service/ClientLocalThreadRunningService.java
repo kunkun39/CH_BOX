@@ -1,42 +1,69 @@
 package com.changhong.tvhelper.service;
 
-import android.app.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
+
+import android.app.ActivityManager;
+import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.*;
-import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
-import com.changhong.common.utils.DialogUtil.DialogMessage;
+import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.DialogUtil;
+import com.changhong.common.utils.MobilePerformanceUtils;
+import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.SystemUtils;
+import com.changhong.common.utils.WebUtils;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.music.SetDefaultImage;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.activity.*;
+import com.changhong.tvhelper.activity.TVChannelPlayActivity;
+import com.changhong.tvhelper.activity.TVChannelShowActivity;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
-
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
 
 /**
  * Created by Jack Wang
@@ -56,6 +83,13 @@ public class ClientLocalThreadRunningService extends Service {
     private NotificationManager notificationManager;
 
     private PowerManager powerManager;
+    
+    /**预约到期未看节目**/
+    private static List<OrderProgram> yuyueprograms=new ArrayList<OrderProgram>();
+    /**预约提示对话框*/
+    private static Dialog dialog_yuyue=null;
+    /**预约提示列表adapter*/
+    private static YuYueAdapter adapter_yuyue=null;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -133,51 +167,16 @@ public class ClientLocalThreadRunningService extends Service {
                         } else {
 
                             try {
-                                ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
-                                final String shortClassName = info.topActivity.getClassName();
-
-                                String content=program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime();
-                                Dialog  dialog =DialogUtil.showAlertDialog(ClientLocalThreadRunningService.this,"电视助手：预约节目已开始!",
-                                		content,"播    放","取    消",new DialogBtnOnClickListener() {
-                					
-                					@Override
-                					public void onSubmit(DialogMessage dialogMessage) {
-                						 /**
-                                         * 如果是正在播放，就直接切换频道，如果没有播放，就跳转到播放页面
-                                         */
-                                        if ("com.changhong.tvhelper.activity.TVChannelPlayActivity".equals(shortClassName)) {
-                                            Message message = new Message();
-                                            message.obj = program.getChannelName();
-                                            TVChannelPlayActivity.handler.sendMessage(message);
-                                        } else {
-                                            Intent intent = new Intent();
-                                            Bundle bundle = new Bundle();
-                                            bundle.putString("channelname", program.getChannelName());
-                                            String name = program.getChannelName();
-                                            int channelSize = ClientSendCommandService.channelData.size();
-                                            for (int i = 0; i < channelSize; i++) {
-                                                Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-                                                String channelName = (String) map.get("service_name");
-                                                if (name.equals(channelName)) {
-                                                    TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
-                                                }
-                                            }
-
-                                            intent.putExtras(bundle);
-                                            intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(intent);
-                                        }
-                					}
-                					
-                					@Override
-                					public void onCancel(DialogMessage dialogMessage) {
-                					}
-                				});
-                                dialog.setCanceledOnTouchOutside(true);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+//                              ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+//                              final String shortClassName = info.topActivity.getClassName();
+//                              String content=program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime();
+                            	if (yuyueprograms==null) {
+                            		yuyueprograms=new ArrayList<OrderProgram>();
+								}
+                            		yuyueprograms.add(program);
+                            		showYuyueDialog();
+								} catch (Exception e) {
+									e.printStackTrace();
                             }
                         }
                         break;
@@ -189,6 +188,146 @@ public class ClientLocalThreadRunningService extends Service {
             }
         };
     }
+    /**
+     * 弹出预约提示对话框
+     * 如果对话框已经弹出只更改数据，没有弹出则弹出对话框
+     */
+	private void showYuyueDialog() {
+		Context context = ClientLocalThreadRunningService.this;
+		if (adapter_yuyue == null) {
+			adapter_yuyue = new YuYueAdapter(context);
+		}
+		if (dialog_yuyue == null) {
+			dialog_yuyue = new Dialog(context, R.style.Dialog_nowindowbg);
+			View view = LayoutInflater.from(context).inflate(
+					R.layout.dialog_yuyue_tongzhi, null);
+			dialog_yuyue.setContentView(view);
+			ListView lv_program = (ListView) view
+					.findViewById(R.id.lv_yuyuejiemu);
+			view.findViewById(R.id.bt_yytzdia_cancel).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							if (dialog_yuyue != null
+									&& dialog_yuyue.isShowing()) {
+								dialog_yuyue.dismiss();
+							}
+							if (yuyueprograms != null) {
+								yuyueprograms.clear();
+							}
+						}
+					});
+			dialog_yuyue.getWindow().setType(
+					WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+			lv_program.setAdapter(adapter_yuyue);
+		}
+		if (!dialog_yuyue.isShowing()) {
+			dialog_yuyue.show();
+		}
+		LayoutParams param = dialog_yuyue.getWindow().getAttributes();
+		param.gravity = Gravity.CENTER;
+		param.width = (int) context.getResources().getDimension(
+				R.dimen.dialog_width);
+		int dialogheight = 150;// 根据数据动态更改对话框高度
+		if (yuyueprograms == null || yuyueprograms.size() == 1) {
+			dialogheight = 148;
+		} else if (yuyueprograms.size() == 2) {
+			dialogheight = 195;
+		} else {
+			dialogheight = 240;
+		}
+		param.height = DialogUtil.dipTopx(context, dialogheight);
+		dialog_yuyue.getWindow().setAttributes(param);
+		
+		adapter_yuyue.notifyDataSetChanged();
+	}
+	class YuYueAdapter extends BaseAdapter {
+		private LayoutInflater minflater;
+
+		public YuYueAdapter(Context context) {
+			this.minflater = LayoutInflater.from(context);
+		}
+
+		public int getCount() {
+			return yuyueprograms==null?0:yuyueprograms.size();
+		}
+
+		public Object getItem(int position) {
+			return yuyueprograms==null?null:yuyueprograms.get(position);
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(final int position, View convertView, ViewGroup parent) {
+			ViewHolder vh = null;
+			if (convertView == null) {
+				vh = new ViewHolder();
+				convertView = minflater.inflate(R.layout.yuyuetongzhi_item, null);
+				vh.programname = (TextView) convertView.findViewById(R.id.tv_programname);
+				convertView.setTag(vh);
+			} else {
+				vh = (ViewHolder) convertView.getTag();
+			}
+			if (getItem(position)!=null) {
+				final OrderProgram program=yuyueprograms.get(position);
+				vh.programname.setText("预约节目"+(position+1)+"：  "+program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime());
+				vh.programname.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						 ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+						 final String shortClassName = info.topActivity.getClassName();
+						if ("com.changhong.tvhelper.activity.TVChannelPlayActivity"
+								.equals(shortClassName)) {
+							Message message = new Message();
+							message.obj = program.getChannelName();
+							TVChannelPlayActivity.handler.sendMessage(message);
+						} else {
+							Intent intent = new Intent();
+							Bundle bundle = new Bundle();
+							bundle.putString("channelname",
+									program.getChannelName());
+							String name = program.getChannelName();
+							int channelSize = ClientSendCommandService.channelData
+									.size();
+							for (int i = 0; i < channelSize; i++) {
+								Map<String, Object> map = ClientSendCommandService.channelData
+										.get(i);
+								String channelName = (String) map
+										.get("service_name");
+								if (name.equals(channelName)) {
+									TVChannelPlayActivity.path = ChannelService
+											.obtainChannlPlayURL(map);
+								}
+							}
+
+							intent.putExtras(bundle);
+							intent.setClass(ClientLocalThreadRunningService.this,
+									TVChannelPlayActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(intent);
+						}
+						if (dialog_yuyue != null
+								&& dialog_yuyue.isShowing()) {
+							dialog_yuyue.dismiss();
+						}
+						if (yuyueprograms != null) {
+							yuyueprograms.clear();
+						}
+					}
+				});
+			}
+			return convertView;
+		}
+
+		public final class ViewHolder {
+			public TextView programname;
+		}
+	}
 
     /**
      * ******************************************http server monitor  thread******************************************

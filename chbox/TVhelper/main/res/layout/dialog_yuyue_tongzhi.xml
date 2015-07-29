@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/tv_ime_bg" >
+
+    <TextView
+        android:id="@+id/tv_yytz_dia_titile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="@dimen/dialog_title_margintop"
+        android:singleLine="true"
+        android:text="电视助手：预约节目已开始!"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="@dimen/dialog_title_textsize" />
+
+    <ImageView
+        android:id="@+id/iv_yytz_dia_dilver"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_below="@id/tv_yytz_dia_titile"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_blue_light" />
+
+    <ListView
+        android:id="@+id/lv_yuyuejiemu"
+        android:divider="@android:color/white"
+        android:dividerHeight="1dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_yytzdia_btns"
+        android:layout_below="@+id/iv_yytz_dia_dilver" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/rl_yytzdia_btns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" >
+
+        <Button
+            android:id="@+id/bt_yytzdia_cancel"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:background="@drawable/btn_notext"
+            android:gravity="center"
+            android:text="取    消"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_btn_textsize" />
+
+        <Button
+            android:id="@+id/bt_yytzdia_submit"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:layout_alignTop="@id/bt_yytzdia_cancel"
+            android:layout_marginLeft="@dimen/dialog_btn_marginLeft"
+            android:layout_toRightOf="@id/bt_yytzdia_cancel"
+            android:background="@drawable/btn_notext"
+            android:gravity="center"
+            android:src="@drawable/btn_notext"
+            android:text="确    认"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_btn_textsize"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+</RelativeLayout>

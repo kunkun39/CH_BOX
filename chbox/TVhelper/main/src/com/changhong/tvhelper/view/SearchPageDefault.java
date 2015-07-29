@@ -365,11 +365,17 @@ public class SearchPageDefault extends Fragment{
 					public void onSubmit(DialogMessage dialogMessage) {
 						deleteSentences(activity,String.valueOf(view.getText()));
 						addViews(SearchPageDefault.this.contentView);
+						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
 					}
 
 					@Override
 					public void onCancel(DialogMessage dialogMessage) {
 						dialogMessage.dialog.dismiss();
+						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+							dialogMessage.dialog.cancel();
+						}
 					}
 					
 				});				
