@@ -293,11 +293,16 @@ public class MusicCategoryPlaylistTab extends Fragment {
                 intent.putExtra(MusicPlayListActivity.SERIALIZABLE_OBJECT, list);
 
                 startActivityForResult(intent, RETURN_ACTIVITY_ADD);
+                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                	dialogMessage.dialog.cancel();
+				}
             }
 
             @Override
             public void onCancel(DialogMessage dialogMessage) {
-
+            	if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                	dialogMessage.dialog.cancel();
+				}
             }
 
         });
