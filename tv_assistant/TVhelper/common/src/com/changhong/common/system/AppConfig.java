@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class AppConfig {
 
-	public static final boolean USE_MALL_APP = true;
+	public static final boolean USE_MALL_APP = false;
     /**
      * the parameter which decide the min size of the file we compress 1M
      */

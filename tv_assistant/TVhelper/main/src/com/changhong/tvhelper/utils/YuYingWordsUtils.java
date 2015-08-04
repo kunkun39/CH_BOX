@@ -128,6 +128,15 @@ public class YuYingWordsUtils {
      * 7 - 福建 ->福建高清（没有的话，福建卫视）
      * 8 - 福建高清 ->福建高清（没有的话，福建卫视）
      */
+    private final static Map<String, String> FIRST_TV_CHANNEL_REPLACE_KEYWORDS = new HashMap<String, String>();
+
+    static {
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十一", "11");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十四", "14");
+    }
+
     private final static Map<String, String> TV_CHANNEL_REPLACE_KEYWORDS = new HashMap<String, String>();
 
     static {
@@ -151,6 +160,7 @@ public class YuYingWordsUtils {
         TV_CHANNEL_REPLACE_KEYWORDS.put("十一", "11");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("十四", "14");
         TV_CHANNEL_REPLACE_KEYWORDS.put("卫视", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("高清", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("电视台", "");
@@ -162,6 +172,11 @@ public class YuYingWordsUtils {
      * 该方法主要用于语音词语转化
      */
     public static String yuYingChannelSearchWordsConvert(String needConvert) {
+        for (String key : FIRST_TV_CHANNEL_REPLACE_KEYWORDS.keySet()) {
+            String value = FIRST_TV_CHANNEL_REPLACE_KEYWORDS.get(key);
+            needConvert = needConvert.replace(key, value);
+        }
+
         for (String key : TV_CHANNEL_REPLACE_KEYWORDS.keySet()) {
             String value = TV_CHANNEL_REPLACE_KEYWORDS.get(key);
             needConvert = needConvert.replace(key, value);
@@ -171,7 +186,9 @@ public class YuYingWordsUtils {
          * 保证标清关键字的转化在卫视的后面，所以在这里转化一次，而没有配置在上面的MAP中, 没有CCTV-4高清频道，所以去掉
          */
         needConvert = needConvert.replace("标清", "卫视");
-        if (!needConvert.equals("CCTV") && needConvert.contains("CCTV") && !needConvert.startsWith("CCTV-4") && !needConvert.startsWith("CCTV4")) {
+        if (!needConvert.equals("CCTV") && needConvert.contains("CCTV")
+                && !needConvert.startsWith("CCTV-4") && !needConvert.startsWith("CCTV4")
+                && !needConvert.startsWith("CCTV-11") && !needConvert.startsWith("CCTV11")) {
             needConvert = needConvert + "高清";
         }
         return needConvert;
@@ -252,7 +269,14 @@ public class YuYingWordsUtils {
 
         List<String> otherNames8 = new ArrayList<String>();
         otherNames8.add("CCTV-10");
+        otherNames8.add("CCTV-10高清");
         TV_CHANNEL_LOCATION_WORDS.put("中央科教", otherNames8);
+
+        List<String> otherNames9 = new ArrayList<String>();
+        otherNames9.add("CCTV-11");
+        otherNames9.add("CCTV-11高清");
+        TV_CHANNEL_LOCATION_WORDS.put("中央十一台", otherNames9);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV11", otherNames9);
     }
 
     /**
@@ -318,7 +342,6 @@ public class YuYingWordsUtils {
         TV_CHANNEL_SEARCH_KEYWORDS.put("十三", "13");
         TV_CHANNEL_SEARCH_KEYWORDS.put("台", "");
         TV_CHANNEL_SEARCH_KEYWORDS.put("套", "");
-        // Yves Yang:TV_CHANNEL_SEARCH_KEYWORDS.put("卫视", "");
         TV_CHANNEL_SEARCH_KEYWORDS.put("电视", "");
     }
 
