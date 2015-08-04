@@ -38,6 +38,7 @@ import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
 import com.changhong.baidu.BaiDuVoiceConfiguration;
 import com.changhong.common.domain.AppInfo;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
@@ -1218,7 +1219,15 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
                     yuYingHelpDialog.show();
                 } else {
+				if(AppConfig.USE_MALL_APP)
+				{
+                	ClientSendCommandService.msg = "mall:" + recognitionResult;
+                    ClientSendCommandService.handler.sendEmptyMessage(1);
+				}
+				else
+				{
                     Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，目前还不支持该指令:" + recognitionResult, Toast.LENGTH_LONG).show();
+				}
                 }
             } else {
                 recognitioningFailedTimes = 0;

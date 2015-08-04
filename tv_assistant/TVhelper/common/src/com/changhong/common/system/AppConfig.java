@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class AppConfig {
 
+	public static final boolean USE_MALL_APP = true;
     /**
      * the parameter which decide the min size of the file we compress 1M
      */
@@ -22,7 +23,8 @@ public class AppConfig {
      * the camera definition for every mobile company
      */
     public final static List<String> MOBILE_CARMERS_PACKAGE = new ArrayList<String>();
-
+    
+    
     static {
         MOBILE_CARMERS_PACKAGE.add("camera");
     }
