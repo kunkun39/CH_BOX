@@ -186,7 +186,11 @@ public class MallListActivity extends FragmentActivity{
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, KeyWordsUtil.getAreaList());
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			areaSpinner.setAdapter(adapter);
-			//无效			
+			
+			Spinner kindSpinner = (Spinner)dialogView.findViewById(R.id.kind_content);
+			adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, KeyWordsUtil.getMainKindList());
+			kindSpinner.setAdapter(adapter);
+			
 			Spinner categorySpinner = (Spinner)dialogView.findViewById(R.id.category_content);
 			adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, KeyWordsUtil.getCategoryList());
 			categorySpinner.setAdapter(adapter);
@@ -206,12 +210,17 @@ public class MallListActivity extends FragmentActivity{
 					EditText nameContent = (EditText)dialogView.findViewById(R.id.name_content);
 					Spinner areaSpinner = (Spinner)dialogView.findViewById(R.id.area_content);
 					Spinner categorySpinner = (Spinner)dialogView.findViewById(R.id.category_content);
+					Spinner kindSpinner = (Spinner)dialogView.findViewById(R.id.kind_content);
 					EditText yearSpinner = (EditText)dialogView.findViewById(R.id.year_content);
 					keyWords.setName(String.valueOf(nameContent.getText()));
 					keyWords.setPerson(String.valueOf(personContent.getText()));
 					
 					if (areaSpinner.getSelectedItemPosition() != 0) {
 						keyWords.setArea(KeyWordsUtil.getAreaList().get(areaSpinner.getSelectedItemPosition()));
+					}
+					
+					if (kindSpinner.getSelectedItemPosition() != 0) {
+						keyWords.setName(keyWords.getName() + (KeyWordsUtil.getMainKindList().get(kindSpinner.getSelectedItemPosition())));
 					}
 					
 					if (categorySpinner.getSelectedItemPosition() != 0) {

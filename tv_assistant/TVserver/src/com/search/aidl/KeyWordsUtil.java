@@ -68,7 +68,24 @@ public class KeyWordsUtil {
     		    SINGAPORE,
     			OTHER)
     		);
+    // main category
+    static final String MOVIE = "电影";
+    static final String TV_PLAY = "电视剧";
+    static final String VARIETY = "综艺";
+    static final String CHILD ="少儿";
+    static final String SPORTS = "体育";
 	
+    static final List<String> MAINKIND = new ArrayList<String>(
+    		Arrays.asList(
+    			ALL,
+    			MOVIE,
+    			TV_PLAY,
+    			VARIETY,
+    			CHILD,
+    			SPORTS,    			
+    			OTHER)
+    );
+    
 	// category
 
 	static final String COMEDY = "喜剧";
@@ -129,6 +146,11 @@ public class KeyWordsUtil {
 	public static List<String> getAreaList()
 	{
 		return AREA;
+	}
+	
+	public static List<String> getMainKindList()
+	{
+		return MAINKIND;
 	}
 	
 	// CATEGORY of MALL VIDEO
