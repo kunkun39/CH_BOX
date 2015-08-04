@@ -125,28 +125,15 @@ public class KeyWordsUtil {
     );
 	
 	
+	// AREA of MALL VIDEO
 	public static List<String> getAreaList()
 	{
 		return AREA;
 	}
 	
+	// CATEGORY of MALL VIDEO
 	public static List<String> getCategoryList()
 	{
 		return CATEGORY;
-	}
-	
-	public static List<String> getYearList()
-	{
-		List<String> yearList = new ArrayList<String>();
-		Date date = new Date();
-		int year = date.getYear();
-		yearList.add(ALL);
-		yearList.add(String.valueOf(year));
-		yearList.add(String.valueOf(--year));
-		yearList.add(String.valueOf(--year));
-		yearList.add(OTHER);
-		
-		return yearList;
-	}
-
+	}	
 }

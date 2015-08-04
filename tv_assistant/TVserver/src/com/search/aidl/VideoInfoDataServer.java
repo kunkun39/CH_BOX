@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Observable;
 
 public class VideoInfoDataServer extends Observable {
+	/**
+	 * Singleton Instance to Notify data to listener
+	 */
 	private static VideoInfoDataServer mDataServer = null;
 	
 	private List<VideoInfo> mDataList = new ArrayList<VideoInfo>();

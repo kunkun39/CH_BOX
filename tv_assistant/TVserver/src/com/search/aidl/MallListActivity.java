@@ -64,16 +64,41 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public class MallListActivity extends FragmentActivity{
 
 	public static final String TAG = "MALL";
-	TextView mNameView = null;
-	DataObserver mDataObserver = new DataObserver();
 	
-	Activity mActivity;
-	GridView mVideoView;
+	/**
+	 * DataObserver of Mall's Video
+	 */
+	DataObserver mDataObserver = new DataObserver();	
+
+	/**
+	 * GridVies's 
+	 */
+	GridView mVideoView;	
 	GridAdapter mAdapter;
+	
+	/**
+	 *  Video List Storage
+	 */
 	List<VideoInfo> mVideoInfos = new ArrayList<VideoInfo>();
+	
+	/**
+	 *  Message handler
+	 */
 	static Handler handler = null;
+	
+	/**
+	 *  Complex Search Dialog
+	 */
 	View dialogView = null;
 	
+	/**
+	 * Search EditBox
+	 */
+	TextView mNameView = null;
+	
+/** ======================================================================================================
+ *  Option
+ */	
 	DisplayImageOptions options = new DisplayImageOptions
 			.Builder()
 			.showImageForEmptyUri(R.drawable.activity_empty_photo)
@@ -87,136 +112,17 @@ public class MallListActivity extends FragmentActivity{
             .resetViewBeforeLoading(true)            
 			.build();
 
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-		setContentView(R.layout.activity_mall_list);
-		mNameView = (TextView)findViewById(R.id.mall_list_name);
-		mNameView.setOnKeyListener(new OnKeyListener() {
-			
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				switch (keyCode) {
-				case KeyEvent.KEYCODE_ENTER:
-					if (mNameView.getText() == null) {
-						break;
-					}
-					
-					String command = String.valueOf(mNameView.getText());
-					if (command.length() > 0) {
-						requiestSearch(command);
-					}
-					break;
-
-				default:
-					break;
-				}
-				return false;
-			}
-		});
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);		
-		
-		mVideoView = (GridView)findViewById(R.id.mall_list_gridview);	
-		mAdapter = new GridAdapter();		
-		mVideoView.setAdapter(mAdapter);	
-		mVideoView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				if (view == null) {
-					return ;							
-				}
-				
-				//ImageView v = (ImageView)view.findViewById(R.id.mall_list_item_image);
-				//view.setBackgroundResource(R.drawable.mall_search_foucsed);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-				if (parent == null) {
-					return ;							
-				}
-				
-				int count = parent.getChildCount();
-				for (int i = 0; i < count; i ++ ) {
-					//View v = parent.getChildAt(i);
-					//ImageView view = (ImageView)v.findViewById(R.id.mall_list_item_image);
-					//view.setBackgroundResource(R.drawable.mall_search_nofoucsed);
-				}
-			}
-		});
-		mVideoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int index,
-					long arg3) {				
-				playVideo((VideoInfo) mVideoView.getAdapter().getItem(index));
-			}
-		});			
-		ListView listView = (ListView)findViewById(R.id.mall_category_list);
-		
-		listView.setAdapter(new ArrayAdapter<String>(this, R.layout.mall_list_item, KeyWordsUtil.getCategoryList()));
-		listView.setOnItemSelectedListener(new OnItemSelectedListener() {
-
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				KeyWords words = new KeyWords();
-				String name = String.valueOf(((TextView)findViewById(R.id.mall_list_name)).getText());
-				if (name.length() > 0) {
-					words.setName(name);
-				}				
-				words.setCategory(KeyWordsUtil.getCategoryList().get(position));
-				requiestSearch(words);
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {;}
-		});
-		
-		ImageButton  searchButton = (ImageButton)findViewById(R.id.mall_list_name_search);
-		searchButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String name = String.valueOf(((TextView)findViewById(R.id.mall_list_name)).getText());
-				if (name.length() > 0) {
-					requiestSearch(name);
-				}
-			}
-		});
-		paserIntent(getIntent());	
-		handler = new Handler(getMainLooper());				
-	}
-	
-	void paserIntent(Intent intent)
+/** ======================================================================================================
+ *  Public Function
+ */	
+	public void playVideo(VideoInfo video)
 	{
-		if (intent != null) {
-			String command = intent.getDataString();
-			if(command != null
-					&& !command.isEmpty())
-			{
-				command = command.substring(TAG.length() + 1);
-				if (!command.isEmpty()) {
-					requiestSearch(command);
-					mNameView.setText(command);
-				}
-			}
-		}
-	}
-	
-	@Override
-	protected void onNewIntent(Intent intent) {
-		super.onNewIntent(intent);
-		paserIntent(intent);
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		mDataObserver.exit();	
+		Intent intent = new Intent();		
+		intent.setClassName("com.changhong.tvmall", "com.changhong.ivideo.activity.DetailActivity");
+		intent.putExtra("POSTER_TAG", video.getVideoId());
+		intent.putExtra("POSTER_CODE_TAG", video.getPrivatecode());
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		this.startActivity(intent);
 	}
 	
 	public void requiestSearch(String searchText)
@@ -236,6 +142,28 @@ public class MallListActivity extends FragmentActivity{
 		intent.putExtra("serviceaction", "com.search.aidl.VoiceSearchService");	
 		intent.putExtra("keyWords", keyWords);
 		this.sendBroadcast(intent);		
+	}
+/** ======================================================================================================
+ *  Override
+ */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);		
+		setContentView(R.layout.activity_mall_list);
+		initView();
+		initEvent();
+	}
+	
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		paserIntent(intent);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mDataObserver.exit();	
 	}
 	
 	@Override
@@ -306,6 +234,110 @@ public class MallListActivity extends FragmentActivity{
 		return super.onKeyDown(keyCode, event);
 	}
 	
+/** ======================================================================================================
+ *  Private Functions
+ */	
+	void initView()
+	{
+		mNameView = (TextView)findViewById(R.id.mall_list_name);		
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);				
+		mVideoView = (GridView)findViewById(R.id.mall_list_gridview);	
+		mAdapter = new GridAdapter();		
+		mVideoView.setAdapter(mAdapter);			
+		paserIntent(getIntent());	
+		handler = new Handler(getMainLooper());
+	}
+	
+	void initEvent()
+	{
+		// search keywords
+		mNameView.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				switch (keyCode) {
+				case KeyEvent.KEYCODE_ENTER:
+					if (mNameView.getText() == null) {
+						break;
+					}					
+					String command = String.valueOf(mNameView.getText());
+					if (command.length() > 0) {
+						requiestSearch(command);
+					}
+					break;
+
+				default:
+					break;
+				}
+				return false;
+			}
+		});
+		
+		// 
+		mVideoView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int index,
+					long arg3) {				
+				playVideo((VideoInfo) mVideoView.getAdapter().getItem(index));
+			}
+		});
+		
+		// List
+		ListView listView = (ListView)findViewById(R.id.mall_category_list);		
+		listView.setAdapter(new ArrayAdapter<String>(this, R.layout.mall_list_item, KeyWordsUtil.getCategoryList()));
+		listView.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view,
+					int position, long id) {
+				KeyWords words = new KeyWords();
+				String name = String.valueOf(((TextView)findViewById(R.id.mall_list_name)).getText());
+				if (name.length() > 0) {
+					words.setName(name);
+				}				
+				words.setCategory(KeyWordsUtil.getCategoryList().get(position));
+				requiestSearch(words);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {;}
+		});
+		
+		// Search button
+		ImageButton  searchButton = (ImageButton)findViewById(R.id.mall_list_name_search);
+		searchButton.setOnClickListener(new OnClickListener() {		
+			@Override
+			public void onClick(View v) {
+				String name = String.valueOf(((TextView)findViewById(R.id.mall_list_name)).getText());
+				if (name.length() > 0) {
+					requiestSearch(name);
+				}
+			}
+		});
+	}
+	
+	void paserIntent(Intent intent)
+	{
+		if (intent != null) {
+			String command = intent.getDataString();
+			if(command != null
+					&& !command.isEmpty())
+			{
+				command = command.substring(TAG.length() + 1);
+				if (!command.isEmpty()) {
+					requiestSearch(command);
+					mNameView.setText(command);
+				}
+			}
+		}
+	}	
+	
+/** ======================================================================================================
+ * 	
+ * DataObserver
+ *
+ */
 	class DataObserver implements Observer
 	{
 		DataObserver()
@@ -320,55 +352,38 @@ public class MallListActivity extends FragmentActivity{
 		
 		@Override
 		public void update(Observable observable, final Object data) {
-			//MallGridViewFragment fragment = new MallGridViewFragment();
 			if (handler != null) {
-				handler.post(new Runnable() {
-					
+				handler.post(new Runnable() {					
 					@Override
 					public void run() {
 						mVideoInfos.clear();
 						mVideoInfos.addAll((Collection<? extends VideoInfo>) data);
-						//((BaseAdapter)mVideoView.getAdapter()).notifyDataSetChanged();
 						mAdapter.notifyDataSetChanged();
 					}
 				});
 			}
-			//fragment.setData((List<VideoInfo>) data);			
-			//getSupportFragmentManager().beginTransaction().replace(R.id.mall_list_gridview_layout, fragment).show(fragment).commitAllowingStateLoss();
 		}
 	}
-		
 	
-	
-	
-	public void playVideo(VideoInfo video)
-	{
-		Intent intent = new Intent();		
-		intent.setClassName("com.changhong.tvmall", "com.changhong.ivideo.activity.DetailActivity");
-		intent.putExtra("POSTER_TAG", video.getVideoId());
-		intent.putExtra("POSTER_CODE_TAG", video.getPrivatecode());
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		this.startActivity(intent);
-	}
-	
+/** ======================================================================================================
+ * 	
+ * GridAdapter
+ *
+ */		
 	class GridAdapter extends BaseAdapter
 	{
-
 		@Override
 		public int getCount() {
-			// TODO 自动生成的方法存根
 			return mVideoInfos.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			// TODO 自动生成的方法存根
 			return mVideoInfos.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
-			// TODO 自动生成的方法存根
 			return position;
 		}
 
@@ -398,24 +413,12 @@ public class MallListActivity extends FragmentActivity{
 				pageDataHoder.nameView = nameView;
 				
 				convertView.setTag(pageDataHoder);	
-//				
-//				if (position == 1) {
-//					convertView.setFocusable(true);
-//					convertView.requestFocus();
-//					convertView.setClickable(true);
-//				}
 			}else{
 				PageDataHoder pageDataHoder = (PageDataHoder)convertView.getTag();
 				imageView = pageDataHoder.imageView;
 				nameView = pageDataHoder.nameView;
-			}
-			
-			//imageView.setImageURI(Uri.parse(videoInfo.mImageUrl));
-			//imageView.setImageBitmap(ImageLoader.getInstance().loadImageSync(videoInfo.mImageUrl));
-			
+			}			
 			ImageLoader.getInstance().displayImage(videoInfo.mImageUrl, imageView,options);
-//			convertView.setFocusable(true);
-//			convertView.setClickable(true);
 			convertView.setOnFocusChangeListener(new OnFocusChangeListener() {
 				
 				@Override
@@ -437,11 +440,9 @@ public class MallListActivity extends FragmentActivity{
 				
 				@Override
 				public void onClick(View v) {
-					// TODO 自动生成的方法存根
 					playVideo(videoInfo);
 				}
 			});
-			//imageView.setImageBitmap(ImageLoader.getInstance().loadImageSync(videoInfo.mImageUrl));
 			Log.d("DATALIST:", "videoType:" + videoInfo.videoType + ",ACTION:" + videoInfo.action);
 			nameView.setText(videoInfo.videoName);		
 			return convertView;
@@ -454,6 +455,4 @@ public class MallListActivity extends FragmentActivity{
 		TextView nameView;
 		TextView typeView;		
 	}
-	
-	
 }
