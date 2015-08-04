@@ -1122,6 +1122,21 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         } else {
                             hasResult = false;
                         }
+                        
+                        if(AppConfig.USE_MALL_APP)
+        				{
+                        	String SEARCH_STRING[] = {"电影","电视剧","综艺","体育","少儿"};
+                        	if (!hasResult) {
+                        		for (String tempString : SEARCH_STRING) {
+									if (recognitionResult.contains(tempString)) {
+										hasResult = true;
+										ClientSendCommandService.msg = "mall:" + recognitionResult;
+			                            ClientSendCommandService.handler.sendEmptyMessage(1);
+									}
+								}
+							}
+                        	
+        				}
 
                         //TODO:流程->如果频道没有搜索到，再次搜索应用
                         if(!hasResult) {
