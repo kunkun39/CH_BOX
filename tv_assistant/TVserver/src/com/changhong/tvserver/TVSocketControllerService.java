@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -26,6 +27,9 @@ import com.changhong.tvserver.touying.music.MusicViewPlayingActivity;
 import com.changhong.tvserver.touying.video.VideoViewPlayingActivity;
 import org.apache.http.conn.util.InetAddressUtils;
 import com.ots.deviceinfoprovide.DeviceInfo;
+import com.search.aidl.MallListActivity;
+
+
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
@@ -288,7 +292,15 @@ public class TVSocketControllerService extends Service {
                                 Intent intent=new Intent("com.action.startDTV");
                                 sendBroadcast(intent);
                                 Log.i(TAG, "startActivity send com.action.startDTV broadcast");
-                            } else if(msgCpy.startsWith("app_open:")){
+                            }
+                            else if(msgCpy.contains(MallListActivity.TAG.toLowerCase() + ":"))
+                            {
+                            	Intent intent = new Intent(TVSocketControllerService.this, MallListActivity.class);
+                                intent.setData(Uri.parse(msgCpy));
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);                                
+                            }
+                            else if(msgCpy.startsWith("app_open:")){
                                 Log.e(TAG, "Location:" + msgCpy);
                                 openYuYingApplication(msgCpy);
                             } else if (msgCpy.equals("finish")) {
