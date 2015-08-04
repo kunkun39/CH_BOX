@@ -218,6 +218,7 @@ public class YuYingWordsUtils {
         otherNames2.add("CCTV-1");
         TV_CHANNEL_LOCATION_WORDS.put("中央电视台", otherNames2);
         TV_CHANNEL_LOCATION_WORDS.put("中央台", otherNames2);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV", otherNames2);
 
         //baidu yuyin charaters, which is different from normal char, so replace it to normal one
         List<String> otherNames3 = new ArrayList<String>();
@@ -248,12 +249,21 @@ public class YuYingWordsUtils {
         TV_CHANNEL_LOCATION_WORDS.put("中央音乐", otherNames7);
         TV_CHANNEL_LOCATION_WORDS.put("央视音乐", otherNames7);
         TV_CHANNEL_LOCATION_WORDS.put("CCTV音乐", otherNames7);
+
+        List<String> otherNames8 = new ArrayList<String>();
+        otherNames8.add("CCTV-10");
+        TV_CHANNEL_LOCATION_WORDS.put("中央科教", otherNames8);
     }
 
     /**
      * 判断
      */
     public static List<String> getLocationWordsChannel(String needCheck) {
+        if (StringUtils.hasLength(needCheck)) {
+            needCheck = needCheck.replace("ｃｃｔｖ", "CCTV");
+            needCheck = needCheck.replace("cctv", "CCTV");
+        }
+
         return TV_CHANNEL_LOCATION_WORDS.get(needCheck);
     }
 

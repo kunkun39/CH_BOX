@@ -421,7 +421,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                 e.printStackTrace();
             }
         } else {
-            Log.e(TAG, "未获取到服务器Json");
+            Log.e(TAG, "未获取到服务器channel Json");
         }
     }
 
@@ -476,7 +476,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                     serverAppInfo.add(app);
                 }
             } else {
-                Log.e(TAG, "未获取到服务器Json");
+                Log.e(TAG, "未获取到服务器program Json");
             }
         } catch (Exception e) {
             e.printStackTrace();
