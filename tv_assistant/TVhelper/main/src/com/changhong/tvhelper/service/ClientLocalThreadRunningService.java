@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.changhong.common.utils.*;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -49,12 +50,6 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.DialogUtil;
-import com.changhong.common.utils.MobilePerformanceUtils;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.SystemUtils;
-import com.changhong.common.utils.WebUtils;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.music.SetDefaultImage;
@@ -482,9 +477,9 @@ public class ClientLocalThreadRunningService extends Service {
 
         private void getEPGList(String url) throws Exception {
             /**
-             * 判断版本
+             * 如果不是WIFI环境，不允许访问
              */
-            if (url == null) {
+            if (url == null || !NetworkUtils.isWifiConnected(ClientLocalThreadRunningService.this)) {
                 return;
             }
 
@@ -544,6 +539,9 @@ public class ClientLocalThreadRunningService extends Service {
                         if (file.exists()) {
                             file.delete();
                         }
+
+                        SystemClock.sleep(1000);
+
                         IOUtils.copy(in, new FileOutputStream(file));
                         service.saveEPGVersion(serverVersion);
 
