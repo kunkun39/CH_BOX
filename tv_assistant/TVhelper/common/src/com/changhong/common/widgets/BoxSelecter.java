@@ -28,15 +28,30 @@ import java.util.Observable;
 import java.util.Observer;
 
 /**
- * Created by Administrator on 15-5-15.
+ * Created by Yves Yang on 15-5-15.
  */
 public class BoxSelecter implements Observer
 {
+	/**
+	 * Current Activity
+	 */
 	Activity mActivity = null;
+	
+	/**
+	 *  Cotrollers
+	 */
 	TextView mTitle = null;
 	ListView mView = null;
 	Button mDropDownBtn = null;
+	
+	/**
+	 * IP List Adapter
+	 */
 	BoxSelectAdapter mAdapter = null;
+	
+	/**
+	 * A Handler With MainLooper To Redraw Surface
+	 */
 	Handler mHandler = null;
 	
 	
@@ -81,6 +96,7 @@ public class BoxSelecter implements Observer
 		IpSelectorDataServer.getInstance().addObserver(this);
 	}
 	
+	// YVES YANG:!!!! Must Call This Function To Release Its Self
 	public void release()
 	{
 		IpSelectorDataServer.getInstance().deleteObserver(this);
@@ -92,13 +108,20 @@ public class BoxSelecter implements Observer
 			@Override
 			public void run() {
 				IpSelectorDataServer dataServer = IpSelectorDataServer.getInstance();
-				mAdapter.updateList(dataServer.getIpList());			
+				// Update List
+				mAdapter.updateList(dataServer.getIpList());
+				
+				// Update Name
 				mTitle.setText(dataServer.getName());
 			}
 		});
 				
 	}
 	
+	/**
+	 * 
+	 * List Adapter
+	 */
 	public class BoxSelectAdapter extends BaseAdapter {
 
 	    private LayoutInflater minflater;

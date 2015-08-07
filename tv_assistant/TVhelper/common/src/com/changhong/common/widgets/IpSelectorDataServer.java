@@ -19,32 +19,50 @@ import com.changhong.common.utils.StringUtils;
 
 public class IpSelectorDataServer extends Observable
 {
+	/**
+	 * This
+	 */
 	private static IpSelectorDataServer dataServer = null;
+	
+	/**
+	 * Static Final String
+	 */
 	private static final String DEFAULT_IP_NAME = NetworkUtils.BOX_DEFAULT_NAME;
 	private static final String DEFAULT_LINKLESSNESS = "未连接";
 	private static final int  DELAY_TIME = 5000;
 	
+	/**
+	 * IP & Name Container
+	 */
 	private Map<String, String> mServerIpListMap = new LinkedHashMap<String, String>();
+	
+	/**
+	 * IP & Time Container
+	 */
 	private Map<String, Long> mServerIPListLiveTime = new HashMap<String, Long>();
 	private String mServerIP = null;
 	
+	/** ==================================================================================================
+	 * Singleton
+	 */
 	private IpSelectorDataServer(){};
 	
-	public static synchronized IpSelectorDataServer getInstance()
-	{
+	public static synchronized IpSelectorDataServer getInstance() {
 		if (dataServer == null) {
 			dataServer = new IpSelectorDataServer();
 		}
 		return dataServer;
 	}
+	/** =================================================================================================
+	 * 
+	 * Ip List Controller
+	 */
 	
-	public final Collection<String> getIpList()
-	{		
+	public final Collection<String> getIpList(){		
 		return mServerIpListMap.keySet();
 	}
 	
-	public synchronized void addIp(String ip)
-	{
+	public synchronized void addIp(String ip) {
 		if (ip == null|| ip.length() < 1) {
 			return;
 		}
@@ -52,8 +70,7 @@ public class IpSelectorDataServer extends Observable
 		addIp(ip, DEFAULT_IP_NAME);
 	}
 	
-	public synchronized void addIp(String ip,String name)
-	{
+	public synchronized void addIp(String ip,String name) {
 		if (ip == null|| ip.length() < 1 ) {
 			return;
 		}
@@ -69,33 +86,26 @@ public class IpSelectorDataServer extends Observable
 		notifyObservers();
 	}
 	
-	public synchronized void modifyName(String ip,String name)
-	{
+	public synchronized void modifyName(String ip,String name) {
 		if (ip == null || ip.length() < 1) {
 			return;
 		}
 		
-		if(mServerIpListMap.containsKey(ip))
-		{
-			if(!mServerIpListMap.get(ip).equals(name))
-			{
+		if(mServerIpListMap.containsKey(ip)) {
+			if(!mServerIpListMap.get(ip).equals(name)) {
 				mServerIpListMap.put(ip, name);
 				setChanged();
 				notifyObservers();
-			}
-			
-		}	
-		
+			}			
+		}			
 	}
 	
-	public synchronized void removeIp(String ip)
-	{
+	public synchronized void removeIp(String ip) {
 		if (ip == null|| ip.length() < 1) {
 			return;
 		}
 		
-		if(mServerIpListMap.containsKey(ip))
-		{			
+		if(mServerIpListMap.containsKey(ip)){			
 			mServerIpListMap.remove(ip);
 			removeActivateIp(ip);
 			if (mServerIP.equals(ip)) {
@@ -106,8 +116,11 @@ public class IpSelectorDataServer extends Observable
 		}
 	}
 	
-	public synchronized void setCurrentIp(String ip)
-	{
+	/** =================================================================================================
+	 * 
+	 * Current IP Controller
+	 */
+	public synchronized void setCurrentIp(String ip) {
 		if (ip == null|| ip.length() < 1) {
 			return;
 		}
@@ -117,14 +130,27 @@ public class IpSelectorDataServer extends Observable
 			ClientSendCommandService.handler.sendEmptyMessage(2);
 			setChanged();
 			notifyObservers();
-		}
-		
+		}		
 	}
 	
 	public final String getCurrentIp() {
 		return mServerIP;
 	}
 	
+	private final String setDefaultIp() {
+		if (mServerIpListMap.size() > 0) {
+			setCurrentIp((String) mServerIpListMap.keySet().toArray()[0]);			
+		}
+		else {
+			clear();
+		}
+		return mServerIP;
+	}
+	
+	/** =================================================================================================
+	 * 
+	 * Current IP Name Controller
+	 */
 	public final String getName() {			
 		return getName(mServerIP);
 	}
@@ -146,15 +172,18 @@ public class IpSelectorDataServer extends Observable
 		
 	}
 	
-	public void clear()
-	{
+	public void clear() {
 		mServerIpListMap.clear();
 		mServerIPListLiveTime.clear();
 		mServerIP = null;
 	}
 	
-	public void activateIp(String ip)
-	{
+	/** =================================================================================================
+	 * 
+	 * Current IP & Time 
+	 */
+	// Refresh Time
+	public void activateIp(String ip){
 		if (ip == null|| ip.length() < 1) {
 			return ;
 		}
@@ -162,20 +191,18 @@ public class IpSelectorDataServer extends Observable
 		mServerIPListLiveTime.put(ip, System.currentTimeMillis());
 	}
 	
-	public void removeActivateIp(String ip)
-	{
+	public void removeActivateIp(String ip){
 		if (ip == null|| ip.length() < 1) {
 			return ;
 		}
 		mServerIPListLiveTime.remove(ip);
 	}
 	
-	public synchronized void removeIpOutOfTime()
-	{
+	public synchronized void removeIpOutOfTime(){
 		List<String> ipList = new ArrayList<String>();
 		Long  timeCurrent = System.currentTimeMillis();
 		for (Entry<String, Long> item : mServerIPListLiveTime.entrySet()) {
-			if(timeCurrent - item.getValue() > 12000)
+			if(timeCurrent - item.getValue() > DELAY_TIME)
 			{
 				ipList.add(item.getKey());
 			}
@@ -186,24 +213,12 @@ public class IpSelectorDataServer extends Observable
 		}
 	}
 	
-	public Long getIPTime(String ip)
-	{
+	public Long getIPTime(String ip){
 		if (ip == null|| ip.length() < 1) {
 			return 0L;
 		}
 		
 		return mServerIPListLiveTime.get(ip);
-	}
-	
-	private final String setDefaultIp()
-	{
-		if (mServerIpListMap.size() > 0) {
-			setCurrentIp((String) mServerIpListMap.keySet().toArray()[0]);			
-		}
-		else {
-			clear();
-		}
-		return mServerIP;
-	}
+	}		
 
 }
