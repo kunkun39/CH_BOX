@@ -9,6 +9,8 @@ import android.net.wifi.WifiManager;
 import android.util.Log;
 import com.changhong.common.domain.NetworkStatus;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.widgets.IpSelectorDataServer;
+
 import org.apache.http.conn.util.InetAddressUtils;
 
 import java.io.BufferedReader;
@@ -44,7 +46,7 @@ public class NetworkUtils {
                     if (!ip.isLoopbackAddress() && InetAddressUtils.isIPv4Address(ip.getHostAddress())) {
                         ipaddress = ip.getHostAddress();
                         {
-                            String[] server = ClientSendCommandService.serverIP.split("\\.");
+                            String[] server = IpSelectorDataServer.getInstance().getCurrentIp().split("\\.");
                             String[] client = ipaddress.split("\\.");
                             if (server[0].equals(client[0]) == true && server[1].equals(client[1]) == true && server[2].equals(client[2]) == true) {
                                 return ipaddress;

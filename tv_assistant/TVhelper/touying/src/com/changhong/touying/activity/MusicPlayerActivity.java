@@ -13,6 +13,7 @@ import java.util.List;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.utils.UnicodeReader;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.R;
 import com.changhong.touying.R.string;
 import com.changhong.touying.dialog.MusicPlayer;
@@ -69,14 +70,14 @@ public class MusicPlayerActivity extends FragmentActivity{
 	protected void onResume() {
 		super.onResume();
 		
-		if (ClientSendCommandService.serverIpList.isEmpty()) {
-			Toast.makeText(this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
-			finish();
-			return ;
-		}
-		
-		ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(0);        
-        ClientSendCommandService.handler.sendEmptyMessage(2);
+//		if (ClientSendCommandService.serverIpList.isEmpty()) {
+//			Toast.makeText(this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
+//			finish();
+//			return ;
+//		}
+//		
+//		ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(0);        
+//        ClientSendCommandService.handler.sendEmptyMessage(2);
         
 		if (music != null) {
 			playMusic();

@@ -14,10 +14,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Queue;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.ClientSocketInterface;
+import com.changhong.common.widgets.IpSelectorDataServer;
+
 import android.content.Context;
 import android.os.Handler;
 
@@ -114,7 +118,7 @@ public abstract class SocketController implements ClientSocketInterface {
                             clientSocket.receive(receivePacket);
                             ip = receivePacket.getAddress().getHostAddress();
                             if (mRemoteInfo != null)
-                                mRemoteInfo.setIp(ip);
+                                mRemoteInfo.addIp(ip);
                             Log.d(TAG, "getIP:" + ip);
 
                             byte[] ipBytes = mRemoteInfo.getIp().getBytes("ISO-8859-1");//ip.getBytes();
@@ -194,8 +198,9 @@ public abstract class SocketController implements ClientSocketInterface {
     }
 
     private void update() {
-        if (mRemoteInfo.getIp() != null && ClientSendCommandService.serverIP != null && !mRemoteInfo.getIp().contains(ClientSendCommandService.serverIP)) {
-            mRemoteInfo.setIp(ClientSendCommandService.serverIP);
+    	String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
+        if (mRemoteInfo.getIp() != null && serverIP != null && !mRemoteInfo.getIp().contains(serverIP)) {
+            mRemoteInfo.setIp(serverIP);
             String ip = mRemoteInfo.getIp();
 
             if (ip != null && ip.length() > 0) {
@@ -214,7 +219,7 @@ public abstract class SocketController implements ClientSocketInterface {
 
     protected abstract void onIpRemoved(String ip);
 
-    class RemoteInfoContainer implements ClientSocketInterface {
+    class RemoteInfoContainer implements ClientSocketInterface,Observer {
 
         public static final int WAITING_TIME = 3000;
         private Map<String, Long> mServerIP = new HashMap<String, Long>();
@@ -225,6 +230,7 @@ public abstract class SocketController implements ClientSocketInterface {
             mServerIpCur = null;
             mServerIP.clear();
             mDataPackageList.clear();
+            IpSelectorDataServer.getInstance().deleteObserver(this);
         }
 
         public final String getIp() {
@@ -248,7 +254,8 @@ public abstract class SocketController implements ClientSocketInterface {
             //refresh map for date changed or get a new ip
             mServerIP.put(ip, new Date().getTime());
             onIpObtained(ip);            
-
+            
+            IpSelectorDataServer.getInstance().addObserver(this);
             Log.d(TAG, "Add ip" + mServerIpCur);
 
         }
@@ -279,11 +286,10 @@ public abstract class SocketController implements ClientSocketInterface {
             {
                 Log.d(TAG, "come to add ip");
                 addIp(ip);
-                mServerIpCur = ip;
-
-                if (ClientSendCommandService.serverIP != null
-                        && ClientSendCommandService.serverIP.length() > 0) {
-                    mServerIpCur = ClientSendCommandService.serverIP;
+                mServerIpCur = ip;                
+                if (serverIP != null
+                        && serverIP.length() > 0) {
+                    mServerIpCur = serverIP;
                 }
             }
         }
@@ -369,6 +375,11 @@ public abstract class SocketController implements ClientSocketInterface {
             }
             return false;
         }
+
+		@Override
+		public void update(Observable observable, Object data) {
+			this.setIp(IpSelectorDataServer.getInstance().getCurrentIp()); 			
+		}
 
 
     }

@@ -11,6 +11,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 
@@ -44,7 +45,7 @@ public class ChannelService {
      */
     public static String obtainChannlPlayURL(Map<String, Object> map) {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("http://" + ClientSendCommandService.serverIP + ":8000/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
+        buffer.append("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
                 + "&aPid=" + map.get("aPid") + "&vPid=" + map.get("vPid")
                 + "&dmxId=" + map.get("dmxId") + "&service_id=" + map.get("service_id"));
 

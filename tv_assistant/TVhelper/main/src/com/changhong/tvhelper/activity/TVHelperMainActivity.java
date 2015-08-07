@@ -21,7 +21,8 @@ import android.view.MotionEvent;
 import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.MusicCategoryActivity;
 import com.changhong.touying.activity.PictureCategoryActivity;
@@ -74,10 +75,7 @@ public class TVHelperMainActivity extends Activity {
 
     /**************************************************IP连接部分*******************************************************/
 
-    public static TextView title = null;
-    private BoxSelectAdapter ipAdapter = null;
-    private ListView clients = null;
-    private Button list;
+    private BoxSelecter ipSelecter = null;
     /**
      * message handler
      */
@@ -109,9 +107,6 @@ public class TVHelperMainActivity extends Activity {
         /**
          * init all views
          */
-    	title = (TextView) findViewById(R.id.title);
-        clients = (ListView) findViewById(R.id.clients);
-        list = (Button) findViewById(R.id.btn_list);
 
         Button controller = (Button) findViewById(R.id.main_control);
         Button tvplayer = (Button) findViewById(R.id.main_player);
@@ -226,50 +221,13 @@ public class TVHelperMainActivity extends Activity {
         /**
          * Ip部分
          */
-        ipAdapter = new BoxSelectAdapter(TVHelperMainActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
-        String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-        ClientSendCommandService.titletxt = boxName;
-        title.setText(boxName);
-        list.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(TVHelperMainActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器内", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
 
         mhandler = new Handler() {
             @Override
             public void handleMessage(Message msg1) {
                 switch (msg1.what) {
                     case 1:
-                        if (ipAdapter != null) {
-                        	ipAdapter.updateList(ClientSendCommandService.serverIpList);
-                        }
                         break;
                     case 2:
                         finish();
@@ -305,9 +263,9 @@ public class TVHelperMainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
     }
 
     @Override
@@ -319,6 +277,9 @@ public class TVHelperMainActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
+        if (ipSelecter != null) {
+			ipSelecter.release();
+		}
         if (updateReceiver != null) {
             unregisterReceiver(updateReceiver);
             updateReceiver = null;
@@ -334,10 +295,8 @@ public class TVHelperMainActivity extends Activity {
 					
 					@Override
 					public void onSubmit(DialogMessage dialogMessage) {
-						ClientSendCommandService.titletxt = "未连接";
-                        title.setText(ClientSendCommandService.titletxt);
-                        ClientSendCommandService.serverIpList.clear();
-                        ClientSendCommandService.serverIpListMap.clear();
+						IpSelectorDataServer.getInstance().clear();
+                        //ClientSendCommandService.serverIpListMap.clear();
 
                         mhandler.sendEmptyMessage(2);
                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {

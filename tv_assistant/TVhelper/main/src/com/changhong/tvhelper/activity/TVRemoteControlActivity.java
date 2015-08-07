@@ -45,7 +45,7 @@ import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
@@ -67,9 +67,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     /**
      * server ip part
      */
-    private BoxSelectAdapter ipAdapter = null;
-    public static TextView title = null;
-    private ListView clients = null;
+    private BoxSelecter ipSelecter = null;
 
     private String LongKeyValue = null;
     private PointF startPoint = new PointF();
@@ -114,8 +112,6 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 //        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         img_d = findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
-        title = (TextView) findViewById(R.id.title);
-        clients = (ListView) findViewById(R.id.clients);
         smoothBall = (ImageView) findViewById(R.id.ball);
         Button btn_up = (Button) findViewById(R.id.up);
         Button btn_down = (Button) findViewById(R.id.down);
@@ -227,41 +223,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         });
 			}
         });
-
-        ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                onUpdate();
-                clients.setVisibility(View.GONE);
-            }
-        });
-
-        list.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(TVRemoteControlActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器上", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         
 //        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 //			
@@ -723,9 +685,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 
     @Override
     protected void onResume() {
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
         super.onResume();
     }
 
@@ -751,6 +713,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
 
     /**********************************************语音部分代码*********************************************************/

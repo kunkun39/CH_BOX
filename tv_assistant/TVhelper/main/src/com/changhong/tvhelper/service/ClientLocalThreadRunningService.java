@@ -50,6 +50,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
 import com.changhong.touying.music.SetDefaultImage;
@@ -463,8 +464,8 @@ public class ClientLocalThreadRunningService extends Service {
                     //sleep for 1 seconds for http server started
                     Thread.sleep(1000);
 
-                    if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-                        getEPGList("http://" + ClientSendCommandService.serverIP + ":8000/epg_database_ver.json");
+                    if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+                        getEPGList("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database_ver.json");
                     }
                     //every three minus, the client go to server to check
                     Thread.sleep(1000 * 60);
@@ -534,7 +535,7 @@ public class ClientLocalThreadRunningService extends Service {
                      * 更新节目信息
                      */
                     if (shouldUpdateDB) {
-                        InputStream in = WebUtils.httpGetRequest("http://" + ClientSendCommandService.serverIP + ":8000/epg_database.db");
+                        InputStream in = WebUtils.httpGetRequest("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database.db");
                         File file = new File(MyApplication.epgDBCachePath, "epg_database.db");
                         if (file.exists()) {
                             file.delete();
