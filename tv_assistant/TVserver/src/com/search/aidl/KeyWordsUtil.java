@@ -46,8 +46,6 @@ public class KeyWordsUtil {
     static final List<String> AREA = new ArrayList<String>(
     		Arrays.asList(
     			ALL,
-    			"综艺",
-    			"电视剧",
     			CHINA,
     			AMERICAN,
     			KOREA,

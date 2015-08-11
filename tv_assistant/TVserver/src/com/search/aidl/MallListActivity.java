@@ -57,10 +57,13 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 public class MallListActivity extends FragmentActivity{
 
 	public static final String TAG = "MALL";
@@ -84,7 +87,7 @@ public class MallListActivity extends FragmentActivity{
 	/**
 	 *  Message handler
 	 */
-	static Handler handler = null;
+	Handler handler = null;
 	
 	/**
 	 *  Complex Search Dialog
@@ -94,7 +97,14 @@ public class MallListActivity extends FragmentActivity{
 	/**
 	 * Search EditBox
 	 */
-	TextView mNameView = null;
+	TextView mNameView = null;		
+	
+	Runnable mDelayRunnable  = new Runnable() {		
+		@Override
+		public void run() {
+			Toast.makeText(MallListActivity.this, "未找到资源,请重新搜索!", Toast.LENGTH_LONG).show();
+		}
+	};
 	
 /** ======================================================================================================
  *  Option
@@ -104,12 +114,12 @@ public class MallListActivity extends FragmentActivity{
 			.showImageForEmptyUri(R.drawable.activity_empty_photo)
 			.showImageOnFail(R.drawable.activity_empty_photo)
 			.showImageOnLoading(R.drawable.activity_empty_photo)
-			.cacheInMemory(false)
+			.cacheInMemory(true)
 			.cacheOnDisc(true)
             .considerExifParams(true)
             .imageScaleType(ImageScaleType.EXACTLY)
             .bitmapConfig(Bitmap.Config.RGB_565)
-            .resetViewBeforeLoading(true)            
+            .resetViewBeforeLoading(true)                  
 			.build();
 
 /** ======================================================================================================
@@ -121,7 +131,7 @@ public class MallListActivity extends FragmentActivity{
 		intent.setClassName("com.changhong.tvmall", "com.changhong.ivideo.activity.DetailActivity");
 		intent.putExtra("POSTER_TAG", video.getVideoId());
 		intent.putExtra("POSTER_CODE_TAG", video.getPrivatecode());
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);		
 		this.startActivity(intent);
 	}
 	
@@ -132,6 +142,7 @@ public class MallListActivity extends FragmentActivity{
 		intent.putExtra("keytext", searchText);		
 		intent.putExtra("serviceaction", "com.search.aidl.VoiceSearchService");	
 		//intent.putExtra("keyWords", value)
+		waitForResource();
 		this.sendBroadcast(intent);		
 	}
 	
@@ -141,6 +152,7 @@ public class MallListActivity extends FragmentActivity{
 		intent.setAction("com.changhong.searchservice.searchvideo");
 		intent.putExtra("serviceaction", "com.search.aidl.VoiceSearchService");	
 		intent.putExtra("keyWords", keyWords);
+		waitForResource();
 		this.sendBroadcast(intent);		
 	}
 /** ======================================================================================================
@@ -342,6 +354,14 @@ public class MallListActivity extends FragmentActivity{
 		}
 	}	
 	
+	void waitForResource()
+	{		
+		if (handler != null) {
+			handler.postDelayed(mDelayRunnable, 3000);
+		}
+		
+	}
+	
 /** ======================================================================================================
  * 	
  * DataObserver
@@ -365,7 +385,9 @@ public class MallListActivity extends FragmentActivity{
 				handler.post(new Runnable() {					
 					@Override
 					public void run() {
+						handler.removeCallbacks(mDelayRunnable);
 						mVideoInfos.clear();
+						ImageLoader.getInstance().stop();
 						mVideoInfos.addAll((Collection<? extends VideoInfo>) data);
 						mAdapter.notifyDataSetChanged();
 					}
@@ -400,16 +422,7 @@ public class MallListActivity extends FragmentActivity{
 		public View getView(int position, View convertView, ViewGroup parent) {
 			final VideoInfo videoInfo =  mVideoInfos.get(position);
 			ImageView imageView = null;
-			TextView nameView = null;	
-			
-			if ((position % 5) == 0) {
-				for(int i = 1; i < 11 ; i ++)
-				{					
-					if (position + i < mVideoInfos.size()) {
-						ImageLoader.getInstance().loadImage(mVideoInfos.get(position + i).getmImageUrl(),options, null);
-					}					
-				}
-			}
+			TextView nameView = null;							
 			
 			if (convertView == null) {
 				
@@ -426,7 +439,8 @@ public class MallListActivity extends FragmentActivity{
 				PageDataHoder pageDataHoder = (PageDataHoder)convertView.getTag();
 				imageView = pageDataHoder.imageView;
 				nameView = pageDataHoder.nameView;
-			}			
+			}		
+			ImageLoader.getInstance().cancelDisplayTask(imageView);
 			ImageLoader.getInstance().displayImage(videoInfo.mImageUrl, imageView,options);
 			convertView.setOnFocusChangeListener(new OnFocusChangeListener() {
 				
