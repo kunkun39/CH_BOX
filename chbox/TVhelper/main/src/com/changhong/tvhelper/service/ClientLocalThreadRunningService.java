@@ -63,6 +63,7 @@ import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.activity.TVChannelPlayActivity;
 import com.changhong.tvhelper.activity.TVChannelShowActivity;
 import com.changhong.tvhelper.domain.OrderProgram;
+import com.changhong.tvhelper.utils.PushSimpleNotifyUtil;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 /**
@@ -90,6 +91,9 @@ public class ClientLocalThreadRunningService extends Service {
     private static Dialog dialog_yuyue=null;
     /**预约提示列表adapter*/
     private static YuYueAdapter adapter_yuyue=null;
+    
+    PushSimpleNotifyUtil simpleNotify;
+    
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -107,6 +111,15 @@ public class ClientLocalThreadRunningService extends Service {
         initThreads();
     }
 
+    @Override
+    public void onDestroy() {    
+    	super.onDestroy();
+    	if(simpleNotify != null)
+    	{
+    		simpleNotify.finish();
+    	}
+    }
+    
     private void initThreads() {
         /**
          * 启动HTTPD服务监视器
@@ -633,6 +646,8 @@ public class ClientLocalThreadRunningService extends Service {
 				}
 			}
 		}).start();
+		
+		simpleNotify = new PushSimpleNotifyUtil(this);
 		
 	}
 }
