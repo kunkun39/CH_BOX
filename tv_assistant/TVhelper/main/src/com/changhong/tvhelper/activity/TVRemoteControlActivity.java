@@ -829,6 +829,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     }
                 }
             }
+            
+            
 
             /**
              * used for check yuying laucher is successful or not
@@ -838,9 +840,24 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
              * 2 - else go to switch channel way
              */
             boolean hasResult = false;
-            if (StringUtils.hasLength(recognitionResult)) {
-                /********************************************处理用户说的话********************************************/
-
+            if(AppConfig.USE_MALL_APP)
+			{
+            	String SEARCH_STRING[] = {"魔力","魔力影音","电影","电视剧","综艺","体育","少儿","动画","音乐"};
+            	if (!hasResult) {
+            		for (String tempString : SEARCH_STRING) {
+						if (recognitionResult.contains(tempString)) {
+							hasResult = true;
+							ClientSendCommandService.msg = "mall:" + recognitionResult;
+                            ClientSendCommandService.handler.sendEmptyMessage(1);
+                            return ;
+						}
+					}
+				}
+            	
+			}
+            if (!hasResult || StringUtils.hasLength(recognitionResult)) {
+                /********************************************处理用户说的话********************************************/            	
+            	
                 String commands = YuYingWordsUtils.isSearchContainsControl(recognitionResult);
                 if (StringUtils.hasLength(commands)) {
                     //TODO:流程->主页
@@ -1086,22 +1103,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                             hasResult = true;
                         } else {
                             hasResult = false;
-                        }
-                        
-                        if(AppConfig.USE_MALL_APP)
-        				{
-                        	String SEARCH_STRING[] = {"电影","电视剧","综艺","体育","少儿"};
-                        	if (!hasResult) {
-                        		for (String tempString : SEARCH_STRING) {
-									if (recognitionResult.contains(tempString)) {
-										hasResult = true;
-										ClientSendCommandService.msg = "mall:" + recognitionResult;
-			                            ClientSendCommandService.handler.sendEmptyMessage(1);
-									}
-								}
-							}
-                        	
-        				}
+                        }                                                
 
                         //TODO:流程->如果频道没有搜索到，再次搜索应用
                         if(!hasResult) {
