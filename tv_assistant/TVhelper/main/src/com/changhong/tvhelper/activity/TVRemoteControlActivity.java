@@ -845,7 +845,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             	String SEARCH_STRING[] = {"魔力","魔力影音","电影","电视剧","综艺","体育","少儿","动画","音乐"};
             	if (!hasResult) {
             		for (String tempString : SEARCH_STRING) {
-						if (recognitionResult.contains(tempString)) {
+						if (recognitionResult.equals(tempString)) {
 							hasResult = true;
 							ClientSendCommandService.msg = "mall:" + recognitionResult;
                             ClientSendCommandService.handler.sendEmptyMessage(1);
