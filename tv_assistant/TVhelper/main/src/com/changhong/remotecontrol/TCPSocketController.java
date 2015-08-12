@@ -25,7 +25,6 @@ public class TCPSocketController extends SocketController {
 	
 	TCPSocketController(Context context, Handler handle) {
 		super(context, handle);
-		// TODO Auto-generated constructor stub
 	}
 
 	

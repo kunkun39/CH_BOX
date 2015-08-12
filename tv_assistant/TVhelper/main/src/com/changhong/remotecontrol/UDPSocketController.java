@@ -51,14 +51,13 @@ public class UDPSocketController extends SocketController {
 							
 							try {
 								if(mHandle != null)
+								{
 									mHandle.sendMessage(mHandle.obtainMessage(EVENT_IM, new String(dgPacket.getData(), 0, dgPacket.getLength())));
-							} catch (Exception e) {
-								// TODO: handle exception
+								}
+							} catch (Exception e) {								
 								e.printStackTrace();
-							}
-							
-						} catch (IOException e) {
-							// TODO: handle exception
+							}							
+						} catch (IOException e) {							
 							e.printStackTrace();
 						}
 												

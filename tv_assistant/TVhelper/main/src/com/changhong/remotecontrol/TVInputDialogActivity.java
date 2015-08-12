@@ -492,9 +492,5 @@ public class TVInputDialogActivity extends Activity {
             Log.e(TAG, e.getMessage());
         }
     }
-
-    protected void onUpdate() {
-        TVRemoteControlService.update();
-    }
 }
 
