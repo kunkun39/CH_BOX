@@ -1203,8 +1203,14 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 } else {
 				if(AppConfig.USE_MALL_APP)
 				{
-                	ClientSendCommandService.msg = "mall:" + recognitionResult;
-                    ClientSendCommandService.handler.sendEmptyMessage(1);
+					if (recognitionResult.equals("帮助")) {
+						BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
+	                    yuYingHelpDialog.show();
+					}else {
+						ClientSendCommandService.msg = "mall:" + recognitionResult;
+	                    ClientSendCommandService.handler.sendEmptyMessage(1);
+					}					
+                	
 				}
 				else
 				{

@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.*;
 import android.widget.*;
+
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.tvhelper.R;
@@ -39,6 +41,10 @@ public class BaiDuVoiceChannelControlDialog extends Dialog {
         WindowManager.LayoutParams wlp = window.getAttributes();
 //        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
 //        wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        if (AppConfig.USE_MALL_APP) {
+        	((TextView)findViewById(R.id.dialog_notification)).setText(getContext().getString(R.string.dialog_baidu_voice_help) + getContext().getString(R.string.dialog_baidu_voice_mall_help));
+		}
+
         wlp.width = DialogUtil.dipTopx(context, 300f);
         wlp.height = DialogUtil.dipTopx(context, 330f);
         window.setAttributes(wlp);
