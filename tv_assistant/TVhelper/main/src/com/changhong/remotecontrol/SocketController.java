@@ -257,6 +257,7 @@ public abstract class SocketController implements ClientSocketInterface {
 		                	byte[] ipBytes = ip.getBytes("ISO-8859-1");//ip.getBytes();
 		                	dgSocket = new DatagramSocket();
 		                	dgSocket.send(new DatagramPacket(ipBytes, ipBytes.length, InetAddress.getByName(ipCurrent), INPUT_IP_GET_PORT));
+		                	dgSocket.send(new DatagramPacket(ipBytes, ipBytes.length, InetAddress.getByName(ip), INPUT_IP_GET_PORT));
 		                	Log.d("RemoteIME", "Change binder ip:" + ipCurrent + "to ip:" + ip);
 		                } catch (NumberFormatException e) {
 		                    e.printStackTrace();

@@ -32,7 +32,7 @@ import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.faq.activity.QuestionListActivity;
+//import com.changhong.faq.activity.QuestionListActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
