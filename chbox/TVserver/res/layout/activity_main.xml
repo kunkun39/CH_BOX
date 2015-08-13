@@ -54,53 +54,54 @@
             android:layout_width="240dip"
             android:layout_height="240dip"
             />
+,
+         <TextView
+                 android:layout_width="50dp"
+                 android:layout_height="50dp"
+                 android:visibility="invisible"
+                 />
 
-         <!--<TextView-->
-                 <!--android:layout_width="50dp"-->
-                 <!--android:layout_height="50dp"-->
-                 <!--android:visibility="invisible"-->
-                 <!--/>-->
-
-        <!--<ImageView-->
-                <!--android:src="@drawable/tv_server_code_old"-->
-                <!--android:layout_width="240dip"-->
-                <!--android:layout_height="240dip"-->
-                <!--/>-->
+        <ImageView
+                android:src="@drawable/tv_server_code_ios"
+                android:layout_width="240dip"
+                android:layout_height="240dip"
+                />
     </LinearLayout>
-    <!--<LinearLayout-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center"-->
-            <!--android:paddingBottom="10dp">-->
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp">
 
-        <!--<TextView-->
-                <!--android:layout_width="180dip"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="36px"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:gravity="center"-->
-                <!--android:text="ANDROID" />-->
-                 <!--/>-->
+        <TextView
+                android:layout_width="240dip"
+                android:layout_height="wrap_content"
+                android:textSize="36px"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:text="Android" />
+                 />
 
-        <!--<TextView-->
-                <!--android:layout_width="50dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:visibility="invisible"-->
-                <!--/>-->
-        <!--<TextView-->
-                <!--android:layout_width="180dip"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textSize="36px"-->
-                <!--android:textColor="@android:color/black"-->
-                <!--android:gravity="center"-->
-                <!--android:text="IOS" />-->
-    <!--</LinearLayout>-->
+        <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                />
+
+        <TextView
+                android:layout_width="240dip"
+                android:layout_height="wrap_content"
+                android:textSize="36px"
+                android:textColor="@android:color/black"
+                android:gravity="center"
+                android:text="IOS" />
+    </LinearLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="36px"
         android:textColor="@android:color/black"
-        android:text="友情提示：由于微信限制第三方二维码，请用微信外的其他工具扫描二维码" />
+        android:text="友情提示：由于微信限制第三方二维码，请用微信外的其他工具扫描二维码。苹果手机也可以通过APP STORE搜索CHBOX进行下载" />
 
 </LinearLayout>

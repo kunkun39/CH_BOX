@@ -20,7 +20,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 
 import java.io.File;
@@ -36,11 +36,8 @@ public class PictureCategoryActivity extends Activity {
 
     /**************************************************IP连接部分*******************************************************/
 
-    public static TextView title = null;
-    private Button listClients;
-    private Button back;
-    private ListView clients = null;
-    private BoxSelectAdapter ipAdapter;
+    private Button back;    
+    private BoxSelecter ipSelecter;
     
 
     /**************************************************图片部分*********************************************************/
@@ -84,10 +81,7 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        title = (TextView) findViewById(R.id.title);
-        back = (Button) findViewById(R.id.btn_back);
-        clients = (ListView) findViewById(R.id.clients);
-        listClients = (Button) findViewById(R.id.btn_list);
+        back = (Button) findViewById(R.id.btn_back);        
         
 
         /**
@@ -116,41 +110,7 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(PictureCategoryActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
-        listClients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    MyApplication.vibrator.vibrate(100);
-                    if (ClientSendCommandService.serverIpList.isEmpty()) {
-                        Toast.makeText(PictureCategoryActivity.this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
-                    } else {
-                        clients.setVisibility(View.VISIBLE);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));       
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,9 +312,17 @@ public class PictureCategoryActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
+    }
+    
+    @Override
+    protected void onDestroy() {    
+    	super.onDestroy();
+    	if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
 
     @Override

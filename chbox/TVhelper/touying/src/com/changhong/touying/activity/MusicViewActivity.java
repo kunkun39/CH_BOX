@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
@@ -31,12 +32,8 @@ import com.changhong.touying.music.SingleMusicAdapter;
 public class MusicViewActivity extends FragmentActivity {
 
     /**************************************************IP连接部分*******************************************************/
-
-    public static TextView title = null;
-    private Button listClients;
-    private ListView clients = null;
     private Button back;
-    private BoxSelectAdapter ipAdapter;
+    private BoxSelecter ipBoxSelecter;
 
     /************************************************music basic related info******************************************/
 
@@ -88,11 +85,8 @@ public class MusicViewActivity extends FragmentActivity {
         
         initPlayer();
         
-        title = (TextView) findViewById(R.id.title);
-        back = (Button) findViewById(R.id.btn_back);
-        clients = (ListView) findViewById(R.id.clients);
-        listClients = (Button) findViewById(R.id.btn_list);
 
+        back = (Button) findViewById(R.id.btn_back);
         musicListView = (ListView) findViewById(R.id.music_list_view);
         singleMusicAdapter = new SingleMusicAdapter(this,musics,player);
         musicListView.setAdapter(singleMusicAdapter);
@@ -136,37 +130,8 @@ public class MusicViewActivity extends FragmentActivity {
         /**
          * IP part
          */
-        ipAdapter = new BoxSelectAdapter(MusicViewActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
-        listClients.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(MusicViewActivity.this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        
+    	ipBoxSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,13 +168,21 @@ public class MusicViewActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }    
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }    
         
 		player.attachMusics(musics,playlistName).autoPlaying(true);
 		
 		
+    }
+    @Override
+    protected void onDestroy() {
+    
+    	super.onDestroy();
+    	if (ipBoxSelecter != null) {
+			ipBoxSelecter.release();
+		}
     }
 
     @Override

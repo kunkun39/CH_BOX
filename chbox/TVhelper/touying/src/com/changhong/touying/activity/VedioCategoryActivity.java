@@ -3,6 +3,7 @@ package com.changhong.touying.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +13,7 @@ import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 import com.changhong.touying.vedio.Vedio;
 import com.changhong.touying.vedio.VedioDataAdapter;
@@ -25,13 +26,9 @@ import java.util.List;
  */
 public class VedioCategoryActivity extends Activity {
 
-    /**************************************************IP连接部分*******************************************************/
-
-    public static TextView title = null;
-    private Button listClients;
+    /**************************************************IP连接部分*******************************************************/    
     private Button back;
-    private ListView clients = null;
-    private BoxSelectAdapter ipAdapter;
+    private BoxSelecter ipSelecter;
 
     /**************************************************视频部分*******************************************************/
 
@@ -59,10 +56,7 @@ public class VedioCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        title = (TextView) findViewById(R.id.title);
-        back = (Button) findViewById(R.id.btn_back);
-        clients = (ListView) findViewById(R.id.clients);
-        listClients = (Button) findViewById(R.id.btn_list);
+        back = (Button) findViewById(R.id.btn_back);        
 
         /**
          * 视频部分
@@ -77,41 +71,7 @@ public class VedioCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        ipAdapter = new BoxSelectAdapter(VedioCategoryActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
-        listClients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    MyApplication.vibrator.vibrate(100);
-                    if (ClientSendCommandService.serverIpList.isEmpty()) {
-                        Toast.makeText(VedioCategoryActivity.this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
-                    } else {
-                        clients.setVisibility(View.VISIBLE);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -155,9 +115,17 @@ public class VedioCategoryActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
+    }
+    @Override
+    protected void onDestroy() {
+    
+    	super.onDestroy();
+    	if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
 
     @Override

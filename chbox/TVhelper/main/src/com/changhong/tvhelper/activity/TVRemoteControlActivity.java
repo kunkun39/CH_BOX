@@ -38,13 +38,14 @@ import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
 import com.changhong.baidu.BaiDuVoiceConfiguration;
 import com.changhong.common.domain.AppInfo;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.remotecontrol.TVInputDialogActivity;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.utils.YuYingWordsUtils;
@@ -66,9 +67,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     /**
      * server ip part
      */
-    private BoxSelectAdapter ipAdapter = null;
-    public static TextView title = null;
-    private ListView clients = null;
+    private BoxSelecter ipSelecter = null;
 
     private String LongKeyValue = null;
     private PointF startPoint = new PointF();
@@ -113,8 +112,6 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 //        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         img_d = findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
-        title = (TextView) findViewById(R.id.title);
-        clients = (ListView) findViewById(R.id.clients);
         smoothBall = (ImageView) findViewById(R.id.ball);
         Button btn_up = (Button) findViewById(R.id.up);
         Button btn_down = (Button) findViewById(R.id.down);
@@ -226,41 +223,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         });
 			}
         });
-
-        ipAdapter = new BoxSelectAdapter(TVRemoteControlActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                onUpdate();
-                clients.setVisibility(View.GONE);
-            }
-        });
-
-        list.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(TVRemoteControlActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器上", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         
 //        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 //			
@@ -722,9 +685,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 
     @Override
     protected void onResume() {
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
         super.onResume();
     }
 
@@ -750,6 +713,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
 
     /**********************************************语音部分代码*********************************************************/
@@ -872,9 +838,24 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
              * 2 - else go to switch channel way
              */
             boolean hasResult = false;
-            if (StringUtils.hasLength(recognitionResult)) {
-                /********************************************处理用户说的话********************************************/
-
+            if(AppConfig.USE_MALL_APP)
+			{
+            	String SEARCH_STRING[] = {"魔力","魔力影音","电影","电视剧","综艺","体育","少儿","动画","音乐"};
+            	if (!hasResult) {
+            		for (String tempString : SEARCH_STRING) {
+						if (recognitionResult.equals(tempString)) {
+							hasResult = true;
+							ClientSendCommandService.msg = "mall:" + recognitionResult;
+                            ClientSendCommandService.handler.sendEmptyMessage(1);
+                            return ;
+						}
+					}
+				}
+            	
+			}
+            if (!hasResult || StringUtils.hasLength(recognitionResult)) {
+                /********************************************处理用户说的话********************************************/            	
+            	
                 String commands = YuYingWordsUtils.isSearchContainsControl(recognitionResult);
                 if (StringUtils.hasLength(commands)) {
                     //TODO:流程->主页
@@ -1012,8 +993,10 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         int size = ClientSendCommandService.channelData.size();
                         for (int i = 0; i < recognitionResult.length(); i++) {
                             for (int j = 0; j < size; j++) {
+                                //特殊频道对比的地方
                                 String channelName = ((String) ClientSendCommandService.channelData.get(j).get("service_name")).replace("卫视高清", "高清");
                                 channelName = YuYingWordsUtils.getSpecialWordsChannel(channelName);
+                                channelName = YuYingWordsUtils.numNotNeedConvert(channelName);
                                 if (channelName.indexOf(recognitionResult.charAt(i)) >= 0) {
                                     Integer count = matchChannel.get(String.valueOf(j));
                                     if (count == null) {
@@ -1045,6 +1028,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                     String newChannel = ((String) ClientSendCommandService.channelData.get(Integer.valueOf(position)).get("service_name")).replace("卫视高清", "高清");
                                     bestChannel = YuYingWordsUtils.getSpecialWordsChannel(bestChannel);
                                     newChannel = YuYingWordsUtils.getSpecialWordsChannel(newChannel);
+                                    bestChannel = YuYingWordsUtils.numNotNeedConvert(bestChannel);
+                                    newChannel = YuYingWordsUtils.numNotNeedConvert(newChannel);
 
                                     if (newChannel.length() < bestChannel.length()) {
                                         bestPostion = position;
@@ -1214,7 +1199,21 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
                     yuYingHelpDialog.show();
                 } else {
+				if(AppConfig.USE_MALL_APP)
+				{
+					if (recognitionResult.equals("帮助")) {
+						BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
+	                    yuYingHelpDialog.show();
+					}else {
+						ClientSendCommandService.msg = "mall:" + recognitionResult;
+	                    ClientSendCommandService.handler.sendEmptyMessage(1);
+					}					
+                	
+				}
+				else
+				{
                     Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，目前还不支持该指令:" + recognitionResult, Toast.LENGTH_LONG).show();
+				}
                 }
             } else {
                 recognitioningFailedTimes = 0;

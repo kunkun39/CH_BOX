@@ -18,7 +18,8 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
@@ -46,10 +47,7 @@ public class TVChannelShouCangShowActivity extends Activity {
      * ***********************************************IP连接部分******************************************************
      */
 
-    private BoxSelectAdapter ipAdapter = null;
-    public static TextView title = null;
-    private ListView clients = null;
-    private Button list = null;
+    private BoxSelecter ipSelecter = null;
     private Button back = null;
 
     /**
@@ -93,9 +91,6 @@ public class TVChannelShouCangShowActivity extends Activity {
         setContentView(R.layout.activity_channel_shoucang_view);
 
         channelOrProgramList = (ListView) findViewById(R.id.channel_program_list);
-        title = (TextView) findViewById(R.id.title);
-        clients = (ListView) findViewById(R.id.clients);
-        list = (Button) findViewById(R.id.btn_list);
         back = (Button) findViewById(R.id.btn_back);
         channelText = (TextView) findViewById(R.id.text_channel_shoucang);
         orderProgramText = (TextView) findViewById(R.id.text_channel_program_yuyue);
@@ -123,40 +118,7 @@ public class TVChannelShouCangShowActivity extends Activity {
         /**
          * IP part
          */
-        ipAdapter = new BoxSelectAdapter(TVChannelShouCangShowActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-
-                while (ClientSendCommandService.searchChannelFinished) {
-                    mHandler.sendEmptyMessage(0);
-                }
-            }
-        });
-        list.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(TVChannelShouCangShowActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));       
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,7 +148,7 @@ public class TVChannelShouCangShowActivity extends Activity {
                 MyApplication.vibrator.vibrate(100);
                 if (orderProgramList.size() <= 0) {
                     Toast.makeText(TVChannelShouCangShowActivity.this, "预约节目为空", Toast.LENGTH_SHORT).show();
-                } else if (ClientSendCommandService.serverIpList.isEmpty()) {
+                } else if (IpSelectorDataServer.getInstance().getIpList().isEmpty()) {
                     channelOrProgramList.setVisibility(View.INVISIBLE);
                 }
 
@@ -220,7 +182,7 @@ public class TVChannelShouCangShowActivity extends Activity {
                         }
                         break;
                     case 2:
-                        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                        if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                             Toast.makeText(TVChannelShouCangShowActivity.this, "没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_SHORT).show();
                         }
 
@@ -276,7 +238,7 @@ public class TVChannelShouCangShowActivity extends Activity {
               */
 
              try {
-                 if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                 if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                      allShouChangChannel = channelService.getAllChannelShouCangs();
                      currentChannelPlayData = channelService.searchCurrentChannelPlay();
                      int channelSize = ClientSendCommandService.channelData.size();
@@ -304,7 +266,7 @@ public class TVChannelShouCangShowActivity extends Activity {
         @Override
         public void run() {
             try {
-                if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                     orderProgramList = channelService.findAllOrderPrograms();
                     int channelSize = ClientSendCommandService.channelData.size();
                     for (OrderProgram orderProgram:orderProgramList) {
@@ -624,9 +586,9 @@ public class TVChannelShouCangShowActivity extends Activity {
     @Override
 	protected void onResume() {
 		super.onResume();
-		if (ClientSendCommandService.titletxt != null) {
-			title.setText(ClientSendCommandService.titletxt);
-		}
+//		if (ClientSendCommandService.titletxt != null) {
+//			title.setText(ClientSendCommandService.titletxt);
+//		}
 		initData();
 	}
 
@@ -635,6 +597,13 @@ public class TVChannelShouCangShowActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
+    }
+    @Override
+    protected void onDestroy() {    
+    	super.onDestroy();
+    	if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
     
 //    @Override

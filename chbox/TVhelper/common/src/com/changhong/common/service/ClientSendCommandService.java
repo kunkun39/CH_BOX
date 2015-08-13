@@ -12,6 +12,8 @@ import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
 import com.changhong.common.utils.*;
+import com.changhong.common.widgets.IpSelectorDataServer;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -32,8 +34,8 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     /**
      * server ip list
      */
-    public static ArrayList<String> serverIpList = new ArrayList<String>();
-    public static Map<String, String> serverIpListMap = new HashMap<String, String>();
+    //public static ArrayList<String> serverIpList = new ArrayList<String>();
+    //public static Map<String, String> serverIpListMap = new HashMap<String, String>();
 
     /********************************************channel part********************************************************/
 
@@ -55,7 +57,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     /**
      * box server ip address
      */
-    public static String serverIP = null;
+    //public static String serverIP = null;
 
     public static String msg = null;
 
@@ -63,7 +65,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
 
     public static String msgXpointYpoint = null;
 
-    public static String titletxt = null;
+    //public static String titletxt = null;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -78,18 +80,19 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     }
 
     public static String getCurrentConnectBoxName() {
-        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-            return "未连接";
-        }
-        String boxName = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
-        if (StringUtils.hasLength(boxName)) {
-            return boxName;
-        }
-        return ClientSendCommandService.serverIP;
+//        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+//            return "未连接";
+//        }
+//        String boxName = ClientSendCommandService.serverIpListMap.get(ClientSendCommandService.serverIP);
+//        if (StringUtils.hasLength(boxName)) {
+//            return boxName;
+//        }
+//        return ClientSendCommandService.serverIP;
+    	return IpSelectorDataServer.getInstance().getName();
     }
 
     public static String getConnectBoxName(String serverIP) {
-        String boxName = ClientSendCommandService.serverIpListMap.get(serverIP);
+        String boxName = IpSelectorDataServer.getInstance().getName(serverIP);//ClientSendCommandService.serverIpListMap.get(serverIP);
         if (StringUtils.hasLength(boxName)) {
             return boxName;
         }
@@ -103,6 +106,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
             handler = new Handler() {
                 @Override
                 public void handleMessage(Message msg1) {
+                	String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
                     switch (msg1.what) {
                         case 1:
                             //TODO:这个消息只能用于遥控器消息发送，注意其他部分不要使用该消息
@@ -421,7 +425,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                 e.printStackTrace();
             }
         } else {
-            Log.e(TAG, "未获取到服务器Json");
+            Log.e(TAG, "未获取到服务器channel Json");
         }
     }
 
@@ -476,7 +480,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                     serverAppInfo.add(app);
                 }
             } else {
-                Log.e(TAG, "未获取到服务器Json");
+                Log.e(TAG, "未获取到服务器program Json");
             }
         } catch (Exception e) {
             e.printStackTrace();

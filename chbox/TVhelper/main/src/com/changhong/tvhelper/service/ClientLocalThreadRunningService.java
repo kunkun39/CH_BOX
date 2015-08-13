@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.changhong.common.utils.*;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
@@ -49,6 +50,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.MobilePerformanceUtils;
@@ -480,11 +482,11 @@ public class ClientLocalThreadRunningService extends Service {
                     //sleep for 1 seconds for http server started
                     Thread.sleep(1000);
 
-                    if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-                        getEPGList("http://" + ClientSendCommandService.serverIP + ":8000/epg_database_ver.json");
+                    if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+                        getEPGList("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database_ver.json");
                     }
                     //every three minus, the client go to server to check
-                    Thread.sleep(1000 * 60 * 2);
+                    Thread.sleep(1000 * 60);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -494,9 +496,9 @@ public class ClientLocalThreadRunningService extends Service {
 
         private void getEPGList(String url) throws Exception {
             /**
-             * 判断版本
+             * 如果不是WIFI环境，不允许访问
              */
-            if (url == null) {
+            if (url == null || !NetworkUtils.isWifiConnected(ClientLocalThreadRunningService.this)) {
                 return;
             }
 
@@ -543,7 +545,7 @@ public class ClientLocalThreadRunningService extends Service {
                     JSONObject version = (JSONObject) allVersions.getJSONArray("EPG_DATABASE").get(0);
                     int serverVersion = version.getInt("epg_db_version");
                     int mobileVersion = service.getEPGVersion();
-                    if (serverVersion == 0 || (serverVersion > mobileVersion)) {
+                    if (serverVersion == 0 || serverVersion != mobileVersion) {
                         shouldUpdateDB = true;
                     }
 
@@ -551,11 +553,14 @@ public class ClientLocalThreadRunningService extends Service {
                      * 更新节目信息
                      */
                     if (shouldUpdateDB) {
-                        InputStream in = WebUtils.httpGetRequest("http://" + ClientSendCommandService.serverIP + ":8000/epg_database.db");
+                        InputStream in = WebUtils.httpGetRequest("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database.db");
                         File file = new File(MyApplication.epgDBCachePath, "epg_database.db");
                         if (file.exists()) {
                             file.delete();
                         }
+
+                        SystemClock.sleep(1000);
+
                         IOUtils.copy(in, new FileOutputStream(file));
                         service.saveEPGVersion(serverVersion);
 
@@ -632,9 +637,6 @@ public class ClientLocalThreadRunningService extends Service {
 				MusicProvider provider = new MusicProvider(ClientLocalThreadRunningService.this);
 				List<Music> musics = (List<Music>) provider.getList();
 				SetDefaultImage.getInstance().setContext(ClientLocalThreadRunningService.this);
-				if (musics!=null) {
-					
-				
 				for (int i = 0; i < musics.size(); i++) {
 					Music music=musics.get(i);
 					
@@ -642,7 +644,6 @@ public class ClientLocalThreadRunningService extends Service {
 //					Bitmap bitmap = MediaUtil.getArtwork(ClientLocalThreadRunningService.this, music.getId(),
 //							music.getArtistId(), true, false);
 //					DiskCacheFileManager.saveSmallImage(bitmap, music.getPath());
-				}
 				}
 			}
 		}).start();

@@ -17,6 +17,7 @@ import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.*;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.changhong.touying.vedio.Vedio;
 import com.changhong.touying.R;
@@ -265,7 +266,7 @@ public class VedioDetailsActivity extends Activity {
             public void onClick(View v) {
                 try {
                     if (NetworkUtils.isWifiConnected(VedioDetailsActivity.this)) {
-                        if (ClientSendCommandService.serverIpList.isEmpty()) {
+                        if ( !StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                             Toast.makeText(VedioDetailsActivity.this, "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
                             return;
                         }

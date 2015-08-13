@@ -43,6 +43,7 @@ import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.WebUtils;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.R;
 import com.changhong.touying.music.JsonMusicObject;
 import com.changhong.touying.music.Music;
@@ -706,7 +707,7 @@ public class MusicPlayer extends DialogFragment{
     	
     	try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
-                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                     Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -815,7 +816,7 @@ public class MusicPlayer extends DialogFragment{
     private void touYing(String musicPath, String musicName, String artist) {
         try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
-                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+                if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                     Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
                     return;
                 }

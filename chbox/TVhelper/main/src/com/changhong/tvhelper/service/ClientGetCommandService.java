@@ -14,6 +14,7 @@ import com.changhong.common.service.ClientSocketInterface;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.IpSelectorDataServer;
 
 import android.app.Service;
 import android.content.Intent;
@@ -118,8 +119,9 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
     private class GetServerIP extends Thread {
 
         public void run() {
-            ClientSendCommandService.serverIpList.clear();
-            ClientSendCommandService.serverIpListMap.clear();
+            //ClientSendCommandService.serverIpList.clear();
+            //ClientSendCommandService.serverIpListMap.clear();
+        	IpSelectorDataServer.getInstance().clear();
             DatagramSocket dgSocket = null;
 
             try {
@@ -138,43 +140,23 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         /**
                          * 处理Socket
                          */
+                        String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
                         String serverAddress = dgPacket.getAddress().getHostAddress();
                         String content = new String(by, 0, dgPacket.getLength());
                         String[] tokens = StringUtils.delimitedListToStringArray(content, "|");
                         String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
 
                         if (StringUtils.hasLength(serverAddress)) {
-                            Log.w("COMMAND_CLEAN", (ClientSendCommandService.serverIP == null ? "" : ClientSendCommandService.serverIP) + "-" + serverAddress + "-" + ClientSendCommandService.titletxt);
+                            Log.w("COMMAND_CLEAN", (serverIP == null ? "" : serverIP) + "-" + serverAddress + "-" + IpSelectorDataServer.getInstance().getName(serverAddress));
 
-                            if (!ClientSendCommandService.serverIpList.contains(serverAddress)) {
-                                ClientSendCommandService.serverIpList.add(serverAddress);
-                                ClientSendCommandService.serverIpListMap.put(serverAddress, boxName);
-                                /**
-                                 * 如果用户已经选择了IP，就不用选择了，如果为空，就按照系统自动分配
-                                 */
-                                if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
-                                    ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(0);
-
-                                    /**
-                                     * 更新频道和应用列表
-                                     */
-                                    ClientSendCommandService.handler.sendEmptyMessage(2);
-                                    ClientSendCommandService.titletxt = boxName;
-                                    time = System.currentTimeMillis();
-
-                                    /**
-                                     * 更细所有的频道TITLE
-                                     */
-                                    mHandler.sendEmptyMessage(0);
-                                } else {
-                                    //如果现在的IP已经选择了，那么就只做加入操作
-                                }
-                            } else if (ClientSendCommandService.serverIP != null && serverAddress.equals(ClientSendCommandService.serverIP)) {
+                            if (!IpSelectorDataServer.getInstance().getIpList().contains(serverAddress)) {
+                            	IpSelectorDataServer.getInstance().addIp(serverAddress, boxName);                                
+                            } else if (serverIP != null && serverAddress.equals(serverIP)) {
                                 /**
                                  * 更新当前server的活动时间
                                  */
-                                time = System.currentTimeMillis();
-
+                                IpSelectorDataServer.getInstance().activateIp(serverAddress);
+                                IpSelectorDataServer.getInstance().modifyName(serverAddress, boxName);
                                 /**
                                  * 设置服务端网络状态
                                  */
@@ -249,6 +231,8 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                 }
                             } else {
                                 //不做处理
+                            	IpSelectorDataServer.getInstance().activateIp(serverAddress);
+                            	IpSelectorDataServer.getInstance().modifyName(serverAddress, boxName);
                             }
                         }
                         if (exit) {
@@ -282,30 +266,19 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
         public void run() {
             while (true) {
-                long during = System.currentTimeMillis() - time;
-                if (during > 4000 && time != 0l) {
-                    Log.e("COMMAND_CLEAN", String.valueOf(during));
-                    clearIpList();
-                }
+//                long during = System.currentTimeMillis() - time;
+//                if (during > 5000 && time != 0l) {
+//                    Log.e("COMMAND_CLEAN", String.valueOf(during));
+//                    clearIpList();
+//                }
+            	IpSelectorDataServer.getInstance().removeIpOutOfTime();
                 SystemClock.sleep(1000);
             }
         }
     }
 
     private void clearIpList() {
-        ClientSendCommandService.serverIpList.clear();
-        ClientSendCommandService.serverIpListMap.clear();
-        ClientSendCommandService.serverIP = null;
-        ClientSendCommandService.titletxt = "未连接";
-        mHandler.sendEmptyMessage(0);
-
-        /**
-         * 通知主界面更新IP
-         */
-        if (TVHelperMainActivity.mhandler != null) {
-            TVHelperMainActivity.mhandler.sendEmptyMessage(1);
-        }
-        time = 0l;
+    	IpSelectorDataServer.getInstance().clear();
     }
 
     /***********************************************手机端不停的监控盒子是否有广播发出**************************************/
@@ -326,7 +299,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                     }
                     mHandler.sendEmptyMessage(3);
                     Log.e(TAG, "UDPIP >>> " + dgPacket.getAddress().getHostAddress());
-                    if (ClientSendCommandService.serverIP != null && ClientSendCommandService.serverIP.equals(dgPacket.getAddress().getHostAddress())) {
+                    if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp()) && IpSelectorDataServer.getInstance().getCurrentIp().equals(dgPacket.getAddress().getHostAddress())) {
                         String ChannelInfo = new String(by, 0, dgPacket.getLength());
                         Log.e(TAG, "ChannelInfo >>> " + ChannelInfo);
                         String ChannelName = ChannelInfo.substring(0, ChannelInfo.indexOf("|"));

@@ -28,6 +28,7 @@ import com.changhong.thirdpart.sharesdk.ShareFactory;
 import com.changhong.thirdpart.sharesdk.util.L;
 import com.changhong.touying.images.DragImageView;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.common.system.AppConfig;
 import com.changhong.touying.R;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
@@ -400,7 +401,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             /**
              * 竖上滑动, 投影
              */
-            if (StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+            if ( StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                 isImageContinueShow = true;
                 isImageContinueMove = false;
                 imageContinueShow.setVisibility(View.VISIBLE);
@@ -621,7 +622,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         /**
          * second check the mobile is connect to box
          */
-        if (!StringUtils.hasLength(ClientSendCommandService.serverIP)) {
+        if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
             Toast.makeText(PictureDetailsActivity.this, "手机未连接机顶盒，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }

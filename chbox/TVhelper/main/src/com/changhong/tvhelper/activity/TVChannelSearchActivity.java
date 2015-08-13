@@ -39,7 +39,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.activity.MusicDetailsActivity;
 import com.changhong.touying.activity.VedioDetailsActivity;
 import com.changhong.touying.music.Music;
@@ -63,10 +63,7 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	/**
 	 * *****************************************Server IP Part ******************************************************
 	 */
-	public static BoxSelectAdapter ipAdapter = null;
-	public static TextView title = null;
-	private ListView clients = null;
-	private Button list = null;
+	public static BoxSelecter ipSelecter = null;
 	private Button back = null;
 
 	/**
@@ -99,10 +96,8 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	}
 
 	private void initViewAndEvent() {
-		title = (TextView) findViewById(R.id.title);
-		clients = (ListView) findViewById(R.id.clients);
 		back = (Button) findViewById(R.id.btn_back);
-		list = (Button) findViewById(R.id.btn_list);
+
 
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
@@ -151,38 +146,7 @@ public class TVChannelSearchActivity extends FragmentActivity {
 				finish();
 			}
 		});
-		ipAdapter = new BoxSelectAdapter(TVChannelSearchActivity.this, ClientSendCommandService.serverIpList);
-		clients.setAdapter(ipAdapter);
-		clients.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				clients.setVisibility(View.GONE);
-				return false;
-			}
-		});
-		clients.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-				ClientSendCommandService.handler.sendEmptyMessage(2);
-				clients.setVisibility(View.GONE);
-			}
-		});
-		list.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (ClientSendCommandService.serverIpList.isEmpty()) {
-					Toast.makeText(TVChannelSearchActivity.this,
-							"没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_LONG)
-							.show();
-				} else {
-					clients.setVisibility(View.VISIBLE);
-				}
-			}
-		});
+		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));		
 	}
 
 	/**
@@ -193,9 +157,9 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (ClientSendCommandService.titletxt != null) {
-			title.setText(ClientSendCommandService.titletxt);
-		}
+//		if (ClientSendCommandService.titletxt != null) {
+//			title.setText(ClientSendCommandService.titletxt);
+//		}
 	}
 
 	@Override
@@ -206,5 +170,8 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		if (ipSelecter != null) {
+			ipSelecter.release();
+		}
 	}
 }

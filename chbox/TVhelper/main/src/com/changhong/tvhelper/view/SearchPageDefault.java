@@ -372,7 +372,6 @@ public class SearchPageDefault extends Fragment{
 
 					@Override
 					public void onCancel(DialogMessage dialogMessage) {
-						dialogMessage.dialog.dismiss();
 						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 							dialogMessage.dialog.cancel();
 						}

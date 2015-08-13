@@ -1,6 +1,7 @@
 package com.changhong.touying.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
@@ -35,7 +36,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 	private Button listClients;
 	private Button back;
 	private ListView clients = null;
-	private BoxSelectAdapter ipAdapter;
+	private BoxSelecter ipSelecter;
 	private TextView allMusicBtn, specialBtn, playlistBtn;
 	private Fragment fragmentAll = null;
 	private Fragment fragmentSpecial = null;
@@ -240,44 +241,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 		/**
 		 * IP连接部分
 		 */
-		ipAdapter = new BoxSelectAdapter(MusicCategoryActivity.this,
-				ClientSendCommandService.serverIpList);
-		clients.setAdapter(ipAdapter);
-		clients.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				clients.setVisibility(View.GONE);
-				return false;
-			}
-		});
-		clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList
-						.get(arg2);
-				title.setText(ClientSendCommandService
-						.getCurrentConnectBoxName());
-				ClientSendCommandService.handler.sendEmptyMessage(2);
-				clients.setVisibility(View.GONE);
-			}
-		});
-		listClients.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					MyApplication.vibrator.vibrate(100);
-					if (ClientSendCommandService.serverIpList.isEmpty()) {
-						Toast.makeText(MusicCategoryActivity.this, "未获取到服务器IP",
-								Toast.LENGTH_LONG).show();
-					} else {
-						clients.setVisibility(View.VISIBLE);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -304,9 +268,9 @@ public class MusicCategoryActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (ClientSendCommandService.titletxt != null) {
-			title.setText(ClientSendCommandService.titletxt);
-		}
+//		if (ClientSendCommandService.titletxt != null) {
+//			title.setText(ClientSendCommandService.titletxt);
+//		}
 	}
 
 	@Override
@@ -321,6 +285,14 @@ public class MusicCategoryActivity extends FragmentActivity {
 		return super.onKeyDown(keyCode, event);
 	}
 
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (ipSelecter != null) {
+			ipSelecter.release();
+		}
+		
+	}
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 	}

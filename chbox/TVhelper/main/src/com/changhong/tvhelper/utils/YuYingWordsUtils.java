@@ -31,10 +31,12 @@ public class YuYingWordsUtils {
 
         List<String> volumnUp = new ArrayList<String>();
         volumnUp.add("声音大点");volumnUp.add("大点声");volumnUp.add("大声点");volumnUp.add("加声音");volumnUp.add("开点声音");
+        volumnUp.add("声音大点儿");volumnUp.add("大点声儿");volumnUp.add("大声点儿");volumnUp.add("加点儿声音");volumnUp.add("开点儿声音");volumnUp.add("音量加");
         TV_CONTROL_KEYWORDS.put("key:volumeup|key:volumeup", volumnUp);
 
         List<String> volumnDown = new ArrayList<String>();
         volumnDown.add("声音小点");volumnDown.add("小点声");volumnDown.add("小声点");volumnDown.add("减声音");volumnDown.add("关点声音");volumnDown.add("观点声音");
+        volumnDown.add("声音小点儿");volumnDown.add("小点声儿");volumnDown.add("小声点儿");volumnDown.add("减儿声音");volumnDown.add("关点儿声音");volumnDown.add("观点儿声音");volumnDown.add("音量减");
         TV_CONTROL_KEYWORDS.put("key:volumedown|key:volumedown", volumnDown);
 
         List<String> tv = new ArrayList<String>();
@@ -42,12 +44,12 @@ public class YuYingWordsUtils {
         TV_CONTROL_KEYWORDS.put("key:dtv", tv);
 
         List<String> tvUp = new ArrayList<String>();
-        tvUp.add("上一台");tvUp.add("上1台");tvUp.add("上一个");tvUp.add("上1个");
+        tvUp.add("上一台");tvUp.add("上1台");tvUp.add("上一个");tvUp.add("上1个");tvUp.add("频道减");
         TV_CONTROL_KEYWORDS.put("key:dtv|key:up", tvUp);
 
         List<String> tvDown = new ArrayList<String>();
         tvDown.add("下一台");tvDown.add("下1台");tvDown.add("下一个");tvDown.add("下1个");
-        tvDown.add("换台");tvDown.add("换频道");tvDown.add("调台");tvDown.add("跳台");
+        tvDown.add("换台");tvDown.add("换频道");tvDown.add("调台");tvDown.add("跳台");tvDown.add("频道加");
         TV_CONTROL_KEYWORDS.put("key:dtv|key:down", tvDown);
 
         List<String> left = new ArrayList<String>();
@@ -65,6 +67,10 @@ public class YuYingWordsUtils {
         List<String> down = new ArrayList<String>();
         down.add("下");down.add("下面");down.add("下边");down.add("向下");down.add("向下边");down.add("往下");down.add("往下边");
         TV_CONTROL_KEYWORDS.put("key:down", down);
+        
+        List<String> mute = new ArrayList<String>();
+        mute.add("静音");mute.add("取消静音");
+        TV_CONTROL_KEYWORDS.put("key:volume_mute", mute);
     }
 
     /**
@@ -77,8 +83,8 @@ public class YuYingWordsUtils {
             List<String> keywords = TV_CONTROL_KEYWORDS.get(key);
 
             for (String keyword : keywords) {
-                if(key.equals("key:volumeup|key:volumeup") || key.equals("key:volumedown|key:volumedown")) {
-                    if (searchWords.contains(keyword)) {
+                if(keyword.equals("key:volumeup|key:volumeup") || keyword.equals("key:volumedown|key:volumedown")) {
+                    if (searchWords.startsWith(keyword)) {
                         return key;
                     }
                 } else {
@@ -122,6 +128,15 @@ public class YuYingWordsUtils {
      * 7 - 福建 ->福建高清（没有的话，福建卫视）
      * 8 - 福建高清 ->福建高清（没有的话，福建卫视）
      */
+    private final static Map<String, String> FIRST_TV_CHANNEL_REPLACE_KEYWORDS = new HashMap<String, String>();
+
+    static {
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十一", "11");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
+        FIRST_TV_CHANNEL_REPLACE_KEYWORDS.put("十四", "14");
+    }
+
     private final static Map<String, String> TV_CHANNEL_REPLACE_KEYWORDS = new HashMap<String, String>();
 
     static {
@@ -145,6 +160,7 @@ public class YuYingWordsUtils {
         TV_CHANNEL_REPLACE_KEYWORDS.put("十一", "11");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十二", "12");
         TV_CHANNEL_REPLACE_KEYWORDS.put("十三", "13");
+        TV_CHANNEL_REPLACE_KEYWORDS.put("十四", "14");
         TV_CHANNEL_REPLACE_KEYWORDS.put("卫视", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("高清", "");
         TV_CHANNEL_REPLACE_KEYWORDS.put("电视台", "");
@@ -156,6 +172,11 @@ public class YuYingWordsUtils {
      * 该方法主要用于语音词语转化
      */
     public static String yuYingChannelSearchWordsConvert(String needConvert) {
+        for (String key : FIRST_TV_CHANNEL_REPLACE_KEYWORDS.keySet()) {
+            String value = FIRST_TV_CHANNEL_REPLACE_KEYWORDS.get(key);
+            needConvert = needConvert.replace(key, value);
+        }
+
         for (String key : TV_CHANNEL_REPLACE_KEYWORDS.keySet()) {
             String value = TV_CHANNEL_REPLACE_KEYWORDS.get(key);
             needConvert = needConvert.replace(key, value);
@@ -165,7 +186,9 @@ public class YuYingWordsUtils {
          * 保证标清关键字的转化在卫视的后面，所以在这里转化一次，而没有配置在上面的MAP中, 没有CCTV-4高清频道，所以去掉
          */
         needConvert = needConvert.replace("标清", "卫视");
-        if (!needConvert.equals("CCTV") && needConvert.contains("CCTV") && !needConvert.startsWith("CCTV-4") && !needConvert.startsWith("CCTV4")) {
+        if (!needConvert.equals("CCTV") && needConvert.contains("CCTV")
+                && !needConvert.startsWith("CCTV-4") && !needConvert.startsWith("CCTV4")
+                && !needConvert.startsWith("CCTV-11") && !needConvert.startsWith("CCTV11")) {
             needConvert = needConvert + "高清";
         }
         return needConvert;
@@ -212,6 +235,7 @@ public class YuYingWordsUtils {
         otherNames2.add("CCTV-1");
         TV_CHANNEL_LOCATION_WORDS.put("中央电视台", otherNames2);
         TV_CHANNEL_LOCATION_WORDS.put("中央台", otherNames2);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV", otherNames2);
 
         //baidu yuyin charaters, which is different from normal char, so replace it to normal one
         List<String> otherNames3 = new ArrayList<String>();
@@ -242,13 +266,56 @@ public class YuYingWordsUtils {
         TV_CHANNEL_LOCATION_WORDS.put("中央音乐", otherNames7);
         TV_CHANNEL_LOCATION_WORDS.put("央视音乐", otherNames7);
         TV_CHANNEL_LOCATION_WORDS.put("CCTV音乐", otherNames7);
+
+        List<String> otherNames8 = new ArrayList<String>();
+        otherNames8.add("CCTV-10");
+        otherNames8.add("CCTV-10高清");
+        TV_CHANNEL_LOCATION_WORDS.put("中央科教", otherNames8);
+
+        List<String> otherNames9 = new ArrayList<String>();
+        otherNames9.add("CCTV-11");
+        otherNames9.add("CCTV-11高清");
+        TV_CHANNEL_LOCATION_WORDS.put("中央十一台", otherNames9);
+        TV_CHANNEL_LOCATION_WORDS.put("CCTV11", otherNames9);
     }
 
     /**
      * 判断
      */
     public static List<String> getLocationWordsChannel(String needCheck) {
+        if (StringUtils.hasLength(needCheck)) {
+            needCheck = needCheck.replace("ｃｃｔｖ", "CCTV");
+            needCheck = needCheck.replace("cctv", "CCTV");
+        }
+
         return TV_CHANNEL_LOCATION_WORDS.get(needCheck);
+    }
+
+    /******************************************某些地方太不需要处理数字***********************************************************/
+
+    private final static Map<String, String> TV_CHANNEL_NUMBER_NOCONVERT = new HashMap<String, String>();
+
+    static {
+        //baidu yuyin charaters, which is different from normal char, so replace it to normal one
+        TV_CHANNEL_NUMBER_NOCONVERT.put("一", "1");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("二", "2");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("三", "3");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("四", "4");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("五", "5");
+        TV_CHANNEL_NUMBER_NOCONVERT.put("六", "6");
+    }
+
+    /**
+     * 该方法主要用于手机上搜索频道的词语转化
+     */
+    public static String numNotNeedConvert(String needConvert) {
+        if (needConvert.contains("绵阳")) {
+            for (String key : TV_CHANNEL_NUMBER_NOCONVERT.keySet()) {
+                String value = TV_CHANNEL_NUMBER_NOCONVERT.get(key);
+                needConvert = needConvert.replace(key, value);
+            }
+        }
+        return needConvert;
     }
 
     /******************************************频道查询部分***********************************************************/
@@ -275,7 +342,6 @@ public class YuYingWordsUtils {
         TV_CHANNEL_SEARCH_KEYWORDS.put("十三", "13");
         TV_CHANNEL_SEARCH_KEYWORDS.put("台", "");
         TV_CHANNEL_SEARCH_KEYWORDS.put("套", "");
-        TV_CHANNEL_SEARCH_KEYWORDS.put("卫视", "");
         TV_CHANNEL_SEARCH_KEYWORDS.put("电视", "");
     }
 

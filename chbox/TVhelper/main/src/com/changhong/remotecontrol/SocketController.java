@@ -7,19 +7,24 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Queue;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.ClientSocketInterface;
+import com.changhong.common.widgets.IpSelectorDataServer;
+
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.Looper;
 
 import android.util.Log;
 
@@ -32,7 +37,6 @@ public abstract class SocketController implements ClientSocketInterface {
     protected Handler mHandle = null;
     protected RemoteInfoContainer mRemoteInfo = null;
     public static boolean mIsBroadCast = false;
-    public static boolean mIsdirty = false;//just a joke
 
     private ThreadHeartBeatGet mThreadHeartBeatGet = null;
 
@@ -41,20 +45,16 @@ public abstract class SocketController implements ClientSocketInterface {
         mHandle = handle;
 
         mRemoteInfo = new RemoteInfoContainer();
+        mRemoteInfo.setIp(IpSelectorDataServer.getInstance().getCurrentIp());
         mThreadHeartBeatGet = new ThreadHeartBeatGet();
         mThreadHeartBeatGet.start();
 
         new ThreadLinkChecked().start();
-        new UpdateDirty().start();
     }
 
     // Static Function:
     public static void setIsBroadCastMsg(boolean isBroadCast) {
         mIsBroadCast = isBroadCast;
-    }
-
-    public static void setIsDirty(boolean isDirty) {
-        mIsdirty = isDirty;
     }
 
     protected void clear() {
@@ -114,10 +114,10 @@ public abstract class SocketController implements ClientSocketInterface {
                             clientSocket.receive(receivePacket);
                             ip = receivePacket.getAddress().getHostAddress();
                             if (mRemoteInfo != null)
-                                mRemoteInfo.setIp(ip);
+                                mRemoteInfo.addIp(ip);
                             Log.d(TAG, "getIP:" + ip);
 
-                            byte[] ipBytes = mRemoteInfo.getIp().getBytes("ISO-8859-1");//ip.getBytes();
+                            byte[] ipBytes = mRemoteInfo.getIp() == null ? "null".getBytes("ISO-8859-1") : mRemoteInfo.getIp().getBytes("ISO-8859-1");//ip.getBytes();
                             try {
                                 clientSocket.send(new DatagramPacket(ipBytes, ipBytes.length, receivePacket.getAddress(), INPUT_IP_GET_PORT));
                             } catch (NumberFormatException e) {
@@ -163,22 +163,6 @@ public abstract class SocketController implements ClientSocketInterface {
 
     }
 
-    class UpdateDirty extends Thread {
-        public void run() {
-            while (!mIsExit) {
-                if (mIsdirty) {
-                    update();
-                }
-
-                try {
-                    sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     class ThreadLinkChecked extends Thread {
         public void run() {
             while (!mIsExit) {
@@ -193,38 +177,28 @@ public abstract class SocketController implements ClientSocketInterface {
         }
     }
 
-    private void update() {
-        if (mRemoteInfo.getIp() != null && ClientSendCommandService.serverIP != null && !mRemoteInfo.getIp().contains(ClientSendCommandService.serverIP)) {
-            mRemoteInfo.setIp(ClientSendCommandService.serverIP);
-            String ip = mRemoteInfo.getIp();
-
-            if (ip != null && ip.length() > 0) {
-                byte[] ipBytes = ip.getBytes();
-                try {
-                    new DatagramSocket().send(new DatagramPacket(ipBytes, ipBytes.length, InetAddress.getByName(mRemoteInfo.getIp()), INPUT_IP_GET_PORT));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-    }
 
     protected abstract void onIpObtained(String ip);
 
     protected abstract void onIpRemoved(String ip);
 
-    class RemoteInfoContainer implements ClientSocketInterface {
+    class RemoteInfoContainer implements ClientSocketInterface,Observer {
 
         public static final int WAITING_TIME = 3000;
         private Map<String, Long> mServerIP = new HashMap<String, Long>();
         private Queue<DatagramPacket> mDataPackageList = new LinkedList<DatagramPacket>();
         private String mServerIpCur = null;
 
+        RemoteInfoContainer()
+        {
+        	IpSelectorDataServer.getInstance().addObserver(this);        	        	
+        }
+        
         public void exit() {
             mServerIpCur = null;
             mServerIP.clear();
             mDataPackageList.clear();
+            IpSelectorDataServer.getInstance().deleteObserver(this);
         }
 
         public final String getIp() {
@@ -242,19 +216,18 @@ public abstract class SocketController implements ClientSocketInterface {
             if (ip == null)
                 return;
             if (mServerIP.isEmpty()) {
-                mServerIpCur = ip;
+                mServerIpCur = IpSelectorDataServer.getInstance().getCurrentIp();
             }
 
             //refresh map for date changed or get a new ip
-            mServerIP.put(ip, new Date().getTime());
-            onIpObtained(ip);            
-
+            mServerIP.put(ip, System.currentTimeMillis());
+            onIpObtained(ip);                                    
             Log.d(TAG, "Add ip" + mServerIpCur);
 
         }
 
         public void update() {
-            Long timeCur = new Date().getTime();
+            Long timeCur = System.currentTimeMillis();
 
             Iterator<Entry<String, Long>> itEntry = mServerIP.entrySet().iterator();
             for (; itEntry.hasNext(); ) {
@@ -270,22 +243,51 @@ public abstract class SocketController implements ClientSocketInterface {
         }
 
         public void setIp(String serverIP) {
-            String ip = ipCheck(serverIP) ? serverIP : null;
-
+            final String ip = ipCheck(serverIP) ? serverIP : null;
+            final String ipCurrent = mServerIpCur;
             if (ip == null)
                 return;            
+            
+            AsyncTask.execute(new Runnable() {				
+				@Override
+				public void run() {
+					if (ipCurrent != null) {  
+		            	DatagramSocket dgSocket = null;
+		                try {
+		                	byte[] ipBytes = ip.getBytes("ISO-8859-1");//ip.getBytes();
+		                	dgSocket = new DatagramSocket();
+		                	dgSocket.send(new DatagramPacket(ipBytes, ipBytes.length, InetAddress.getByName(ipCurrent), INPUT_IP_GET_PORT));
+		                	Log.d("RemoteIME", "Change binder ip:" + ipCurrent + "to ip:" + ip);
+		                } catch (NumberFormatException e) {
+		                    e.printStackTrace();
+		                } catch (SocketException e) {
+							e.printStackTrace();
+						} catch (UnknownHostException e) {
+							e.printStackTrace();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}   
+		                finally{
+		                	if (dgSocket != null) {
+		                		dgSocket.close();
+							}
+		                }
+					}
+				}
+			});  
 
             // add ip or update time with ip
             {
                 Log.d(TAG, "come to add ip");
                 addIp(ip);
-                mServerIpCur = ip;
-
-                if (ClientSendCommandService.serverIP != null
-                        && ClientSendCommandService.serverIP.length() > 0) {
-                    mServerIpCur = ClientSendCommandService.serverIP;
+                mServerIpCur = ip;                
+                if (serverIP != null
+                        && serverIP.length() > 0) {
+                    mServerIpCur = serverIP;
                 }
             }
+            
+                    
         }
 
         public void removeIp(String ip) {
@@ -370,6 +372,10 @@ public abstract class SocketController implements ClientSocketInterface {
             return false;
         }
 
+		@Override
+		public void update(Observable observable, Object data) {
+			this.setIp(IpSelectorDataServer.getInstance().getCurrentIp()); 			
+		}
 
     }
 

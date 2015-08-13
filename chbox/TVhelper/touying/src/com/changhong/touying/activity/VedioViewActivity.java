@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.*;
@@ -16,7 +17,7 @@ import android.widget.*;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
-import com.changhong.common.widgets.BoxSelectAdapter;
+import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.vedio.Vedio;
 import com.changhong.touying.R;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
@@ -31,11 +32,8 @@ public class VedioViewActivity extends Activity {
     /**
      * server ip part
      */
-    public static TextView title = null;
-    private Button listClients;
-    private ListView clients = null;
     private Button back;
-    private BoxSelectAdapter ipAdapter;
+    private BoxSelecter ipSelecter;
 
     /**
      * 视频浏览部分
@@ -56,9 +54,9 @@ public class VedioViewActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (ClientSendCommandService.titletxt != null) {
-            title.setText(ClientSendCommandService.titletxt);
-        }
+//        if (ClientSendCommandService.titletxt != null) {
+//            title.setText(ClientSendCommandService.titletxt);
+//        }
     }
 
     @Override
@@ -80,43 +78,10 @@ public class VedioViewActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_vedio_view);
 
-        title = (TextView) findViewById(R.id.title);
-        back = (Button) findViewById(R.id.btn_back);
-        clients = (ListView) findViewById(R.id.clients);
-        listClients = (Button) findViewById(R.id.btn_list);
-        
-        ipAdapter = new BoxSelectAdapter(VedioViewActivity.this, ClientSendCommandService.serverIpList);
-        clients.setAdapter(ipAdapter);
-        clients.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                clients.setVisibility(View.GONE);
-                return false;
-            }
-        });
-        clients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                ClientSendCommandService.serverIP = ClientSendCommandService.serverIpList.get(arg2);
-                String boxName = ClientSendCommandService.getCurrentConnectBoxName();
-                ClientSendCommandService.titletxt = boxName;
-                title.setText(boxName);
-                ClientSendCommandService.handler.sendEmptyMessage(2);
-                clients.setVisibility(View.GONE);
-            }
-        });
 
-        listClients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                if (ClientSendCommandService.serverIpList.isEmpty()) {
-                    Toast.makeText(VedioViewActivity.this, "未获取到服务器IP", Toast.LENGTH_LONG).show();
-                } else {
-                    clients.setVisibility(View.VISIBLE);
-                }
-            }
-        });
+        back = (Button) findViewById(R.id.btn_back);
+        
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
 
         vedioGridView = (GridView) findViewById(R.id.vedio_grid_view);
         pictureAdapter = new PictureAdapter(this, vedios);
@@ -147,6 +112,13 @@ public class VedioViewActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	if (ipSelecter != null) {
+			ipSelecter.release();
+		}
     }
 
     /**********************************************数据适配器**********************************************************/

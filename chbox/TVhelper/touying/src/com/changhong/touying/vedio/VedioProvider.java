@@ -56,8 +56,8 @@ public class VedioProvider implements AbstructProvider {
                             .getInt(cursor
                                     .getColumnIndexOrThrow(MediaStore.Video.Media.DATE_ADDED));
                     if (!TextUtils.isEmpty(displayName)) {
-                   	 	Vedio video = new Vedio(id, title, displayName, mimeType, path, duration, createTime);
-                        list.add(video);
+                    	 Vedio video = new Vedio(id, title, displayName, mimeType, path, duration, createTime);
+                         list.add(video);
 					}
                 }
                 cursor.close();

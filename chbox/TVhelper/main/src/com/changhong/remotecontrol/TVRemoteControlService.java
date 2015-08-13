@@ -116,11 +116,6 @@ public class TVRemoteControlService extends Service implements ClientSocketInter
 		super.onDestroy();
 	}
 	
-	public static void update()
-	{
-		SocketController.setIsDirty(true);
-	}
-	
     void setInputMethodState(String state)
     {
     	if(state == null)
