@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.changhong.tvserver"
           android:versionCode="2"
-          android:versionName="1.1">
+          android:versionName="1.6.1">
 
     <uses-sdk
             android:minSdkVersion="14"
@@ -62,16 +62,26 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
-
         <activity android:name=".touying.image.ImageShowPlayingActivity"
                   android:theme="@android:style/Theme.NoTitleBar"/>
-
+        <activity android:name=".touying.pdf.PDFViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/pdf"/>      
+            </intent-filter>
+        </activity>
+        
+        
+        
         <!--service part-->
+        <service android:name=".touying.other.OtherShowService"/>
+        
         <service android:name=".TVSocketControllerService"
                  android:enabled="true" android:exported="true" android:priority="1000">
         </service>
         
-        <activity android:name="com.search.aidl.MallListActivity" android:launchMode="singleInstance"/>        <service android:name="com.search.aidl.VoiceSearchService">
+        <activity android:name="com.changhong.tvserver.tvmall.MallListActivity" android:launchMode="singleInstance"/>        <service android:name="com.search.aidl.VoiceSearchService">
             <intent-filter>
                 <action android:name="com.search.aidl.VoiceSearchService"/>
                 <category android:name="android.intent.category.DEFAULT" />

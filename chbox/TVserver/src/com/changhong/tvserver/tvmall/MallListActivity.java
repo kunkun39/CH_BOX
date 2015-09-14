@@ -1,4 +1,4 @@
-package com.search.aidl;
+package com.changhong.tvserver.tvmall;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +64,10 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.search.aidl.KeyWords;
+import com.search.aidl.KeyWordsUtil;
+import com.search.aidl.VideoInfo;
+import com.search.aidl.VideoInfoDataServer;
 public class MallListActivity extends FragmentActivity{
 
 	public static final String TAG = "MALL";
@@ -441,7 +445,7 @@ public class MallListActivity extends FragmentActivity{
 				nameView = pageDataHoder.nameView;
 			}		
 			ImageLoader.getInstance().cancelDisplayTask(imageView);
-			ImageLoader.getInstance().displayImage(videoInfo.mImageUrl, imageView,options);
+			ImageLoader.getInstance().displayImage(videoInfo.getmImageUrl(), imageView,options);
 			convertView.setOnFocusChangeListener(new OnFocusChangeListener() {
 				
 				@Override
@@ -466,8 +470,8 @@ public class MallListActivity extends FragmentActivity{
 					playVideo(videoInfo);
 				}
 			});
-			Log.d("DATALIST:", "videoType:" + videoInfo.videoType + ",ACTION:" + videoInfo.action);
-			nameView.setText(videoInfo.videoName);		
+			Log.d("DATALIST:", "videoType:" + videoInfo.getVideoType() + ",ACTION:" + videoInfo.getAction());
+			nameView.setText(videoInfo.getVideoName());		
 			return convertView;
 		}			
 	}

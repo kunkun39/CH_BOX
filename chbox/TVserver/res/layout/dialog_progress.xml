@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:textImageView="http://schemas.android.com/apk/res/com.changhong.tvserver"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog" >
+
+    <RelativeLayout
+        android:id="@+id/rl_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="1dp"
+        android:background="@drawable/bg_dialog_title" >
+
+        <ImageView
+            android:id="@+id/iv_dialog_title"
+            android:layout_width="36dp"
+            android:layout_height="36dp"       
+            android:layout_marginBottom="@dimen/iv_dialog_title_margintop"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_dialog_title" />
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@+id/iv_dialog_title"
+            android:singleLine="true"
+            android:text="当前下载进度："
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_title_textsize" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_dialog_dilver"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_below="@+id/rl_dialog_title"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_blue_light"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/rl_prodia_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_btns"
+        android:gravity="center_vertical"
+        android:layout_below="@id/iv_dialog_dilver"
+        android:scrollbars="none" >
+
+        <SeekBar
+            android:id="@+id/progress"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content"
+            android:thumb="@color/transparent"
+            android:focusable="false"
+            android:progress="0"
+            android:progressDrawable="@drawable/layer_progressbar" />
+
+        <TextView
+            android:id="@+id/tv_progress_hundread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"   
+            android:layout_marginRight="30dp"         
+            android:layout_below="@id/progress"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+        <TextView
+            android:id="@+id/tv_progress_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"   
+            android:layout_marginLeft="20dp"         
+            android:layout_alignTop="@id/tv_progress_hundread"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_btns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dialog_btn_marginBottom" >
+
+        <com.changhong.tvserver.utils.TextImageButton
+            android:id="@+id/bt_loadbackground"
+            android:layout_width="@dimen/dialog_btn_width"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:background="@drawable/selector_textbtnfocues"
+            android:focusable="true"
+            android:gravity="center"
+            android:paddingBottom="1.2dp"
+            android:paddingLeft="1.5dp"
+            android:paddingRight="0.5dp"
+            android:paddingTop="1.4dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/btn_dialog"
+            textImageView:text="后台下载"
+            textImageView:textColor="@android:color/white"
+            textImageView:textSize="26sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

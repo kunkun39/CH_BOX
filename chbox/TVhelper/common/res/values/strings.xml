@@ -10,5 +10,8 @@
     <string name="menu_tv">数字电视</string>
     <string name="menu_items">侧边栏菜单</string>
     <string name="menu_exit">侧边栏菜单退出</string>
+    <string name="notify_information">长虹助手信息提示</string>
+    <string name="return_button">返    回</string>
+  
 
 </resources>

@@ -24,10 +24,12 @@ import com.changhong.tvserver.utils.StringUtils;
 import com.chome.virtualkey.virtualkey;
 import com.changhong.tvserver.touying.image.ImageShowPlayingActivity;
 import com.changhong.tvserver.touying.music.MusicViewPlayingActivity;
+import com.changhong.tvserver.touying.other.OtherShowService;
 import com.changhong.tvserver.touying.video.VideoViewPlayingActivity;
+import com.changhong.tvserver.tvmall.MallListActivity;
+
 import org.apache.http.conn.util.InetAddressUtils;
 import com.ots.deviceinfoprovide.DeviceInfo;
-import com.search.aidl.MallListActivity;
 
 
 import android.app.Service;
@@ -306,6 +308,12 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("finish")) {
                                 Intent intent = new Intent("FinishActivity");
                                 sendBroadcast(intent);
+                            }else if(msgCpy.startsWith("other_open")){
+                            	Log.e(TAG, "ppt_open" + msgCpy);                            	
+								Intent intent = new Intent(TVSocketControllerService.this, OtherShowService.class);
+                                intent.setData(Uri.parse(msgCpy));
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startService(intent);
                             }
                             break;
                         case 2:

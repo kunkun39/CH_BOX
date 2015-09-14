@@ -21,6 +21,9 @@
             android:name="com.changhong.touying.activity.PictureDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="com.changhong.touying.activity.OtherDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.changhong.touying.activity.VedioCategoryActivity"
             android:screenOrientation="portrait" />
         <activity

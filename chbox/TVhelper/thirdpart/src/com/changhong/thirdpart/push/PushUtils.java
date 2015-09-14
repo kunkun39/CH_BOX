@@ -6,6 +6,8 @@ package com.changhong.thirdpart.push;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.changhong.common.system.AppConfig;
+import com.changhong.common.system.MyApplication;
 import com.changhong.thirdpart.common.DataContainer;
 import com.changhong.thirdpart.common.IDataContainer;
 import com.changhong.thirdpart.common.IDataListener;
@@ -19,6 +21,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.Log;
 
 /**
@@ -118,8 +121,13 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 	 * 开始接收推送
 	 */
 	public void start()
-	{		
+	{	
+		if (AppConfig.NOT_USE_MSG_PUSH) {
+			return ;
+		}
+		
 		PushManager.getInstance().turnOnPush(mContext);
+		
 	}
 	
 	/**
@@ -183,7 +191,11 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		            		mesg.setData(bdle);	  
 		            		
 		            		PushUtils push = getInstance();
-		            		if (push != null) push.dispatchMessage(mesg);
+		            		if (push != null) 
+		            		{
+		            			push.dispatchMessage(mesg);
+		            			MyApplication.vibrator.vibrate(100);
+		            		}
 		                }
 	            	} catch (Exception e) {
 	            		e.printStackTrace();

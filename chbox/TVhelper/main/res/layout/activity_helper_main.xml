@@ -31,6 +31,14 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/title_ip_select" />
         </LinearLayout>
+        <Button
+            android:id="@+id/main_setting" 
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dip"            
+            android:background="@drawable/btn_main_menu_selector"
+            />
 
         <Button
             android:id="@+id/power"
@@ -142,11 +150,11 @@
                                         android:paddingLeft="5dp"
                                         android:layout_weight="1">
                                     <Button
-                                            android:id="@+id/main_setting"
+                                            android:id="@+id/main_picture_touying"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
                                             android:layout_weight="1"
-                                            android:background="@drawable/main_setting"/>
+                                            android:background="@drawable/main_picture_touying"/>
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -157,11 +165,11 @@
                                         android:paddingLeft="5dp"
                                         android:layout_weight="1">
                                     <Button
-                                            android:id="@+id/main_picture_touying"
+                                            android:id="@+id/main_other_touying"
                                             android:layout_width="fill_parent"
                                             android:layout_height="fill_parent"
                                             android:layout_weight="1"
-                                            android:background="@drawable/main_picture_touying"/>
+                                            android:background="@drawable/main_other"/>
                                 </LinearLayout>
 
                             </LinearLayout>

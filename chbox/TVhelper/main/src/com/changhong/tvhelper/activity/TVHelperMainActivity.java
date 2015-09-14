@@ -25,6 +25,7 @@ import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.setting.view.AppHelpDialog;
 import com.changhong.touying.activity.MusicCategoryActivity;
+import com.changhong.touying.activity.OtherDetailsActivity;
 import com.changhong.touying.activity.PictureCategoryActivity;
 import com.changhong.touying.activity.VedioCategoryActivity;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
@@ -116,6 +117,7 @@ public class TVHelperMainActivity extends Activity {
         Button musicTouYing = (Button) findViewById(R.id.main_music_touying);
         Button vedioTouYing = (Button) findViewById(R.id.main_vedio_touying);
         Button pictureTouYing = (Button) findViewById(R.id.main_picture_touying);
+        Button otherTouTing = (Button) findViewById(R.id.main_other_touying);
         Button power = (Button) findViewById(R.id.power);
         /**
          * init all event for every view
@@ -189,6 +191,16 @@ public class TVHelperMainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        otherTouTing.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+                Intent intent = new Intent(TVHelperMainActivity.this, OtherDetailsActivity.class);               
+                intent.putExtra("forwardIntent", new Intent(TVHelperMainActivity.this, TVRemoteControlActivity.class));
+                startActivity(intent);
+			}
+		});
 
         /**关闭电源键**/
         power.setOnClickListener(new OnClickListener() {
