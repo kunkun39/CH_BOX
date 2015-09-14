@@ -200,7 +200,7 @@
             android:visibility="visible" />
 
         <LinearLayout
-            android:id="@+id/ll_deliver_share"
+            android:id="@id/ll_deliver_share"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_above="@+id/bt_cutandshare"
@@ -208,14 +208,13 @@
             android:layout_marginRight="4dp"
             android:background="#FFA7A7A5"
             android:orientation="vertical"
-            android:visibility="visible" >
-        </LinearLayout>
+            android:visibility="visible" />        
 
         <Button
-            android:id="@+id/bt_cutandshare"
+            android:id="@id/bt_cutandshare"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/bt_tv_line"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="分享"
@@ -223,6 +222,27 @@
             android:background="@color/transparent"
             android:textColor="@color/white"
             android:visibility="visible" />
+        <View
+            android:id="@id/bt_tv_line"
+            android:layout_width="match_parent" 
+            android:layout_height="1dp"
+            android:layout_above="@+id/bt_tv"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:background="#FFA7A7A5"
+            />
+       <ImageButton
+           android:id="@id/bt_tv"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerHorizontal="true"
+           android:layout_alignParentBottom="true"
+           android:paddingTop="10dp"
+           android:paddingBottom="10dp"
+           android:background="@color/transparent"
+           android:gravity="center"
+           android:src="@drawable/tv_show_tv"
+           />
         <!--
         <LinearLayout
             android:layout_width="0dp"

@@ -57,6 +57,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -172,6 +173,10 @@ public class TVChannelPlayActivity extends Activity {
 	private String channelIndex;
 	private ImageView imageViewChannelLogo;
 	private final String ILLEGAL_PROGRAM_NAME = "无节目信息";
+	/**
+	 * 投到电视
+	 */
+	private ImageButton mBtn_tv;
 
 	/**
 	 * 再按返回确认退出标志爱
@@ -330,6 +335,8 @@ public class TVChannelPlayActivity extends Activity {
 		seekbarWidget = (RelativeLayout) findViewById(R.id.seekbarWidget);
 		sound = (VerticalSeekBar) findViewById(R.id.sound);
 		collection=(TextView)findViewById(R.id.play_collection);
+		mBtn_tv = (ImageButton)findViewById(R.id.bt_tv);
+		
 		initCollectionData();
 		initshareView();//分享view
 	}
@@ -415,6 +422,15 @@ public class TVChannelPlayActivity extends Activity {
               }
             }
         });
+		mBtn_tv.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+                ClientSendCommandService.msg = "key:dtv";
+                ClientSendCommandService.handler.sendEmptyMessage(1);
+			}
+		});
 
 	}
 
