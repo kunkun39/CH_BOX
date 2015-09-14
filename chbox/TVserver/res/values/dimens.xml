@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="iv_dialog_title_margintop">-5dp</dimen>
+    <dimen name="dialog_title_textsize">26sp</dimen>
+    <dimen name="dialog_btn_marginBottom">18dp</dimen>
+    <dimen name="dialog_btn_width">147dp</dimen>
+    <dimen name="dialog_btn_height">40dp</dimen>
+    <dimen name="dialog_width">588dp</dimen>
+    <dimen name="dialog_height">229dp</dimen>
+</resources>
