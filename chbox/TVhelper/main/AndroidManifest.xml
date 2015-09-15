@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changhong.tvhelper"
-    android:versionCode="8"
-    android:versionName="1.4.0" >
+    android:versionCode="10"
+    android:versionName="2.0.0" >
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -28,7 +28,16 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-
+	
+	<!-- ======================================================================= -->
+    <!-- Getui -->
+    <uses-permission android:name="getui.permission.GetuiService.com.changhong.tvhelper" />
+    <!-- 自定义权限 -->
+    <permission
+        android:name="getui.permission.GetuiService.com.changhong.tvhelper"
+        android:protectionLevel="normal" >
+    </permission>
+    <!-- ======================================================================= -->
     <application
         android:name="com.changhong.common.system.MyApplication"
         android:allowBackup="true"
@@ -36,6 +45,24 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        <!-- ======================================================================= -->
+        <!-- 个推SDK配置开始 -->
+        <!-- 配置第三方应用参数属性 -->
+        <meta-data
+            android:name="PUSH_APPID"
+            android:value="O9uKVt3AuQABhcdHsq2rw1" />
+        <!-- 替换为第三方应用的APPID -->
+        <meta-data
+            android:name="PUSH_APPKEY"
+            android:value="wBZorhhCeI6tJRduwGOgj" />
+        <!-- 替换为第三方应用的APPKEY -->
+        <meta-data
+            android:name="PUSH_APPSECRET"
+            android:value="xV0TgSKQZQAoekLMLJ8OL8" />
+        <!-- 替换为第三方应用的APPSECRET -->
+        <meta-data
+            android:name="PUSH_GROUPID"
+            android:value="" />
         <activity
             android:name=".activity.TVHelperWelcomeActivity"
             android:label="@string/app_name"
@@ -91,31 +118,233 @@
         <activity
             android:name=".activity.TVChannelProgramShowActivity"
             android:screenOrientation="portrait" />
+        
+        <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+	
+	 <!--问投影部分-->
+		<activity
+            android:name="com.changhong.touying.activity.PictureCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.PictureViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.PictureDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.OtherDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.VedioDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicCategoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicDetailsActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
+            android:launchMode="singleInstance"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />                
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="audio/*"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
+        <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
+        <service android:name="com.changhong.touying.service.M3UListProviderService">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+            </intent-filter>
+        </service>
+ <!-- 设置部分 -->
+        <activity
+            android:name="com.changhong.setting.activity.SettingActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <!-- 语音部分 -->
         <activity android:name="com.changhong.baidu.BiaDuTestActivity" />
 
         <!-- 输入法 -->
+        <service android:name=".service.ClientGetCommandService" android:enabled="true" android:exported="true" android:priority="1000"/>
+        <service android:name=".service.ClientLocalThreadRunningService" android:enabled="true" android:exported="true" android:priority="1000"/>
+        <service android:name="com.changhong.common.service.ClientSendCommandService" android:enabled="true" android:exported="true" android:priority="1000"/>
+        <service android:name="com.changhong.remotecontrol.TVRemoteControlService" android:enabled="true" android:exported="true" android:priority="1000"/>
+           <receiver android:name="com.changhong.thirdpart.common.MainBroadCastReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.igexin.sdk.action.refreshls" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <!-- 配置SDK核心服务 -->
         <service
-            android:name=".service.ClientGetCommandService"
-            android:enabled="true"
+            android:name="com.igexin.sdk.PushService"
             android:exported="true"
-            android:priority="1000" />
+            android:label="NotificationCenter"
+            android:process=":pushservice" >
+        </service>
+        <service android:name="com.changhong.thirdpart.common.MainService" />
+
+        <receiver android:name="com.igexin.sdk.PushReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="com.igexin.sdk.action.refreshls" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.igexin.sdk.PushManagerReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.igexin.sdk.action.pushmanager" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name="com.igexin.sdk.PushActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="com.igexin.sdk.PushActivityTask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <!-- 配置弹框activity -->
+        <activity
+            android:name="com.igexin.getuiext.activity.GetuiExtActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:process=":pushservice"
+            android:taskAffinity="android.task.myServicetask"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver
+            android:name="com.igexin.getuiext.service.PayloadReceiver"
+            android:exported="false" >
+            <intent-filter>
+
+                <!-- 这个com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4固定，不能修改 -->
+                <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
+                <!-- 替换为android:name="com.igexin.sdk.action.第三方的appId" -->
+                <action android:name="com.igexin.sdk.action.O9uKVt3AuQABhcdHsq2rw1" />
+            </intent-filter>
+        </receiver>
+
         <service
-            android:name=".service.ClientLocalThreadRunningService"
-            android:enabled="true"
-            android:exported="true"
-            android:priority="1000" />
+            android:name="com.igexin.getuiext.service.GetuiExtService"
+            android:process=":pushservice" />
+        <!-- 个推download模块配置 -->
         <service
-            android:name="com.changhong.common.service.ClientSendCommandService"
-            android:enabled="true"
+            android:name="com.igexin.download.DownloadService"
+            android:process=":pushservice" />
+
+        <receiver android:name="com.igexin.download.DownloadReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <provider
+            android:name="com.igexin.download.DownloadProvider"
+            android:authorities="downloads.com.changhong.tvhelper"
+            android:process=":pushservice" />
+        <!-- 替换为downloads.第三方包名 -->
+        <!-- =========================================================================== -->
+
+
+        <!-- shareSDK 分享功能添加 begin -->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+
+            <!--
+            	AuthorizeAdapter表示一个继承自cn.sharesdk.framework.authorize.AuthorizeAdapter
+            	的类，这个类可以监听到页面的生命周期，也可以获取授权页面的各种UI控件。 
+            	开发者可以通过继承AuthorizeAdapter，重写其方法，并获取各种UI来自定义这个页面的行为。
+
+
+
+            -->
+            <meta-data
+                android:name="AuthorizeAdapter"
+                android:value="cn.sharesdk.demo.MyAdapter" />
+            <!--
+                   	如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个对ACTION_VIEW
+            	事件的过滤器，其中的scheme是“tencent”前缀再开发者应用的加上appId。如果此过滤器不设置，
+            	则分享结束以后不能得到正确的回调
+
+
+
+            -->
+            <intent-filter>
+                <data android:scheme="tencent1104632449" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <!-- 微信分享回调 微信回调条件必须满足：以工程包名+wxapi的包下面创建该WXEntryActivity -->
+        <activity
+            android:name="com.changhong.tvhelper.wxapi.WXEntryActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
-            android:priority="1000" />
-        <service
-            android:name="com.changhong.remotecontrol.TVRemoteControlService"
-            android:enabled="true"
-            android:exported="true"
-            android:priority="1000" />
+            android:screenOrientation="behind"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name="com.changhong.thirdpart.test.CutScreenActivity" />
+        <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity" >
+        </activity>
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1104632449" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <service android:name="com.changhong.thirdpart.test.MainService" />
+        <!-- shareSDK 分享功能添加 end -->     
     </application>
 
 </manifest>

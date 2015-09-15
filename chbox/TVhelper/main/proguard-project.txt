@@ -19,6 +19,24 @@
 #   public *;
 #}
 
+-keep class com.mob.tools.**{*;}
+-dontwarn com.mob.tools.**
+
+-keep class com.sina.**{*;}
+-dontwarn com.sina.**
+
+-keep class com.baidu.location.**{*;}
+-dontwarn com.baidu.location.**
+
+-keep class com.changhong.tvhelper.wxapi.**{*;}
+-dontwarn com.changhong.tvhelper.wxapi.**
+
+-keep class com.igexin.**{*;}
+-dontwarn com.igexin.**
+
+-keep class cn.sharesdk.**{*;}
+-dontwarn cn.sharesdk.**
+
 -keep class android.support.v4.**{*;}
 -dontwarn android.support.v4.**
 
