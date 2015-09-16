@@ -429,7 +429,27 @@ public class TVChannelPlayActivity extends Activity {
 				MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:dtv";
                 ClientSendCommandService.handler.sendEmptyMessage(1);
+               
+                String serviceId = null;
+                String tsId = null;
+                String orgNId = null;
+                
+                if (!ClientSendCommandService.channelData.isEmpty()) {
+
+    				for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+    					Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+    					if (name.equals((String) map.get("service_name"))) {
+    						serviceId = (String) map.get("service_id");
+    		                tsId = (String) map.get("tsId");
+    		                orgNId = (String) map.get("orgNId");
+    		                break;
+    					}
+    				}
+
+                ClientSendCommandService.msgSwitchChannel = serviceId + "#" + tsId + "#" + orgNId;
+                ClientSendCommandService.handler.sendEmptyMessage(3);
 			}
+		}
 		});
 
 	}
