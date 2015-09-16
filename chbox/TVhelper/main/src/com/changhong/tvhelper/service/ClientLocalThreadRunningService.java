@@ -94,7 +94,7 @@ public class ClientLocalThreadRunningService extends Service {
     /**预约提示列表adapter*/
     private static YuYueAdapter adapter_yuyue=null;
     
-    PushSimpleNotifyUtil simpleNotify;
+    
     
 
     @Override
@@ -116,10 +116,6 @@ public class ClientLocalThreadRunningService extends Service {
     @Override
     public void onDestroy() {    
     	super.onDestroy();
-    	if(simpleNotify != null)
-    	{
-    		simpleNotify.finish();
-    	}
     }
     
     private void initThreads() {
@@ -648,7 +644,7 @@ public class ClientLocalThreadRunningService extends Service {
 			}
 		}).start();
 		
-		simpleNotify = new PushSimpleNotifyUtil(this);
+		
 		
 	}
 }

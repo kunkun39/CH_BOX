@@ -42,7 +42,9 @@ import com.changhong.touying.tab.PPTTouyingTab;
  * Created by Jack Wang
  */
 public class OtherDetailsActivity extends FragmentActivity {
-	private String TAG = "PPTDetailsActivity";
+	private static final String TAG = "PPTDetailsActivity";
+	private static final int PATH_DEEPTH = 5;
+	
 	private Button back;
     private BoxSelecter ipSelecter;		
 	
@@ -127,13 +129,13 @@ public class OtherDetailsActivity extends FragmentActivity {
 		{
 			mIntentForword = (Intent) getIntent().getParcelableExtra("forwardIntent");
 		}
-		
+		Toast.makeText(this, "加载中，请稍候。。。", Toast.LENGTH_LONG).show();
     	new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				getAllPPTFiles(Environment.getExternalStorageDirectory());
+				getAllPPTFiles(Environment.getExternalStorageDirectory(),0);				
 				mHandler.sendEmptyMessage(PPTLIST_REFRESH);
 			}
 		}).start();
@@ -245,12 +247,100 @@ public class OtherDetailsActivity extends FragmentActivity {
     	mIntentForword = null;
     }
     
-    private void getAllPPTFiles(File root){ 
-        File files[] = root.listFiles();  
+    private void getAllPPTFiles(File root,int deepth){ 
+        File files[] = root.listFiles(); 
+        
+        if(deepth >= PATH_DEEPTH)
+        	return ;
+        
+        
         if(files != null){  
             for (File f : files){  
                 if(f.isDirectory()){  
-                	getAllPPTFiles(f);
+                	String name = f.getName();
+                    int nameLen = name.length();
+                	
+                		 switch (nameLen) {
+     					case 3:
+     						if (name.equalsIgnoreCase("qrc")) {
+     	                    	continue ;
+     	            		}
+     						if (name.equalsIgnoreCase("log")) {
+     	                    	continue ;
+     	            		}
+     						break;
+     					case 5:
+     						if (name.equalsIgnoreCase("Photo")) {
+     	                    	continue ;
+     	            		}
+     						if (name.equalsIgnoreCase("music")) {
+     	                    	continue ;
+     	            		}
+     						
+     	                    
+     	                    if (name.equalsIgnoreCase("image")) {
+     	                    	continue ;
+     	            		}
+     	                    
+     	                    if (name.equalsIgnoreCase("video")) {
+     	                    	continue ;
+     	            		}
+     	                    
+     	                    if (name.equalsIgnoreCase("emoji")) {
+     	                    	continue ;
+     	            		}
+     						break;
+     					case 6:
+     						if (name.equalsIgnoreCase("lyrics")) {
+     	                    	continue ;
+     	            		}
+     						if (name.equalsIgnoreCase("Camera")) {
+                             	continue ;
+                     		}
+     						break;
+     					case 7:
+     					{
+     						if (name.equalsIgnoreCase("Android")) {
+                             	continue ;
+                     		}
+                             
+                             if (name.equalsIgnoreCase("picture")) {
+                             	continue ;
+                     		}
+                             
+     					}
+     					break;
+     					case 8:
+     					{
+     						if (name.equalsIgnoreCase("internet")) {
+                             	continue ;
+                     		}
+     					}
+     					break;
+
+     					default:
+     						break;
+     				}
+                		 
+            		 if(nameLen > 4){
+        				 if ((name.matches(".*[cC][aA][cC][hH][eE].*"))
+        						 ||(name.matches(".*[tT][hH][uU][mM][bB].*"))) {
+                          	continue ;
+                  		}                                       
+        			 }
+        			 if (nameLen > 3) {
+        				 if ((name.matches(".*[tT][Ee][mM][pP].*"))) {
+                          	continue ;
+                  		}
+					}
+        			if (nameLen > 2) {            			 
+        				 if (name.matches(".*[tT][mM][pP].*")
+        						|| name.matches(".*[lL][oO][gG].*")
+        						|| name.matches(".*[mM][sS][gG].*")) {
+                   			continue ;
+                   		}                       
+					}                                                                
+                	getAllPPTFiles(f,deepth + 1);
                 }else{
                 	String path = f.getAbsolutePath();
                     if(path.endsWith(".PPT")
@@ -261,6 +351,7 @@ public class OtherDetailsActivity extends FragmentActivity {
                     	ppt.setPath(path);
                     	ppt.setTitle(path.substring(path.lastIndexOf("/")+1, path.length()));
                     	ppts.add(ppt);
+                    	mHandler.sendEmptyMessage(PPTLIST_REFRESH);
                     }
                     else if(path.endsWith(".pdf")){
                     	Log.d(TAG, f.getAbsolutePath());                    	
@@ -268,8 +359,11 @@ public class OtherDetailsActivity extends FragmentActivity {
                     	pdf.setPath(path);
                     	pdf.setTitle(path.substring(path.lastIndexOf("/")+1, path.length()));
                     	pdfs.add(pdf);
+                    	mHandler.sendEmptyMessage(PPTLIST_REFRESH);
                     }
-                }  
+                    Log.d(TAG, path);
+                }
+                
             }  
         }  
     }      

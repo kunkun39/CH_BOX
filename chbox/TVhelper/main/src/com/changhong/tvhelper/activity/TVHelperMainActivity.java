@@ -33,7 +33,8 @@ import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.faq.activity.QuestionListActivity;
+import com.changhong.tvhelper.utils.PushSimpleNotifyUtil;
+//import com.changhong.faq.activity.QuestionListActivity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -81,6 +82,7 @@ public class TVHelperMainActivity extends Activity {
      * message handler
      */
     public static Handler mhandler = null;
+    PushSimpleNotifyUtil simpleNotify;
 
     ServiceConnection conn=new ServiceConnection() {
         @Override
@@ -250,6 +252,7 @@ public class TVHelperMainActivity extends Activity {
                 super.handleMessage(msg1);
             }
         };
+        simpleNotify = new PushSimpleNotifyUtil(this);
     }
 
     private void initMedia() {
@@ -314,7 +317,10 @@ public class TVHelperMainActivity extends Activity {
                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 							dialogMessage.dialog.cancel();
 						}
-
+                        if (simpleNotify != null) {
+                        	simpleNotify.finish();
+						}
+                        
                         System.exit(0);
 					}
 					
