@@ -9,6 +9,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -234,7 +235,46 @@ public class VedioDetailsActivity extends Activity {
             }
         };
     }
+    public boolean OnKeyPress(int keyCode, KeyEvent event)
+    {
+    	if (!isPlaying) {
+			return false;
+		}
+    	
+    	switch (keyCode) {
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			ClientSendCommandService.sendMessage("key:volumedown");				
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			ClientSendCommandService.sendMessage("key:volumeup");		
+			return true;
 
+		default:
+			break;
+		}
+    	
+    	return false;
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if (!isPlaying) {
+			return super.onKeyDown(keyCode, event);
+		}
+    	
+    	switch (keyCode) {
+		case KeyEvent.KEYCODE_VOLUME_DOWN:
+			ClientSendCommandService.sendMessage("key:volumedown");				
+			return true;
+		case KeyEvent.KEYCODE_VOLUME_UP:
+			ClientSendCommandService.sendMessage("key:volumeup");		
+			return true;
+
+		default:
+			break;
+		}
+    	return super.onKeyDown(keyCode, event);
+    }
+    
     private void initialEvents() {
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
