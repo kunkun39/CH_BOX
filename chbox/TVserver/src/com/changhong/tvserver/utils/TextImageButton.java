@@ -43,6 +43,7 @@ public class TextImageButton extends Button {
 	private void init(AttributeSet attrs) {
 		setFocusable(true);
 		paint.setTextAlign(Align.CENTER);
+		this.setBackgroundResource(R.drawable.btn_dialog);
 		
 		if (attrs != null) {
 			TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.TextImageButton);

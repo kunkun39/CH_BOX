@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
@@ -94,7 +95,7 @@ public class OtherShowService extends Service{
             	Intent intent = new Intent(OtherShowService.this, PDFViewActivity.class);                
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/tmp.pdf"));
-                intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+                intent.setDataAndType(uri, "application/pdf");
                 startActivity(intent);
                 stopSelf();
 			}
@@ -132,23 +133,11 @@ public class OtherShowService extends Service{
 		if (mAlertDialog != null) {
 			mAlertDialog.cancel();
 			mAlertDialog = null;			
-		}		
-		while (mDownloadFileThread != null && !mDownloadFileThread.isInterrupted()) {
-			try {
-				synchronized (this) {
-					wait(100);
-				}				
-			} catch (InterruptedException e) {
-				// TODO 自动生成的 catch 块
-				e.printStackTrace();
-			}
-		}
-		
-	   {			
-			mAlertDialog= new OtherProgressDialog(this);
-			mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-			mAlertDialog.show();	
-	    }
+		}				
+			   			
+		mAlertDialog= new OtherProgressDialog(this);
+		mAlertDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+		mAlertDialog.show();		    
 	   
     	final String pptUrl = msg.replace("other_open:", "");
 		Log.e("ppt","pptUrl:"+pptUrl);
@@ -162,6 +151,7 @@ public class OtherShowService extends Service{
 			
 			@Override
 			public void run() {
+				Looper.prepare();				
 				try {
 		    		/**
 		    		 * open pdf
@@ -177,12 +167,14 @@ public class OtherShowService extends Service{
 		            hurlconn.setRequestMethod("GET");
 		            hurlconn.setConnectTimeout(2000);
 		            hurlconn.setRequestProperty("Connection", "Close");
+		            hurlconn.setReadTimeout(2000);
 		            try {
 		            	if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 		            		Log.d("TIME", String.valueOf(System.currentTimeMillis()));
 			                hurlconn.connect();
 			                mAlertDialog.setMax(hurlconn.getContentLength());
 			                mAlertDialog.setProgress(0);
+			                
 			                InputStream instream = new BufferedInputStream(hurlconn.getInputStream());
 			                File file=new File(tempFile);
 			                if(file.exists()){
@@ -215,18 +207,31 @@ public class OtherShowService extends Service{
 						if ( hurlconn != null) {
 							hurlconn.disconnect();
 						}
+						if (mAlertDialog != null) {
+							mAlertDialog.cancel();
+							mAlertDialog = null;			
+						}
+						Toast.makeText(OtherShowService.this.getApplicationContext(), "网络异常，下载退出", Toast.LENGTH_SHORT).show();
 					}
 		            
 		    	} catch (Exception e) {
 		    		e.printStackTrace();
+		    		Toast.makeText(OtherShowService.this.getApplicationContext(), "网络异常，下载退出", Toast.LENGTH_SHORT).show();
 		    	}
 				finally
 				{
 					mDownloadFileThread = null;
+					if (mAlertDialog != null) {
+						mAlertDialog.cancel();
+						mAlertDialog = null;			
+					}
 				}
+				Looper.loop();
 			}
+			
 		});
     	mDownloadFileThread.start();
+    	mAlertDialog.setThread(mDownloadFileThread);
     }
 
 	@Override
@@ -241,29 +246,25 @@ public class OtherShowService extends Service{
 		
 		public OtherProgressDialog(Context context) {
 			super(context);
+			setOnCancelListener(new OnCancelListener() {
+				
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					if(mThread != null)
+					{
+						mThread.interrupt();
+						mThread = null;
+					}	
+					
+				}
+			});
 		}
 		
 		void setThread(Thread thread)
 		{
 			mThread = thread;
-		}
-		
-		public void setOnCancelListener(final OnCancelListener listener)
-		{
-			this.setOnCancelListener(new OnCancelListener() {
-				
-				@Override
-				public void onCancel(DialogInterface dialog) {
-					listener.onCancel(OtherProgressDialog.this);
-					if(mThread != null)
-					{
-						mThread.interrupt();
-						mThread = null;
-					}					
-				}
-			});			
-			
-		}
+		}				
+					
 		
 	}
 

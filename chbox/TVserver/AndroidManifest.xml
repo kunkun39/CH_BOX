@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.changhong.tvserver"
-          android:versionCode="2"
+          android:versionCode="10"
           android:versionName="1.6.1">
 
     <uses-sdk
@@ -64,7 +64,10 @@
         </activity>
         <activity android:name=".touying.image.ImageShowPlayingActivity"
                   android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".touying.pdf.PDFViewActivity">
+        <activity android:name=".touying.pdf.PDFViewActivity"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
