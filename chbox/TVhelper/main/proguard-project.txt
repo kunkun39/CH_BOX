@@ -19,6 +19,8 @@
 #   public *;
 #}
 
+-keep class com.changhong.touying.music.** {*;}
+
 -keep class com.mob.tools.**{*;}
 -dontwarn com.mob.tools.**
 

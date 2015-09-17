@@ -615,7 +615,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
          * first check the wifi is connected
          */
         if (!NetworkUtils.isWifiConnected(PictureDetailsActivity.this)) {
-            Toast.makeText(PictureDetailsActivity.this, "请链接无线网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PictureDetailsActivity.this, "请连接无线网络", Toast.LENGTH_SHORT).show();
             return;
         }
 

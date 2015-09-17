@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.EPGVersionService;
@@ -88,7 +90,7 @@ public class ClientLocalThreadRunningService extends Service {
     private PowerManager powerManager;
     
     /**预约到期未看节目**/
-    private static List<OrderProgram> yuyueprograms=new ArrayList<OrderProgram>();
+    private static LinkedList<OrderProgram> yuyueprograms=new LinkedList<OrderProgram>();
     /**预约提示对话框*/
     private static Dialog dialog_yuyue=null;
     /**预约提示列表adapter*/
@@ -182,9 +184,9 @@ public class ClientLocalThreadRunningService extends Service {
 //                              final String shortClassName = info.topActivity.getClassName();
 //                              String content=program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime();
                             	if (yuyueprograms==null) {
-                            		yuyueprograms=new ArrayList<OrderProgram>();
+                            		yuyueprograms=new LinkedList<OrderProgram>();
 								}
-                            		yuyueprograms.add(program);
+                            	yuyueprograms.add(0, program);
                             		showYuyueDialog();
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -252,6 +254,7 @@ public class ClientLocalThreadRunningService extends Service {
 		dialog_yuyue.getWindow().setAttributes(param);
 		
 		adapter_yuyue.notifyDataSetChanged();
+		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", Toast.LENGTH_LONG).show();
 	}
 	class YuYueAdapter extends BaseAdapter {
 		private LayoutInflater minflater;

@@ -364,7 +364,7 @@ public class VedioDetailsActivity extends Activity {
                         //HTTPD的使用状态
                         MobilePerformanceUtils.openPerformance(VedioDetailsActivity.this);
                     } else {
-                        Toast.makeText(VedioDetailsActivity.this, "请链接无线网络", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VedioDetailsActivity.this, "请连接无线网络", Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

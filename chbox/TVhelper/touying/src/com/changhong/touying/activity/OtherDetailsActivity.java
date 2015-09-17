@@ -29,6 +29,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.WebUtils;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.R;
@@ -166,7 +167,7 @@ public class OtherDetailsActivity extends FragmentActivity {
          * first check the wifi is connected
          */
         if (!NetworkUtils.isWifiConnected(context)) {
-            Toast.makeText(context, "请链接无线网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "请连接无线网络", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -190,6 +191,7 @@ public class OtherDetailsActivity extends FragmentActivity {
 
             //生成访问图片的HTTP URL
             String newImagePath = null;
+            pptPath = WebUtils.convertLocalFileToHttpURL(pptPath);
             if (pptPath.startsWith(NanoHTTPDService.defaultHttpServerPath)) {
                 newImagePath = pptPath.replace(NanoHTTPDService.defaultHttpServerPath, "").replace(" ", "%20");
             } else {
@@ -199,6 +201,7 @@ public class OtherDetailsActivity extends FragmentActivity {
                     }
                 }
             }
+            
 
             String tmpHttpAddress = httpAddress + newImagePath;
 

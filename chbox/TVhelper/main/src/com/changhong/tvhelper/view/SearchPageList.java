@@ -33,6 +33,7 @@ import com.changhong.common.utils.StringUtils;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.activity.TVChannelPlayActivity;
 import com.changhong.tvhelper.activity.TVChannelProgramShowActivity;
+import com.changhong.tvhelper.activity.TVChannelSearchActivity;
 import com.changhong.tvhelper.domain.OrderProgram;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
@@ -168,8 +169,12 @@ public class SearchPageList extends Fragment{
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+						if (searchChannel.size() == 0) {
+							Toast.makeText(getActivity(), "没有收到任何节目或频道信息！", Toast.LENGTH_SHORT).show();
+						}
 					}
 
+					
                     /**
                      */
 					channelSearchList = (ListView)view.findViewById(R.id.channel_program_list);

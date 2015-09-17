@@ -15,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class PPTTouyingTab extends Fragment{
 	ArrayList<FileItem> mPathList = new ArrayList<FileItem>();
@@ -31,6 +33,14 @@ public class PPTTouyingTab extends Fragment{
 			Bundle savedInstanceState) {
 		mView = inflater.inflate(R.layout.tab_ppt_list, container, false);
 		ListView list = (ListView)mView.findViewById(R.id.pptlist);
+		list.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				OtherDetailsActivity.touYing(getActivity(),mPathList.get(arg2).getPath());
+			}
+		});
 		mAdapter = new PPTTouyingAdapter();
 		list.setAdapter(mAdapter);
 		return mView;

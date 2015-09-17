@@ -670,7 +670,10 @@ public class MusicPlayer extends DialogFragment{
 			
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				return OnKeyPress(keyCode, event);
+				if (event.getAction() == KeyEvent.ACTION_UP) {
+					return OnKeyPress(keyCode, event);
+				}
+				return false;
 			}
 		});
     }
@@ -801,7 +804,7 @@ public class MusicPlayer extends DialogFragment{
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
             } else {
-                Toast.makeText(getActivity(), "请链接无线网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "请连接无线网络", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -901,7 +904,7 @@ public class MusicPlayer extends DialogFragment{
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
             } else {
-                Toast.makeText(getActivity(), "请链接无线网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "请连接无线网络", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
