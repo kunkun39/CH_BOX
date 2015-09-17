@@ -62,6 +62,8 @@ public class ShareCenter {
 
 	/** 一键分享微博否采用编辑方式？true编辑；false直接分享 */
 	public boolean isEdit = true;
+	/**上次显示分享对话框时间，解决连续快速点击显示多个对话框*/
+	private static long lastShowTime=0;
 	/**
 	 * ShareParams分享数据模型类，每个平台有自己对应的ShareParams类，建议使用父类
 	 * cn.sharesdk.framework.Platform.ShareParams 各数据类型即作用如下
@@ -327,7 +329,12 @@ public class ShareCenter {
 //			};
 //			oks.setCustomerLogo(enableLogo, disableLogo, label, listener);
 //		}
-		oks.show(context);// 启动分享GUI
+		long currentShowTime=System.currentTimeMillis();
+		if (currentShowTime-lastShowTime>330) {
+			oks.show(context);// 启动分享GUI
+			lastShowTime=currentShowTime;
+		}
+		
 	}
 
 	/**
@@ -379,7 +386,11 @@ public class ShareCenter {
 		oks.setSite(shareParams.getSite());
 		oks.setSiteUrl(shareParams.getSiteUrl());
 		// 启动分享GUI
-		oks.show(context);
+		long currentShowTime=System.currentTimeMillis();
+		if (currentShowTime-lastShowTime>330) {
+			oks.show(context);// 启动分享GUI
+			lastShowTime=currentShowTime;
+		}
 	}
 
 	/**
