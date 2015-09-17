@@ -297,36 +297,36 @@ public class ShareCenter {
 		oks.setTitle(title);
 		oks.setSite(title);
 		oks.setText(TextUtils.isEmpty(text) ? "  " : text);
-
-		if (!TextUtils.isEmpty(imagePath) || !TextUtils.isEmpty(imageUrl)) {
-			Bitmap enableLogo = BitmapFactory.decodeResource(
-					context.getResources(), R.drawable.logo_qq);
-			Bitmap disableLogo = BitmapFactory.decodeResource(
-					context.getResources(), R.drawable.logo_qq);
-			String label = "QQ好友";
-			OnClickListener listener = new OnClickListener() {
-				public void onClick(View v) {
-					Tencent mTencent = Tencent.createInstance(
-							ShareConfig.QQPPID, context);
-					Bundle params = new Bundle();
-					if (!TextUtils.isEmpty(imagePath)) {
-						params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,
-								imagePath);
-					} else if (!TextUtils.isEmpty(imageUrl)) {
-						params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,
-								imageUrl);
-					}
-					params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "");
-					params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
-							QQShare.SHARE_TO_QQ_TYPE_IMAGE);
-					// params.putInt(QQShare.SHARE_TO_QQ_EXT_INT,
-					// QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
-					mTencent.shareToQQ((Activity) context, params,
-							qqShareListener);
-				}
-			};
-			oks.setCustomerLogo(enableLogo, disableLogo, label, listener);
-		}
+//TODO 去掉手动对接QQ分享功能
+//		if (!TextUtils.isEmpty(imagePath) || !TextUtils.isEmpty(imageUrl)) {
+//			Bitmap enableLogo = BitmapFactory.decodeResource(
+//					context.getResources(), R.drawable.logo_qq);
+//			Bitmap disableLogo = BitmapFactory.decodeResource(
+//					context.getResources(), R.drawable.logo_qq);
+//			String label = "QQ好友";
+//			OnClickListener listener = new OnClickListener() {
+//				public void onClick(View v) {
+//					Tencent mTencent = Tencent.createInstance(
+//							ShareConfig.QQPPID, context);
+//					Bundle params = new Bundle();
+//					if (!TextUtils.isEmpty(imagePath)) {
+//						params.putString(QQShare.SHARE_TO_QQ_IMAGE_LOCAL_URL,
+//								imagePath);
+//					} else if (!TextUtils.isEmpty(imageUrl)) {
+//						params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL,
+//								imageUrl);
+//					}
+//					params.putString(QQShare.SHARE_TO_QQ_APP_NAME, "");
+//					params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
+//							QQShare.SHARE_TO_QQ_TYPE_IMAGE);
+//					// params.putInt(QQShare.SHARE_TO_QQ_EXT_INT,
+//					// QQShare.SHARE_TO_QQ_FLAG_QZONE_AUTO_OPEN);
+//					mTencent.shareToQQ((Activity) context, params,
+//							qqShareListener);
+//				}
+//			};
+//			oks.setCustomerLogo(enableLogo, disableLogo, label, listener);
+//		}
 		oks.show(context);// 启动分享GUI
 	}
 
