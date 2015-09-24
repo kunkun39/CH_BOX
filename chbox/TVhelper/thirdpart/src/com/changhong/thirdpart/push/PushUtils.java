@@ -39,6 +39,7 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 	private Context mContext;	
 	private PushBroadCastReceiver mReceiver = new PushBroadCastReceiver();
 	private DataContainer dataContainer = new DataContainer();
+	private boolean isInit = false;
 
 /**
  * 屏蔽构造，注册观察者
@@ -83,6 +84,9 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		if (context == null) {
 			return null;
 		}
+		if (isInit) {
+			return this;
+		}
 		mPushUtils.mContext = context.getApplicationContext();	
 		
 		PushManager.getInstance().initialize(context);
@@ -91,6 +95,7 @@ public class PushUtils implements IThirdPartUtil,IDataContainer{
 		filter.addAction(INTENT_ACTION);
 		context.registerReceiver(mReceiver, filter);
 		
+		isInit = true;
 		return mPushUtils;
 	}
 	
