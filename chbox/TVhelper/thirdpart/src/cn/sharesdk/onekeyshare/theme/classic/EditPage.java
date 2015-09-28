@@ -403,9 +403,11 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 		llAt.setLayoutParams(lpAt);
 		llAt.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				FollowListPage subPage = new FollowListPage();
-				subPage.setPlatform(platforms.get(0));
-				subPage.showForResult(activity, null, EditPage.this);
+				if (platforms.size()>0) {
+					FollowListPage subPage = new FollowListPage();
+					subPage.setPlatform(platforms.get(0));
+					subPage.showForResult(activity, null, EditPage.this);
+				}
 			}
 		});
 
@@ -533,13 +535,11 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 	}
 
 	public void onClick(View v) {
-		if (platformList.length<=0&&views.length>0) {
-			return;
-		}
+		int platformListSize=platformList.length;//ADD BY WXF
 		if (v.equals(llTitle.getBtnBack())) {
 			Platform plat = null;
 			for (int i = 0; i < views.length; i++) {
-				if (views[i].getVisibility() == View.INVISIBLE) {
+				if (views[i].getVisibility() == View.INVISIBLE && i<platformListSize) {
 					plat = platformList[i];
 					break;
 				}
@@ -559,7 +559,7 @@ public class EditPage extends EditPageFakeActivity implements OnClickListener, T
 
 			platforms.clear();
 			for (int i = 0; i < views.length; i++) {
-				if (views[i].getVisibility() != View.VISIBLE) {
+				if (views[i].getVisibility() != View.VISIBLE && i<platformListSize) {
 					platforms.add(platformList[i]);
 				}
 			}
