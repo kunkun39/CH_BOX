@@ -19,10 +19,12 @@ import com.changhong.tvserver.R;
 import com.changhong.tvserver.touying.pdf.PDFViewActivity;
 import com.changhong.tvserver.utils.MyProgressDialog;
 import com.changhong.tvserver.utils.TextImageButton;
+import com.chome.virtualkey.virtualkey;
 
 
 import android.R.integer;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Service;
@@ -75,13 +77,16 @@ public class OtherShowService extends Service{
 					mAlertDialog.dismiss();
 					mAlertDialog = null;
             	}
-            	Intent intent = new Intent("android.intent.action.VIEW");
+
+				Intent intent = new Intent("android.intent.action.VIEW");
                 intent.addCategory("android.intent.category.DEFAULT");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/tmp.ppt"));
                 intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
                 startActivity(intent);
                 stopSelf();
+
+            	
 			}
 		};
 		mOpenPDFRunable = new Runnable() {
@@ -130,6 +135,14 @@ public class OtherShowService extends Service{
 			tempFile = null;
 			runnable = null;
 		}
+		if (fileType == TYPE_PPT) {
+			if(((ActivityManager)this.getSystemService(Service.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getClassName().contains("cn.wps.moffice"))
+			{
+				Toast.makeText(this, "请先退出PPT,再进行投影，谢谢！", Toast.LENGTH_SHORT).show();
+				return ;
+			}
+		}
+		
 		if (mAlertDialog != null) {
 			mAlertDialog.cancel();
 			mAlertDialog = null;			
@@ -167,7 +180,7 @@ public class OtherShowService extends Service{
 		            hurlconn.setRequestMethod("GET");
 		            hurlconn.setConnectTimeout(2000);
 		            hurlconn.setRequestProperty("Connection", "Close");
-		            hurlconn.setReadTimeout(2000);
+		            hurlconn.setReadTimeout(10000);
 		            try {
 		            	if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
 		            		Log.d("TIME", String.valueOf(System.currentTimeMillis()));

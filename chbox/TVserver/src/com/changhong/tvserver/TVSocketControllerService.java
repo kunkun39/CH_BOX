@@ -48,7 +48,7 @@ public class TVSocketControllerService extends Service {
     /**
      * heart internal time which stand for server send info to clients for this value
      */
-    private static final int TIME = 1000;
+    private static final int TIME = 500;
 
     /**
      * server ip

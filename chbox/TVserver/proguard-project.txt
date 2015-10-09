@@ -28,6 +28,10 @@
 -keep class com.ots.deviceinfoprovide.**{*;}
 -dontwarn com.ots.deviceinfoprovide.**
 
+-keep class com.joanzapata.**{*;}
+-dontwarn com.joanzapata.**
 
+-keep class org.vudroid.**{*;}
+-dontwarn org.vudroid..**
 
 
