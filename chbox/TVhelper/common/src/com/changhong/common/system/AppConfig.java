@@ -29,4 +29,9 @@ public class AppConfig {
     static {
         MOBILE_CARMERS_PACKAGE.add("camera");
     }
+    
+    /**
+     * Intent
+     */
+    public final static String BROADCAST_INTENT_EPGDB_UPDATE = "com.changhong.epg.db.update";
 }

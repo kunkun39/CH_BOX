@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
@@ -65,6 +68,7 @@ public class SearchPageList extends Fragment{
 	private static Handler mHandler = null;
 	
 	View view = null;
+	BroadcastReceiver broadcastReceiver;
 	
     private List<String> allShouChangChannel = new ArrayList<String>();
 	@Override
@@ -74,8 +78,9 @@ public class SearchPageList extends Fragment{
 		super.onAttach(activity);
 		
 		this.activity = activity;
-		initData();
+		
 		initViewAndEvent();
+		initData();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,6 +127,9 @@ public class SearchPageList extends Fragment{
 					currentChannelPlayData = channelService.searchCurrentChannelPlay();
 				} catch (Exception e) {
 					e.printStackTrace();
+				}
+				if (mHandler != null) {
+					mHandler.sendEmptyMessage(0);
 				}
 			}
 		}).start();
@@ -170,7 +178,7 @@ public class SearchPageList extends Fragment{
 							e.printStackTrace();
 						}
 						if (searchChannel.size() == 0) {
-							Toast.makeText(getActivity(), "没有收到任何节目或频道信息！", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), "没有搜索到任何节目或频道信息！", Toast.LENGTH_SHORT).show();
 						}
 					}
 
@@ -191,6 +199,15 @@ public class SearchPageList extends Fragment{
 			}
 
 		};
+		
+		broadcastReceiver = new BroadcastReceiver()
+        {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				initData();
+			}        	
+        };
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
 	}
 
 	class ChannelAdapter extends BaseAdapter {
@@ -530,5 +547,13 @@ public class SearchPageList extends Fragment{
 			}
 		}
 		return false;
+	}
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		if(broadcastReceiver != null)
+		{
+			getActivity().unregisterReceiver(broadcastReceiver);
+		}
 	}
 }

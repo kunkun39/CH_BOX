@@ -1,8 +1,10 @@
 package com.changhong.tvhelper.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.widget.*;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.StringUtils;
@@ -56,13 +59,13 @@ public class TVChannelShouCangShowActivity extends Activity {
 
     private List<Map<String, Object>> channelShowData = new ArrayList<Map<String, Object>>();
     private ListView channelOrProgramList = null;
-    private ChannelAdapter channelAdapter = null;
+    private ChannelAdapter channelAdapter;
     private TextView channelText;
 
     /**
      * ***********************************************节目预约部分******************************************************
      */
-    public static List<OrderProgram> orderProgramList = new ArrayList<OrderProgram>();
+    private List<OrderProgram> orderProgramList = new ArrayList<OrderProgram>();
     private OrderProgramAdapter orderProgramAdapter;
     private TextView orderProgramText;
     private List<Map<String, Object>> orderProgramShowData = new ArrayList<Map<String, Object>>();
@@ -74,6 +77,7 @@ public class TVChannelShouCangShowActivity extends Activity {
     private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
     private List<String> allShouChangChannel = new ArrayList<String>();
     private ChannelService channelService;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,8 @@ public class TVChannelShouCangShowActivity extends Activity {
         back = (Button) findViewById(R.id.btn_back);
         channelText = (TextView) findViewById(R.id.text_channel_shoucang);
         orderProgramText = (TextView) findViewById(R.id.text_channel_program_yuyue);
+        channelAdapter = new ChannelAdapter(this);
+        orderProgramAdapter = new OrderProgramAdapter(this);
 //        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 //        ImageButton collection_smb = (ImageButton) findViewById(R.id.collection_sidemunubutton);
 //
@@ -159,6 +165,14 @@ public class TVChannelShouCangShowActivity extends Activity {
               
             }
         });
+        broadcastReceiver = new BroadcastReceiver()
+        {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				initData();
+			}        	
+        };
+        this.registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
 
         /**
          * 消息处理部分
@@ -188,9 +202,6 @@ public class TVChannelShouCangShowActivity extends Activity {
 
                         //重新加载预约频道数据并刷新Adapter
                         try {
-                        	if(null==channelAdapter){
-                        		channelAdapter = new ChannelAdapter(TVChannelShouCangShowActivity.this);
-                            }
                             channelOrProgramList.setAdapter(channelAdapter);
                             channelAdapter.notifyDataSetChanged();
                             channelText.setTextColor(getResources().getColor(R.color.orange));
@@ -603,6 +614,9 @@ public class TVChannelShouCangShowActivity extends Activity {
     	super.onDestroy();
     	if (ipSelecter != null) {
 			ipSelecter.release();
+		}
+    	if (broadcastReceiver != null) {
+			this.unregisterReceiver(broadcastReceiver);
 		}
     }
     

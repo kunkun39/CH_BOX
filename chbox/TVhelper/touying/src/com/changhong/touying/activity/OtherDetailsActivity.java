@@ -1,6 +1,8 @@
 package com.changhong.touying.activity;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.os.storage.StorageManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -136,8 +139,36 @@ public class OtherDetailsActivity extends FragmentActivity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				getAllPPTFiles(Environment.getExternalStorageDirectory(),0);				
-				mHandler.sendEmptyMessage(PPTLIST_REFRESH);
+				StorageManager sm = (StorageManager) OtherDetailsActivity.this.getSystemService(Context.STORAGE_SERVICE);
+				Method method;
+				try {
+					method = sm.getClass().getMethod("getVolumePaths", null);
+					if (method != null ) {
+						
+						String paths[] = (String[]) method.invoke(sm, null);
+						for (String path : paths) {
+							getAllPPTFiles(new File(path), 0);						
+						}
+					}
+					else {
+						getAllPPTFiles(Environment.getExternalStorageDirectory(),0);	
+					}
+				}catch(IllegalAccessException e)
+				{
+					e.printStackTrace();
+				}
+				catch(InvocationTargetException e)
+				{
+					e.printStackTrace();
+				}
+				catch (NoSuchMethodException e) {
+					e.printStackTrace();
+				}
+				finally
+				{
+					mHandler.sendEmptyMessage(PPTLIST_REFRESH);
+				}
+								
 			}
 		}).start();
     }

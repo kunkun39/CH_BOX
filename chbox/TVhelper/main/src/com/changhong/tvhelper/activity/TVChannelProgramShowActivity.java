@@ -3,9 +3,11 @@ package com.changhong.tvhelper.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import com.changhong.common.db.sqlite.DatabaseContainer;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
@@ -75,18 +78,19 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 
     private ChannelService channelService;
     List<OrderProgram> orderProgramList = new ArrayList<OrderProgram>();
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        channelService = new ChannelService(this);
-
-        initData();
+        channelService = new ChannelService(this);        
 
         initView();
-
         initEvent();
+        initData();
+
+        
     }
 
     private void initData() {
@@ -97,9 +101,28 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
         weekIndexName = DateUtils.getWeekIndexName(0);
         orderDate = DateUtils.getOrderDate(0);
         orderProgramList = channelService.findAllOrderPrograms();
+        title.setText(channelName);
         if(null==orderProgramList){
         	finish();
         }
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /**
+                 * 初始化DB
+                 */
+
+                try {
+                    programInfos = channelService.searchProgramInfosByName(channelName);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // 通知Handler扫描图片完成
+                mHandler.sendEmptyMessage(0);
+            }
+        }).start();
     }
 
     private void initView() {
@@ -110,8 +133,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
         setContentView(R.layout.activity_channel_program);
 
         back = (Button) findViewById(R.id.btn_back);
-        title = (TextView) findViewById(R.id.title);
-        title.setText(channelName);
+        title = (TextView) findViewById(R.id.title);        
 
         first = (TextView) findViewById(R.id.first);
         second = (TextView) findViewById(R.id.second);
@@ -166,24 +188,15 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 adapter.notifyDataSetChanged();
             }
         };
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /**
-                 * 初始化DB
-                 */
-
-                try {
-                    programInfos = channelService.searchProgramInfosByName(channelName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                // 通知Handler扫描图片完成
-                mHandler.sendEmptyMessage(0);
-            }
-        }).start();
+        
+        broadcastReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				initData();
+			}
+		};
+		registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
     }
 
     @Override
@@ -537,5 +550,15 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 break;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	// TODO 自动生成的方法存根
+    	super.onDestroy();
+    	if (broadcastReceiver != null) {
+    		unregisterReceiver(broadcastReceiver);
+		}
+    	
     }
 }

@@ -127,7 +127,7 @@ public class ChannelService {
         Map<String, Program> currentPlaying = new HashMap<String, Program>();
 
         try {
-            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).reopenEPGDatabase();
             if (database != null) {
                 String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
                 String currentTime = DateUtils.getCurrentTimeStamp();
@@ -156,7 +156,7 @@ public class ChannelService {
 
     public List<Program> searchCurrentChannelPlayByName(String channelName) {
         List<Program> programList = new ArrayList<Program>();
-        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).reopenEPGDatabase();
         if (database != null) {
             String weekIndex = String.valueOf(DateUtils.getWeekIndex(0));
             String currentTime = DateUtils.getCurrentTimeStamp();
@@ -184,7 +184,7 @@ public class ChannelService {
     public Map<String, List<Program>> searchProgramInfosByName (String channelName) {
         Map<String, List<Program>> programs = new HashMap<String, List<Program>>();
 
-        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
+        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).reopenEPGDatabase();
         if (database != null) {
             Cursor cursor = database.rawQuery("select i_ChannelIndex,i_weekIndex, str_eventName, str_startTime, str_endTime from epg_information where str_ChannelName = ? " +
                             "order by str_startTime asc",
@@ -215,9 +215,9 @@ public class ChannelService {
     public synchronized Collection<Map<String, Object>> searchProgramByText(String text)
     {
     	final int MAX_COLLECTION_COUNT = 20;    	
-    	Set<Map<String, Object>> listMap = new HashSet<Map<String, Object>>();
+    	List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
     	
-    	SQLiteDatabase database = MyApplication.getDatabaseContainer(context).openEPGDatabase();
+    	SQLiteDatabase database = MyApplication.getDatabaseContainer(context).reopenEPGDatabase();
     	if (database == null) {
 			return listMap;
 		}
@@ -227,7 +227,7 @@ public class ChannelService {
     	int count = MAX_COLLECTION_COUNT;
     	try {
     		//cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName FROM epg_information WHERE str_eventName LIKE ? "/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
-    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName,str_eventName,i_weekindex,str_startTime,str_endTime FROM epg_information WHERE str_eventName LIKE ?"/*AND str_startTime < ? AND str_endTime > ?*/+ "COLLATE NOCASE", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
+    		cursor = database.rawQuery("SELECT i_ChannelIndex,str_ChannelName,str_eventName,i_weekindex,str_startTime,str_endTime FROM epg_information WHERE str_eventName LIKE ? ORDER BY i_ChannelIndex ASC,i_weekindex ASC,str_startTime ASC", new String[]{"%" + text + "%"/*,currentTime,currentTime*/});
 	    	while (cursor.moveToNext()
 	    			&& (count-- > 0)) {							
 				HashMap<String, Object> temp = new HashMap<String, Object>();

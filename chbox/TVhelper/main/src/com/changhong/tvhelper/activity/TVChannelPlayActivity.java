@@ -306,6 +306,9 @@ public class TVChannelPlayActivity extends Activity {
         });
 
 		mVideoView.requestFocus();
+		if (intent.getStringExtra("channelname") != null) {
+			setPath(name);
+		}
 
 		playTimestamp = System.currentTimeMillis();
 		new PlayerIsPlayingMinitorThread().start();
@@ -869,6 +872,20 @@ public class TVChannelPlayActivity extends Activity {
 	/*********************************************** 系统方法重载 ********************************************************/
 
 	@Override
+	protected void onNewIntent(Intent intent) {	
+		super.onNewIntent(intent);
+		if (intent != null) {
+			if (intent.getStringExtra("channelname") != null
+					&& !intent.getStringExtra("channelname").equals("")
+					&& !intent.getStringExtra("channelname").equals("null")) {
+				String channelname = intent.getStringExtra("channelname");
+				setPath(channelname);
+                initProgramInfo(channelname);
+			}
+		}
+		
+	}
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_MENU:
@@ -957,8 +974,8 @@ public class TVChannelPlayActivity extends Activity {
 
 				if (programList != null && programList.size() > 0
 						&& programList.get(0) != null) {
-					text = "我正在观看" + name + "台，"
-							+ programList.get(0).getProgramName() + "节目，好精彩呀！";
+					text = "我正在观看" + name + "台的节目《"
+							+ programList.get(0).getProgramName() + "》，好精彩呀！";
 				} else {
 					text = "我正在观看" + name + "台，好精彩呀！";
 				}

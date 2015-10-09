@@ -20,6 +20,13 @@
 #}
 
 -keep class com.changhong.touying.music.** {*;}
+-dontwarn com.changhong.touying.music.**
+
+-keep class com.changhong.tvhelper.utils.** {*;}
+-dontwarn com.changhong.tvhelper.utils.**
+
+-keep class com.changhong.thirdpart.push.** {*;}
+-dontwarn com.changhong.thirdpart.push.**
 
 -keep class com.mob.tools.**{*;}
 -dontwarn com.mob.tools.**

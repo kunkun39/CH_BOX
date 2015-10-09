@@ -124,6 +124,9 @@ public class IpSelectorDataServer extends Observable
 		if (ip == null|| ip.length() < 1) {
 			return;
 		}
+		if (ip.equalsIgnoreCase(mServerIP)) {
+			return ;
+		}
 				
 		if (mServerIpListMap.containsKey(ip)) {
 			mServerIP = ip;

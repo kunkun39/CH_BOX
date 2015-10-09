@@ -244,9 +244,14 @@ public abstract class SocketController implements ClientSocketInterface {
 
         public void setIp(String serverIP) {
             final String ip = ipCheck(serverIP) ? serverIP : null;
-            final String ipCurrent = mServerIpCur;
             if (ip == null)
-                return;            
+                return;
+            
+            if (ip.equalsIgnoreCase(mServerIpCur)) {
+				return ;
+			}
+            final String ipCurrent = mServerIpCur;
+                        
             
             AsyncTask.execute(new Runnable() {				
 				@Override

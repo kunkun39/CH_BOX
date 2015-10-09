@@ -1,9 +1,11 @@
 package com.changhong.tvhelper.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by maren on 2015/4/20.
  */
-public class OrderProgram {
+public class OrderProgram implements Serializable{
     private  int id;
 
     private String orderDate;

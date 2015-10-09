@@ -75,6 +75,18 @@
 
             <ImageView style="@style/img_arrow" />
         </LinearLayout>
+        <View style="@style/bg_line" />
+
+        <LinearLayout
+            android:id="@+id/file_control_help"
+            style="@style/bottom_layout" >
+
+            <TextView
+                style="@style/usertext"
+                android:text="@string/pdf_ppt_hologram" />
+
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

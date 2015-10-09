@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Set;
 
 import com.changhong.common.utils.*;
@@ -18,11 +20,13 @@ import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -31,6 +35,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -89,6 +94,8 @@ public class ClientLocalThreadRunningService extends Service {
 
     private PowerManager powerManager;
     
+    private PushSimpleNotifyUtil pushNotifyUtil;
+    
     /**预约到期未看节目**/
     private static LinkedList<OrderProgram> yuyueprograms=new LinkedList<OrderProgram>();
     /**预约提示对话框*/
@@ -118,6 +125,10 @@ public class ClientLocalThreadRunningService extends Service {
     @Override
     public void onDestroy() {    
     	super.onDestroy();
+    	if(pushNotifyUtil != null)
+    	{
+    		pushNotifyUtil.finish();
+    	}
     }
     
     private void initThreads() {
@@ -151,7 +162,9 @@ public class ClientLocalThreadRunningService extends Service {
         manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         powerManager = (PowerManager) this.getSystemService(this.POWER_SERVICE);
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+        if (pushNotifyUtil == null) {
+        	pushNotifyUtil = new PushSimpleNotifyUtil(this);
+		}
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -162,10 +175,12 @@ public class ClientLocalThreadRunningService extends Service {
                         if (!powerManager.isScreenOn() || SystemUtils.isScreenLocked(ClientLocalThreadRunningService.this)) {
                             try {
                                 Intent intent = new Intent();
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelShowActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                intent.putExtra("channelname", program.getChannelName());
+                                intent.setClass(ClientLocalThreadRunningService.this, TVChannelPlayActivity.class);
 
-                                pendingIntent = PendingIntent.getActivity(ClientLocalThreadRunningService.this, 0, intent, 0);
+                                pendingIntent = PendingIntent.getActivity(ClientLocalThreadRunningService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 notification = new Notification();
                                 notification.icon = R.drawable.applogo;
                                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -254,7 +269,7 @@ public class ClientLocalThreadRunningService extends Service {
 		dialog_yuyue.getWindow().setAttributes(param);
 		
 		adapter_yuyue.notifyDataSetChanged();
-		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", 5000).show();
 	}
 	class YuYueAdapter extends BaseAdapter {
 		private LayoutInflater minflater;
@@ -473,33 +488,51 @@ public class ClientLocalThreadRunningService extends Service {
      * ******************************************epg info download thread************************************
      */
 
-    class EPGDownloadThread extends Thread {
+    class EPGDownloadThread extends Thread implements Observer{
+    	Handler mHandler = null;
+    	Dialog dialog = null;
+    	Runnable runnable;
         @Override
         public void run() {
-            while (true) {
-                try {
-                    //sleep for 1 seconds for http server started
-                    Thread.sleep(1000);
+        	
+        	Looper.prepare();
+        	if (mHandler == null) {
+        		mHandler = new Handler(Looper.myLooper());        		
+			}    
+        	IpSelectorDataServer.getInstance().addObserver(this);
+        	runnable = new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+	                    //sleep for 1 seconds for http server started
+	                    Thread.sleep(1000);
+	 
+	                    if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+	                        getEPGList("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database_ver.json");
+	                    }
+	                    //every three minus, the client go to server to check                  
 
-                    if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                        getEPGList("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database_ver.json");
-                    }
-                    //every three minus, the client go to server to check
-                    Thread.sleep(1000 * 60);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+	                } catch (Exception e) {
+	                    e.printStackTrace();
+	                }
+					mHandler.postDelayed(this, 20 * 1000);
+				}
+			};
+        	mHandler.post(runnable);
+                
+            Looper.loop();
+            
         }
 
-        private void getEPGList(String url) throws Exception {
+        private synchronized void getEPGList(String url) throws Exception {
             /**
              * 如果不是WIFI环境，不允许访问
              */
             if (url == null || !NetworkUtils.isWifiConnected(ClientLocalThreadRunningService.this)) {
                 return;
             }
+            
 
             //get network json data
             String sss = null;
@@ -552,21 +585,42 @@ public class ClientLocalThreadRunningService extends Service {
                      * 更新节目信息
                      */
                     if (shouldUpdateDB) {
+                    	ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+                    	ComponentName componentName =  activityManager.getRunningTasks(1).get(0).topActivity;
+                    	
+                    	if(componentName.getPackageName().contains("com.changhong"))
+                    	{
+                    		dialog = DialogUtil.showPassInformationDialog(ClientLocalThreadRunningService.this, "提示", "正在更新电视节目，请稍候...", null);
+                    		dialog.setCanceledOnTouchOutside(false);                    		
+                    	}
+                    	
                         InputStream in = WebUtils.httpGetRequest("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database.db");
+                        File fileTmp = new File(MyApplication.epgDBCachePath, "epg_database.db.tmp");
+                        if (fileTmp.exists()) {
+                        	fileTmp.delete();
+                        }
+
+                        SystemClock.sleep(1000);
+                        
+                        IOUtils.copy(in, new FileOutputStream(fileTmp));
                         File file = new File(MyApplication.epgDBCachePath, "epg_database.db");
                         if (file.exists()) {
                             file.delete();
                         }
-
                         SystemClock.sleep(1000);
-
-                        IOUtils.copy(in, new FileOutputStream(file));
+                        fileTmp.renameTo(file);
+                        
                         service.saveEPGVersion(serverVersion);
+                        if (dialog != null) {                        	
+                        	dialog.cancel();
+						}
+                        Log.d(TAG, "电视节目更新成功");                        
 
                         /**
                          * 重新初始化DB
                          */
-                        MyApplication.getDatabaseContainer(ClientLocalThreadRunningService.this).reopenEPGDatabase();
+                        Intent intent = new Intent(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE);
+                        ClientLocalThreadRunningService.this.sendBroadcast(intent);
                         Log.e(TAG, "update epg database to version " + serverVersion);
                     }
                 } else {
@@ -574,8 +628,18 @@ public class ClientLocalThreadRunningService extends Service {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                if (dialog != null) {
+                	Toast.makeText(ClientLocalThreadRunningService.this, "更新失败，稍后更新", Toast.LENGTH_SHORT).show();
+                	dialog.cancel();
+				}
             }
         }
+
+		@Override
+		public void update(Observable observable, Object data) {
+			mHandler.removeCallbacks(runnable);
+			mHandler.postAtFrontOfQueue(runnable);
+		}
     }
 
     /**

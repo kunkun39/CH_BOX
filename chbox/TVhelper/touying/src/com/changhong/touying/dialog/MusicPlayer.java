@@ -523,9 +523,11 @@ public class MusicPlayer extends DialogFragment{
 	                    if ("true".equals(status)) {
 	                        isPlaying = true;
 	                        isPausing = false;
+	                        controlButton.setBackgroundResource(R.drawable.control_pause);
 	                    } else {
 	                        isPlaying = false;
 	                        isPausing = true;
+	                        controlButton.setBackgroundResource(R.drawable.control_play);
 	                    }                   	
 	                }
                     else {

@@ -31,7 +31,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, CURRENT_VERSION);
     }
 
-    public static DatabaseContainer getInstance(Context context) {
+    public static synchronized DatabaseContainer getInstance(Context context) {
         if (databaseContainer == null) {
             databaseContainer = new DatabaseContainer(context);
         }
@@ -53,8 +53,9 @@ public class DatabaseContainer extends SQLiteOpenHelper {
 
     /**
      * 当更新了EPG的时候，都需要重新打开一次DB
+     * @return 
      */
-    public void reopenEPGDatabase() {
+    public SQLiteDatabase reopenEPGDatabase() {
         try {
             File epgDBFile = new File(MyApplication.epgDBCachePath.getAbsolutePath(), EPG_DATABASE_NAME);
             if (epgDBFile.exists()) {
@@ -63,6 +64,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return epgDatabase;
     }
 
     /**

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.*;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
@@ -81,6 +84,7 @@ public class TVChannelShowActivity extends Activity {
     private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
     private List<String> allShouChangChannel = new ArrayList<String>();
     private ChannelService channelService;
+    private BroadcastReceiver  broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -293,6 +297,15 @@ public class TVChannelShowActivity extends Activity {
                 finish();
             }
         });
+        
+        broadcastReceiver = new BroadcastReceiver()
+        {
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				initData();
+			}        	
+        };
+        this.registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
     }
 
     private void initData() {
@@ -374,6 +387,10 @@ public class TVChannelShowActivity extends Activity {
     	if (ipSelecter != null) {
 			ipSelecter.release();
 		}
+    	if (broadcastReceiver != null) {
+    		this.unregisterReceiver(broadcastReceiver);
+		}
+    	
     }
 
     @Override

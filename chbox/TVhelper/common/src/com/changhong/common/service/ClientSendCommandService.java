@@ -11,9 +11,11 @@ import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
+import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.*;
 import com.changhong.common.widgets.IpSelectorDataServer;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -312,15 +314,18 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
             if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 hurlconn.connect();
                 InputStream instream = hurlconn.getInputStream();
-                InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");
-                StringBuffer stringappend = new StringBuffer();
-                char[] b = new char[256];
-                int length = -1;
-                while ((length = inreader.read(b)) != -1) {
-                    stringappend.append(new String(b, 0, length));
-                }
-                sss = stringappend.toString();
-                Log.i(TAG, sss);
+                File tempFile = new File(MyApplication.epgDBCachePath,"channelList.tmp");
+                if (tempFile.exists()) {
+                	tempFile.delete();
+				}
+                InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");                
+                
+                IOUtils.copy(inreader, new FileOutputStream(tempFile));
+                File file = new File(MyApplication.epgDBCachePath,"channelList.json");
+                if (file.exists()) {
+					file.delete();
+				}
+                tempFile.renameTo(file);                                                
                 inreader.close();
                 instream.close();
             } else {
@@ -331,101 +336,114 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        File file = new File(MyApplication.epgDBCachePath,"channelList.json");
+        byte[] content = new byte[(int) file.length()];
+        try {
+			new FileInputStream(file).read(content);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ;
+		} 
+        sss = new String(content);
         if (sss != null && !sss.equals("")) {
-            JsonReader reader = new JsonReader(new StringReader(sss));
-            try {
-                reader.beginObject();
-                while (reader.hasNext()) {
-                    String name = reader.nextName();
-                    Log.i(TAG, "nextname:" + name);
-                    if (name.equals("JSON_PROGINFO")) {
-                        reader.beginArray();
-                        while (reader.hasNext()) {
-                            Map<String, Object> map = null;
-                            reader.beginObject();
-                            while (reader.hasNext()) {
-                                String namesub = reader.nextName();
-                                if (namesub.equals("service_id")) {
-                                    String value = reader.nextString();
-                                    map = new HashMap<String, Object>();
-                                    map.put("service_id", value);
-                                } else if (namesub.equals("vEcmPid")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("video_pid")) {
-                                    String value = reader.nextString();
-                                    map.put("vPid", value);
-                                } else if (namesub.equals("pmtPid")) {
-                                    String value = reader.nextString();
-                                    map.put("pmtPid", value);
-                                } else if (namesub.equals("tuner_id")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("qam")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("aEcmPid")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("service_name")) {
-                                    String value = reader.nextString();
-                                    if (!TextUtils.isEmpty(value)) {
-                                    	value=value.trim();
-									}
-                                    map.put("service_name", value);
-                                } else if (namesub.equals("sym")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("demux_id")) {
-                                    String value = reader.nextString();
-                                    map.put("dmxId", value);
-                                } else if (namesub.equals("audio_pid")) {
-                                    String value = reader.nextString();
-                                    map.put("aPid", value);
-                                } else if (namesub.equals("logic_number")) {
-                                    String value = reader.nextString();
-                                    map.put("logic_number", value);
-                                } else if (namesub.equals("sType")) {
-                                	reader.nextString();
-                                } else if (namesub.equals("tsId")) {
-                                    String value = reader.nextString();
-                                    map.put("tsId", value);
-                                } else if (namesub.equals("orgNId")) {
-                                    String value = reader.nextString();
-                                    map.put("orgNId", value);
-                                } else if (namesub.equals("pcr_pid")) {
-                                    String value = reader.nextString();
-                                    map.put("pcr_pid", value);
-                                } else if (namesub.equals("freqKHz")) {
-                                    String value = reader.nextString();
-                                    map.put("freq", value);
-                                } else if (namesub.equals("channel_index")) {
-                                    String value = reader.nextString();
-                                    map.put("channel_index", value);
-                                } else if (namesub.equals("aStreamType")) {
-                                    String value = reader.nextString();
-                                    map.put("aStreamType", value);
-                                } else if (namesub.equals("vStreamType")) {
-                                    String value = reader.nextString();
-                                    map.put("vStreamType", value);
-                                } else {
-                                    reader.skipValue();
-                                }
-                            }
-                            reader.endObject();
-                            if (map != null) {
-                                channelData.add(map);
-                                map = null;
-                            }
-                        }
-                        reader.endArray();
-                    } else {
-                        reader.skipValue();
-                    }
-                }
-                reader.endObject();
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        	parseChannelList(sss);
         } else {
             Log.e(TAG, "未获取到服务器channel Json");
+        }
+    }
+    
+    private void parseChannelList(String sss)
+    {
+    	JsonReader reader = new JsonReader(new StringReader(sss));
+        try {
+            reader.beginObject();
+            while (reader.hasNext()) {
+                String name = reader.nextName();
+                Log.i(TAG, "nextname:" + name);
+                if (name.equals("JSON_PROGINFO")) {
+                    reader.beginArray();
+                    while (reader.hasNext()) {
+                        Map<String, Object> map = null;
+                        reader.beginObject();
+                        while (reader.hasNext()) {
+                            String namesub = reader.nextName();
+                            if (namesub.equals("service_id")) {
+                                String value = reader.nextString();
+                                map = new HashMap<String, Object>();
+                                map.put("service_id", value);
+                            } else if (namesub.equals("vEcmPid")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("video_pid")) {
+                                String value = reader.nextString();
+                                map.put("vPid", value);
+                            } else if (namesub.equals("pmtPid")) {
+                                String value = reader.nextString();
+                                map.put("pmtPid", value);
+                            } else if (namesub.equals("tuner_id")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("qam")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("aEcmPid")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("service_name")) {
+                                String value = reader.nextString();
+                                if (!TextUtils.isEmpty(value)) {
+                                	value=value.trim();
+								}
+                                map.put("service_name", value);
+                            } else if (namesub.equals("sym")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("demux_id")) {
+                                String value = reader.nextString();
+                                map.put("dmxId", value);
+                            } else if (namesub.equals("audio_pid")) {
+                                String value = reader.nextString();
+                                map.put("aPid", value);
+                            } else if (namesub.equals("logic_number")) {
+                                String value = reader.nextString();
+                                map.put("logic_number", value);
+                            } else if (namesub.equals("sType")) {
+                            	reader.nextString();
+                            } else if (namesub.equals("tsId")) {
+                                String value = reader.nextString();
+                                map.put("tsId", value);
+                            } else if (namesub.equals("orgNId")) {
+                                String value = reader.nextString();
+                                map.put("orgNId", value);
+                            } else if (namesub.equals("pcr_pid")) {
+                                String value = reader.nextString();
+                                map.put("pcr_pid", value);
+                            } else if (namesub.equals("freqKHz")) {
+                                String value = reader.nextString();
+                                map.put("freq", value);
+                            } else if (namesub.equals("channel_index")) {
+                                String value = reader.nextString();
+                                map.put("channel_index", value);
+                            } else if (namesub.equals("aStreamType")) {
+                                String value = reader.nextString();
+                                map.put("aStreamType", value);
+                            } else if (namesub.equals("vStreamType")) {
+                                String value = reader.nextString();
+                                map.put("vStreamType", value);
+                            } else {
+                                reader.skipValue();
+                            }
+                        }
+                        reader.endObject();
+                        if (map != null) {
+                            channelData.add(map);
+                            map = null;
+                        }
+                    }
+                    reader.endArray();
+                } else {
+                    reader.skipValue();
+                }
+            }
+            reader.endObject();
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

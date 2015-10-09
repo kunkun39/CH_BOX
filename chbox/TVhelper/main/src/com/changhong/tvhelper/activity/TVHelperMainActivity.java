@@ -78,11 +78,12 @@ public class TVHelperMainActivity extends Activity {
     /**************************************************IP连接部分*******************************************************/
 
     private BoxSelecter ipSelecter = null;
+    boolean isReadyExit = false;
+    Runnable exitRunnable;
     /**
      * message handler
      */
-    public static Handler mhandler = null;
-    PushSimpleNotifyUtil simpleNotify;
+    public static Handler mhandler = null;    
 
     ServiceConnection conn=new ServiceConnection() {
         @Override
@@ -252,7 +253,8 @@ public class TVHelperMainActivity extends Activity {
                 super.handleMessage(msg1);
             }
         };
-        simpleNotify = new PushSimpleNotifyUtil(this);
+        
+        
     }
 
     private void initMedia() {
@@ -298,7 +300,7 @@ public class TVHelperMainActivity extends Activity {
         if (updateReceiver != null) {
             unregisterReceiver(updateReceiver);
             updateReceiver = null;
-        }
+        } 
     }
 
     @Override
@@ -306,31 +308,30 @@ public class TVHelperMainActivity extends Activity {
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 Log.i(TAG, "KEYCODE_BACK");
-                Dialog dialog=DialogUtil.showAlertDialog(TVHelperMainActivity.this, null, "确认退出助手？","退    出","取    消", new DialogBtnOnClickListener() {
-					
-					@Override
-					public void onSubmit(DialogMessage dialogMessage) {
-						IpSelectorDataServer.getInstance().clear();
-                        //ClientSendCommandService.serverIpListMap.clear();
-
-                        mhandler.sendEmptyMessage(2);
-                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
-                        if (simpleNotify != null) {
-                        	simpleNotify.finish();
-						}
-                        
-                        System.exit(0);
+                if (isReadyExit) {
+                	IpSelectorDataServer.getInstance().clear();
+                	System.exit(0);
+				}
+                else {
+                	isReadyExit = true;
+                	Toast.makeText(TVHelperMainActivity.this, "再次按返回键退出!",3000).show();
+                	if (exitRunnable == null) {
+                		exitRunnable = new Runnable() {
+    						
+    						@Override
+    						public void run() {
+    							if (isReadyExit) {
+    								isReadyExit = false;
+    							}
+    							
+    						}
+    					};
 					}
+                	
+					TVHelperMainActivity.mhandler.removeCallbacks(exitRunnable);
+					TVHelperMainActivity.mhandler.postDelayed(exitRunnable, 3000);
 					
-					@Override
-					public void onCancel(DialogMessage dialogMessage) {
-						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
-					}
-				});
+				}                              
                 return true;
             case KeyEvent.KEYCODE_MENU:
     			return true;
