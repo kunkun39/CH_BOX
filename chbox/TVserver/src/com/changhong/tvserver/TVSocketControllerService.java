@@ -6,8 +6,10 @@ import java.lang.reflect.Method;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -346,14 +348,16 @@ public class TVSocketControllerService extends Service {
         public void run() {
             DatagramSocket dgSocket = null;
             try {
-                dgSocket = new DatagramSocket();
+                
                 DatagramPacket dgPacket = null;
 
-                while (true) {
-                    try {
-                        ip = NetworkUtils.getLocalIpAddress();
+                while (true) {                    
+                	List<String> ipList = NetworkUtils.getLocalIpAddresses();
+                    for (String ip : ipList) {
+                        try {
 
                         if (StringUtils.hasLength(ip) && !ip.equals("0.0.0.0")) {
+                        	dgSocket = new DatagramSocket(9001, InetAddress.getByName(ip));                        	
                             serverInfo = MainActivity.CH_BOX_NAME;
 
                             /**
@@ -409,13 +413,19 @@ public class TVSocketControllerService extends Service {
                             byte[] b = serverInfo.getBytes();
                             dgPacket = new DatagramPacket(b, b.length, InetAddress.getByName("255.255.255.255"), 9001);
                             dgSocket.send(dgPacket);
+                            dgSocket.close();
                         } else {
                             Log.e(TAG, "ip>>>not get the ip");
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
+                    	if (dgSocket != null
+                    			&& !dgSocket.isClosed()) {
+                    		dgSocket.close();
+						}
                         dgPacket = null;
+                    }
                     }
 
                     /**
@@ -423,8 +433,6 @@ public class TVSocketControllerService extends Service {
                      */
                     SystemClock.sleep(TIME);
                 }
-            } catch (SocketException e) {
-                e.printStackTrace();
             } finally {
                 try {
                     if (dgSocket != null) {
