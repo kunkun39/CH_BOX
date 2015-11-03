@@ -21,6 +21,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.*;
 import android.os.Process;
+
+import com.changhong.tvserver.utils.CaVerifyUtil;
 import com.changhong.tvserver.utils.NetworkUtils;
 import com.changhong.tvserver.utils.StringUtils;
 import com.chome.virtualkey.virtualkey;
@@ -76,6 +78,8 @@ public class TVSocketControllerService extends Service {
      * 2 - for music
      */
     public static int STOP_PLAY_TAG = 0;
+    
+    private String targetIp = null;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -317,6 +321,10 @@ public class TVSocketControllerService extends Service {
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startService(intent);
                             }
+                            else if (msgCpy.contains(CaVerifyUtil.TAG)) {
+                            	sendbackSmallMessage(targetIp,msgCpy,new CaVerifyUtil());
+                            	
+							}
                             break;
                         case 2:
                             Toast.makeText(TVSocketControllerService.this, "������߳�����ͻ����޷����룡����", 3000).show();
@@ -466,7 +474,7 @@ public class TVSocketControllerService extends Service {
                     	byte[] by = new byte[1024];
                         dgPacket =  new DatagramPacket(by, by.length);
                         dgSocket.receive(dgPacket);
-                        
+                        targetIp = dgPacket.getAddress().getHostAddress();
                         String command = new String(by, 0, dgPacket.getLength());
                         if (!command.equals("")) {
                             Log.w(TAG, command);
@@ -668,6 +676,50 @@ public class TVSocketControllerService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void sendbackSmallMessage(final String ip,final String param,final QuickSendBackClass object)
+    {
+    	final int NEW_BACK_PORT = 10014;
+    	
+    	AsyncTask.execute(new Runnable() {			
+			@Override
+			public void run() {
+				if (object != null) {
+					String resultString = object.update(param);
+					if (resultString == null
+							|| resultString.length() <= 0) {
+						return ;
+					}
+					
+					byte message[] = resultString.getBytes();
+					DatagramSocket socket = null;
+					try {
+						
+						socket = new DatagramSocket();						
+						socket.send(new DatagramPacket(message, message.length, InetAddress.getByName(ip), NEW_BACK_PORT));
+						socket.close();
+					} catch (SocketException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}finally
+					{
+						if(socket != null)
+						{
+							socket.close();
+						}
+					}
+					
+					
+				}
+			}
+		});
+    }
+    
+    public interface QuickSendBackClass
+    {
+    	public String update(String param); 
     }
 
 }

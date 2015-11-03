@@ -490,7 +490,6 @@ public class ClientLocalThreadRunningService extends Service {
 
     class EPGDownloadThread extends Thread implements Observer{
     	Handler mHandler = null;
-    	Dialog dialog = null;
     	Runnable runnable;
         @Override
         public void run() {
@@ -586,15 +585,13 @@ public class ClientLocalThreadRunningService extends Service {
                      */
                     if (shouldUpdateDB) {
                     	ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
-                    	ComponentName componentName =  activityManager.getRunningTasks(1).get(0).topActivity;
-                    	
-                    	if(componentName.getPackageName().contains("com.changhong"))
-                    	{
-                    		dialog = DialogUtil.showPassInformationDialog(ClientLocalThreadRunningService.this, "提示", "正在更新电视节目，请稍候...", null);
-                    		dialog.setCanceledOnTouchOutside(false);                    		
-                    	}
+                    	ComponentName componentName =  activityManager.getRunningTasks(1).get(0).topActivity;                    	
                     	
                         InputStream in = WebUtils.httpGetRequest("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database.db");
+                        
+						if (in == null) {
+							return ;
+						}
                         File fileTmp = new File(MyApplication.epgDBCachePath, "epg_database.db.tmp");
                         if (fileTmp.exists()) {
                         	fileTmp.delete();
@@ -611,9 +608,6 @@ public class ClientLocalThreadRunningService extends Service {
                         fileTmp.renameTo(file);
                         
                         service.saveEPGVersion(serverVersion);
-                        if (dialog != null) {                        	
-                        	dialog.cancel();
-						}
                         Log.d(TAG, "电视节目更新成功");                        
 
                         /**
@@ -628,10 +622,14 @@ public class ClientLocalThreadRunningService extends Service {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                if (dialog != null) {
+                if (((ActivityManager)getSystemService(ACTIVITY_SERVICE))
+                		.getRunningTasks(1)
+                		.get(0)
+                		.topActivity
+                		.getPackageName()
+                		.contains("com.changhong.")) {
                 	Toast.makeText(ClientLocalThreadRunningService.this, "更新失败，稍后更新", Toast.LENGTH_SHORT).show();
-                	dialog.cancel();
-				}
+				}                
             }
         }
 

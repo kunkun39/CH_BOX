@@ -721,7 +721,7 @@ public class TVChannelPlayActivity extends Activity {
 	private void registerMyReceiver() {
 		IntentFilter intentfilter = new IntentFilter();
 		intentfilter.addAction("com.action.switchchannel");
-		registerReceiver(this.SwitchReceiver, intentfilter);
+		registerReceiver(SwitchReceiver, intentfilter);
 	}
 
 	private BroadcastReceiver SwitchReceiver = new BroadcastReceiver() {
@@ -761,8 +761,7 @@ public class TVChannelPlayActivity extends Activity {
 					if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
 						returnConfirm = 1;
 						backTimestamp = 0l;
-					}
-
+					}					
 					if (mVideoView != null && mVideoView.isPlaying()) {
 						// 播放中更新时间
 						playTimestamp = System.currentTimeMillis();
@@ -935,13 +934,10 @@ public class TVChannelPlayActivity extends Activity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (SwitchReceiver != null) {
-			try {
-				unregisterReceiver(SwitchReceiver);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			}
-			SwitchReceiver = null;
+		try {
+			unregisterReceiver(SwitchReceiver);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
 		}
 	}
 	

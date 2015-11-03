@@ -40,8 +40,9 @@ import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.common.utils.CaVerifyUtil;
 
-public class TVChannelShowActivity extends Activity {
+public class TVChannelShowActivity extends Activity implements CaVerifyUtil.OnFeedBackListener{
 
     private static final String TAG = "TVChannelShowActivity";
 //    private BidirSlidingLayout bidirSlidingLayout;
@@ -85,6 +86,7 @@ public class TVChannelShowActivity extends Activity {
     private List<String> allShouChangChannel = new ArrayList<String>();
     private ChannelService channelService;
     private BroadcastReceiver  broadcastReceiver;
+    private Intent mIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,6 +191,8 @@ public class TVChannelShowActivity extends Activity {
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+            	try
+            	{
                 switch (msg.what) {
                     case 0:
                         channelShowData.clear();
@@ -270,17 +274,25 @@ public class TVChannelShowActivity extends Activity {
                         /**
                          * 触发频道列表变换
                          */
-                        adapter.notifyDataSetChanged();
+                        if (adapter != null) {
+                        	adapter.notifyDataSetChanged();
+						}
+                        
                         break;
                     case 1:
                         adapter = new ChannelAdapter(TVChannelShowActivity.this);
-                        channels.setAdapter(adapter);
-                        adapter.notifyDataSetChanged();
+                        if (channels != null) {
+                        	 channels.setAdapter(adapter);
+                        	 adapter.notifyDataSetChanged();
+						}                                               
                         break;
                     default:
                         break;
                 }
                 super.handleMessage(msg);
+            } catch(Exception e){
+            	e.printStackTrace();
+            }
             }
 
         };
@@ -458,13 +470,16 @@ public class TVChannelShowActivity extends Activity {
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
                     Map<String, Object> map = channelShowData.get(position);
+                    CaVerifyUtil.getInstance().requestVerify();
+                    
+                    CaVerifyUtil.getInstance().setFeedbackListener(TVChannelShowActivity.this);
+                    
                     TVChannelPlayActivity.name = (String) map.get("service_name");
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
 
-                    Intent intent = new Intent(TVChannelShowActivity.this, TVChannelPlayActivity.class);
+                    mIntent = new Intent(TVChannelShowActivity.this, TVChannelPlayActivity.class);
                     String name = (String) map.get("service_name");
-                    intent.putExtra("channelname", name);
-                    startActivity(intent);
+                    mIntent.putExtra("channelname", name);
                 }
             });
 
@@ -527,10 +542,10 @@ public class TVChannelShowActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
-
+                    
                     Intent intent = new Intent(TVChannelShowActivity.this, TVChannelProgramShowActivity.class);
                     intent.putExtra("channelName", channelName);
-                    intent.putExtra("channelIndex", channelIndex);
+                    intent.putExtra("channelIndex", channelIndex);        
                     startActivity(intent);
                 }
             });
@@ -565,5 +580,16 @@ public class TVChannelShowActivity extends Activity {
             public TextView channelPlayButton;
         }
     }
+
+	@Override
+	public void onVerifyFinish(CaVerifyUtil vervify, boolean isSuccess) {
+		if (isSuccess) {
+			if (mIntent != null) {
+				startActivity(mIntent);
+			}
+		}else {
+			Toast.makeText(this, "播放电视前，请先插入CA卡", Toast.LENGTH_SHORT).show();
+		}
+	}
 
 }

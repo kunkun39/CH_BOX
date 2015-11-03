@@ -104,12 +104,14 @@ public class BoxSelecter implements Observer
 	
 	@Override
 	public void update(Observable observable, Object data) {				
-		mHandler.post(new Runnable() {			
+		mHandler.postAtFrontOfQueue(new Runnable() {			
 			@Override
 			public void run() {
 				IpSelectorDataServer dataServer = IpSelectorDataServer.getInstance();
+				List<String> list = new ArrayList<String>(dataServer.getIpList());
+				
 				// Update List
-				mAdapter.updateList(dataServer.getIpList());
+				mAdapter.updateList(list);
 				
 				// Update Name
 				mTitle.setText(dataServer.getName());

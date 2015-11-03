@@ -11,6 +11,7 @@ import android.content.Context;
 import com.changhong.common.domain.NetworkStatus;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.service.ClientSocketInterface;
+import com.changhong.common.utils.CaVerifyUtil;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
@@ -35,6 +36,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
 
     protected static final String TAG = "CHTVhelper";
 
+    private static final int HANDLER_MESSAGE_WHAT_CA = 19;
     private ActivityManager manager;
     /**
      * message handler
@@ -97,6 +99,10 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         break;
                     case 3:
                         break;
+                    case HANDLER_MESSAGE_WHAT_CA:
+                    {
+                    	CaVerifyUtil.getInstance().feedback((String)msg.obj);
+                    }break;
                     default:
                         break;
                 }
@@ -112,6 +118,8 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
         new BoxMinitorThread().start();
 
         new GetChannelName().start();
+        
+        new ThreadQuickFeedBack().start();
     }
 
     /*************************************************手机端不停的获得盒子广播线程*****************************************/
@@ -161,7 +169,9 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                                  * 设置服务端网络状态
                                  */
                                 try {
-                                    NetEstimateUtils.serverNetworkStatus = NetworkStatus.valueOf(tokens[1]);
+                                	if (tokens.length > 1) {
+                                		 NetEstimateUtils.serverNetworkStatus = NetworkStatus.valueOf(tokens[1]);
+									}                                   
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -340,6 +350,43 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
             }
 
         }
+    }
+    
+    class ThreadQuickFeedBack extends Thread
+    { 	
+    	@Override
+    	public void run()
+    	{
+    		DatagramSocket socket = null;
+    		byte[] by = new byte[1024];
+            
+    		while(true)
+    		{
+    			try
+    			{
+    				socket = new DatagramSocket(NEW_BACK_PORT);    			
+    				while(true)
+    				{
+    					DatagramPacket dgPacket = new DatagramPacket(by, by.length);
+    					try {    						
+    						socket.receive(dgPacket);
+    						mHandler.sendMessage(mHandler.obtainMessage(HANDLER_MESSAGE_WHAT_CA, new String(dgPacket.getData(), 0, dgPacket.getData().length)));
+    					} catch (IOException e) {
+    						e.printStackTrace();
+    					}        				
+    				}    				
+    			}
+    			catch(SocketException  e){
+    				e.printStackTrace();
+    			}finally {
+    				if(socket != null){
+    					socket.close();
+    				}
+    			}
+    			
+    			
+    		}
+    	}
     }
 
     /**

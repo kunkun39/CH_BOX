@@ -68,6 +68,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     public static String msgXpointYpoint = null;
 
     //public static String titletxt = null;
+    private CodeUtil mCode = new CodeUtil();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -77,7 +78,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mCode.setContext(this);
         new SendCommend().start();
     }
 
@@ -109,6 +110,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                 @Override
                 public void handleMessage(Message msg1) {
                 	String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
+                	String tempMesg = msg;
                     switch (msg1.what) {
                         case 1:
                             //TODO:这个消息只能用于遥控器消息发送，注意其他部分不要使用该消息
@@ -116,11 +118,12 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                             MobilePerformanceUtils.sharingRemoteControlLastHappen = System.currentTimeMillis();
                             MobilePerformanceUtils.openPerformance(ClientSendCommandService.this);
 
-                            if (serverIP != null && msg != null) {
+                            if (serverIP != null && tempMesg != null) {
+                            	mCode.parseCode(tempMesg);
                                 DatagramSocket dgSocket = null;
                                 try {
                                     dgSocket = new DatagramSocket();
-                                    byte b[] = msg.getBytes();
+                                    byte b[] = tempMesg.getBytes();
 
                                     DatagramPacket dgPacket = new DatagramPacket(b, b.length, InetAddress.getByName(serverIP), KEY_PORT);
                                     dgSocket.send(dgPacket);
@@ -198,7 +201,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
                             DatagramSocket dgSocket = null;
                             try {
                                 dgSocket = new DatagramSocket();
-                                byte b[] = msg.getBytes();
+                                byte b[] = tempMesg.getBytes();
                                 DatagramPacket dgPacket = new DatagramPacket(b, b.length, InetAddress.getByName(serverIP), KEY_PORT);
                                 dgSocket.send(dgPacket);
                             } catch (Exception e) {
