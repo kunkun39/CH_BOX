@@ -98,8 +98,10 @@ public class TVHelperMainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_helper_main);
-
+        //setContentView(R.layout.activity_helper_main);
+        
+        setContentView(R.layout.activity_maim_new);
+        
         initViewAndEvent();
 
         initUpdateThread();
@@ -117,10 +119,10 @@ public class TVHelperMainActivity extends Activity {
         Button setting = (Button) findViewById(R.id.main_setting);
         Button shoucang = (Button) findViewById(R.id.main_soucang);
         Button sousuo = (Button) findViewById(R.id.main_sousuo);
-        Button musicTouYing = (Button) findViewById(R.id.main_music_touying);
-        Button vedioTouYing = (Button) findViewById(R.id.main_vedio_touying);
-        Button pictureTouYing = (Button) findViewById(R.id.main_picture_touying);
-        Button otherTouTing = (Button) findViewById(R.id.main_other_touying);
+        View musicTouYing = findViewById(R.id.main_music_touying);
+        View vedioTouYing =  findViewById(R.id.main_vedio_touying);
+        View pictureTouYing =  findViewById(R.id.main_picture_touying);
+        View otherTouTing =  findViewById(R.id.main_other_touying);
         Button power = (Button) findViewById(R.id.power);
         /**
          * init all event for every view

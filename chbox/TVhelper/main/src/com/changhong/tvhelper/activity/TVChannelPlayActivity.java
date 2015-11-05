@@ -71,6 +71,7 @@ import android.widget.Toast;
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.CaVerifyUtil;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.utils.SystemUtils;
 import com.changhong.common.widgets.VerticalSeekBar;
@@ -82,7 +83,7 @@ import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
 
-public class TVChannelPlayActivity extends Activity {
+public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFeedBackListener{
 
 	/**
 	 * video play view
@@ -182,6 +183,7 @@ public class TVChannelPlayActivity extends Activity {
 	 * 再按返回确认退出标志爱
 	 */
 	private int returnConfirm = 1;
+	PlayerIsPlayingMinitorThread  mThread = null;
 
 	@Override
 	public void onCreate(Bundle icicle) {
@@ -194,6 +196,8 @@ public class TVChannelPlayActivity extends Activity {
 		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// ȥ����Ϣ��
 
+		CaVerifyUtil.getInstance().requestVerify();        
+        CaVerifyUtil.getInstance().setFeedbackListener(this);
 		DisplayMetrics metric = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(metric);
 		screenHeight = metric.heightPixels; // 屏幕高度（像素）
@@ -311,7 +315,8 @@ public class TVChannelPlayActivity extends Activity {
 		}
 
 		playTimestamp = System.currentTimeMillis();
-		new PlayerIsPlayingMinitorThread().start();
+		mThread = new PlayerIsPlayingMinitorThread();
+		mThread.start();
 	}
 
 	private void initView() {
@@ -757,6 +762,9 @@ public class TVChannelPlayActivity extends Activity {
 		public void run() {
 			while (true) {
 				try {
+					if (isInterrupted()) {
+						break;
+					}
 					// 用户在10秒钟之内连续返回则退出，反则计数器归一
 					if ((System.currentTimeMillis() - backTimestamp) > 10000 && backTimestamp != 0l) {
 						returnConfirm = 1;
@@ -1023,4 +1031,31 @@ public class TVChannelPlayActivity extends Activity {
 			}
 		};
 	};
+
+	@Override
+	public void onVerifyFinish(CaVerifyUtil vervify, boolean isSuccess) {		
+		if (!isSuccess) {
+			if(mThread != null)
+			{
+				mThread.interrupt();
+			}
+			try {
+				unregisterReceiver(SwitchReceiver);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+			finish();
+			Toast.makeText(this, "播放电视前，请先插入CA卡", Toast.LENGTH_SHORT).show();
+		}
+		else {
+			new Handler().postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					CaVerifyUtil.getInstance().requestVerify();
+					
+				}
+			}, 15000);
+		}
+	}
 }

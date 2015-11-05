@@ -42,7 +42,7 @@ import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
 import com.changhong.common.utils.CaVerifyUtil;
 
-public class TVChannelShowActivity extends Activity implements CaVerifyUtil.OnFeedBackListener{
+public class TVChannelShowActivity extends Activity {
 
     private static final String TAG = "TVChannelShowActivity";
 //    private BidirSlidingLayout bidirSlidingLayout;
@@ -86,7 +86,6 @@ public class TVChannelShowActivity extends Activity implements CaVerifyUtil.OnFe
     private List<String> allShouChangChannel = new ArrayList<String>();
     private ChannelService channelService;
     private BroadcastReceiver  broadcastReceiver;
-    private Intent mIntent = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -469,17 +468,15 @@ public class TVChannelShowActivity extends Activity implements CaVerifyUtil.OnFe
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
-                    Map<String, Object> map = channelShowData.get(position);
-                    CaVerifyUtil.getInstance().requestVerify();
-                    
-                    CaVerifyUtil.getInstance().setFeedbackListener(TVChannelShowActivity.this);
+                    Map<String, Object> map = channelShowData.get(position);                    
                     
                     TVChannelPlayActivity.name = (String) map.get("service_name");
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
 
-                    mIntent = new Intent(TVChannelShowActivity.this, TVChannelPlayActivity.class);
+                    Intent intent = new Intent(TVChannelShowActivity.this, TVChannelPlayActivity.class);
                     String name = (String) map.get("service_name");
-                    mIntent.putExtra("channelname", name);
+                    intent.putExtra("channelname", name);
+                    startActivity(intent);
                 }
             });
 
@@ -579,17 +576,5 @@ public class TVChannelShowActivity extends Activity implements CaVerifyUtil.OnFe
             public TextView channelShouCang;
             public TextView channelPlayButton;
         }
-    }
-
-	@Override
-	public void onVerifyFinish(CaVerifyUtil vervify, boolean isSuccess) {
-		if (isSuccess) {
-			if (mIntent != null) {
-				startActivity(mIntent);
-			}
-		}else {
-			Toast.makeText(this, "播放电视前，请先插入CA卡", Toast.LENGTH_SHORT).show();
-		}
-	}
-
+    }	
 }
