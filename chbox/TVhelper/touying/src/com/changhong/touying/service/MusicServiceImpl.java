@@ -96,12 +96,17 @@ public class MusicServiceImpl implements MusicService {
         Cursor cursor = database.rawQuery("SELECT * FROM music_lrc WHERE singer = ? AND name = ? LIMIT 1", new String[]{singer, name});
 
         MusicLrc musicLrc = null;
-        if (cursor.moveToFirst()) {
-            musicLrc = new MusicLrc();
-            musicLrc.setSinger(cursor.getString(1));
-            musicLrc.setName(cursor.getString(2));
-            musicLrc.setPath(cursor.getString(3));
-        }
+        try {
+        	if (cursor.moveToFirst()) {
+                musicLrc = new MusicLrc();
+                musicLrc.setSinger(cursor.getString(1));
+                musicLrc.setName(cursor.getString(2));
+                musicLrc.setPath(cursor.getString(3));
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
         cursor.close();
         return musicLrc;
     }
