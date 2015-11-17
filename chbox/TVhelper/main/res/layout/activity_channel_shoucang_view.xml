@@ -129,12 +129,24 @@
         <!-- 频道显示部分 -->
 
         <ListView
-            android:id="@+id/channel_program_list"
+            android:id="@+id/channel_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:divider="@null"
             android:layout_above="@id/linearLayout_sort"
             android:layout_below="@id/linearLayout_ip"
+            android:visibility="visible"
+            android:divider="@null"
+            android:listSelector="@drawable/title_ip_list" />
+        
+          <!-- 节目显示 -->
+        <ListView
+            android:id="@+id/program_list"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@id/linearLayout_sort"
+            android:layout_below="@id/linearLayout_ip"
+            android:visibility="gone"
+            android:divider="@null"
             android:listSelector="@drawable/title_ip_list" />
 
         <!-- IP选择部分 -->
