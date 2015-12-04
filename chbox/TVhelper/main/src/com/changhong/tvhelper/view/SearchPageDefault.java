@@ -8,10 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Rect;
@@ -381,7 +378,7 @@ public class SearchPageDefault extends Fragment{
 				return true;
 			}
 		});
-		view.setBackgroundResource(R.drawable.recommend);
+		view.setBackgroundResource(R.drawable.recommend_pic);
 		return view;
 	}
 	

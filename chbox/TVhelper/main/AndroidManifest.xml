@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changhong.tvhelper"
     android:versionCode="10"
-    android:versionName="2.0.0" >
+    android:versionName="2.0.0"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -41,10 +42,11 @@
     <application
         android:name="com.changhong.common.system.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/helper"
-        android:label="@string/app_name"
+        android:icon="@drawable/helper_fw"
+        android:label="@string/app_name"        
         android:largeHeap="true"
-        android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        tools:replace="android:label,android:icon">
         <!-- ======================================================================= -->
         <!-- 个推SDK配置开始 -->
         <!-- 配置第三方应用参数属性 -->
@@ -121,7 +123,7 @@
             android:screenOrientation="portrait" />
         
         <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|navigation"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />

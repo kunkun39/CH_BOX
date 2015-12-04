@@ -48,7 +48,7 @@ public class NanoHTTPDService extends Service {
          */
         StorageManager sm = (StorageManager) getSystemService(Context.STORAGE_SERVICE);
         try {
-            String[] paths = (String[]) sm.getClass().getMethod("getVolumePaths", null).invoke(sm, null);
+            String[] paths = (String[]) sm.getClass().getMethod("getVolumePaths", new Class[0]).invoke(sm, new Object[]{});
             for (int i = 0; i < paths.length; i++) {
                 String directory = paths[i];
                 if (new File(directory).canRead() && new File(directory).canWrite()) {

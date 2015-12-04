@@ -1,0 +1,6 @@
+include ':common'
+include ':setting'
+include ':thirdpart'
+include ':touying'
+include ':vitamio4.2'
+include ':main'

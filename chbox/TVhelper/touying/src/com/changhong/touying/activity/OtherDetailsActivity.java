@@ -142,10 +142,10 @@ public class OtherDetailsActivity extends FragmentActivity {
 				StorageManager sm = (StorageManager) OtherDetailsActivity.this.getSystemService(Context.STORAGE_SERVICE);
 				Method method;
 				try {
-					method = sm.getClass().getMethod("getVolumePaths", null);
+					method = sm.getClass().getMethod("getVolumePaths", new Class[0]);
 					if (method != null ) {
 						
-						String paths[] = (String[]) method.invoke(sm, null);
+						String paths[] = (String[]) method.invoke(sm, new Object[]{});
 						for (String path : paths) {
 							getAllPPTFiles(new File(path), 0);						
 						}
