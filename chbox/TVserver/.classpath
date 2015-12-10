@@ -5,6 +5,5 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="D:/2014_work/TVASSIT/TVserver/libs/universal-image-loader-1.9.3.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -18,165 +18,348 @@
  */
 package com.changhong.tvserver.touying.pdf;
 
-import java.io.File;
-import java.net.URI;
+import java.io.InputStream;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.graphics.PointF;
+import android.content.res.Resources;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.FrameLayout.LayoutParams;
 
 import com.changhong.tvserver.R;
-import com.joanzapata.pdfview.PDFView;
-import com.joanzapata.pdfview.listener.OnPageChangeListener;
-import com.joanzapata.pdfview.listener.OnErrorListener;
 
-import static java.lang.String.format;
+public class PDFViewActivity extends Activity implements
+		FilePicker.FilePickerSupport {
 
-public class PDFViewActivity extends Activity implements OnPageChangeListener,OnErrorListener {
+	private MuPDFCore core;
+	private MuPDFReaderView mDocView;
+	private View mButtonsView;
+	private EditText mPasswordView;
 
-    //public static final String SAMPLE_FILE = "http://192.168.1.101:9999/12345.pdf";	
-   
-    PDFView pdfView;
-    String pdfName = null;//SAMPLE_FILE;
+	private int  pageNumer=0;
+	private TextView mPageNumberView;
 
-    Integer pageNumber = 1;
-    boolean isZooming = false;
-    int pdfPosition = 0;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	setContentView(R.layout.activity_pdf);
-    	pdfView = (PDFView)findViewById(R.id.pdfView);    	
-    }
-    
-    @Override
+	private AlertDialog.Builder mAlertBuilder;
+
+	static private AlertDialog.Builder gAlertBuilder;
+
+	static public AlertDialog.Builder getAlertBuilder() {
+		return gAlertBuilder;
+	}
+
+	private MuPDFCore openFile(String path) {
+
+		try {
+			core = new MuPDFCore(this, path);
+			// New file: drop the old outline data
+			OutlineActivityData.set(null);
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		} catch (java.lang.OutOfMemoryError e) {
+			// out of memory is not an Exception, so we catch it separately.
+			System.out.println(e);
+			return null;
+		}
+		return core;
+	}
+
+	private MuPDFCore openBuffer(byte buffer[], String magic) {
+
+		System.out.println("Trying to open byte buffer");
+
+		try {
+			core = new MuPDFCore(this, buffer, magic);
+			// New file: drop the old outline data
+			OutlineActivityData.set(null);
+		} catch (Exception e) {
+			System.out.println(e);
+			return null;
+		}
+		return core;
+	}
+
+	@Override
     protected void onNewIntent(Intent intent) {
     	super.onNewIntent(intent);
     	if(getIntent()!= null)
     	{
-    		pdfName = getIntent().getData().toString();
-    		display(pdfName, true); 
+    		display(getIntent()); 
     	}
-    }
-    @Override
-    protected void onStart() {
-    	super.onStart();
-    	if(getIntent()!= null)
-    	{
-    		pdfName = getIntent().getData().toString();
-    		display(pdfName, true); 
-    	}
-    }
-    
-    void afterViews() {
-        display(pdfName, false);
     }
 
-    private void display(String assetFileName, boolean jumpToFirstPage) {
-        if (jumpToFirstPage) pageNumber = 1;
-        setTitle(pdfName = assetFileName);
-        Uri fileUri = Uri.parse(assetFileName);
-        if (fileUri.getScheme().equals("http")) {
-        	pdfView.fromUrl(fileUri)
-            .defaultPage(pageNumber)
-            .onPageChange(this)
-            .onError(this)
-            .load();          	
-		}else if(fileUri.getScheme().equals("file")){
-			pdfView.fromFile(new File(fileUri.getEncodedPath()))
-            .defaultPage(pageNumber)
-            .onPageChange(this)
-            .onError(this)
-            .load();
+	private void display(Intent intent) {
+		
+		Log.i(null, "display is running ");
+		
+		byte buffer[] = null;
+		if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+			Uri uri = intent.getData();
+			System.out.println("URI to open is: " + uri);
+			if (uri.toString().startsWith("content://")) {
+				String reason = null;
+				try {
+					InputStream is = getContentResolver().openInputStream(
+							uri);
+					int len = is.available();
+					buffer = new byte[len];
+					is.read(buffer, 0, len);
+					is.close();
+				} catch (java.lang.OutOfMemoryError e) {
+					System.out
+							.println("Out of memory during buffer reading");
+					reason = e.toString();
+				} catch (Exception e) {
+
+					System.out.println("Exception reading from stream: "
+							+ e);
+
+					try {
+						Cursor cursor = getContentResolver().query(uri,
+								new String[] { "_data" }, null, null, null);
+						if (cursor.moveToFirst()) {
+							String str = cursor.getString(0);
+							if (str == null) {
+								reason = "Couldn't parse data in intent";
+							} else {
+								uri = Uri.parse(str);
+							}
+						}
+					} catch (Exception e2) {
+						System.out
+								.println("Exception in Transformer Prime file manager code: "
+										+ e2);
+						reason = e2.toString();
+					}
+				}
+				if (reason != null) {
+					buffer = null;
+					Resources res = getResources();
+					AlertDialog alert = mAlertBuilder.create();
+					setTitle(String
+							.format(res
+									.getString(R.string.cannot_open_document_Reason),
+									reason));
+					alert.setButton(AlertDialog.BUTTON_POSITIVE,
+							getString(R.string.dismiss),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									finish();
+								}
+							});
+					alert.show();
+					return;
+				}
+			}
+			if (buffer != null) {
+				core = openBuffer(buffer, intent.getType());
+			} else {
+				String path = Uri.decode(uri.getEncodedPath());
+				if (path == null) {
+					path = uri.toString();
+				}
+				core = openFile(path);
+			}
 		}
-		else {
-			Toast.makeText(this, "文件格式不支持", Toast.LENGTH_SHORT).show();
-	        finish();
-		}        
-    }
+		if (core != null && core.needsPassword()) {
+			requestPassword();
+			return;
+		}
+		if (core != null && core.countPages() == 0) {
+			core = null;
+		}
 
-    @Override
-    public void onPageChanged(int page, int pageCount) {
-        pageNumber = page;
-        setTitle(format("%s %s / %s", pdfName, page, pageCount));
-    }
-    
-    void reset()
-    {
-    	pdfPosition = 0;
-    	isZooming = false;
-    	//pdfView.resetZoomWithAnimation();
-    }
-    /* （非 Javadoc）
-     * @see android.app.Activity#onKeyUp(int, android.view.KeyEvent)
-     */
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-    	switch (keyCode) {
+	if (core == null) {
+		AlertDialog alert = mAlertBuilder.create();
+		alert.setTitle(R.string.cannot_open_document);
+		alert.setButton(AlertDialog.BUTTON_POSITIVE,
+				getString(R.string.dismiss),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+		alert.setOnCancelListener(new OnCancelListener() {
+
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				finish();
+			}
+		});
+		alert.show();
+		return;
+	}
+
+	createUI();
+		
+	}
+	
+	
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+
+		super.onCreate(savedInstanceState);
+
+		mAlertBuilder = new AlertDialog.Builder(this);
+		gAlertBuilder = mAlertBuilder; // keep a static copy of this that other classes can use
+		
+		display(getIntent());
+
+	}
+
+	public void requestPassword() {
+		mPasswordView = new EditText(this);
+		mPasswordView.setInputType(EditorInfo.TYPE_TEXT_VARIATION_PASSWORD);
+		mPasswordView
+				.setTransformationMethod(new PasswordTransformationMethod());
+
+		AlertDialog alert = mAlertBuilder.create();
+		alert.setTitle(R.string.enter_password);
+		alert.setView(mPasswordView);
+		alert.setButton(AlertDialog.BUTTON_POSITIVE, getString(R.string.okay),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						if (core.authenticatePassword(mPasswordView.getText()
+								.toString())) {
+							createUI();
+						} else {
+							requestPassword();
+						}
+					}
+				});
+		alert.setButton(AlertDialog.BUTTON_NEGATIVE,
+				getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				});
+		alert.show();
+	}
+
+	public void createUI() {
+		if (core == null)
+			return;
+
+		// Now create the UI.
+		// First create the document view
+		mDocView = new MuPDFReaderView(this) {
+			@Override
+			protected void onMoveToChild(int i) {
+				if (core == null)
+					return;
+
+				mPageNumberView.setText(String.format("%d / %d", i + 1,
+						core.countPages()));
+				super.onMoveToChild(i);
+			}
+
+		};
+		mDocView.setAdapter(new MuPDFPageAdapter(this, this, core));
+
+		// Make the buttons overlay, and store all its
+		// controls in variables
+		makeButtonsView();
+
+		mDocView.setDisplayedViewIndex(pageNumer);
+
+		// Stick the document view and the buttons overlay into a parent view
+		RelativeLayout layout = new RelativeLayout(this);
+		layout.addView(mDocView);
+		layout.addView(mButtonsView);
+		setContentView(layout);
+
+	}
+
+	public void onDestroy() {
+		if (mDocView != null) {
+			mDocView.applyToChildren(new ReaderView.ViewMapper() {
+				void applyToView(View view) {
+					((MuPDFView) view).releaseBitmaps();
+				}
+			});
+		}
+		if (core != null)
+			core.onDestroy();
+
+		core = null;
+		super.onDestroy();
+	}
+
+	private void updatePageNumView(int index) {
+		if (core == null)
+			return;
+		mPageNumberView.setText(String.format("%d / %d", index + 1,
+				core.countPages()));
+	}
+
+	private void makeButtonsView() {
+
+		mButtonsView = getLayoutInflater().inflate(R.layout.buttons, null);
+		mPageNumberView = (TextView) mButtonsView.findViewById(R.id.pageNumber);
+
+	}
+
+	@Override
+	public boolean onKeyUp(int keyCode, KeyEvent event) {
+		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_LEFT:
-			if (pageNumber > 1) {
-				reset();
-    			pdfView.jumpTo(--pageNumber);
-    			return true;
+			{
+				
+				if(pageNumer>=1){
+					mDocView.moveToPrevious();
+					updatePageNumView(--pageNumer);
+				}
+				
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT:
-			if (pageNumber < pdfView.getPageCount()) {
-				reset();
-    			pdfView.jumpTo(++pageNumber);
-    			return true;
+			{
+
+				if(pageNumer<core.countPages()-1){
+					mDocView.moveToNext();
+					updatePageNumView(++pageNumer);
+				}
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_CENTER:
-		{
-			if (isZooming) {
-    			pdfView.resetZoomWithAnimation();    			
-			}
-    		else {
-    			pdfView.zoomCenteredTo(2.0f, new PointF(0.0f, 0.0f));
-			}
-    		isZooming = !isZooming;	
-		}
-		break;
+
+			Log.i(null, "KEYCODE_DPAD_CENTER");
+
+			break;
 		case KeyEvent.KEYCODE_DPAD_UP:
-		{			
-			if (isZooming)
-				pdfView.moveTo(0.0f, pdfView.getCurrentYOffset() + 50.0f);
-		}
-		break;
+
+			mDocView.scrollDistance(100);
+			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
-		{
-			if (isZooming)
-				pdfView.moveTo(0.0f, pdfView.getCurrentYOffset() - 50.0f);
-		}
-		break;
+
+			mDocView.scrollDistance(-100);
+			break;
 
 		default:
 			break;
-		}    	
-    	return super.onKeyUp(keyCode, event);
-    }
-
-    private boolean displaying(String fileName) {
-        return fileName.equals(pdfName);
-    }
+		}
+		return super.onKeyUp(keyCode, event);
+	}
 
 	@Override
-	public void OnError(Exception e) {
-		Intent intent = new Intent("android.intent.action.VIEW");		
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/tmp.pdf"));
-        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-        startActivity(intent);
-        Toast.makeText(this.getApplicationContext(), "切换使用WPS打开，打开中。。。", Toast.LENGTH_SHORT).show();
-        finish();
+	public void performPickFor(FilePicker picker) {
+
 	}
 }

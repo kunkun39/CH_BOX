@@ -16,7 +16,6 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 import com.changhong.tvserver.R;
-import com.changhong.tvserver.touying.pdf.PDFViewActivity;
 import com.changhong.tvserver.utils.MyProgressDialog;
 import com.changhong.tvserver.utils.TextImageButton;
 import com.chome.virtualkey.virtualkey;
@@ -50,6 +49,9 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.changhong.tvserver.touying.pdf.PDFViewActivity;
+import com.changhong.tvserver.utils.MyProgressDialog;
 
 public class OtherShowService extends Service{
 
@@ -99,6 +101,8 @@ public class OtherShowService extends Service{
             	}
             	Intent intent = new Intent(OtherShowService.this, PDFViewActivity.class);                
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(Intent.ACTION_VIEW);
+                
                 Uri uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/tmp.pdf"));
                 intent.setDataAndType(uri, "application/pdf");
                 startActivity(intent);
