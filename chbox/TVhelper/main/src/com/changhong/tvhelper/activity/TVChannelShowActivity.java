@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,6 +37,7 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.setting.utils.NetEstimateUtils;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
@@ -101,7 +104,6 @@ public class TVChannelShowActivity extends Activity {
         //NetEstimateUtils.noticeEndUserNetworkStatus(this);
 
         channelService = new ChannelService(this);
-
         initViewAndEvent();
 
         initData();
@@ -137,7 +139,114 @@ public class TVChannelShowActivity extends Activity {
 //				bidirSlidingLayout.closeRightMenu();
 //			}
 //		});
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                try
+                {
+                    switch (msg.what) {
+                        case 0:
+                            channelShowData.clear();
+                            switch (selectedChanncelTabIndex) {
+                                case 0://全部频道
+                                    if (height >= 1080) {
+                                        for (int j = 0; j < ClientSendCommandService.channelData.size(); j++) {
+                                            channelShowData.add(ClientSendCommandService.channelData.get(j));
+                                        }
+                                    } else {
+                                        //屏蔽高清节目
+                                        for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                            if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
+                                                    || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
+                                                //高清节目不添加
+                                            } else {
+                                                channelShowData.add(ClientSendCommandService.channelData.get(i));
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case 1://高清频道
+                                    if (height >= 1080) {
+                                        for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                            if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
+                                                    || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
+                                                channelShowData.add(ClientSendCommandService.channelData.get(i));
+                                            }
+                                        }
+                                    } else {
+                                        Toast.makeText(TVChannelShowActivity.this, "由于您手机分辨率小于1080p,为您屏蔽了高清节目！", Toast.LENGTH_LONG).show();
+                                    }
+                                    break;
+                                case 2://卫视频道
+                                    for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                        if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卫视".toLowerCase()) >= 0) {
+                                            channelShowData.add(ClientSendCommandService.channelData.get(i));
+                                        }
+                                    }
+                                    break;
+                                case 3://少儿频道
+                                    for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                        if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("少儿".toLowerCase()) >= 0
+                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卡通".toLowerCase()) >= 0
+                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("动漫".toLowerCase()) >= 0
+                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("成长".toLowerCase()) >= 0) {
+                                            channelShowData.add(ClientSendCommandService.channelData.get(i));
+                                        }
+                                    }
+                                    break;
+                                case 4://央视频道
+                                    for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+                                        if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("中央".toLowerCase()) >= 0
+                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("cctv".toLowerCase()) >= 0) {
+                                            channelShowData.add(ClientSendCommandService.channelData.get(i));
+                                        }
+                                    }
+                                    break;
+                                case 5://同时看
+                                    if (ClientSendCommandService.playingChannelData.isEmpty()) {
+                                        //让DTV补发当前节目信息，刷新同时看
+                                        ClientSendCommandService.msgSwitchChannel = "GetCurrentChannelInfo";
+                                        ClientSendCommandService.handler.sendEmptyMessage(3);
+                                    } else {
+                                        for (int j = 0; j < ClientSendCommandService.playingChannelData.size(); j++) {
+                                            channelShowData.add(ClientSendCommandService.playingChannelData.get(j));
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
 
+                            /**
+                             * 触发频道TAB变化
+                             */
+                            switchChannelTab();
+
+                            /**
+                             * 触发频道列表变换
+                             */
+                            if (adapter != null) {
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            break;
+                        case 1:
+                            adapter = new ChannelAdapter(TVChannelShowActivity.this);
+                            if (channels != null) {
+                                channels.setAdapter(adapter);
+                                adapter.notifyDataSetChanged();
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    super.handleMessage(msg);
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+        };
         ALL.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,114 +296,7 @@ public class TVChannelShowActivity extends Activity {
             }
         });
 
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-            	try
-            	{
-                switch (msg.what) {
-                    case 0:
-                        channelShowData.clear();
-                        switch (selectedChanncelTabIndex) {
-                            case 0://全部频道
-                                if (height >= 1080) {
-                                    for (int j = 0; j < ClientSendCommandService.channelData.size(); j++) {
-                                        channelShowData.add(ClientSendCommandService.channelData.get(j));
-                                    }
-                                } else {
-                                    //屏蔽高清节目
-                                    for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                        if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
-                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
-                                            //高清节目不添加
-                                        } else {
-                                            channelShowData.add(ClientSendCommandService.channelData.get(i));
-                                        }
-                                    }
-                                }
-                                break;
-                            case 1://高清频道
-                                if (height >= 1080) {
-                                    for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                        if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("HD".toLowerCase()) >= 0
-                                                || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("高清".toLowerCase()) >= 0) {
-                                            channelShowData.add(ClientSendCommandService.channelData.get(i));
-                                        }
-                                    }
-                                } else {
-                                    Toast.makeText(TVChannelShowActivity.this, "由于您手机分辨率小于1080p,为您屏蔽了高清节目！", Toast.LENGTH_LONG).show();
-                                }
-                                break;
-                            case 2://卫视频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卫视".toLowerCase()) >= 0) {
-                                        channelShowData.add(ClientSendCommandService.channelData.get(i));
-                                    }
-                                }
-                                break;
-                            case 3://少儿频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("少儿".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("卡通".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("动漫".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("成长".toLowerCase()) >= 0) {
-                                        channelShowData.add(ClientSendCommandService.channelData.get(i));
-                                    }
-                                }
-                                break;
-                            case 4://央视频道
-                                for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-                                    if (((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("中央".toLowerCase()) >= 0
-                                            || ((String) ClientSendCommandService.channelData.get(i).get("service_name")).toLowerCase().indexOf("cctv".toLowerCase()) >= 0) {
-                                        channelShowData.add(ClientSendCommandService.channelData.get(i));
-                                    }
-                                }
-                                break;
-                            case 5://同时看
-                                if (ClientSendCommandService.playingChannelData.isEmpty()) {
-                                    //让DTV补发当前节目信息，刷新同时看
-                                    ClientSendCommandService.msgSwitchChannel = "GetCurrentChannelInfo";
-                                    ClientSendCommandService.handler.sendEmptyMessage(3);
-                                } else {
-                                    for (int j = 0; j < ClientSendCommandService.playingChannelData.size(); j++) {
-                                        channelShowData.add(ClientSendCommandService.playingChannelData.get(j));
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
-                        }
 
-                        /**
-                         * 触发频道TAB变化
-                         */
-                        switchChannelTab();
-
-                        /**
-                         * 触发频道列表变换
-                         */
-                        if (adapter != null) {
-                        	adapter.notifyDataSetChanged();
-						}
-                        
-                        break;
-                    case 1:
-                        adapter = new ChannelAdapter(TVChannelShowActivity.this);
-                        if (channels != null) {
-                        	 channels.setAdapter(adapter);
-                        	 adapter.notifyDataSetChanged();
-						}                                               
-                        break;
-                    default:
-                        break;
-                }
-                super.handleMessage(msg);
-            } catch(Exception e){
-            	e.printStackTrace();
-            }
-            }
-
-        };
 
         /**
          * IP part
@@ -447,6 +449,7 @@ public class TVChannelShowActivity extends Activity {
              * VIEW HOLDER的配置
              */
             final ViewHolder vh;
+            final Map<String,Object> item = channelShowData.get(position);
             if (convertView == null) {
                 vh = new ViewHolder();
                 convertView = minflater.inflate(R.layout.activity_channel_show_item, null);
@@ -468,7 +471,7 @@ public class TVChannelShowActivity extends Activity {
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
-                    Map<String, Object> map = channelShowData.get(position);                    
+                    Map<String, Object> map = item;
                     
                     TVChannelPlayActivity.name = (String) map.get("service_name");
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
@@ -480,13 +483,13 @@ public class TVChannelShowActivity extends Activity {
                 }
             });
 
-            final String channelServiceId = (String) channelShowData.get(position).get("service_id");
-            String serviceName = (String) channelShowData.get(position).get("service_name");
+            final String channelServiceId = (String) item.get("service_id");
+            String serviceName = (String) item.get("service_name");
             if(StringUtils.hasLength(serviceName)) {
                 serviceName = serviceName.trim();
             }
             final String channelName = serviceName;
-            final String channelIndex = (String) channelShowData.get(position).get("channel_index");
+            final String channelIndex = (String) item.get("channel_index");
 
             /**
              * 收藏频道和取消收藏
@@ -576,5 +579,6 @@ public class TVChannelShowActivity extends Activity {
             public TextView channelShouCang;
             public TextView channelPlayButton;
         }
-    }	
+    }
+
 }

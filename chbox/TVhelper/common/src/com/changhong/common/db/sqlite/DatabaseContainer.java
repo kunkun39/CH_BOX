@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.widgets.IpSelectorDataServer;
 
 import java.io.File;
 
@@ -41,7 +42,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
     
     public SQLiteDatabase openEPGDatabase() {
         try {
-            File epgDBFile = new File(MyApplication.epgDBCachePath.getAbsolutePath(), EPG_DATABASE_NAME);
+            File epgDBFile = new File(MyApplication.epgDBCachePath.getAbsolutePath(), getEpgDatabaseName());
             if (epgDBFile.exists() && epgDatabase == null) {
                 epgDatabase = SQLiteDatabase.openDatabase(epgDBFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
             }
@@ -57,7 +58,7 @@ public class DatabaseContainer extends SQLiteOpenHelper {
      */
     public SQLiteDatabase reopenEPGDatabase() {
         try {
-            File epgDBFile = new File(MyApplication.epgDBCachePath.getAbsolutePath(), EPG_DATABASE_NAME);
+            File epgDBFile = new File(MyApplication.epgDBCachePath.getAbsolutePath(), getEpgDatabaseName());
             if (epgDBFile.exists()) {
                 epgDatabase = SQLiteDatabase.openDatabase(epgDBFile.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
             }
@@ -65,6 +66,19 @@ public class DatabaseContainer extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return epgDatabase;
+    }
+    /**
+     * 获取EPF数据库名
+     */
+    public static String getEpgDatabaseName(){
+        String ip = IpSelectorDataServer.getInstance().getCurrentIp();
+        if (ip == null
+                || ip.isEmpty())
+        {
+            return  null;
+        }
+
+        return ip + "-" + EPG_DATABASE_NAME;
     }
 
     /**

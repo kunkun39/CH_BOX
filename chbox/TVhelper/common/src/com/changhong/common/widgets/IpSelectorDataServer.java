@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Map.Entry;
+import java.util.Observer;
 
 import android.text.StaticLayout;
 import android.text.format.Time;
@@ -17,7 +18,7 @@ import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
 
-public class IpSelectorDataServer extends Observable
+public class IpSelectorDataServer
 {
 	/**
 	 * This
@@ -41,6 +42,12 @@ public class IpSelectorDataServer extends Observable
 	 */
 	private Map<String, Long> mServerIPListLiveTime = new HashMap<String, Long>();
 	private String mServerIP = null;
+
+	/**
+	 * Data server
+	 */
+	Observable mDataObservable = new IpObservable();
+	Observable mViewObservable = new IpObservable();
 	
 	/** ==================================================================================================
 	 * Singleton
@@ -52,6 +59,36 @@ public class IpSelectorDataServer extends Observable
 			dataServer = new IpSelectorDataServer();
 		}
 		return dataServer;
+	}
+	/** ===============================================================================================
+	 * Observer
+	 */
+	public void addDataObserver(Observer observer)
+	{
+		if (observer == null)
+			return;
+		mDataObservable.addObserver(observer);
+	}
+
+	public  void deleteDataObserver(Observer observer)
+	{
+		if (observer == null)
+			return;
+		mDataObservable.deleteObserver(observer);
+	}
+
+	public void addViewObserver(Observer observer)
+	{
+		if (observer == null)
+			return;
+		mViewObservable.addObserver(observer);
+	}
+
+	public  void deleteViewObserver(Observer observer)
+	{
+		if (observer == null)
+			return;
+		mViewObservable.deleteObserver(observer);
 	}
 	/** =================================================================================================
 	 * 
@@ -82,7 +119,6 @@ public class IpSelectorDataServer extends Observable
 		mServerIpListMap.put(ip, name);
 		activateIp(ip);
 		setDefaultIp();
-		setChanged();
 		notifyObservers();
 	}
 	
@@ -94,7 +130,6 @@ public class IpSelectorDataServer extends Observable
 		if(mServerIpListMap.containsKey(ip)) {
 			if(!mServerIpListMap.get(ip).equals(name)) {
 				mServerIpListMap.put(ip, name);
-				setChanged();
 				notifyObservers();
 			}			
 		}			
@@ -111,7 +146,7 @@ public class IpSelectorDataServer extends Observable
 			if (mServerIP.equals(ip)) {
 				mServerIP =  (mServerIpListMap.size() > 0? setDefaultIp() : null);
 			}
-			setChanged();
+
 			notifyObservers();
 		}
 	}
@@ -131,7 +166,6 @@ public class IpSelectorDataServer extends Observable
 		if (mServerIpListMap.containsKey(ip)) {
 			mServerIP = ip;
 			ClientSendCommandService.handler.sendEmptyMessage(2);
-			setChanged();
 			notifyObservers();
 		}		
 	}
@@ -222,6 +256,24 @@ public class IpSelectorDataServer extends Observable
 		}
 		
 		return mServerIPListLiveTime.get(ip);
-	}		
+	}
+
+	private  void notifyObservers()
+	{
+		mDataObservable.notifyObservers();
+		mViewObservable.notifyObservers();
+	}
+
+	/**
+	 * Obsererable class
+	 */
+	class IpObservable extends Observable
+	{
+		@Override
+		public void notifyObservers() {
+			super.setChanged();
+			super.notifyObservers();
+		}
+	}
 
 }

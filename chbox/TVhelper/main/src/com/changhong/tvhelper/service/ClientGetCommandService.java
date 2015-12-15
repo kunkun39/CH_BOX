@@ -19,6 +19,7 @@ import com.changhong.common.widgets.IpSelectorDataServer;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -148,103 +149,9 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         /**
                          * 处理Socket
                          */
-                        String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
                         String serverAddress = dgPacket.getAddress().getHostAddress();
                         String content = new String(by, 0, dgPacket.getLength());
-                        String[] tokens = StringUtils.delimitedListToStringArray(content, "|");
-                        String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
-
-                        if (StringUtils.hasLength(serverAddress)) {
-                            Log.w("COMMAND_CLEAN", (serverIP == null ? "" : serverIP) + "-" + serverAddress + "-" + IpSelectorDataServer.getInstance().getName(serverAddress));
-
-                            if (!IpSelectorDataServer.getInstance().getIpList().contains(serverAddress)) {
-                            	IpSelectorDataServer.getInstance().addIp(serverAddress, boxName);                                
-                            } else if (serverIP != null && serverAddress.equals(serverIP)) {
-                                /**
-                                 * 更新当前server的活动时间
-                                 */
-                                IpSelectorDataServer.getInstance().activateIp(serverAddress);
-                                IpSelectorDataServer.getInstance().modifyName(serverAddress, boxName);
-                                /**
-                                 * 设置服务端网络状态
-                                 */
-                                try {
-                                	if (tokens.length > 1) {
-                                		 NetEstimateUtils.serverNetworkStatus = NetworkStatus.valueOf(tokens[1]);
-									}                                   
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-
-                                /**
-                                 * 音乐和视频播放
-                                 */
-                                if (tokens.length == 6) {
-                                    ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
-                                    String shortClassName = info.topActivity.getClassName();
-
-                                    //视频播放
-                                    if (tokens[2].equals("vedio_play")) {
-                                        if ("com.changhong.touying.activity.VedioDetailsActivity".equals(shortClassName)) {
-                                            try {
-                                                if (VedioDetailsActivity.handler != null) {
-                                                    Message message = new Message();
-                                                    message.what = 0;
-                                                    message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
-                                                    VedioDetailsActivity.handler.sendMessage(message);
-                                                }
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    }
-
-                                    //音乐播放
-                                    if (tokens[2].equals("music_play")) {
-                                        try {
-                                            if (MusicPlayer.handler != null) {
-                                                Message message = new Message();
-                                                message.what = 0;
-                                                message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
-                                                MusicPlayer.handler.sendMessage(message);
-                                            }
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }
-
-                                /**
-                                 * 音乐和是视频播放结束
-                                 */
-                                if (tokens.length == 4 && tokens[2].equals("play_stop")) {
-                                    //视频和音乐播放停止, 视频的停止信号为1，因为的停止信号为2
-                                    int stopTag = Integer.valueOf(tokens[3]);
-
-                                    if (stopTag == 1) {
-                                        if (VedioDetailsActivity.handler != null) {
-                                            VedioDetailsActivity.handler.sendEmptyMessage(1);
-                                        }
-                                    } else if (stopTag == 2) {
-                                        if (MusicPlayer.handler != null) {
-                                            MusicPlayer.handler.sendEmptyMessage(1);
-                                        }
-                                    }
-                                }
-
-                                /**
-                                 * 没有播放音频和视频的情况, 关闭httpserver
-                                 */
-                                if(tokens.length == 2) {
-                                    //HTTPD的使用状态
-                                    MobilePerformanceUtils.httpServerUsing = false;
-                                }
-                            } else {
-                                //不做处理
-                            	IpSelectorDataServer.getInstance().activateIp(serverAddress);
-                            	IpSelectorDataServer.getInstance().modifyName(serverAddress, boxName);
-                            }
-                        }
+                        AsyncTask.execute(new CommandRunable().setContent(content).setServerAddress(serverAddress));
                         if (exit) {
                             break;
                         }
@@ -265,6 +172,119 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private class CommandRunable implements Runnable
+    {
+        String mContent,mServerAddress;
+        public CommandRunable setContent(String content) {
+            mContent = new String(content);
+            return this;
+        }
+
+        public CommandRunable setServerAddress(String address) {
+            mServerAddress = address;
+            return this;
+        }
+
+        @Override
+        public void run() {
+            String serverIP = IpSelectorDataServer.getInstance().getCurrentIp();
+            String[] tokens = StringUtils.delimitedListToStringArray(mContent, "|");
+            String boxName = NetworkUtils.convertCHBoxName(tokens[0]);
+
+            if (StringUtils.hasLength(mServerAddress)) {
+                Log.w("COMMAND_CLEAN", (serverIP == null ? "" : serverIP) + "-" + mServerAddress + "-" + IpSelectorDataServer.getInstance().getName(mServerAddress));
+
+                if (!IpSelectorDataServer.getInstance().getIpList().contains(mServerAddress)) {
+                    IpSelectorDataServer.getInstance().addIp(mServerAddress, boxName);
+                } else if (serverIP != null && mServerAddress.equals(serverIP)) {
+                    /**
+                     * 更新当前server的活动时间
+                     */
+                    IpSelectorDataServer.getInstance().activateIp(mServerAddress);
+                    IpSelectorDataServer.getInstance().modifyName(mServerAddress, boxName);
+                    /**
+                     * 设置服务端网络状态
+                     */
+                    try {
+                        if (tokens.length > 1) {
+                            NetEstimateUtils.serverNetworkStatus = NetworkStatus.valueOf(tokens[1]);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    /**
+                     * 音乐和视频播放
+                     */
+                    if (tokens.length == 6) {
+                        ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+                        String shortClassName = info.topActivity.getClassName();
+
+                        //视频播放
+                        if (tokens[2].equals("vedio_play")) {
+                            if ("com.changhong.touying.activity.VedioDetailsActivity".equals(shortClassName)) {
+                                try {
+                                    if (VedioDetailsActivity.handler != null) {
+                                        Message message = new Message();
+                                        message.what = 0;
+                                        message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
+                                        VedioDetailsActivity.handler.sendMessage(message);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+
+                        //音乐播放
+                        if (tokens[2].equals("music_play")) {
+                            try {
+                                if (MusicPlayer.handler != null) {
+                                    Message message = new Message();
+                                    message.what = 0;
+                                    message.obj = tokens[3] + "|" + tokens[4] + "|" + tokens[5];
+                                    MusicPlayer.handler.sendMessage(message);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    /**
+                     * 音乐和是视频播放结束
+                     */
+                    if (tokens.length == 4 && tokens[2].equals("play_stop")) {
+                        //视频和音乐播放停止, 视频的停止信号为1，因为的停止信号为2
+                        int stopTag = Integer.valueOf(tokens[3]);
+
+                        if (stopTag == 1) {
+                            if (VedioDetailsActivity.handler != null) {
+                                VedioDetailsActivity.handler.sendEmptyMessage(1);
+                            }
+                        } else if (stopTag == 2) {
+                            if (MusicPlayer.handler != null) {
+                                MusicPlayer.handler.sendEmptyMessage(1);
+                            }
+                        }
+                    }
+
+                    /**
+                     * 没有播放音频和视频的情况, 关闭httpserver
+                     */
+                    if(tokens.length == 2) {
+                        //HTTPD的使用状态
+                        MobilePerformanceUtils.httpServerUsing = false;
+                    }
+                } else {
+                    //不做处理
+                    IpSelectorDataServer.getInstance().activateIp(mServerAddress);
+                    IpSelectorDataServer.getInstance().modifyName(mServerAddress, boxName);
                 }
             }
         }

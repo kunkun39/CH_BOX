@@ -45,10 +45,15 @@ public class ChannelService {
      */
     public static String obtainChannlPlayURL(Map<String, Object> map) {
         StringBuffer buffer = new StringBuffer();
+/*
         buffer.append("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
                 + "&aPid=" + map.get("aPid") + "&vPid=" + map.get("vPid")
                 + "&dmxId=" + map.get("dmxId") + "&service_id=" + map.get("service_id"));
-
+*/
+        buffer.append("rtsp://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8554/live.ts?freq=" + map.get("freq") + "&pmtPid=" + map.get("pmtPid")
+                + "&aPid=" + map.get("aPid") + "&vPid=" + map.get("vPid")
+                + "&dmxId=" + map.get("dmxId") + "&service_id=" + map.get("service_id"));
+                
         String channelName = (String)map.get("service_name");
         if (channelName.contains("高清") || channelName.contains("HD")) {
             String vStreamType = (String)map.get("vStreamType");

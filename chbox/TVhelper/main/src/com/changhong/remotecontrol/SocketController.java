@@ -191,14 +191,14 @@ public abstract class SocketController implements ClientSocketInterface {
 
         RemoteInfoContainer()
         {
-        	IpSelectorDataServer.getInstance().addObserver(this);        	        	
+        	IpSelectorDataServer.getInstance().addDataObserver(this);
         }
         
         public void exit() {
             mServerIpCur = null;
             mServerIP.clear();
             mDataPackageList.clear();
-            IpSelectorDataServer.getInstance().deleteObserver(this);
+            IpSelectorDataServer.getInstance().addDataObserver(this);
         }
 
         public final String getIp() {

@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -265,6 +266,11 @@ public class SearchPageList extends Fragment{
                     MyApplication.vibrator.vibrate(100);
                     TVChannelPlayActivity.name = serviceName;
                     TVChannelPlayActivity.path = ChannelService.obtainChannlPlayURL(map);
+
+					// 保存历史记录
+					TVChannelSearchActivity activity = (TVChannelSearchActivity)getActivity();
+					activity.saveHistory(searchString);
+					((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(v.getWindowToken(), 0);
 
                     Intent intent = new Intent(activity, TVChannelPlayActivity.class);
                     intent.putExtra("channelname", serviceName);

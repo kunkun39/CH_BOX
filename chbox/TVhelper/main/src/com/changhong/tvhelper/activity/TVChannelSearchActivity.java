@@ -19,10 +19,13 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment.SavedState;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.*;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -101,38 +104,61 @@ public class TVChannelSearchActivity extends FragmentActivity {
 
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
+		searchEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
 
 		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content, fragmentList, "list").commitAllowingStateLoss();
-		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content,fragmentDefault, "default").show(fragmentDefault).commitAllowingStateLoss();
+		getSupportFragmentManager().beginTransaction().add(R.id.search_page_content, fragmentDefault, "default").show(fragmentDefault).commitAllowingStateLoss();
 
 		searchButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
-				
+
 				//fix bug:
 				searchString = searchEditText.getText().toString().trim();
 				if (searchString.isEmpty()) {
-					return ;
+					return;
 				}
 				getSupportFragmentManager().beginTransaction().hide(fragmentDefault).show(fragmentList).commitAllowingStateLoss();
-				fragmentDefault.saveSentences(TVChannelSearchActivity.this, searchString);
+				saveHistory(searchString);
 				fragmentList.setCondition(searchString);
 				//TODO:fragmentList
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            }
+				imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+			}
 		});
 		
 		searchEditText.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO 自动生成的方法存根
 				SearchPageList searchPageList = (SearchPageList) getSupportFragmentManager().findFragmentByTag("list");
-				if(searchPageList != null)
-				{
+				if (searchPageList != null) {
 					getSupportFragmentManager().beginTransaction().hide(fragmentList).show(fragmentDefault).commitAllowingStateLoss();
 				}
+				loadHistory();
+			}
+		});
+
+		searchEditText.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable editable) {
+				searchString = searchEditText.getText().toString().trim();
+				if (searchString.isEmpty()) {
+					return;
+				}
+				getSupportFragmentManager().beginTransaction().hide(fragmentDefault).show(fragmentList).commitAllowingStateLoss();
+				fragmentList.setCondition(searchString);
 			}
 		});
 
@@ -149,6 +175,21 @@ public class TVChannelSearchActivity extends FragmentActivity {
 		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));		
 	}
 
+	/**
+	 *	=============================历史记录 ===================================
+	 */
+	public void saveHistory(String text)
+	{
+		if (fragmentDefault != null
+				&& searchString != null
+				&& !searchString.isEmpty())
+			fragmentDefault.saveSentences(TVChannelSearchActivity.this, searchString);
+	}
+
+	public void loadHistory()
+	{
+		fragmentDefault.reInit();
+	}
 	/**
 	 * **********************************************系统方法重载*********************
 	 * ********************************

@@ -1,6 +1,6 @@
-include ':common'
+include ':common', ':vitamio4.21'
 include ':setting'
 include ':thirdpart'
 include ':touying'
-include ':vitamio4.2'
 include ':main'
+project(':vitamio4.21').projectDir = new File('vitamio4.2')

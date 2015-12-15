@@ -18,6 +18,25 @@
     </io.vov.vitamio.widget.CenterLayout>
 
     <RelativeLayout
+        android:id="@+id/broad_bg_right"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/tv_broad_right"/>
+    <RelativeLayout
+        android:id="@+id/broad_bg_top"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/tv_broad_bg_top"/>
+    <RelativeLayout
+        android:id="@+id/broad_bg_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/tv_broad_bottom"/>
+
+    <RelativeLayout
         android:id="@+id/rl_cutscreencontent"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -25,6 +44,7 @@
         android:id="@+id/channel_list_layout"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/tv_broad_bg_left"
         android:visibility="visible" >
 
         <TextView
@@ -268,8 +288,8 @@
                  />
         </LinearLayout>
         -->
-    </RelativeLayout>
 
+    </RelativeLayout>
 </RelativeLayout>
 
     <com.changhong.thirdpart.sharesdk.ScreenShotView

@@ -152,7 +152,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	 */
 	private AnimationSet PIInAnimationSet, PIOutAnimationSet,
 			SKBInAnimationSet, SKBOutAnimationSet, channelListInAnimationSet,
-			channelListOutAnimationSet;
+			channelListOutAnimationSet, broadTopIndBG,broadTopOutdBG;
 
 	/**
 	 * 频道列表
@@ -161,7 +161,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	private ChannelAdapter channelAdapter;
 	private List<String> channelNames = new ArrayList<String>();
 	private boolean menuKey = false;
-	private RelativeLayout relativeLayout;
+	private RelativeLayout relativeLayout,broadTopBgLayout,broadRightBgLayout,broadBottomBgLayout;
 
 	/**
 	 * 节目信息
@@ -326,6 +326,9 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 		initTVChannel();
 		channelAdapter = new ChannelAdapter(this);
 		relativeLayout = (RelativeLayout) findViewById(R.id.channel_list_layout);
+		broadBottomBgLayout = (RelativeLayout) findViewById(R.id.broad_bg_bottom);
+		broadRightBgLayout = (RelativeLayout) findViewById(R.id.broad_bg_right);
+		broadTopBgLayout = (RelativeLayout) findViewById(R.id.broad_bg_top);
 		channelList = (ListView) findViewById(R.id.channel_list);
 		channelList.setAdapter(channelAdapter);
 
@@ -398,66 +401,66 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 
 		//收藏监听器
 		collection.setOnClickListener(new OnClickListener() {
-			
-			@Override
-            public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-              try {
-            	  if (allShouChangChannel.contains(channelServiceId)) {
-                      //取消收藏操作
-                      boolean success = channelService.cancelChannelShouCang(channelServiceId);
-                      if (success) {
-                          allShouChangChannel.remove(channelServiceId);
-                          Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
-                      } else {
-                          Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
-                      }
-                      updateShouChangView(!allShouChangChannel.contains(channelServiceId));
-                  } else {
-                      //收藏操作
-                      boolean success = channelService.channelShouCang(channelServiceId);
-                      if (success) {
-                    	  allShouChangChannel.add(channelServiceId);
-                          Toast.makeText(TVChannelPlayActivity.this, "频道收藏成功", Toast.LENGTH_SHORT).show();
-                      } else {
-                          Toast.makeText(TVChannelPlayActivity.this, "频道收藏失败", Toast.LENGTH_SHORT).show();
-                      }
-                      updateShouChangView(!allShouChangChannel.contains(channelServiceId));
-                  }
-                  
-              } catch (Exception e) {
-                  e.printStackTrace();
-              }
-            }
-        });
-		mBtn_tv.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
-                ClientSendCommandService.msg = "key:dtv";
-                ClientSendCommandService.handler.sendEmptyMessage(1);
-               
-                String serviceId = null;
-                String tsId = null;
-                String orgNId = null;
-                
-                if (!ClientSendCommandService.channelData.isEmpty()) {
+				try {
+					if (allShouChangChannel.contains(channelServiceId)) {
+						//取消收藏操作
+						boolean success = channelService.cancelChannelShouCang(channelServiceId);
+						if (success) {
+							allShouChangChannel.remove(channelServiceId);
+							Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+						}
+						updateShouChangView(!allShouChangChannel.contains(channelServiceId));
+					} else {
+						//收藏操作
+						boolean success = channelService.channelShouCang(channelServiceId);
+						if (success) {
+							allShouChangChannel.add(channelServiceId);
+							Toast.makeText(TVChannelPlayActivity.this, "频道收藏成功", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(TVChannelPlayActivity.this, "频道收藏失败", Toast.LENGTH_SHORT).show();
+						}
+						updateShouChangView(!allShouChangChannel.contains(channelServiceId));
+					}
 
-    				for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
-    					Map<String, Object> map = ClientSendCommandService.channelData.get(i);
-    					if (name.equals((String) map.get("service_name"))) {
-    						serviceId = (String) map.get("service_id");
-    		                tsId = (String) map.get("tsId");
-    		                orgNId = (String) map.get("orgNId");
-    		                break;
-    					}
-    				}
-
-                ClientSendCommandService.msgSwitchChannel = serviceId + "#" + tsId + "#" + orgNId;
-                ClientSendCommandService.handler.sendEmptyMessage(3);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
+		});
+		mBtn_tv.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+				ClientSendCommandService.msg = "key:dtv";
+				ClientSendCommandService.handler.sendEmptyMessage(1);
+
+				String serviceId = null;
+				String tsId = null;
+				String orgNId = null;
+
+				if (!ClientSendCommandService.channelData.isEmpty()) {
+
+					for (int i = 0; i < ClientSendCommandService.channelData.size(); i++) {
+						Map<String, Object> map = ClientSendCommandService.channelData.get(i);
+						if (name.equals((String) map.get("service_name"))) {
+							serviceId = (String) map.get("service_id");
+							tsId = (String) map.get("tsId");
+							orgNId = (String) map.get("orgNId");
+							break;
+						}
+					}
+
+					ClientSendCommandService.msgSwitchChannel = serviceId + "#" + tsId + "#" + orgNId;
+					ClientSendCommandService.handler.sendEmptyMessage(3);
+				}
+			}
 		});
 
 	}
@@ -489,6 +492,9 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 
 	private void setWidgetVisible(int i) {
 		setMyAnimation(i);
+		broadBottomBgLayout.setVisibility(i);
+		broadRightBgLayout.setVisibility(i);
+		broadTopBgLayout.setVisibility(i);
 		relativeLayout.setVisibility(i);
 		programInfoLayout.setVisibility(i);
 		seekbarWidget.setVisibility(i);
@@ -498,12 +504,18 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	private void setMyAnimation(int i) {
 		initAnimation();
 		if (i == View.VISIBLE) {
+			broadTopBgLayout.startAnimation(broadTopIndBG);
+			broadRightBgLayout.startAnimation(SKBInAnimationSet);
+			broadBottomBgLayout.startAnimation(PIInAnimationSet);
 			relativeLayout.startAnimation(channelListInAnimationSet);
 			programInfoLayout.startAnimation(PIInAnimationSet);
 			seekbarWidget.startAnimation(SKBInAnimationSet);
 			menuKey = true;
 
 		} else {
+			broadTopBgLayout.startAnimation(broadTopOutdBG);
+			broadRightBgLayout.startAnimation(SKBOutAnimationSet);
+			broadBottomBgLayout.startAnimation(PIOutAnimationSet);
 			relativeLayout.startAnimation(channelListOutAnimationSet);
 			programInfoLayout.startAnimation(PIOutAnimationSet);
 			seekbarWidget.startAnimation(SKBOutAnimationSet);
@@ -513,6 +525,24 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 
 	private void initAnimation() {
 
+		if (null == broadTopIndBG) {
+			broadTopIndBG = new AnimationSet(true);
+			TranslateAnimation BGOAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, -1f,
+					Animation.RELATIVE_TO_SELF, 0f);
+			BGOAnimation.setDuration(500);
+			broadTopIndBG.addAnimation(BGOAnimation);
+		}
+		if (null == broadTopOutdBG) {
+			broadTopOutdBG = new AnimationSet(true);
+			TranslateAnimation BGOAnimation = new TranslateAnimation(
+					Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF,
+					0f, Animation.RELATIVE_TO_SELF, 0f,
+					Animation.RELATIVE_TO_SELF, -1f);
+			BGOAnimation.setDuration(500);
+			broadTopOutdBG.addAnimation(BGOAnimation);
+		}
 		if (null == channelListInAnimationSet) {
 			channelListInAnimationSet = new AnimationSet(true);
 			TranslateAnimation CLIAnimation = new TranslateAnimation(
@@ -589,7 +619,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", 3000).show();
+                Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", Toast.LENGTH_SHORT).show();
 				break;
 			case 3:
 				if (programList != null && programList.size() > 0) {
@@ -908,7 +938,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 			if (returnConfirm == 1) {
 				returnConfirm = 0;
 				backTimestamp = System.currentTimeMillis();
-				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出", 1000).show();
+				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出",Toast.LENGTH_SHORT).show();
 			} else {
 				mDismissHandler = null;
 				finish();

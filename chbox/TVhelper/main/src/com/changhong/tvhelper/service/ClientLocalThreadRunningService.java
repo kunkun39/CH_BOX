@@ -15,6 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Set;
 
+import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.utils.*;
 import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
@@ -269,7 +270,7 @@ public class ClientLocalThreadRunningService extends Service {
 		dialog_yuyue.getWindow().setAttributes(param);
 		
 		adapter_yuyue.notifyDataSetChanged();
-		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", 5000).show();
+		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", Toast.LENGTH_LONG).show();
 	}
 	class YuYueAdapter extends BaseAdapter {
 		private LayoutInflater minflater;
@@ -498,7 +499,7 @@ public class ClientLocalThreadRunningService extends Service {
         	if (mHandler == null) {
         		mHandler = new Handler(Looper.myLooper());        		
 			}    
-        	IpSelectorDataServer.getInstance().addObserver(this);
+        	IpSelectorDataServer.getInstance().addDataObserver(this);
         	runnable = new Runnable() {
 				
 				@Override
@@ -536,33 +537,39 @@ public class ClientLocalThreadRunningService extends Service {
             //get network json data
             String sss = null;
             URL urlAddress = null;
-            try {
-                urlAddress = new URL(url);
-                HttpURLConnection hurlconn = (HttpURLConnection) urlAddress.openConnection();
-                hurlconn.setRequestMethod("GET");
-                hurlconn.setConnectTimeout(2000);
-                hurlconn.setRequestProperty("Charset", "UTF-8");
-                hurlconn.setRequestProperty("Connection", "Close");
-                if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                    hurlconn.connect();
-                    InputStream instream = hurlconn.getInputStream();
-                    InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");
-                    StringBuffer stringappend = new StringBuffer();
-                    char[] b = new char[256];
-                    int length = -1;
-                    while ((length = inreader.read(b)) != -1) {
-                        stringappend.append(new String(b, 0, length));
+            boolean isSuccess = false;
+            int times = 3;
+            do {
+                try {
+                    urlAddress = new URL(url);
+                    HttpURLConnection hurlconn = (HttpURLConnection) urlAddress.openConnection();
+                    hurlconn.setRequestMethod("GET");
+                    hurlconn.setConnectTimeout(2000);
+                    hurlconn.setRequestProperty("Charset", "UTF-8");
+                    hurlconn.setRequestProperty("Connection", "Close");
+                    if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                        hurlconn.connect();
+                        InputStream instream = hurlconn.getInputStream();
+                        InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");
+                        StringBuffer stringappend = new StringBuffer();
+                        char[] b = new char[256];
+                        int length;
+                        while ((length = inreader.read(b)) != -1) {
+                            stringappend.append(new String(b, 0, length));
+                        }
+                        sss = stringappend.toString();
+                        Log.i(TAG, sss);
+                        inreader.close();
+                        instream.close();
+                        isSuccess = true;
+                    } else {
+                        Log.e(TAG, "hurlconn ResponseCode OK");
                     }
-                    sss = stringappend.toString();
-                    Log.i(TAG, sss);
-                    inreader.close();
-                    instream.close();
-                } else {
-                    Log.e(TAG, ">>>>>>>hurlconn.getResponseCode()!= HttpURLConnection.HTTP_OK");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sleep(100);
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            }while (!isSuccess && times-- > 0);
 
             try {
                 if (StringUtils.hasLength(sss)) {
@@ -571,11 +578,11 @@ public class ClientLocalThreadRunningService extends Service {
                     /**
                      * 判断版本
                      */
-
+                    String ip =  IpSelectorDataServer.getInstance().getCurrentIp();
                     JSONObject allVersions = new JSONObject(sss);
                     JSONObject version = (JSONObject) allVersions.getJSONArray("EPG_DATABASE").get(0);
                     int serverVersion = version.getInt("epg_db_version");
-                    int mobileVersion = service.getEPGVersion();
+                    int mobileVersion = service.getEPGVersion(ip);
                     if (serverVersion == 0 || serverVersion != mobileVersion) {
                         shouldUpdateDB = true;
                     }
@@ -586,13 +593,14 @@ public class ClientLocalThreadRunningService extends Service {
                     if (shouldUpdateDB) {
                     	ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
                     	ComponentName componentName =  activityManager.getRunningTasks(1).get(0).topActivity;                    	
-                    	
-                        InputStream in = WebUtils.httpGetRequest("http://" + IpSelectorDataServer.getInstance().getCurrentIp() + ":8000/epg_database.db");
+
+                        InputStream in = WebUtils.httpGetRequest("http://" + ip + ":8000/epg_database.db");
                         
 						if (in == null) {
 							return ;
 						}
-                        File fileTmp = new File(MyApplication.epgDBCachePath, "epg_database.db.tmp");
+                        String fileName = DatabaseContainer.getEpgDatabaseName();
+                        File fileTmp = new File(MyApplication.epgDBCachePath, fileName + ".tmp");
                         if (fileTmp.exists()) {
                         	fileTmp.delete();
                         }
@@ -600,14 +608,14 @@ public class ClientLocalThreadRunningService extends Service {
                         SystemClock.sleep(1000);
                         
                         IOUtils.copy(in, new FileOutputStream(fileTmp));
-                        File file = new File(MyApplication.epgDBCachePath, "epg_database.db");
+                        File file = new File(MyApplication.epgDBCachePath, fileName);
                         if (file.exists()) {
                             file.delete();
                         }
                         SystemClock.sleep(1000);
                         fileTmp.renameTo(file);
                         
-                        service.saveEPGVersion(serverVersion);
+                        service.saveEPGVersion(ip,serverVersion);
                         Log.d(TAG, "电视节目更新成功");                        
 
                         /**

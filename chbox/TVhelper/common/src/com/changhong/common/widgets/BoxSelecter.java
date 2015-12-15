@@ -93,13 +93,13 @@ public class BoxSelecter implements Observer
 			}
 		});
 		
-		IpSelectorDataServer.getInstance().addObserver(this);
+		IpSelectorDataServer.getInstance().addViewObserver(this);
 	}
 	
 	// YVES YANG:!!!! Must Call This Function To Release Its Self
 	public void release()
 	{
-		IpSelectorDataServer.getInstance().deleteObserver(this);
+		IpSelectorDataServer.getInstance().deleteViewObserver(this);
 	}
 	
 	@Override
@@ -108,13 +108,17 @@ public class BoxSelecter implements Observer
 			@Override
 			public void run() {
 				IpSelectorDataServer dataServer = IpSelectorDataServer.getInstance();
-				List<String> list = new ArrayList<String>(dataServer.getIpList());
-				
-				// Update List
-				mAdapter.updateList(list);
-				
-				// Update Name
-				mTitle.setText(dataServer.getName());
+				try {
+					List<String> list = new ArrayList<String>(dataServer.getIpList());
+
+					// Update List
+					mAdapter.updateList(list);
+
+					// Update Name
+					mTitle.setText(dataServer.getName());
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 				

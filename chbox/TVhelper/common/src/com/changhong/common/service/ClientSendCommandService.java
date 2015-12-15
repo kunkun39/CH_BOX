@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
 import com.changhong.common.domain.AppInfo;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.*;
 import com.changhong.common.widgets.IpSelectorDataServer;
@@ -26,7 +27,7 @@ import java.util.*;
 /**
  * Created by Jack Wang
  */
-public class ClientSendCommandService extends Service implements ClientSocketInterface {
+public class ClientSendCommandService extends Service implements ClientSocketInterface,Observer {
 
     /**
      * message handler
@@ -79,7 +80,17 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
     public void onCreate() {
         super.onCreate();
         mCode.setContext(this);
+        IpSelectorDataServer.getInstance().addDataObserver(this);
         new SendCommend().start();
+    }
+
+    /**
+     *  Release bind data
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        IpSelectorDataServer.getInstance().deleteDataObserver(this);
     }
 
     public static String getCurrentConnectBoxName() {
@@ -100,6 +111,11 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
             return boxName;
         }
         return NetworkUtils.BOX_DEFAULT_NAME;
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        ClientSendCommandService.handler.sendEmptyMessage(2);
     }
 
     private class SendCommend extends Thread {
@@ -307,38 +323,55 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
         playingChannelData.clear();
         String sss = null;
         URL url_address = null;
-        try {
-            url_address = new URL(url);
-            HttpURLConnection hurlconn = (HttpURLConnection) url_address.openConnection();
-            hurlconn.setRequestMethod("GET");
-            hurlconn.setConnectTimeout(2000);
-            hurlconn.setRequestProperty("Charset", "UTF-8");
-            hurlconn.setRequestProperty("Connection", "Close");
-            if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                hurlconn.connect();
-                InputStream instream = hurlconn.getInputStream();
-                File tempFile = new File(MyApplication.epgDBCachePath,"channelList.tmp");
-                if (tempFile.exists()) {
-                	tempFile.delete();
-				}
-                InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");                
-                
-                IOUtils.copy(inreader, new FileOutputStream(tempFile));
-                File file = new File(MyApplication.epgDBCachePath,"channelList.json");
-                if (file.exists()) {
-					file.delete();
-				}
-                tempFile.renameTo(file);                                                
-                inreader.close();
-                instream.close();
-            } else {
-                Log.e(TAG, ">>>>>>>hurlconn.getResponseCode()!= HttpURLConnection.HTTP_OK");
+        boolean isSuccess = false;
+        int count = 3;
+        do {
+            try {
+                url_address = new URL(url);
+                HttpURLConnection hurlconn = (HttpURLConnection) url_address.openConnection();
+                hurlconn.setRequestMethod("GET");
+                hurlconn.setConnectTimeout(2000);
+                hurlconn.setRequestProperty("Charset", "UTF-8");
+                hurlconn.setRequestProperty("Connection", "Close");
+                if (hurlconn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    hurlconn.connect();
+                    InputStream instream = hurlconn.getInputStream();
+                    File tempFile = new File(MyApplication.epgDBCachePath,"channelList.tmp");
+                    if (tempFile.exists()) {
+                        tempFile.delete();
+                    }
+                    InputStreamReader inreader = new InputStreamReader(instream, "UTF-8");
+
+                    IOUtils.copy(inreader, new FileOutputStream(tempFile));
+                    File file = new File(MyApplication.epgDBCachePath,"channelList.json");
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    tempFile.renameTo(file);
+                    inreader.close();
+                    instream.close();
+                    isSuccess = true;
+                } else {
+                    Log.e(TAG, ">>>>>>>hurlconn.getResponseCode()!= HttpURLConnection.HTTP_OK");
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                try {
+                    Thread.sleep(100);
+                }catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }while (!isSuccess && count-- > 0);
+
         File file = new File(MyApplication.epgDBCachePath,"channelList.json");
         byte[] content = new byte[(int) file.length()];
         try {
@@ -448,6 +481,7 @@ public class ClientSendCommandService extends Service implements ClientSocketInt
         } catch (IOException e) {
             e.printStackTrace();
         }
+        sendBroadcast(new Intent(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
     }
 
     @SuppressLint("NewApi")

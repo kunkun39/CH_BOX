@@ -37,7 +37,7 @@ import com.changhong.tvhelper.R;
 public class SearchPageDefault extends Fragment{
 	
 	// 总共的条数
-	private static final int MAX_ITEM_COUNT = 6;
+	private static final int MAX_ITEM_COUNT = 20;
 	
 	//用来测试的短语
 	private static final String TEST_WORDS = "abcd...";
@@ -107,6 +107,11 @@ public class SearchPageDefault extends Fragment{
 		
 		updateDatabase(activity);				
 		return view;
+	}
+
+	public void reInit()
+	{
+		addViews(SearchPageDefault.this.contentView);
 	}
 	
 	// 添加View到根目录，只调用这个函数就能构建界面
