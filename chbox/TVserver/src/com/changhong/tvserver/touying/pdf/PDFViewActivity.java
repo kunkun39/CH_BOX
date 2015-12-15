@@ -345,11 +345,11 @@ public class PDFViewActivity extends Activity implements
 			break;
 		case KeyEvent.KEYCODE_DPAD_UP:
 
-			mDocView.scrollDistance(100);
+			mDocView.smartMoveBackwards();
 			break;
 		case KeyEvent.KEYCODE_DPAD_DOWN:
 
-			mDocView.scrollDistance(-100);
+			mDocView.smartMoveForwards();
 			break;
 
 		default:

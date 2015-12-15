@@ -365,7 +365,7 @@ public class TVSocketControllerService extends Service {
                         try {
 
                         if (StringUtils.hasLength(ip) && !ip.equals("0.0.0.0")) {
-                        	dgSocket = new DatagramSocket(9001, InetAddress.getByName(ip));                        	
+                        	dgSocket = new DatagramSocket(9001, InetAddress.getByName(ip));
                             serverInfo = MainActivity.CH_BOX_NAME;
 
                             /**
@@ -558,7 +558,6 @@ public class TVSocketControllerService extends Service {
                 }
             } catch (SocketException e) {
                 e.printStackTrace();
-
             } finally {
                 try {
                     if (dgSocket != null) {

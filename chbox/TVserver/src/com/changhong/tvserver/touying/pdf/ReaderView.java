@@ -593,6 +593,15 @@ public class ReaderView extends AdapterView<Adapter> implements
 
 	}
 
+	public void smartScrollForward()
+	{
+		scrollDistance(-100);
+	}
+	public void smartScrollBackward()
+	{
+		scrollDistance(100);
+	}
+
 	public  void scrollDistance(int dy)
 	{
 		View v = mChildViews.get(mCurrent);
