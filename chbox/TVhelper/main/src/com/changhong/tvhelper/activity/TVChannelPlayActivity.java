@@ -940,7 +940,6 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 				backTimestamp = System.currentTimeMillis();
 				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出",Toast.LENGTH_SHORT).show();
 			} else {
-				mDismissHandler = null;
 				finish();
 			}
 			return true;

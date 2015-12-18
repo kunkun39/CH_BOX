@@ -157,7 +157,7 @@ public class OtherShowService extends Service{
 		mAlertDialog.show();		    
 	   
     	final String pptUrl = msg.replace("other_open:", "");
-		Log.e("ppt","pptUrl:"+pptUrl);
+		Log.e("ppt", "pptUrl:" + pptUrl);
     	
     	if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
     		Toast.makeText(this, "无SD卡，无法推送PDF文件!", Toast.LENGTH_SHORT).show();
@@ -248,7 +248,8 @@ public class OtherShowService extends Service{
 			
 		});
     	mDownloadFileThread.start();
-    	mAlertDialog.setThread(mDownloadFileThread);
+		if (mAlertDialog != null)
+    		mAlertDialog.setThread(mDownloadFileThread);
     }
 
 	@Override

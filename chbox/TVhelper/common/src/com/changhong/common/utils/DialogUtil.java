@@ -14,14 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
 import com.changhong.common.R;
 
 public class DialogUtil {
-	public static interface DialogBtnOnClickListener {
+	public interface DialogBtnOnClickListener {
 
-		public void onSubmit(DialogMessage dialogMessage);
+		void onSubmit(DialogMessage dialogMessage);
 
-		public void onCancel(DialogMessage dialogMessage);
+		void onCancel(DialogMessage dialogMessage);
 
 	}
 

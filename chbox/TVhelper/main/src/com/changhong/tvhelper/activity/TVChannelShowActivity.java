@@ -324,6 +324,8 @@ public class TVChannelShowActivity extends Activity {
     private void initData() {
         channelShowData.clear();
         channelShowData.addAll(ClientSendCommandService.channelData);
+        if (adapter != null)
+            adapter.notifyDataSetChanged();
 
         new Thread(new Runnable() {
             @Override

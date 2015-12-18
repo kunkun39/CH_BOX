@@ -264,6 +264,7 @@ public class ChannelService {
             String insert = "INSERT INTO channel_shoucang (service_id) VALUES (?)";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(insert, new Object[]{channelServiceId});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -279,6 +280,7 @@ public class ChannelService {
             String delete = "DELETE FROM channel_shoucang WHERE service_id = ?";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{channelServiceId});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -310,6 +312,7 @@ public class ChannelService {
             String insert = "INSERT INTO order_program (order_date, channel_index, week_index, program_start_time,program_end_time,status,program_name,channel_name) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(insert, new Object[]{orderProgram.getOrderDate(), orderProgram.getChannelIndex(), orderProgram.getWeekIndex(), orderProgram.getProgramStartTime(), orderProgram.getProgramEndTime(), orderProgram.getStatus(), orderProgram.getProgramName(), orderProgram.getChannelName()});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -323,6 +326,7 @@ public class ChannelService {
             String delete = "DELETE FROM order_program WHERE order_date < '" + dateOfToday + "'";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete);
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -335,6 +339,7 @@ public class ChannelService {
             String delete = "DELETE FROM order_program WHERE order_program.program_name = ? AND order_program.order_date = ?";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{programName, orderDate});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -348,6 +353,7 @@ public class ChannelService {
             String delete = "DELETE FROM order_program WHERE week_index = ? AND program_start_time = ? AND program_end_time = ? AND program_name = ? AND channel_name = ?";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new Object[]{orderProgram.getWeekIndex(), orderProgram.getProgramStartTime(), orderProgram.getProgramEndTime(), orderProgram.getProgramName(), orderProgram.getChannelName()});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -361,6 +367,7 @@ public class ChannelService {
             String delete = "DELETE FROM order_program WHERE order_program.program_name = ? AND order_program.week_index = ?";
             SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
             database.execSQL(delete, new String[]{programName, weekName});
+            database.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -395,46 +402,58 @@ public class ChannelService {
         if (null == MyApplication.getDatabaseContainer(context)) {
             return null;
         }
-        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
-        Cursor cursor = database.rawQuery(findAll, new String[]{weekIndex});
         List<OrderProgram> orderPrograms = new ArrayList<OrderProgram>();
-        while (cursor.moveToNext()) {
-            OrderProgram orderProgram = new OrderProgram();
-            orderProgram.setId(cursor.getInt(0));
-            orderProgram.setOrderDate(cursor.getString(1));
-            orderProgram.setChannelIndex(cursor.getString(2));
-            orderProgram.setWeekIndex(cursor.getString(3));
-            orderProgram.setProgramStartTime(cursor.getString(4));
-            orderProgram.setProgramEndTime(cursor.getString(5));
-            orderProgram.setStatus(cursor.getString(6));
-            orderProgram.setProgramName(cursor.getString(7));
-            orderProgram.setChannelName(cursor.getString(8));
-            orderPrograms.add(orderProgram);
+        try
+        {
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
+            Cursor cursor = database.rawQuery(findAll, new String[]{weekIndex});
+            while (cursor.moveToNext()) {
+                OrderProgram orderProgram = new OrderProgram();
+                orderProgram.setId(cursor.getInt(0));
+                orderProgram.setOrderDate(cursor.getString(1));
+                orderProgram.setChannelIndex(cursor.getString(2));
+                orderProgram.setWeekIndex(cursor.getString(3));
+                orderProgram.setProgramStartTime(cursor.getString(4));
+                orderProgram.setProgramEndTime(cursor.getString(5));
+                orderProgram.setStatus(cursor.getString(6));
+                orderProgram.setProgramName(cursor.getString(7));
+                orderProgram.setChannelName(cursor.getString(8));
+                orderPrograms.add(orderProgram);
+            }
+            cursor.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        cursor.close();
+
         return orderPrograms;
     }
 
     public List<OrderProgram> findAllOrderPrograms() {
         String findAll = "SELECT * FROM order_program ORDER BY order_program.order_date";
-        
-        SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
-        Cursor cursor = database.rawQuery(findAll, null);
+
         List<OrderProgram> orderPrograms = new ArrayList<OrderProgram>();
-        while (cursor.moveToNext()) {
-            OrderProgram orderProgram = new OrderProgram();
-            orderProgram.setId(cursor.getInt(0));
-            orderProgram.setOrderDate(cursor.getString(1));
-            orderProgram.setChannelIndex(cursor.getString(2));
-            orderProgram.setWeekIndex(cursor.getString(3));
-            orderProgram.setProgramStartTime(cursor.getString(4));
-            orderProgram.setProgramEndTime(cursor.getString(5));
-            orderProgram.setStatus(cursor.getString(6));
-            orderProgram.setProgramName(cursor.getString(7));
-            orderProgram.setChannelName(cursor.getString(8));
-            orderPrograms.add(orderProgram);
+        try {
+            SQLiteDatabase database = MyApplication.getDatabaseContainer(context).getWritableDatabase();
+            Cursor cursor = database.rawQuery(findAll, null);
+
+            while (cursor.moveToNext()) {
+                OrderProgram orderProgram = new OrderProgram();
+                orderProgram.setId(cursor.getInt(0));
+                orderProgram.setOrderDate(cursor.getString(1));
+                orderProgram.setChannelIndex(cursor.getString(2));
+                orderProgram.setWeekIndex(cursor.getString(3));
+                orderProgram.setProgramStartTime(cursor.getString(4));
+                orderProgram.setProgramEndTime(cursor.getString(5));
+                orderProgram.setStatus(cursor.getString(6));
+                orderProgram.setProgramName(cursor.getString(7));
+                orderProgram.setChannelName(cursor.getString(8));
+                orderPrograms.add(orderProgram);
+            }
+            cursor.close();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
-        cursor.close();
+
         return orderPrograms;
     }
 
