@@ -31,7 +31,8 @@ android{
 			java.srcDirs = ['src']
 			resources.srcDirs = ['src']
 			res.srcDirs = ['res']
-			jniLibs.srcDirs = ['libs']			
+			jniLibs.srcDirs = ['libs']		
+			assets.srcDirs = ['assets']
 		}
 		
 		debug.setRoot('build-types/debug')

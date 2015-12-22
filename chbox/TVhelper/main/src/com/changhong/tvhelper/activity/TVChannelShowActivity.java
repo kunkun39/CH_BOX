@@ -111,6 +111,7 @@ public class TVChannelShowActivity extends Activity {
 
     private void initViewAndEvent() {
 //    	bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+
         channels = (ListView) findViewById(R.id.channellist);
         back = (Button) findViewById(R.id.btn_back);
 
@@ -319,6 +320,7 @@ public class TVChannelShowActivity extends Activity {
 			}        	
         };
         this.registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
+        Toast.makeText(this,"节目列表加载中，请稍候",Toast.LENGTH_SHORT).show();
     }
 
     private void initData() {

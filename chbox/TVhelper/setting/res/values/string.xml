@@ -10,5 +10,5 @@
     <string name="pch_name">预约节目帮助</string>
     <string name="pch_content">"        "1、预约节目会通过两种方式通知你节目即将播放，当你手机处于锁屏状态的时候，系统会通过消息的方式通知你，当你手机正在使用的时候，系统会通过对话框的形式通知你，点击对话框中的节目名，你可以直接观看直播节目。\n"        "2、为了保证你能正常的接收消息，请进入系统设置->应用程序管理->选择电视助手->勾选显示通知</string>
     <string name="pdf_ppt_hologram">PDF投影帮助</string>
-    <string name="pdf_ppt_content">"        "1、通过点击pdf,ppt文件进行投影\n"        "2、PPT通过遥控器方向键控制，手机返回键退出。\n"        "3、PDF通过遥控器中间键点击放大，第二次点击恢复。上下键浏览整页，左右键翻页。</string>    
+    <string name="pdf_ppt_content">"        "1、通过点击pdf,ppt文件进行投影\n"        "2、PPT通过遥控器方向键上下进行控制，手机遥控器返回键退出。</string>
 </resources>

@@ -165,7 +165,8 @@ public class IpSelectorDataServer
 				
 		if (mServerIpListMap.containsKey(ip)) {
 			mServerIP = ip;
-			ClientSendCommandService.handler.sendEmptyMessage(2);
+			if (ClientSendCommandService.handler != null)
+				ClientSendCommandService.handler.sendEmptyMessage(2);
 			notifyObservers();
 		}		
 	}
