@@ -108,7 +108,7 @@ public class MusicCategoryAllTab extends Fragment {
 		
 		getActivity().getSupportFragmentManager().beginTransaction()
 				.add(R.id.music_seek_layout_all, player, MusicPlayer.TAG)
-				.show(player).commitAllowingStateLoss();
+				.hide(player).commitAllowingStateLoss();
 		player.setOnPlayListener(new OnPlayListener() {
 			boolean isLastSong = false;
 
@@ -117,6 +117,8 @@ public class MusicCategoryAllTab extends Fragment {
 				if (isLastSong) {
 					player.stopTVPlayer();
 					isLastSong = false;
+					getActivity().getSupportFragmentManager().beginTransaction()
+							.hide(player).commitAllowingStateLoss();
 				} else {
 					player.nextMusic();
 				}
@@ -126,6 +128,8 @@ public class MusicCategoryAllTab extends Fragment {
 			public void OnPlayBegin(String path, String name, String artist) {
 				if (musics.get(musics.size() - 1).getPath().equals(path)) {
 					isLastSong = true;
+					getActivity().getSupportFragmentManager().beginTransaction()
+							.show(player).commitAllowingStateLoss();
 				}
 
 			}

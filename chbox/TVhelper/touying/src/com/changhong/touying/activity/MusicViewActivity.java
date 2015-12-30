@@ -98,7 +98,7 @@ public class MusicViewActivity extends FragmentActivity {
     
     private void initPlayer(){
     	player = new MusicPlayer();
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).show(player).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).hide(player).commitAllowingStateLoss();
         player.setOnPlayListener(new OnPlayListener() {
 			boolean isLastSong = false;
 			@Override
@@ -106,6 +106,7 @@ public class MusicViewActivity extends FragmentActivity {
 				if (isLastSong) {
 					player.stopTVPlayer();
 					isLastSong = false;
+                    getSupportFragmentManager().beginTransaction().hide(player).commitAllowingStateLoss();
 				}
 				else {
 						player.nextMusic();					
@@ -120,6 +121,7 @@ public class MusicViewActivity extends FragmentActivity {
 				else {
 					isLastSong = false;
 				}
+                getSupportFragmentManager().beginTransaction().show(player).commitAllowingStateLoss();
 				
 			}
 		});

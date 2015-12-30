@@ -31,7 +31,7 @@ public class MusicProvider implements AbstructProvider {
 
     @Override
     public List<?> getList() {
-        List<Music> list = null;
+        List<Music> list = new ArrayList<Music>();
         if (context != null) {
             StringBuffer select = new StringBuffer(" 1=1 ");
             // 查询语句：检索出.mp3为后缀名，时长大于1分钟，文件大小大于1MB的媒体文件
@@ -39,7 +39,7 @@ public class MusicProvider implements AbstructProvider {
             select.append(" and " + MediaStore.Audio.Media.DURATION + " > " + FILTER_DURATION);
             Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, select.toString(), null, MediaStore.Audio.Media.ARTIST_KEY);
             if (cursor != null) {
-                list = new ArrayList<Music>();
+
                 while (cursor.moveToNext()) {
                 	long id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media._ID));
                     String title = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.TITLE));
