@@ -37,7 +37,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="设置"
+                android:text="@string/setting"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -66,7 +66,7 @@
 
             <TextView
                 style="@style/titletext"
-                android:text="高级设置" />
+                android:text="@string/advanced" />
 
             <LinearLayout style="@style/wrap_layout" >
 
@@ -78,7 +78,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="系统评分" />
+                        android:text="@string/system_score" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="帮助" />
+                        android:text="@string/help" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>
@@ -104,7 +104,7 @@
 
             <TextView
                 style="@style/titletext"
-                android:text="关于" />
+                android:text="@string/about" />
 
             <LinearLayout style="@style/wrap_layout" >
 
@@ -114,7 +114,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="版本" />
+                        android:text="@string/version" />
 
                     <TextView
                         android:id="@+id/update_info"
@@ -133,7 +133,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="检查更新" />
+                        android:text="@string/update" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>

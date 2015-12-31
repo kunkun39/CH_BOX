@@ -75,7 +75,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="200dp"
-                android:text="系统运行环境"
+                android:text="@string/system_running_environment"
                 android:textColor="@color/black"
                 android:textSize="22sp" />
         </FrameLayout>
@@ -109,7 +109,7 @@
                         android:layout_height="40dp"
                         android:layout_marginLeft="3dp"
                         android:gravity="center_vertical"
-                        android:text="网络环境->" 
+                        android:text="@string/network_environment" 
                         android:textColor="@color/white"
                         android:textSize="15sp" />
 

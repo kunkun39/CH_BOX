@@ -1,8 +1,10 @@
 package com.changhong.setting.domain;
 
 import android.content.Context;
+
 import com.changhong.common.domain.NetworkStatus;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.setting.R;
 import com.changhong.setting.utils.NetEstimateUtils;
 
 /**
@@ -20,6 +22,8 @@ public class NetworkItem implements ScoreItem {
     private NetworkStatus mobilelNetworkStatus;
 
     private int rate = 0;
+    
+    private Context context;
 
     public NetworkItem(Context context, int rate) {
         this.rate = rate;
@@ -51,15 +55,15 @@ public class NetworkItem implements ScoreItem {
     @Override
     public String getCurrentSuggestion() {
         if (serverNetworkStatus.equals(NetworkStatus.NET_WIRED) && mobilelNetworkStatus.equals(NetworkStatus.NET_WIRELESS_5G)) {
-            return "网络运行环境非常好";
+            return context.getResources().getString(R.string.wired_5g);
         } else if(serverNetworkStatus.equals(NetworkStatus.NET_WIRED) && mobilelNetworkStatus.equals(NetworkStatus.NET_WIRELESS_24G)) {
-            return "可以选择更好的路由器";
+            return context.getResources().getString(R.string.wired_24g);
         } else if(serverNetworkStatus.equals(NetworkStatus.NET_WIRELESS_24G) && mobilelNetworkStatus.equals(NetworkStatus.NET_WIRELESS_5G)) {
-            return "请用有线连接机顶盒";
+            return context.getResources().getString(R.string.wireless24g_5g);
         } else if(serverNetworkStatus.equals(NetworkStatus.NET_WIRELESS_24G) && mobilelNetworkStatus.equals(NetworkStatus.NET_WIRELESS_24G)) {
-            return "请用有线连接机顶盒和更好的路由器";
+            return context.getResources().getString(R.string.wireless24g_24g);
         } else {
-            return "手机或机顶盒没有连网";
+            return context.getResources().getString(R.string.no_network);
         }
     }
 }

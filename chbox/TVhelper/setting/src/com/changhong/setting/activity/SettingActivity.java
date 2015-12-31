@@ -89,7 +89,7 @@ public class SettingActivity extends Activity {
 		 */
 		m_pDialog = new ProgressDialog(SettingActivity.this);
 		m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		m_pDialog.setMessage("正在下载更新");
+		m_pDialog.setMessage(getResources().getString(R.string.downloading));
 		m_pDialog.setIndeterminate(false);
 		m_pDialog.setCancelable(false);
 		// m_pDialog.setProgress(0);
@@ -102,11 +102,11 @@ public class SettingActivity extends Activity {
 				int what = msg.arg1;
 				switch (what) {
 				case 100:
-					Toast.makeText(getApplicationContext(), "恭喜您，已经是最新版本了",
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.the_latest_version),
 							Toast.LENGTH_SHORT).show();
 					break;
 				case 200:
-					Toast.makeText(getApplicationContext(), "你没连接网络，请查看设置",
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.phone_no_network),
 							Toast.LENGTH_SHORT).show();
 					break;
 				case 300:
@@ -121,11 +121,11 @@ public class SettingActivity extends Activity {
 					if (m_pDialog != null && m_pDialog.isShowing()) {
 						m_pDialog.dismiss();
 					}
-					Toast.makeText(getApplicationContext(), "网络连接异常，请稍后重试",
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomaly),
 							Toast.LENGTH_SHORT).show();
 					break;
 				case 600:
-					Toast.makeText(getApplicationContext(), "网络连接异常，请稍后重试",
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.network_anomaly),
 							Toast.LENGTH_SHORT).show();
 					break;
 				default:
@@ -165,7 +165,7 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				scoreDialog = new ScoreDialog(SettingActivity.this);
-				scoreDialog.setTitle("系统评分");
+				scoreDialog.setTitle(getResources().getString(R.string.system_score));
 				scoreDialog.show();
 			}
 		});
@@ -175,7 +175,7 @@ public class SettingActivity extends Activity {
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				appHelpDialog = new AppHelpDialog(SettingActivity.this);
-				appHelpDialog.setTitle("系统帮助");
+				appHelpDialog.setTitle(getResources().getString(R.string.system_help));
 				appHelpDialog.show();
 			}
 		});
@@ -191,7 +191,7 @@ public class SettingActivity extends Activity {
 	}
 
 	private void initData() {
-		updateInfo.setText("当前系统版本:" + getCurrentSystemVersion());
+		updateInfo.setText(getResources().getString(R.string.cur_version)+ getCurrentSystemVersion());
 
 		/**
 		 * 注册广播

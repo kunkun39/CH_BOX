@@ -39,7 +39,7 @@ public class ScoreDialog extends Dialog {
 			if (i <= roundProgressBar.getMax()) {
 				handler.sendEmptyMessageDelayed(i++, 1);
 			}
-            textScoreAll.setText(String.valueOf(msg.what) + "分");
+            textScoreAll.setText(String.valueOf(msg.what) + getContext().getResources().getString(R.string.score));
 		};
 	};
 
@@ -83,7 +83,7 @@ public class ScoreDialog extends Dialog {
         
         roundProgressBar.setMax(score);
 		handler.sendEmptyMessageDelayed(i++, 1);
-        textScoreAll.setText(String.valueOf(score) + "分");
+        textScoreAll.setText(String.valueOf(score) + getContext().getResources().getString(R.string.score));
     }
 
     private void initEvent() {

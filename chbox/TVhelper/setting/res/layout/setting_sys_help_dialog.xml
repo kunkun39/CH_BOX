@@ -29,7 +29,7 @@
 
     <TextView
         style="@style/titletext"
-        android:text="常见问题" />
+        android:text="@string/faq" />
 
     <LinearLayout style="@style/wrap_layout" >
 

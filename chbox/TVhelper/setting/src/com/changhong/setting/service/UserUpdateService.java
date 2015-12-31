@@ -41,6 +41,7 @@ import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.DialogUtil.DialogMessage;
+import com.changhong.setting.R;
 
 /**
  * Created by Jack Wang
@@ -142,7 +143,7 @@ public class UserUpdateService {
 
     public void initUpdateThread() {
         if (UserUpdateService.downloading) {
-            Toast.makeText(context, "当前正在下载更新，请耐心等待", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.loading_waiting), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -378,10 +379,10 @@ public class UserUpdateService {
                 if (NetworkUtils.isWifiConnected(context)) {
                 	content=updateMsgContent;
                 } else {
-                	content="注意：您现在连接的是移动网络，运营商会收取费用\n\n" + updateMsgContent;
+                	content=mContext.getResources().getString(R.string.mobile_data_tag) + updateMsgContent;
                 }
             	Dialog  dialog =DialogUtil.showAlertDialog(context,
-                 		"电视助手版本升级",content,new DialogBtnOnClickListener() {
+                 		context.getResources().getString(R.string.stb_version_update),content,new DialogBtnOnClickListener() {
  					
  					@Override
  					public void onSubmit(DialogMessage dialogMessage) {
@@ -534,7 +535,7 @@ public class UserUpdateService {
                     context.startActivity(intent);
                 } else {
                 	 Dialog  dialog =DialogUtil.showAlertDialog(context,
-                     		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
+                     		context.getResources().getString(R.string.update_prepared),context.getResources().getString(R.string.setup_prompt),new DialogBtnOnClickListener() {
      					
      					@Override
      					public void onSubmit(DialogMessage dialogMessage) {
