@@ -527,7 +527,7 @@ public class TVChannelShowActivity extends Activity {
                         //收藏操作
                         boolean success = channelService.channelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText(getString(android.R.string.cancel)+"\n" + getString(R.string.favorite));
+                            vh.channelShouCang.setText(getString(R.string.cancel)+"\n" + getString(R.string.favorite));
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
                             allShouChangChannel.add(channelServiceId);
 

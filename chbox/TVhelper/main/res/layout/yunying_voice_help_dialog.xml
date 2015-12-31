@@ -14,7 +14,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dialog_baidudia_title_margintop"
             android:singleLine="true"
-            android:text="@stirng/message_tip"
+            android:text="@string/message_tip"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="@dimen/dialog_title_textsize" />
 

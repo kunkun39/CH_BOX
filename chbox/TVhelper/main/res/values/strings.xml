@@ -498,6 +498,7 @@
     <string name="help">帮助</string>
     <string name="close_stb_tip">是否打开或关闭机顶盒</string>
     <string name="notify_mesg">长虹电视助手提醒您：有新消息，请查收!</string>
+    <string name="comfirm_del">确定要删除?</string>
     <string name="cancel_favorite">取消\n收藏</string>
 
     <string name="cancel_order">取消\n预约</string>
