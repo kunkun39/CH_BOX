@@ -475,7 +475,7 @@
     <string name="favorite">收藏</string>
     <string name="channel">频道</string>
     <string name="order">预约</string>
-    <string name="current_channel">网络连接出错，请从新尝试</string>
+    <string name="current_channel">当前播放节目：</string>
     <string name="no_channel_detail">无频道信息</string>
     <string name="channel_detail">频道信息</string>
     <string name="next_channel">下一个节目</string>

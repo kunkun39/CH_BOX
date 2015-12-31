@@ -983,7 +983,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	
 	private Button bt_share;
 	private ScreenShotView view_cutscreen;
-	private String title=getString(R.string.app_name),text;//我正在观看XXX台，XXX节目，好精彩呀！
+	private String title=MyApplication.getContext().getString(R.string.app_name),text;//我正在观看XXX台，XXX节目，好精彩呀！
 	private String TAG="cutscreen";
 	private RelativeLayout rl_content;
 	private ProgressBar pb_cutscreen;
