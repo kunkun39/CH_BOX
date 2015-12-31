@@ -122,7 +122,7 @@ public class DialogUtil {
 	 */
 	public static Dialog showAlertDialog(Context context, String title,
 			String content, final DialogBtnOnClickListener listener) {
-		return showAlertDialog(context, title, content, "确    认", "取    消",
+		return showAlertDialog(context, title, content, context.getString(R.string.confrim), context.getString(R.string.cancel),
 				listener);
 	}
 

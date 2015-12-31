@@ -13,7 +13,9 @@ import java.util.Observer;
 import android.text.StaticLayout;
 import android.text.format.Time;
 
+import com.changhong.common.R;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
@@ -29,7 +31,7 @@ public class IpSelectorDataServer
 	 * Static Final String
 	 */
 	private static final String DEFAULT_IP_NAME = NetworkUtils.BOX_DEFAULT_NAME;
-	private static final String DEFAULT_LINKLESSNESS = "未连接";
+	private static final String DEFAULT_LINKLESSNESS = MyApplication.getContext().getString(R.string.disconnected);
 	private static final int  DELAY_TIME = 5000;
 	
 	/**

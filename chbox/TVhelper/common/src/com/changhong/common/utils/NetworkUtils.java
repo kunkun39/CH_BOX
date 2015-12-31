@@ -7,8 +7,11 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+
+import com.changhong.common.R;
 import com.changhong.common.domain.NetworkStatus;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.IpSelectorDataServer;
 
 import org.apache.http.conn.util.InetAddressUtils;
@@ -30,7 +33,7 @@ public class NetworkUtils {
 
     private final static int NET_5G_FREQUENCY = 5120;
 
-    public final static String BOX_DEFAULT_NAME = "客    厅";
+    public final static String BOX_DEFAULT_NAME = MyApplication.getContext().getString(R.string.default_name);
 
     public static String getLocalHostIp() {
         String ipaddress = "";

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.changhong.common.R;
 import com.changhong.common.service.ClientSendCommandService;
 
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class BoxSelecter implements Observer
 			public void onClick(View v) {
 				if (IpSelectorDataServer.getInstance().getIpList().isEmpty()) {
 					Toast.makeText(mActivity,
-							"没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_LONG)
+							R.string.server_isnt_exist, Toast.LENGTH_LONG)
 							.show();
 				} else {
 					mView.setVisibility(View.VISIBLE);

@@ -1,5 +1,11 @@
 package com.changhong.common.utils;
 
+import android.app.Application;
+import android.content.Context;
+
+import com.changhong.common.R;
+import com.changhong.common.system.MyApplication;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,29 +56,29 @@ public class DateUtils {
         if (weekIndex == 0) {
             weekIndex = 7;
         }
-
+        Context context = MyApplication.getContext();
         String weekIndexName = "";
         switch (weekIndex) {
             case 1:
-                weekIndexName = "周一";
+                weekIndexName = context.getString(R.string.monday);
                 break;
             case 2:
-                weekIndexName = "周二";
+                weekIndexName = context.getString(R.string.tuesday);
                 break;
             case 3:
-                weekIndexName = "周三";
+                weekIndexName = context.getString(R.string.wednesday);
                 break;
             case 4:
-                weekIndexName = "周四";
+                weekIndexName = context.getString(R.string.thursday);
                 break;
             case 5:
-                weekIndexName = "周五";
+                weekIndexName = context.getString(R.string.friday);
                 break;
             case 6:
-                weekIndexName = "周六";
+                weekIndexName = context.getString(R.string.saturay);
                 break;
             case 7:
-                weekIndexName = "周天";
+                weekIndexName = context.getString(R.string.sunday);
                 break;
             default:
                 break;
