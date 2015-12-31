@@ -14,7 +14,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dialog_baidudia_title_margintop"
             android:singleLine="true"
-            android:text="电视助手信息提示："
+            android:text="@stirng/message_tip"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="@dimen/dialog_title_textsize" />
 
@@ -59,7 +59,7 @@
             android:gravity="center"
             android:layout_centerHorizontal="true"
             android:singleLine="false"
-            android:text="我知道了"
+            android:text="@string/ok"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
     </RelativeLayout>

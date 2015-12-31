@@ -31,7 +31,6 @@
                 android:layout_marginTop="5dip"
                 android:id="@+id/music_name"
                 android:layout_width="match_parent"
-                android:text="忘情水 "
                 android:layout_height="32dp"
                 android:layout_weight="0.49"
                 android:textSize="14sp"/>

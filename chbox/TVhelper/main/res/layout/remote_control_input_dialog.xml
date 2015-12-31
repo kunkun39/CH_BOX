@@ -70,7 +70,7 @@
                     android:background="@drawable/btn_notext"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:text="取    消"
+                    android:text="@string/cancel"
                     android:textSize="@dimen/dialog_btn_textsize"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
@@ -79,7 +79,7 @@
                     android:gravity="center"/>
 	        <Button
 		            android:id="@+id/send"
-		            android:text="发    送"
+		            android:text="@string/send"
 		            android:background="@drawable/btn_notext"
                     android:textSize="@dimen/dialog_btn_textsize"
                     android:textColor="@color/white"

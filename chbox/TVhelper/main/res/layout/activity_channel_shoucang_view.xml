@@ -40,7 +40,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="未连接"
+                android:text="@string/disconnected"
                 android:textSize="20sp" />
 
             <ImageView
@@ -90,7 +90,7 @@
                 android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="频道收藏"
+                android:text="@string/favorite_channel_notoken"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -110,7 +110,7 @@
                 android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="节目预约"
+                android:text="@string/order_channel"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_title_textsize" />
         </LinearLayout>

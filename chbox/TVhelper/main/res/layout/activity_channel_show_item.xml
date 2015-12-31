@@ -58,7 +58,7 @@
                 android:layout_toLeftOf="@+id/channel_shoucang"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="无节目信息"
+                android:text="@string/no_channel_detail"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
@@ -70,7 +70,7 @@
                 android:layout_toLeftOf="@+id/channel_play_button"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="收藏\n频道"
+                android:text="@string/favorite_channel"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
@@ -82,7 +82,7 @@
                 android:layout_centerVertical="true"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="节目\n信息"
+                android:text="@string/channel_info_notoken"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
         </RelativeLayout>

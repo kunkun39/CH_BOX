@@ -40,7 +40,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="未连接"
+                android:text="@string/disconnected"
                 android:textSize="20sp" />
 
             <ImageView
@@ -102,7 +102,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="全部"
+                android:text="@string/all"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -123,7 +123,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="高清"
+                android:text="@string/hd"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -144,7 +144,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="卫视"
+                android:text="@string/local_tv"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -165,7 +165,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="少儿"
+                android:text="@string/cartoon"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -186,7 +186,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="央视"
+                android:text="@string/cctv"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -207,7 +207,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="同时看"
+                android:text="@string/atst"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize"
                 android:visibility="gone" />

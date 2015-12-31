@@ -46,7 +46,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="未连接"
+                android:text="@string/disconnected"
                 android:textSize="20sp" />
 
             <ImageView

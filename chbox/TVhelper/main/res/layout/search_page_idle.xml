@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_vertical"
-            android:text="历史搜索记录:"
+            android:text="@string/search_history_tip"
 			/>
         <LinearLayout 
             android:id="@+id/search_idle_content"
