@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <string name="help_details">帮助详情</string>
+    <string name="rch_name">遥控器帮助</string>
+    <string name="rch_content">"        "1、手指上下左右滑动，能得到上下左右按键一样的效果\n"        "2、电视键可以实现在任何界面下切换到全屏播放电视\n"        "3、频道键可以实现在手机上快速选择切换机顶盒上的节目\n"        "4、关机键可以使机顶盒处于低功耗模式，并且不影响数字电视节目分享到移动设备\n\n</string>
+    <string name="vch_name">语音控制帮助</string>
+    <string name="vch_content">"        "1、请按住屏幕任何地方，开始说话，松开后，助手自动为您识别指令。目前支持的语音指令，可以帮助您换台和启动盒子里的程序，更多指令敬请期待&#8230; \n"        "2、换台指令：如说出“中央一台”，盒子将会换到中央一台\n"        "3、启动程序指令：如说出“打开电视助手”，盒子将自动启动手机助手程序\n"        "4、当语音识别没有响应时，请检查手机网络是否通畅，是否能连接上Internet</string>
+	<string name="system_score">系统评分</string>
+    <string name="pch_name">预约节目帮助</string>
+    <string name="pch_content">"        "1、预约节目会通过两种方式通知你节目即将播放，当你手机处于锁屏状态的时候，系统会通过消息的方式通知你，当你手机正在使用的时候，系统会通过对话框的形式通知你，点击对话框中的节目名，你可以直接观看直播节目。\n"        "2、为了保证你能正常的接收消息，请进入系统设置->应用程序管理->选择电视助手->勾选显示通知</string>
+    <string name="pdf_ppt_hologram">PDF投影帮助</string>
+    <string name="pdf_ppt_content">"        "1、通过点击pdf,ppt文件进行投影\n"        "2、PPT通过遥控器方向键上下进行控制，手机遥控器返回键退出。</string>
+    <string name="setting">设置</string>
+    <string name="advanced">高级设置</string>
+    <string name="help">帮助</string>
+    <string name="about">关于</string>
+    <string name="version">版本</string>
+    <string name="update">检查更新</string>
+    <string name="faq">常见问题</string>
+    <string name="system_running_environment">系统运行环境</string>
+    <string name="network_environment">网络环境-></string>
+    <string name="neu_dtv_tag">请用有线连接机顶盒，否则很难保证数字电视播放流畅度</string>
+    <string name="neu_24g">当前连接是在2.4G频段，可能高清节目的播放会卡顿</string>
+    <string name="loading_waiting">"当前正在下载更新，请耐心等待"</string>
+    <string name="mobile_data_tag">注意：您现在连接的是移动网络，运营商会收取费用\n\n</string>
+    <string name="stb_version_update">电视助手版本升级</string>
+    <string name="update_prepared">已经为您准备好更新</string>
+    <string name="setup_prompt">最新的版本已经下载完成,是否安装更新？</string>
+    <string name="wired_5g">网络运行环境非常好</string>
+    <string name="wired_24g">可以选择更好的路由器</string>
+    <string name="wireless24g_5g">请用有线连接机顶盒</string>
+    <string name="wireless24g_24g">请用有线连接机顶盒和更好的路由器</string>
+    <string name="no_network">手机或机顶盒没有连网</string>
+    <string name="downloading">正在下载更新</string>
+    <string name="the_latest_version">恭喜您，已经是最新版本了</string>
+    <string name="phone_no_network">你没连接网络，请查看设置</string>
+    <string name="network_anomaly">网络连接异常，请稍后重试</string>
+    <string name="system_help">系统帮助</string>
+    <string name="cur_version">当前系统版本:</string>
+    <string name="update_check">检查更新</string>
+    <string name="score">分</string>
+    <string name="help1">帮助</string>
+    <string name="help2">帮助</string>
+    <string name="help3">帮助</string>
+    <string name="hel4p">帮助</string>
+    <string name="hel5p">帮助</string>
+
+</resources>
