@@ -307,7 +307,7 @@ public class VedioDetailsActivity extends Activity {
                 try {
                     if (NetworkUtils.isWifiConnected(VedioDetailsActivity.this)) {
                         if ( !StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                            Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.cant_find_TV), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
                             return;
                         }
 

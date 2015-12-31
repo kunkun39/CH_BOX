@@ -35,7 +35,6 @@
     
       <string name="picture_no">张图</string>
     <string name="duration">时长</string>
-    <string name="cant_find_TV">手机未连接电视，请确认后再投影</string>
     <string name="connect_wifi">请连接无线网络</string>
     <string name="get_video_failed">视频获取失败</string>
     <string name="phone_disconnect">手机未连接电视，请确认后再投影</string>
