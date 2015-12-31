@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="stb_suit_title">电视助手标题</string>
+    <string name="stb_suit">电视助手</string>
+    <string name="share_content_from_stb">来自电视助手的截屏分享内容</string>
+    <string name="null_screemshot">截屏图片为空</string>
+    <string name="null_share_resources">分享图片资源不存在可能会导致分享失败!</string>
+    <string name="null_share_param">shareParam分享内容不能为空</string>
+    <string name="share_failed_tag">请通过shareParam.setShareType()设置分享类型</string>
+    <string name="install_wechat">分享失败，请安装微信客户端</string>
+    <string name="share_failed">分享发生异常</string>
+    <string name="share_success">分享成功</string>
+    <string name="share_cancel">分享取消</string>
+    <string name="share_tag">我正在观看XXX台，XXX节目，好精彩呀!</string>
 </resources>

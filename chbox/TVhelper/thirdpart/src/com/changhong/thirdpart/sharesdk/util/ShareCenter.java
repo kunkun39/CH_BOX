@@ -165,7 +165,7 @@ public class ShareCenter {
 
 		if (shareParam == null) {// 分享参数为空不能分享
 			L.e("shareParam or platFrom can not be null");
-			showToast(context, "shareParam分享内容不能为空", false);
+			showToast(context, getContext().getResources().getString(R.string.null_share_param), false);
 			return;
 		}
 
@@ -454,7 +454,7 @@ public class ShareCenter {
 						&& TextUtils.isEmpty(shareParam.getImageUrl())
 						&& shareParam.getImageData() == null) {
 					// imagePath/imageUrl/imageData
-					showToast(context, "分享图片资源不存在可能会导致分享失败!", false);
+					showToast(context, context.getResources().getString(R.string.null_share_resources), false);
 					Log.e("",
 							"Wechat分享除SHARE_TEXT外其它ShareType需要图片资源，您没设置图片资源可能导致分享异常");
 				} else if (shareParam.getImageData() != null) {
@@ -497,7 +497,7 @@ public class ShareCenter {
 				} else {
 					Log.e("",
 							"微信分享 没有指定分享类型会导致分享不成功。请通过shareParam.setShareType()设置分享类型");
-					showToast(context, "请通过shareParam.setShareType()设置分享类型",
+					showToast(context, context.getResources().getString(R.string.share_failed_tag),
 							true);
 				}
 			}
@@ -584,9 +584,9 @@ public class ShareCenter {
 								|| expName
 										.contains("WechatTimelineNotSupportedException") || expName
 									.contains("WechatFavoriteNotSupportedException"))) {
-					msg.obj = "分享失败，请安装微信客户端";
+					msg.obj = getContext().getResources().getString(R.string.install_wechat);
 				} else {
-					msg.obj = "分享发生异常";
+					msg.obj = getContext().getResources().getString(R.string.share_failed);
 				}
 				shareToastHandler.sendMessage(msg);
 			}
@@ -600,7 +600,7 @@ public class ShareCenter {
 			}
 			if (!isOnlyMypaListener) {
 				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
-				msg.obj = "分享成功";
+				msg.obj = getContext().getResources().getString(R.string.share_success);
 				shareToastHandler.sendMessage(msg);
 			}
 		}
@@ -612,7 +612,7 @@ public class ShareCenter {
 			}
 			if (!isOnlyMypaListener) {
 				Message msg = shareToastHandler.obtainMessage(SHOW_TOAST);
-				msg.obj = "分享取消";
+				msg.obj = getContext().getResources().getString(R.string.share_cancel);;
 				shareToastHandler.sendMessage(msg);
 			}
 		}

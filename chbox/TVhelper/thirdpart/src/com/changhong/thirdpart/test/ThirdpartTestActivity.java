@@ -34,11 +34,11 @@ public class ThirdpartTestActivity extends Activity implements OnClickListener {
 	private ScreenShotView viewShare;
 //	private String title, titleurl, text;
 	/** 标题 */
-	public String title = "长虹电视助手";
+	public String title = getResources().getString(R.string.stb_suit);
 	/** 链接 */
 	public String titleUrl = null;
 	/** 文本 */
-	public String text = "我正在观看XXX台，XXX节目，好精彩呀!";
+	public String text =  getResources().getString(R.string.share_tag);
 	private EditText edt_title, edt_titleurl, edt_text;
 
 	@Override

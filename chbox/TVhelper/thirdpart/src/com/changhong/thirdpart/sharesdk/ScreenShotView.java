@@ -54,11 +54,11 @@ public class ScreenShotView extends RelativeLayout {
 
 	// 分享参数
 	/** 标题 */
-	public String title = "电视助手标题";
+	public String title = getContext().getResources().getString(R.string.stb_suit_title);
 	/** 链接 */
 	public String titleUrl = null;
 	/** 文本 */
-	public String text = "来自电视助手的截屏分享内容";
+	public String text = getContext().getResources().getString(R.string.share_content_from_stb);
 	/** 回调 */
 	public PlatformActionListener platformActionListener;
 
@@ -184,7 +184,7 @@ public class ScreenShotView extends RelativeLayout {
 			iv_imgcut.setImageBitmap(mScreenBitmap);
 		}
 		if (mScreenBitmap == null) {
-			showToast("截屏图片为空");
+			showToast(getResources().getString(R.string.null_screemshot));
 			return;
 		}
 		iv_imgalpha.setVisibility(VISIBLE);
