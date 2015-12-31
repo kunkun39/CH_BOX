@@ -72,7 +72,7 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
                 case 0:
                     break;
                 case 1:
-                    Toast.makeText(TVVideoViewPlayingActivity.this, "播放超时，退出播放！！！", 3000).show();
+                    Toast.makeText(TVVideoViewPlayingActivity.this, R.string.play_outoftime, 3000).show();
                     finish();
                     break;
                 default:
@@ -254,7 +254,7 @@ public class TVVideoViewPlayingActivity extends Activity implements OnPreparedLi
                 if (returnConfirm == 1) {
                     returnConfirm = 0;
                     backTimestamp = System.currentTimeMillis();
-                    Toast.makeText(TVVideoViewPlayingActivity.this, "再按一次退出", 1000).show();
+                    Toast.makeText(TVVideoViewPlayingActivity.this, R.string.press_again_to_exit, 1000).show();
                 } else {
                     mDismissHandler = null;
                     finish();

@@ -361,7 +361,7 @@ public class SearchPageDefault extends Fragment{
 			
 			@Override
 			public boolean onLongClick(View v) {
-				DialogUtil.showAlertDialog(activity, "确定要删除?", String.valueOf(view.getText()), new DialogBtnOnClickListener()
+				DialogUtil.showAlertDialog(activity, getString(R.string.comfirm_del), String.valueOf(view.getText()), new DialogBtnOnClickListener()
 				{				
 					@Override
 					public void onSubmit(DialogMessage dialogMessage) {

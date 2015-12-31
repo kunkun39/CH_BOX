@@ -185,9 +185,9 @@ public class ClientLocalThreadRunningService extends Service {
                                 notification = new Notification();
                                 notification.icon = R.drawable.applogo;
                                 notification.flags |= Notification.FLAG_AUTO_CANCEL;
-                                notification.tickerText = "电视助手：您有预约节目";
+                                notification.tickerText = getString(R.string.order_text_2);
                                 notification.defaults = Notification.DEFAULT_SOUND;
-                                notification.setLatestEventInfo(ClientLocalThreadRunningService.this, "电视助手：您有预约节目", program.getChannelName() + "-" + program.getProgramName(), pendingIntent);
+                                notification.setLatestEventInfo(ClientLocalThreadRunningService.this, getString(R.string.order_text_2), program.getChannelName() + "-" + program.getProgramName(), pendingIntent);
                                 notificationManager.notify(0, notification);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -270,7 +270,7 @@ public class ClientLocalThreadRunningService extends Service {
 		dialog_yuyue.getWindow().setAttributes(param);
 		
 		adapter_yuyue.notifyDataSetChanged();
-		Toast.makeText(this, "预约提示：请点击节目列表切换频道，或点取消关闭列表", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, R.string.order_tip, Toast.LENGTH_LONG).show();
 	}
 	class YuYueAdapter extends BaseAdapter {
 		private LayoutInflater minflater;
@@ -303,7 +303,7 @@ public class ClientLocalThreadRunningService extends Service {
 			}
 			if (getItem(position)!=null) {
 				final OrderProgram program=yuyueprograms.get(position);
-				vh.programname.setText("预约节目"+(position+1)+"：  "+program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime());
+				vh.programname.setText(getString(R.string.order) + getString(R.string.channel)+(position+1)+"：  "+program.getChannelName() + "\n" + program.getProgramName() + " " + program.getProgramStartTime());
 				vh.programname.setOnClickListener(new OnClickListener() {
 					
 					@Override
@@ -636,7 +636,7 @@ public class ClientLocalThreadRunningService extends Service {
                 		.topActivity
                 		.getPackageName()
                 		.contains("com.changhong.")) {
-                	Toast.makeText(ClientLocalThreadRunningService.this, "更新失败，稍后更新", Toast.LENGTH_SHORT).show();
+                	Toast.makeText(ClientLocalThreadRunningService.this, R.string.update_faied, Toast.LENGTH_SHORT).show();
 				}                
             }
         }

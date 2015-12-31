@@ -160,7 +160,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
                 if (ClientSendCommandService.channelData.isEmpty()) {
-                    Toast.makeText(TVRemoteControlActivity.this, "节目列表为空！", 3000).show();
+                    Toast.makeText(TVRemoteControlActivity.this, R.string.channel_list_empty, 3000).show();
                 } else {
                     if (switchChannelDialog != null && !switchChannelDialog.isShowing()) {
                         switchChannelDialog.show();
@@ -201,7 +201,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				Dialog dialog = DialogUtil.showAlertDialog(
-                        TVRemoteControlActivity.this, "", "是否打开或关闭机顶盒?",
+                        TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
                         new DialogBtnOnClickListener() {
 
                             @Override
@@ -282,7 +282,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                  */
                 int code = recognitionClient.startVoiceRecognition(recogListener, config);
                 if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-                    Toast.makeText(TVRemoteControlActivity.this, "请检查网络连接" , Toast.LENGTH_LONG).show();
+                    Toast.makeText(TVRemoteControlActivity.this, R.string.check_network , Toast.LENGTH_LONG).show();
                 }
 
                 return true;
@@ -792,10 +792,10 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         @Override
         public void onError(int errorType, int errorCode) {
         	if (errorCode == VoiceRecognitionClient.ERROR_NETWORK_CONNECT_ERROR) {
-        		Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，网络状态不好，识别失败" , Toast.LENGTH_LONG).show();
+        		Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_bad_network_failed , Toast.LENGTH_LONG).show();
 			}
         	else {
-        		Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，我们不能识别空指令" , Toast.LENGTH_LONG).show();
+        		Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_empty_message , Toast.LENGTH_LONG).show();
 			}
             
             isRecognitioning = false;
@@ -874,7 +874,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     }
 
                     hasResult = true;
-                    Toast.makeText(TVRemoteControlActivity.this, "语音的结果为:" + recognitionResult, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TVRemoteControlActivity.this, getString(R.string.voice_result) + recognitionResult, Toast.LENGTH_LONG).show();
 
                 } else if (YuYingWordsUtils.isSearchContainsAppKeywords(recognitionResult)) {
                     //TODO:流程->搜索应用
@@ -952,7 +952,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         ClientSendCommandService.handler.sendEmptyMessage(1);
                         Log.e(TAG, "message:" + "app_open:" + info.packageName);
 
-                        Toast.makeText(TVRemoteControlActivity.this, "应用的结果为:" + info.appName + "\n语音的结果为:" + recognitionResult, Toast.LENGTH_LONG).show();
+                        Toast.makeText(TVRemoteControlActivity.this, getString(R.string.app_result) + info.appName + "\n" + getString(R.string.voice_result) + recognitionResult, Toast.LENGTH_LONG).show();
                         hasResult = true;
                     } else {
                         hasResult = false;
@@ -982,7 +982,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                          * after search it still empty, notice user channel is empty
                          */
                         if (ClientSendCommandService.channelData.isEmpty()) {
-                            Toast.makeText(TVRemoteControlActivity.this, "频道列表为空", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TVRemoteControlActivity.this, R.string.channel_list_empty, Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -1096,7 +1096,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                             ClientSendCommandService.msgSwitchChannel = serviceId + "#" + tsId + "#" + orgNId;
                             ClientSendCommandService.handler.sendEmptyMessage(3);
                             String serviceName = (String) ClientSendCommandService.channelData.get(Integer.valueOf(bestPostion)).get("service_name");
-                            Toast.makeText(TVRemoteControlActivity.this, "频道的结果为:" + serviceName + "\n语音的结果为:" + beforeConvertRecognitionResult, Toast.LENGTH_LONG).show();
+                            Toast.makeText(TVRemoteControlActivity.this, getString(R.string.channel_result) + serviceName + "\n" + getString(R.string.voice_result) + beforeConvertRecognitionResult, Toast.LENGTH_LONG).show();
 
                             hasResult = true;
                         } else {
@@ -1178,7 +1178,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                 ClientSendCommandService.handler.sendEmptyMessage(1);
                                 Log.e(TAG, "message:" + "app_open:" + info.packageName);
 
-                                Toast.makeText(TVRemoteControlActivity.this, "应用的结果为:" + info.appName + "\n语音的结果为:" + recognitionResult, Toast.LENGTH_LONG).show();
+                                Toast.makeText(TVRemoteControlActivity.this, getString(R.string.app_result) + info.appName + "\n" + getString(R.string.voice_result) + recognitionResult, Toast.LENGTH_LONG).show();
                                 hasResult = true;
                             } else {
                                 hasResult = false;
@@ -1201,7 +1201,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 } else {
 				if(AppConfig.USE_MALL_APP)
 				{
-					if (recognitionResult.equals("帮助")) {
+					if (recognitionResult.equals(getString(R.string.help))) {
 						BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
 	                    yuYingHelpDialog.show();
 					}else {
@@ -1212,7 +1212,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 				}
 				else
 				{
-                    Toast.makeText(TVRemoteControlActivity.this, "抱歉哟，目前还不支持该指令:" + recognitionResult, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TVRemoteControlActivity.this, getString(R.string.sorry_message_cannot_support) + recognitionResult, Toast.LENGTH_LONG).show();
 				}
                 }
             } else {

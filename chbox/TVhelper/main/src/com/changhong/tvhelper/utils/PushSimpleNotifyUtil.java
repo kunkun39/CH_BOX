@@ -104,13 +104,13 @@ public class PushSimpleNotifyUtil implements IDataListener {
 			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			intent.setClass(mContext, TVHelperWelcomeActivity.class);
 			
-			builder.setContentTitle("长虹电视助手");
+			builder.setContentTitle(mContext.getString(R.string.app_name));
 			builder.setContentText(data);
 
 			try {
 				JSONObject o = JSON.parseObject(data);
 
-				builder.setContentTitle("长虹电视助手");
+				builder.setContentTitle(mContext.getString(R.string.app_name));
 				builder.setContentText(data);
 				if (o.get("T") != null) {
 					builder.setContentTitle(o.get("T").toString());					
@@ -130,7 +130,7 @@ public class PushSimpleNotifyUtil implements IDataListener {
 			builder.setContentIntent(PendingIntent.getActivity(mContext, 0, intent,
 					PendingIntent.FLAG_CANCEL_CURRENT));
 			builder.setSmallIcon(R.drawable.applogo);
-			builder.setTicker("长虹电视助手提醒您：有新消息，请查收!");
+			builder.setTicker(mContext.getString(R.string.notify_mesg));
 			
 			builder.setDefaults(Notification.DEFAULT_ALL);
 			builder.setWhen(System.currentTimeMillis());

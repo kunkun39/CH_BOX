@@ -356,7 +356,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 //设置节目信息
                 final String programStartTime = program.getProgramStartTime();
                 final String programEndTime = program.getProgramEndTime();
-                String info = "时间：" + programStartTime + " - " + programEndTime + "\n\n节目：" + program.getProgramName();
+                String info = getString(R.string.time) + ":" + programStartTime + " - " + programEndTime + "\n\n" + getString(R.string.channel) + ":" + program.getProgramName();
                 vh.programInfo.setText(info);
 
                 //设置节目信息的颜色
@@ -367,16 +367,16 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 if (programStartTime.compareTo(currentTime) > 0 || selectedWeekIndex > weekIndex) {
 
                     if (findOrderProgram(orderProgramList,program)) {
-                        vh.programStatus.setText("已预约");
+                        vh.programStatus.setText(R.string.ordered);
                         vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
                     	vh.iv_programstate.setImageResource(R.drawable.program_ordered);
                     	vh.iv_programstate.setVisibility(View.VISIBLE);
                     	vh.programStatus.setVisibility(View.INVISIBLE);
-                    } else if (program.getProgramName().equals("无节目信息")) {
+                    } else if (program.getProgramName().equals(getString(R.string.no_channel_detail))) {
                         vh.programStatus.setVisibility(View.INVISIBLE);
                         vh.iv_programstate.setVisibility(View.INVISIBLE);
                     } else {
-                        vh.programStatus.setText("可预约");
+                        vh.programStatus.setText(R.string.can_order);
                         vh.programStatus.setTextColor(getResources().getColor(R.color.white));
                     	vh.iv_programstate.setImageResource(R.drawable.program_order);
                     	vh.iv_programstate.setVisibility(View.VISIBLE);
@@ -388,15 +388,15 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                         public void onClick(View v) {
                             MyApplication.vibrator.vibrate(100);
 
-                            if (vh.programStatus.getText().equals("可预约")) {
+                            if (vh.programStatus.getText().equals(getString(R.string.can_order))) {
 
                                 try {
                                     //删除时间冲突的预约节目
                                     final OrderProgram orderProgramConflict = channelService.findOrderProgramByStartTime(programStartTime, weekIndexName);
                                     if (orderProgramConflict != null && orderProgramConflict.getProgramName() != null && orderProgramConflict.getProgramName().length() > 0) {
-                                      String dialogtitle="您已预订该时段节目" + orderProgramConflict.getProgramName();
-                                      String content="是否替换为：" + program.getProgramName()+"?";
-                                    	Dialog dialog=DialogUtil.showAlertDialog(TVChannelProgramShowActivity.this, dialogtitle, content,"是","NO", new DialogBtnOnClickListener() {
+                                      String dialogtitle=getString(R.string.order_text_1) + orderProgramConflict.getProgramName();
+                                      String content=getString(R.string.order_text_11)+":" + program.getProgramName()+"?";
+                                    	Dialog dialog=DialogUtil.showAlertDialog(TVChannelProgramShowActivity.this, dialogtitle, content,getString(android.R.string.yes),getString(android.R.string.no), new DialogBtnOnClickListener() {
 										
 										@Override
 										public void onSubmit(DialogMessage dialogMessage) {
@@ -410,15 +410,15 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                             orderProgramReplace.setProgramStartTime(program.getProgramStartTime());
                                             orderProgramReplace.setProgramEndTime(program.getProgramEndTime());
                                             orderProgramReplace.setWeekIndex(weekIndexName);
-                                            orderProgramReplace.setStatus("已预约");
+                                            orderProgramReplace.setStatus(getString(R.string.ordered));
                                             if (channelService.saveOrderProgram(orderProgramReplace)) {
                                             	orderProgramList.add(orderProgramReplace);                                                
-                                                vh.programStatus.setText("已预约");
+                                                vh.programStatus.setText(getString(R.string.ordered));
                                                 vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
                                                 vh.iv_programstate.setImageResource(R.drawable.program_ordered);
-                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.order_channel_success, Toast.LENGTH_SHORT).show();
                                             } else {
-                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.order_channel_failed, Toast.LENGTH_SHORT).show();
                                             }
                                             if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 												dialogMessage.dialog.cancel();
@@ -427,7 +427,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 										
 										@Override
 										public void onCancel(DialogMessage dialogMessage) {
-                                             vh.programStatus.setText("可预约");
+                                             vh.programStatus.setText(getString(R.string.can_order));
                                              vh.programStatus.setTextColor(getResources().getColor(R.color.white));
                                              vh.iv_programstate.setImageResource(R.drawable.program_order);
                                              if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
@@ -441,7 +441,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                                         try {
                                             OrderProgram orderProgram = new OrderProgram();
                                             orderProgram.setChannelIndex(program.getChannelIndex());
-                                            orderProgram.setStatus("已预约");
+                                            orderProgram.setStatus(getString(R.string.ordered));
                                             orderProgram.setChannelName(channelName);
                                             orderProgram.setOrderDate(orderDate + program.getProgramStartTime());
                                             orderProgram.setProgramName(program.getProgramName());
@@ -451,15 +451,15 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 
                                             if (channelService.saveOrderProgram(orderProgram)) {
                                             	orderProgramList.add(orderProgram);
-                                                vh.programStatus.setText("已预约");
+                                                vh.programStatus.setText(getString(R.string.ordered));
                                                 vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
                                                 vh.iv_programstate.setImageResource(R.drawable.program_ordered);
-                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.order_channel_success, Toast.LENGTH_SHORT).show();
                                             } else {
-                                                vh.programStatus.setText("可预约");
+                                                vh.programStatus.setText(getString(R.string.can_order));
                                                 vh.programStatus.setTextColor(getResources().getColor(R.color.white));
                                                 vh.iv_programstate.setImageResource(R.drawable.program_order);
-                                                Toast.makeText(TVChannelProgramShowActivity.this, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.order_channel_failed, Toast.LENGTH_SHORT).show();
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -473,7 +473,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                             	{
 	                            	OrderProgram orderProgram = new OrderProgram();
 	                                orderProgram.setChannelIndex(program.getChannelIndex());
-	                                orderProgram.setStatus("已预约");
+	                                orderProgram.setStatus(getString(R.string.ordered));
 	                                orderProgram.setChannelName(channelName);
 	                                orderProgram.setOrderDate(orderDate + program.getProgramStartTime());
 	                                orderProgram.setProgramName(program.getProgramName());
@@ -482,12 +482,12 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
 	                                orderProgram.setWeekIndex(weekIndexName);
                             	if (channelService.deleteOrderProgram(orderProgram)) {                            	
                             		orderProgramList.remove(orderProgram);
-	                                vh.programStatus.setText("可预约"); 
+	                                vh.programStatus.setText(getString(R.string.can_order));
 	                                vh.programStatus.setTextColor(getResources().getColor(R.color.white));
 	                                vh.iv_programstate.setImageResource(R.drawable.program_order);
-	                                Toast.makeText(TVChannelProgramShowActivity.this, "取消预约成功", Toast.LENGTH_SHORT).show();
+	                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.cancel_order_success, Toast.LENGTH_SHORT).show();
 	                            } else {
-	                                Toast.makeText(TVChannelProgramShowActivity.this, "取消预约失败", Toast.LENGTH_SHORT).show();
+	                                Toast.makeText(TVChannelProgramShowActivity.this, R.string.cancel_order_failed, Toast.LENGTH_SHORT).show();
 	                            }
                             }
                         }
@@ -500,7 +500,7 @@ public class TVChannelProgramShowActivity extends Activity implements View.OnCli
                 if (programStartTime.compareTo(currentTime) < 0 && programEndTime.compareTo(currentTime) >= 0 && selectedWeekIndex == weekIndex) {
                     vh.programInfo.setTextColor(getResources().getColor(R.color.orange));
                     vh.programStatus.setTextColor(getResources().getColor(R.color.orange));
-                    vh.programStatus.setText("直播中");
+                    vh.programStatus.setText(R.string.live);
                     vh.programStatus.setVisibility(View.VISIBLE);
                     vh.iv_programstate.setVisibility(View.INVISIBLE);
                 } else {

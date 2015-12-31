@@ -142,7 +142,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 				MyApplication.vibrator.vibrate(100);
 				if (allShouChangChannel.isEmpty()) {
 					Toast.makeText(TVChannelShouCangShowActivity.this,
-							"频道收藏为空", Toast.LENGTH_SHORT).show();
+							R.string.favorite_empty, Toast.LENGTH_SHORT).show();
 				}
 
 				channelText.setTextColor(getResources()
@@ -163,7 +163,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 						"orderProgramList.size() =" + orderProgramList.size());
 				if (orderProgramList.size() <= 0) {
 					Toast.makeText(TVChannelShouCangShowActivity.this,
-							"预约节目为空", Toast.LENGTH_SHORT).show();
+							R.string.order_empty, Toast.LENGTH_SHORT).show();
 				} else if (IpSelectorDataServer.getInstance().getIpList()
 						.isEmpty()) {
 					
@@ -263,7 +263,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 				if (!StringUtils.hasLength(IpSelectorDataServer.getInstance()
 						.getCurrentIp())) {
 					Toast.makeText(theActivity,
-							"没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?", Toast.LENGTH_SHORT)
+							R.string.server_isnt_exist, Toast.LENGTH_SHORT)
 							.show();
 				}
 
@@ -514,10 +514,10 @@ public class TVChannelShouCangShowActivity extends Activity {
 							mUiHandler.sendEmptyMessage(0);
 
 							Toast.makeText(TVChannelShouCangShowActivity.this,
-									"取消频道收藏成功", Toast.LENGTH_SHORT).show();
+									R.string.cancel_favorite_success, Toast.LENGTH_SHORT).show();
 						} else {
 							Toast.makeText(TVChannelShouCangShowActivity.this,
-									"取消频道收藏失败", Toast.LENGTH_SHORT).show();
+									R.string.cancel_favorite_failed, Toast.LENGTH_SHORT).show();
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -566,7 +566,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 				Program program = ShouCangCurrentChannelPlayData
 						.get(channelName);
 				if (program != null) {
-					String time = "正在播放:"
+					String time = getString(R.string.playing)
 							+ program.getProgramStartTime()
 							+ " - "
 							+ program.getProgramEndTime()
@@ -575,7 +575,7 @@ public class TVChannelShouCangShowActivity extends Activity {
 									program.getProgramName(), 12);
 					vh.channelPlayInfo.setText(time);
 				} else {
-					vh.channelPlayInfo.setText("无节目信息");
+					vh.channelPlayInfo.setText(R.string.no_channel_detail);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -728,11 +728,11 @@ public class TVChannelShouCangShowActivity extends Activity {
 							// 通知adapter更新数据
 							mUiHandler.sendEmptyMessage(1);
 							Toast.makeText(TVChannelShouCangShowActivity.this,
-									"取消节目预约成功", Toast.LENGTH_SHORT).show();
+									R.string.cancel_order_success, Toast.LENGTH_SHORT).show();
 
 						} else {
 							Toast.makeText(TVChannelShouCangShowActivity.this,
-									"取消节目预约失败", Toast.LENGTH_SHORT).show();
+									R.string.cancel_order_failed, Toast.LENGTH_SHORT).show();
 						}
 					} catch (Exception e) {
 						e.printStackTrace();

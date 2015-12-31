@@ -179,7 +179,7 @@ public class SearchPageList extends Fragment{
 							e.printStackTrace();
 						}
 						if (searchChannel.size() == 0) {
-							Toast.makeText(getActivity(), "没有搜索到任何节目或频道信息！", Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), R.string.no_channel_find, Toast.LENGTH_SHORT).show();
 						}
 					}
 
@@ -285,10 +285,10 @@ public class SearchPageList extends Fragment{
              *收藏频道和取消收藏
              */
             if (allShouChangChannel.contains(channelServiceId)) {
-                vh.channelShouCang.setText("取消\n收藏");
+                vh.channelShouCang.setText(getString(android.R.string.cancel) + "\n" + getString(R.string.favorite));
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
             } else {
-                vh.channelShouCang.setText("收藏\n频道");
+                vh.channelShouCang.setText(getString(R.string.favorite)+"\n" + getString(R.string.channel));
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
             }
             
@@ -301,25 +301,25 @@ public class SearchPageList extends Fragment{
                         //通知adapter更新数据
                         boolean success = channelService.cancelChannelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("收藏\n频道");
+                            vh.channelShouCang.setText(getString(R.string.favorite) + "\n" + getString(R.string.channel));
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
                             allShouChangChannel.remove(channelServiceId);
 
-                            Toast.makeText(activity, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.cancel_favorite_success, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(activity, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.cancel_favorite_failed, Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         //收藏频道
                         boolean success = channelService.channelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("取消\n收藏");
+                            vh.channelShouCang.setText(getString(android.R.string.cancel) + "\n" + getString(R.string.favorite));
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
                             allShouChangChannel.add(channelServiceId);
 
-                            Toast.makeText(activity, "收藏频道成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.add_favorite_success, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(activity, "收藏频道失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.add_favorite_failed, Toast.LENGTH_SHORT).show();
                         }
                     }
                     notifyDataSetChanged();
@@ -342,24 +342,24 @@ public class SearchPageList extends Fragment{
             	{            		
 
             		if (0 < DateUtils.getCurrentTimeStamp().compareTo((String)map.get("str_endTime"))) {
-            			vh.channelPlayButton.setText("已经结束");	
+            			vh.channelPlayButton.setText(R.string.finshed);
 					}
             		else if (0 < DateUtils.getCurrentTimeStamp().compareTo((String)map.get("str_startTime"))) {
-            			vh.channelPlayButton.setText("正在播放");	
+            			vh.channelPlayButton.setText(R.string.playing_no_symbol);
 					}
             		else {
             			if(findOrderProgram(orderPrograms,program))
             			{
-            				vh.channelPlayButton.setText("已经预约");
+            				vh.channelPlayButton.setText(R.string.ordered);
             				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
             			}
             			else {
-            				if (map.containsKey("program_name")&&map.get("program_name").equals("无节目信息")) {
-            					vh.channelPlayButton.setText("不可预约");
+            				if (map.containsKey("program_name")&&map.get("program_name").equals(getString(R.string.no_channel_detail))) {
+            					vh.channelPlayButton.setText(R.string.cannot_order);
                 				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
                 				vh.channelPlayButton.setVisibility(View.INVISIBLE);
             				}else {
-            					vh.channelPlayButton.setText("可以预约");
+            					vh.channelPlayButton.setText(R.string.can_order);
                 				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
     						}
             			}
@@ -368,16 +368,16 @@ public class SearchPageList extends Fragment{
             	else {
             		if(findOrderProgram(orderPrograms,program))
             		{
-            			vh.channelPlayButton.setText("已经预约");
+            			vh.channelPlayButton.setText(R.string.ordered);
         				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
         			}
         			else {
-        				if (map.containsKey("program_name")&&map.get("program_name").equals("无节目信息")) {
-        					vh.channelPlayButton.setText("不可预约");
+        				if (map.containsKey("program_name")&&map.get("program_name").equals(getString(R.string.no_channel_detail))) {
+        					vh.channelPlayButton.setText(R.string.cannot_order);
             				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
             				vh.channelPlayButton.setVisibility(View.INVISIBLE);
         				}else {
-        					vh.channelPlayButton.setText("可以预约");
+        					vh.channelPlayButton.setText(R.string.can_order);
             				vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
 						}
         			}
@@ -390,15 +390,15 @@ public class SearchPageList extends Fragment{
                     public void onClick(View v) {
                         MyApplication.vibrator.vibrate(100);
 
-                        if (vh.channelPlayButton.getText().equals("可以预约")) {
+                        if (vh.channelPlayButton.getText().equals(getString(R.string.can_order))) {
 
                             try {
                                 //删除时间冲突的预约节目
                                 final OrderProgram orderProgramConflict = channelService.findOrderProgramByStartTime((String)map.get("str_startTime"), DateUtils.getWeekIndexName(weekIndexOffset));
                                 if (orderProgramConflict != null && orderProgramConflict.getProgramName() != null && orderProgramConflict.getProgramName().length() > 0) {
-                                  String dialogtitle="您已预订该时段节目" + orderProgramConflict.getProgramName();
-                                  String content="是否替换为：" + (String)map.get("program_name")+"?";
-                                	DialogUtil.showAlertDialog(activity, dialogtitle, content,"是","NO", new DialogBtnOnClickListener() {
+                                  String dialogtitle=getString(R.string.order_text_1) + orderProgramConflict.getProgramName();
+                                  String content=getString(R.string.order_text_11) +":"+ (String)map.get("program_name")+"?";
+                                	DialogUtil.showAlertDialog(activity, dialogtitle, content,getString(android.R.string.yes),getString(android.R.string.no), new DialogBtnOnClickListener() {
 									
 									@Override
 									public void onSubmit(DialogMessage dialogMessage) {
@@ -412,13 +412,13 @@ public class SearchPageList extends Fragment{
                                         orderProgramReplace.setProgramStartTime((String)map.get("str_startTime"));
                                         orderProgramReplace.setProgramEndTime((String)map.get("str_endTime"));
                                         orderProgramReplace.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
-                                        orderProgramReplace.setStatus("已预约");
+                                        orderProgramReplace.setStatus(getString(R.string.ordered));
                                         if (channelService.saveOrderProgram(orderProgramReplace)) {
-                                            vh.channelPlayButton.setText("已经预约");
+                                            vh.channelPlayButton.setText(getString(R.string.ordered));
                                             vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));                                            
-                                            Toast.makeText(activity, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, R.string.order_channel_success, Toast.LENGTH_SHORT).show();
                                         } else {
-                                            Toast.makeText(activity, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, R.string.order_channel_failed, Toast.LENGTH_SHORT).show();
                                         }
                                         if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
 											dialogMessage.dialog.cancel();
@@ -428,7 +428,7 @@ public class SearchPageList extends Fragment{
 									
 									@Override
 									public void onCancel(DialogMessage dialogMessage) {
-                                         vh.channelPlayButton.setText("可以预约");
+                                         vh.channelPlayButton.setText(R.string.can_order);
                                          vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
                                          if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
  											dialogMessage.dialog.cancel();
@@ -441,7 +441,7 @@ public class SearchPageList extends Fragment{
                                     try {
                                         OrderProgram orderProgram = new OrderProgram();
                                         orderProgram.setChannelIndex((String)map.get("channel_index"));
-                                        orderProgram.setStatus("已预约");
+                                        orderProgram.setStatus(getString(R.string.ordered));
                                         orderProgram.setChannelName(channelName);
                                         
                                         
@@ -454,13 +454,13 @@ public class SearchPageList extends Fragment{
                                         orderProgram.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
 
                                         if (channelService.saveOrderProgram(orderProgram)) {                                            
-                                            vh.channelPlayButton.setText("已经预约");
+                                            vh.channelPlayButton.setText(getString(R.string.ordered));
                                             vh.channelPlayButton.setTextColor(getResources().getColor(R.color.orange));
-                                            Toast.makeText(activity, "节目预约成功", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, R.string.order_channel_success, Toast.LENGTH_SHORT).show();
                                         } else {
-                                            vh.channelPlayButton.setText("可以预约");
+                                            vh.channelPlayButton.setText(getString(R.string.can_order));
                                             vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
-                                            Toast.makeText(activity, "节目预约失败", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(activity, R.string.order_channel_failed, Toast.LENGTH_SHORT).show();
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -470,16 +470,16 @@ public class SearchPageList extends Fragment{
                                 e.printStackTrace();
                             }
 
-                        } else if (vh.channelPlayButton.getText().equals("已经预约"))
+                        } else if (vh.channelPlayButton.getText().equals(getString(R.string.ordered)))
                         {
                         	OrderProgram orderProgram = new OrderProgram(program);
                         	orderProgram.setWeekIndex(DateUtils.getWeekIndexName(weekIndexOffset));
                         	if (channelService.deleteOrderProgram(orderProgram)) {
-                            	vh.channelPlayButton.setText("可以预约"); 
+                            	vh.channelPlayButton.setText(R.string.can_order);
                                 vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
-                                Toast.makeText(activity, "取消预约成功", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(activity, R.string.cancel_order_success, Toast.LENGTH_SHORT).show();
 	                        } else {
-	                            Toast.makeText(activity, "取消预约失败", Toast.LENGTH_SHORT).show();
+	                            Toast.makeText(activity, R.string.cancel_order_failed, Toast.LENGTH_SHORT).show();
 	                        }
                         }
                         notifyDataSetChanged();
@@ -489,7 +489,7 @@ public class SearchPageList extends Fragment{
             }
             else {
             	weekIndexOffset = 0;
-            	vh.channelPlayButton.setText("节目信息"); 
+            	vh.channelPlayButton.setText(R.string.channel_detail);
             	vh.channelPlayButton.setTextColor(getResources().getColor(R.color.white));
             	vh.channelShouCang.setVisibility(View.VISIBLE);
             	vh.channelPlayButton.setOnClickListener(new OnClickListener() {
@@ -511,16 +511,16 @@ public class SearchPageList extends Fragment{
             
             //设置数据
 			if (map.containsKey("program_name")) {				
-				String time="播放时间：" + DateUtils.getOrderDate(weekIndexOffset) + "\n" + map.get("str_startTime") + " - " + map.get("str_endTime") + "\n" + map.get("program_name");
+				String time= getString(R.string.play_time) + ":" + DateUtils.getOrderDate(weekIndexOffset) + "\n" + map.get("str_startTime") + " - " + map.get("str_endTime") + "\n" + map.get("program_name");
 				vh.channelPlayInfo.setText(time);
 			}
 			else {
 				Program currentProgram=currentChannelPlayData.get(channelName);
 	            if(currentProgram != null){
-	                String time="正在播放:" + currentProgram.getProgramStartTime() + " - " + currentProgram.getProgramEndTime() + "\n" + currentProgram.getProgramName();
+	                String time=getString(R.string.playing) + currentProgram.getProgramStartTime() + " - " + currentProgram.getProgramEndTime() + "\n" + currentProgram.getProgramName();
 	                vh.channelPlayInfo.setText(time);
 	            }else {
-	                vh.channelPlayInfo.setText("无节目信息");
+	                vh.channelPlayInfo.setText(R.string.no_channel_detail);
 	            }
 			}
             

@@ -175,7 +175,7 @@ public class TVChannelShowActivity extends Activity {
                                             }
                                         }
                                     } else {
-                                        Toast.makeText(TVChannelShowActivity.this, "由于您手机分辨率小于1080p,为您屏蔽了高清节目！", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(TVChannelShowActivity.this, R.string.phone_resolution_not_satisfied, Toast.LENGTH_LONG).show();
                                     }
                                     break;
                                 case 2://卫视频道
@@ -320,7 +320,7 @@ public class TVChannelShowActivity extends Activity {
 			}        	
         };
         this.registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
-        Toast.makeText(this,"节目列表加载中，请稍候",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,R.string.channel_load_wait,Toast.LENGTH_SHORT).show();
     }
 
     private void initData() {
@@ -499,10 +499,10 @@ public class TVChannelShowActivity extends Activity {
              * 收藏频道和取消收藏
              */
             if (allShouChangChannel.contains(channelServiceId)) {
-                vh.channelShouCang.setText("取消\n收藏");
+                vh.channelShouCang.setText(getString(android.R.string.cancel) + "\n" + getString(R.string.favorite));
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
             } else {
-                vh.channelShouCang.setText("收藏\n频道");
+                vh.channelShouCang.setText(getString(R.string.favorite) + "\n" + getString(R.string.channel));
                 vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
             }
 
@@ -515,25 +515,25 @@ public class TVChannelShowActivity extends Activity {
                         //取消收藏操作
                         boolean success = channelService.cancelChannelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("收藏\n频道");
+                            vh.channelShouCang.setText(getString(R.string.favorite) + "\n" + getString(R.string.channel));
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.white));
                             allShouChangChannel.remove(channelServiceId);
 
-                            Toast.makeText(TVChannelShowActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TVChannelShowActivity.this, R.string.cancel_favorite_success, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(TVChannelShowActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TVChannelShowActivity.this, R.string.cancel_favorite_failed, Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         //收藏操作
                         boolean success = channelService.channelShouCang(channelServiceId);
                         if (success) {
-                            vh.channelShouCang.setText("取消\n收藏");
+                            vh.channelShouCang.setText(getString(android.R.string.cancel)+"\n" + getString(R.string.favorite));
                             vh.channelShouCang.setTextColor(getResources().getColor(R.color.orange));
                             allShouChangChannel.add(channelServiceId);
 
-                            Toast.makeText(TVChannelShowActivity.this, "频道收藏成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TVChannelShowActivity.this, R.string.add_favorite_success, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(TVChannelShowActivity.this, "频道收藏失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(TVChannelShowActivity.this, R.string.add_favorite_failed, Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -567,10 +567,10 @@ public class TVChannelShowActivity extends Activity {
             vh.channelName.setText((position + 1) + "  " + channelName);
             Program program = currentChannelPlayData.get(channelName);
             if (program != null) {
-                String time = "正在播放:" + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n\n" + StringUtils.getShortString(program.getProgramName(), 12);
+                String time = getString(R.string.playing) + program.getProgramStartTime() + " - " + program.getProgramEndTime() + "\n\n" + StringUtils.getShortString(program.getProgramName(), 12);
                 vh.channelPlayInfo.setText(time);
             } else {
-                vh.channelPlayInfo.setText("无节目信息");
+                vh.channelPlayInfo.setText(R.string.no_channel_detail);
             }
 
             return convertView;

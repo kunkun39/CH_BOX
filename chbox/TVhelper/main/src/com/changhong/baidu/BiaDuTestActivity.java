@@ -190,7 +190,7 @@ public class BiaDuTestActivity extends Activity {
         @Override
         public void onError(int errorType, int errorCode) {
             isRecognitioning = false;
-            Toast.makeText(BiaDuTestActivity.this, "语音识别有误，请重新尝试!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BiaDuTestActivity.this, R.string.voice_analyse_error, Toast.LENGTH_SHORT).show();
         }
 
         @Override

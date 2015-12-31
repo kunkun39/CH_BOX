@@ -316,7 +316,7 @@ public class TVHelperMainActivity extends Activity {
 				}
                 else {
                 	isReadyExit = true;
-                	Toast.makeText(TVHelperMainActivity.this, "再次按返回键退出!",3000).show();
+                	Toast.makeText(TVHelperMainActivity.this, R.string.press_again_to_exit,3000).show();
                 	if (exitRunnable == null) {
                 		exitRunnable = new Runnable() {
     						

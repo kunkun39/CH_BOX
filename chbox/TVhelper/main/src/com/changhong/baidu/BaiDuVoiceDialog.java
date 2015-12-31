@@ -83,7 +83,7 @@ public class BaiDuVoiceDialog extends Dialog {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        notification.setText("开始监听你的语音输入...");
+                        notification.setText(R.string.start_voice_input);
                         /**
                          * 设置按钮enable为false, 防止二次输入出错
                          */
@@ -101,7 +101,7 @@ public class BaiDuVoiceDialog extends Dialog {
                          */
                         int code = recognitionClient.startVoiceRecognition(recogListener, config);
                         if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-                            notification.setText("网络连接出错，请从新尝试");
+                            notification.setText(R.string.network_error);
                         }
 
                         break;
@@ -162,7 +162,7 @@ public class BaiDuVoiceDialog extends Dialog {
                     break;
                 // 用户取消
                 case VoiceRecognitionClient.CLIENT_STATUS_USER_CANCELED:
-                    notification.setText("按下开始语音识别，送开完成");
+                    notification.setText(R.string.voice_tip1);
                     isRecognitioning = false;
 
                     recognitionClient.stopVoiceRecognition();
@@ -175,7 +175,7 @@ public class BaiDuVoiceDialog extends Dialog {
 
         @Override
         public void onError(int errorType, int errorCode) {
-            notification.setText("语音分析出错，请从新尝试");
+            notification.setText(R.string.voice_analyse_error);
             isRecognitioning = false;
 
             recognitionClient.stopVoiceRecognition();
@@ -217,7 +217,7 @@ public class BaiDuVoiceDialog extends Dialog {
 
             }
 
-            notification.setText("按下开始语音识别，送开完成");
+            notification.setText(R.string.voice_tip1);
         }
     }
 }

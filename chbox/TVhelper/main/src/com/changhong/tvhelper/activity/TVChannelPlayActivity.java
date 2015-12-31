@@ -411,9 +411,9 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 						boolean success = channelService.cancelChannelShouCang(channelServiceId);
 						if (success) {
 							allShouChangChannel.remove(channelServiceId);
-							Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(TVChannelPlayActivity.this, R.string.cancel_favorite_success, Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(TVChannelPlayActivity.this, "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(TVChannelPlayActivity.this, R.string.cancel_favorite_failed, Toast.LENGTH_SHORT).show();
 						}
 						updateShouChangView(!allShouChangChannel.contains(channelServiceId));
 					} else {
@@ -421,9 +421,9 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 						boolean success = channelService.channelShouCang(channelServiceId);
 						if (success) {
 							allShouChangChannel.add(channelServiceId);
-							Toast.makeText(TVChannelPlayActivity.this, "频道收藏成功", Toast.LENGTH_SHORT).show();
+							Toast.makeText(TVChannelPlayActivity.this, R.string.add_favorite_success, Toast.LENGTH_SHORT).show();
 						} else {
-							Toast.makeText(TVChannelPlayActivity.this, "频道收藏失败", Toast.LENGTH_SHORT).show();
+							Toast.makeText(TVChannelPlayActivity.this, R.string.add_favorite_failed, Toast.LENGTH_SHORT).show();
 						}
 						updateShouChangView(!allShouChangChannel.contains(channelServiceId));
 					}
@@ -469,7 +469,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
         try {
             dd = new ProgressDialog(TVChannelPlayActivity.this);
             dd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            dd.setMessage("正在拼命为您加载视频数据...");
+            dd.setMessage(getString(R.string.loading_video));
             dd.setCanceledOnTouchOutside(false);
             dd.setOnKeyListener(new OnKeyListener() {
                 @Override
@@ -619,31 +619,31 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(TVChannelPlayActivity.this, "播放超时，退出播放！！！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TVChannelPlayActivity.this, R.string.play_outoftime, Toast.LENGTH_SHORT).show();
 				break;
 			case 3:
 				if (programList != null && programList.size() > 0) {
 					try {
 						Program currentProgram = programList.get(0);
-						textCurrentProgramInfo.setText("当前节目" + ":"
+						textCurrentProgramInfo.setText(getString(R.string.current_channel) + ":"
 								+ currentProgram.getProgramName() + "  "
 								+ currentProgram.getProgramStartTime() + "-"
 								+ currentProgram.getProgramEndTime());
 					} catch (Exception e) {
-						textCurrentProgramInfo.setText("当前节目" + ":" + "无节目信息");
+						textCurrentProgramInfo.setText(getString(R.string.current_channel) + ":" + getString(R.string.no_channel_detail));
 					}
 					try {
 						Program nextProgram = programList.get(1);
-						textNextProgramInfo.setText("下一节目" + ":"
+						textNextProgramInfo.setText(getString(R.string.next_channel) + ":"
 								+ nextProgram.getProgramName() + "  "
 								+ nextProgram.getProgramStartTime() + "-"
 								+ nextProgram.getProgramEndTime());
 					} catch (Exception e) {
-						textNextProgramInfo.setText("下一节目" + ":" + "无节目信息");
+						textNextProgramInfo.setText(getString(R.string.next_channel) + ":" + getString(R.string.no_channel_detail));
 					}
 				} else {
-					textCurrentProgramInfo.setText("当前节目" + ":" + "无节目信息");
-					textNextProgramInfo.setText("下一节目" + ":" + "无节目信息");
+					textCurrentProgramInfo.setText(getString(R.string.current_channel) + ":" + getString(R.string.no_channel_detail));
+					textNextProgramInfo.setText(getString(R.string.next_channel) + ":" + getString(R.string.no_channel_detail));
 				}
 				break;
 			case 4:
@@ -782,9 +782,9 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	 */
 	private void updateShouChangView(boolean isshouchang) {
 		if (isshouchang) {
-			collection.setText("收藏\n频道");
+			collection.setText(getString(R.string.favorite) + "\n" + getString(R.string.channel));
 		} else {
-			collection.setText("取消\n收藏");
+			collection.setText(getString(android.R.string.cancel) + "\n" + getString(R.string.favorite));
 		}
 	}
 
@@ -938,7 +938,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 			if (returnConfirm == 1) {
 				returnConfirm = 0;
 				backTimestamp = System.currentTimeMillis();
-				Toast.makeText(TVChannelPlayActivity.this, "再按一次退出",Toast.LENGTH_SHORT).show();
+				Toast.makeText(TVChannelPlayActivity.this, R.string.press_again_to_exit,Toast.LENGTH_SHORT).show();
 			} else {
 				finish();
 			}
@@ -983,7 +983,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 	
 	private Button bt_share;
 	private ScreenShotView view_cutscreen;
-	private String title="长虹电视助手",text;//我正在观看XXX台，XXX节目，好精彩呀！
+	private String title=getString(R.string.app_name),text;//我正在观看XXX台，XXX节目，好精彩呀！
 	private String TAG="cutscreen";
 	private RelativeLayout rl_content;
 	private ProgressBar pb_cutscreen;
@@ -1007,10 +1007,10 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 
 				if (programList != null && programList.size() > 0
 						&& programList.get(0) != null) {
-					text = "我正在观看" + name + "台的节目《"
-							+ programList.get(0).getProgramName() + "》，好精彩呀！";
+					text = getString(R.string.share_text_11) + name + getString(R.string.share_text_12)
+							+ programList.get(0).getProgramName() + getString(R.string.share_test_13);
 				} else {
-					text = "我正在观看" + name + "台，好精彩呀！";
+					text = getString(R.string.share_text_11) + name + getString(R.string.share_text_22);
 				}
 				new Thread(new Runnable() {
 					
@@ -1074,7 +1074,7 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 				e.printStackTrace();
 			}
 			finish();
-			Toast.makeText(this, "播放电视前，请先插入CA卡", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.ca_insert_tip, Toast.LENGTH_SHORT).show();
 		}
 		else {
 			new Handler().postDelayed(new Runnable() {
