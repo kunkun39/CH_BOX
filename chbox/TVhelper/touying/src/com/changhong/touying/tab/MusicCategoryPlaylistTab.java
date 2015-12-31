@@ -271,14 +271,14 @@ public class MusicCategoryPlaylistTab extends Fragment {
     }
 
     private void addPlayList() {
-        Dialog dialog = DialogUtil.showEditDialog(getActivity(), "请输入播放列表名字", "确    认", "取    消", new DialogBtnOnClickListener() {
+        Dialog dialog = DialogUtil.showEditDialog(getActivity(),getResources().getString(R.string.enter_the_playlist_name), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
 
             @Override
             public void onSubmit(DialogMessage dialogMessage) {
                 String playListName = dialogMessage.msg;
                 if (playListName == null
                         || playListName.isEmpty()) {
-                    Toast.makeText(getActivity(), "未输入任何信息", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.didnot_enter_any_information), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 MusicPlayList list = M3UPlayList.generalplaylist(MusicCategoryPlaylistTab.this.getActivity(), playListName);

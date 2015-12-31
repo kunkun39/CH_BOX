@@ -160,7 +160,7 @@ public class VedioDetailsActivity extends Activity {
         vedioName.setText(displayName);
 
         vedioDuring = (TextView) findViewById(R.id.vedio_during);
-        vedioDuring.setText("时长 ： " + vedioTotalTime);
+        vedioDuring.setText(getResources().getString(R.string.duration)+"： " + vedioTotalTime);
 
         returnImage = (ImageView) findViewById(R.id.d_btn_return);
         playImage = (ImageView) findViewById(R.id.d_btn_play);
@@ -307,7 +307,7 @@ public class VedioDetailsActivity extends Activity {
                 try {
                     if (NetworkUtils.isWifiConnected(VedioDetailsActivity.this)) {
                         if ( !StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                            Toast.makeText(VedioDetailsActivity.this, "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.cant_find_TV), Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -364,11 +364,11 @@ public class VedioDetailsActivity extends Activity {
                         //HTTPD的使用状态
                         MobilePerformanceUtils.openPerformance(VedioDetailsActivity.this);
                     } else {
-                        Toast.makeText(VedioDetailsActivity.this, "请连接无线网络", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(VedioDetailsActivity.this, "视频获取失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.get_video_failed), Toast.LENGTH_SHORT).show();
                 }
             }
 

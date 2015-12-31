@@ -162,7 +162,7 @@ public class MusicDetailsActivity extends FragmentActivity {
     	String musicname=selectedMusic.getTitle();
     	String album=new MusicProvider(MusicDetailsActivity.this).getAlbumName(selectedMusic.getAlbumId());
     	
-    	String text="分享一首好听的歌曲给您，\n 歌手："+artist+"\n专辑："+album+"\n 歌曲名字："+musicname;
+    	String text=getResources().getString(R.string.share_song_tag)+"\n"+ getResources().getString(R.string.singer)+"："+artist+"\n"+getResources().getString(R.string.album)+"："+album+"\n "+getResources().getString(R.string.song_name)+"："+musicname;
     	L.d("sharepic "+text+"  ");
 		ShareFactory.getShareCenter(MusicDetailsActivity.this).showShareMenu(title, "  ",text, "");
 	}

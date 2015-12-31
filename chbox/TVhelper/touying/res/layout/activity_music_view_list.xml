@@ -18,7 +18,7 @@
         <TextView
                 android:gravity="center_vertical"
                 android:id="@+id/title"
-                android:text="未连接"
+                android:text="@string/disconnected"
                 android:textSize="20sp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -52,7 +52,7 @@
         <TextView                
                 android:layout_weight="1"
                 android:id="@+id/music_singer"
-                android:text="音    乐"
+                android:text="@string/music"
                 android:textSize="18sp"
                 android:textColor="@android:color/white"
                 android:gravity="center"

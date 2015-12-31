@@ -420,7 +420,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
                 //这里不在客户端自己设置，通过盒子回传信息设置播放是否成功
                 currentShow = true;
             } else {
-                Toast.makeText(PictureDetailsActivity.this, "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PictureDetailsActivity.this,getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
             }
             actionDone = true;
         }
@@ -615,7 +615,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
          * first check the wifi is connected
          */
         if (!NetworkUtils.isWifiConnected(PictureDetailsActivity.this)) {
-            Toast.makeText(PictureDetailsActivity.this, "请连接无线网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -623,7 +623,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
          * second check the mobile is connect to box
          */
         if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-            Toast.makeText(PictureDetailsActivity.this, "手机未连接机顶盒，请检查网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -715,7 +715,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
                     mContentResolver.update(mImageUri, values, MediaStore.Images.Media.DATA + " = '" + fullpath + "'", null);
                 } catch (Exception e1) {
                     e.printStackTrace();
-                    Toast.makeText(PictureDetailsActivity.this, "对不起，图片获取有误，不能正常投影！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PictureDetailsActivity.this,getResources().getString(R.string.get_image_failed), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -751,7 +751,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             ClientSendCommandService.handler.sendEmptyMessage(4);
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(PictureDetailsActivity.this, "图片获取失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.get_image_failed), Toast.LENGTH_SHORT).show();
         }
     }
     
@@ -778,7 +778,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
 			picName=curImgPath.substring(curImgPath.lastIndexOf("/")+1, curImgPath.length());
 		}
     	L.d("sharepic "+picName+"  "+curImgPath);
-    	String text="我这里有一张好看的图片，分享给您看看！"+picName;
+    	String text=getResources().getString(R.string.share_image_tag)+picName;
 		ShareFactory.getShareCenter(PictureDetailsActivity.this).showShareMenu(title, text, curImgPath);
 	}
     

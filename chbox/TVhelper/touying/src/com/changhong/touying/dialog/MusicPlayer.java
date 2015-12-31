@@ -713,7 +713,7 @@ public class MusicPlayer extends DialogFragment{
     	try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
                 if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                    Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
                     return;
                 }
   				/**
@@ -806,12 +806,12 @@ public class MusicPlayer extends DialogFragment{
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
             } else {
-                Toast.makeText(getActivity(), "请连接无线网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
             try {
-            	Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(getActivity(), getResources().getString(R.string.get_music_failed), Toast.LENGTH_SHORT).show();
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -822,7 +822,7 @@ public class MusicPlayer extends DialogFragment{
         try {
             if (NetworkUtils.isWifiConnected(getActivity())) {
                 if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                    Toast.makeText(getActivity(), "手机未连接电视，请确认后再投影", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
                     return;
                 }
   				/**
@@ -906,12 +906,12 @@ public class MusicPlayer extends DialogFragment{
                 //HTTPD的使用状态
                 MobilePerformanceUtils.openPerformance(getActivity());
             } else {
-                Toast.makeText(getActivity(), "请连接无线网络", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
             try {
-            	Toast.makeText(getActivity(), "歌曲获取出错", Toast.LENGTH_SHORT).show();	
+            	Toast.makeText(getActivity(), getResources().getString(R.string.get_music_failed), Toast.LENGTH_SHORT).show();	
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}

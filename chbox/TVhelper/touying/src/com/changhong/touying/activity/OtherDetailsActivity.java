@@ -133,7 +133,7 @@ public class OtherDetailsActivity extends FragmentActivity {
 		{
 			mIntentForword = (Intent) getIntent().getParcelableExtra("forwardIntent");
 		}
-		Toast.makeText(this, "加载中，请稍候。。。", Toast.LENGTH_LONG).show();
+		Toast.makeText(this, getResources().getString(R.string.loading), Toast.LENGTH_LONG).show();
     	new Thread(new Runnable() {
 			
 			@Override
@@ -198,7 +198,7 @@ public class OtherDetailsActivity extends FragmentActivity {
          * first check the wifi is connected
          */
         if (!NetworkUtils.isWifiConnected(context)) {
-            Toast.makeText(context, "请连接无线网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -206,7 +206,7 @@ public class OtherDetailsActivity extends FragmentActivity {
          * second check the mobile is connect to box
          */
         if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-            Toast.makeText(context, "手机未连接机顶盒，请检查网络", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -240,7 +240,7 @@ public class OtherDetailsActivity extends FragmentActivity {
             try {
                 URI.create(tmpHttpAddress);
             } catch (Exception e) {
-            	Toast.makeText(context, "PDF文件推送失败", Toast.LENGTH_SHORT).show();
+            	Toast.makeText(context, context.getResources().getString(R.string.send_pdf_failed), Toast.LENGTH_SHORT).show();
             	return;
             }
 
@@ -264,7 +264,7 @@ public class OtherDetailsActivity extends FragmentActivity {
             
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "PDF文件获取失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,context.getResources().getString(R.string.get_pdf_failed), Toast.LENGTH_SHORT).show();
         }
     }
     

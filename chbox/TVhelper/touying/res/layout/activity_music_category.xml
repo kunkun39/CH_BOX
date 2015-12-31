@@ -23,7 +23,7 @@
             android:ellipsize="marquee"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="未连接"
+            android:text="@string/disconnected"
             android:textSize="20sp" />
 
         <ImageView
@@ -69,7 +69,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="单曲"
+                android:text="@string/single"
                 android:textColor="@color/orange"
                 android:background="@drawable/channel_titlebg"
                 android:textAppearance="?android:attr/textAppearanceMedium" 
@@ -86,7 +86,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="歌手"
+                android:text="@string/singer"
                 android:background="@drawable/channel_titlebg"
                 android:textAppearance="?android:attr/textAppearanceMedium" 
                 />
@@ -102,7 +102,7 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="歌单"
+                android:text="@string/songlist"
                 android:background="@drawable/channel_titlebg"
                 android:textAppearance="?android:attr/textAppearanceMedium" 
                 />

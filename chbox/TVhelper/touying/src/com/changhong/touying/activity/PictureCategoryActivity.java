@@ -152,7 +152,7 @@ public class PictureCategoryActivity extends Activity {
         packageList.clear();
 
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(this, "暂无外部存储", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.no_sdcard), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -246,7 +246,7 @@ public class PictureCategoryActivity extends Activity {
                 int size = images.size();
 
                 //设置文字
-                holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + "张");
+                holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + getResources().getString(R.string.picture_no));
 
                 //设置图片
                 try {

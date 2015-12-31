@@ -33,10 +33,13 @@ public class VedioDataAdapter extends BaseAdapter {
     private Map<String, List<Vedio>> model;
 
     private int item_image;
+    
+    private Context context;
 
     public VedioDataAdapter(Context context, int item_image) {
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.item_image = item_image;
+        this.context=context;
 
         VedioProvider provider = new VedioProvider(context);
         vedios = provider.getList();
@@ -92,7 +95,7 @@ public class VedioDataAdapter extends BaseAdapter {
 
         if (list.size() > 1) {
             vedioName.setText(key);
-            vedioNO.setText(list.size() + "个视频");
+            vedioNO.setText(list.size() + context.getResources().getString(R.string.videos_no));
             fullPath.setText("");
         } else {
             String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
