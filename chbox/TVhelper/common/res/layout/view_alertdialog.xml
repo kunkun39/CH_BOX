@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dialog_title_margintop"
         android:singleLine="true"
-        android:text="电视助手信息提示"
+        android:text="@string/notify_information"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/holo_blue_light"
@@ -59,7 +59,7 @@
             android:layout_height="@dimen/dialog_btn_height"
             android:background="@drawable/btn_notext"
             android:gravity="center"
-            android:text="取    消"
+            android:text="@string/cancel"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
 
@@ -73,7 +73,7 @@
             android:background="@drawable/btn_notext"
             android:gravity="center"
             android:src="@drawable/btn_notext"
-            android:text="确    认"
+            android:text="@string/confrim"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
     </RelativeLayout>
