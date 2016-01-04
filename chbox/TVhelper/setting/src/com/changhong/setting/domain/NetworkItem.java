@@ -27,6 +27,7 @@ public class NetworkItem implements ScoreItem {
 
     public NetworkItem(Context context, int rate) {
         this.rate = rate;
+        this.context=context;
         mobilelNetworkStatus = NetworkUtils.getMobileNetworkStatus(context);
         serverNetworkStatus = NetEstimateUtils.serverNetworkStatus;
     }
