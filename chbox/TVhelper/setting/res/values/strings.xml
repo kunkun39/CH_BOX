@@ -33,7 +33,7 @@
     <string name="wireless24g_24g">Please connect STB with cable and better router</string>
     <string name="no_network">Mobile phone or STB without networking</string>
     <string name="downloading">Downloading updates</string>
-    <string name="the_latest_version">Congratulations, it's the latest version.</string>
+    <string name="the_latest_version">Congratulations, it\'s the latest version.</string>
     <string name="phone_no_network">You are not connected to the network, please check the settings</string>
     <string name="network_anomaly">Network connection exception, please try again later</string>
     <string name="system_help">System help</string>
