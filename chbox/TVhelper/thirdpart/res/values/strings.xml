@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <string name="stb_suit_title">The title of STB suit</string>
+    <string name="stb_suit">STB SUIT</string>
+    <string name="share_content_from_stb">From STB suit screenshot sharing contents</string>
+    <string name="null_screemshot">The screenshot is empty</string>
+    <string name="null_share_resources">The sharing picture resources does not exist, may lead to failure to share!</string>
+    <string name="null_share_param">shareParam分享内容不能为空</string>
+    <string name="share_failed_tag">Please set share type by shareParam.setShareType ()</string>
+    <string name="install_wechat">Share failed, please install the wechat client</string>
+    <string name="share_failed">Share failed</string>
+    <string name="share_success">Share success</string>
+    <string name="share_cancel">Share cancel</string>
+    <string name="share_tag">I was watching XXX, XXX program, very exciting!</string>
 </resources>
