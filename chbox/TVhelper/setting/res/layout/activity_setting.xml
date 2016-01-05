@@ -95,7 +95,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/help" />
+                        android:text="@string/setting_help" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>

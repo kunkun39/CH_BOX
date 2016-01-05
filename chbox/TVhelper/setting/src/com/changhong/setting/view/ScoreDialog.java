@@ -39,7 +39,7 @@ public class ScoreDialog extends Dialog {
 			if (i <= roundProgressBar.getMax()) {
 				handler.sendEmptyMessageDelayed(i++, 1);
 			}
-            textScoreAll.setText(String.valueOf(msg.what) + getContext().getResources().getString(R.string.score));
+            textScoreAll.setText(String.valueOf(msg.what) + getContext().getResources().getString(R.string.points));
 		};
 	};
 

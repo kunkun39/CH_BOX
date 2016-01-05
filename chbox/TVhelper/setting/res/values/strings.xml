@@ -13,7 +13,7 @@
     <string name="pdf_ppt_content">"        "1、We can project the PDF and PPT file by click.\n"        "2、We can control the PDF file by remote control,and exit by return key.</string>
     <string name="setting">Setting</string>
     <string name="advanced">Advanced settings</string>
-    <string name="help">Help</string>
+    <string name="setting_help">Help</string>
     <string name="about">About</string>
     <string name="version">Version</string>
     <string name="update">Update</string>
