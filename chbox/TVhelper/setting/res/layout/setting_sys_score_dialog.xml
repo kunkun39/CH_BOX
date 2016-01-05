@@ -91,7 +91,7 @@
                 android:id="@+id/table_layout_score"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" 
-                android:layout_marginRight="10dp"
+               
                 >
 
                 <TableRow
@@ -99,6 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
+                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical" >
 <!--
                     <ImageView
