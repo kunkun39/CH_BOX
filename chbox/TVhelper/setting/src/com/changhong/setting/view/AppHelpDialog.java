@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.setting.R;
 
@@ -20,10 +21,10 @@ import com.changhong.setting.R;
 
 public class AppHelpDialog extends Dialog {
 
-	private LinearLayout remote_control_help;
-	private LinearLayout voice_control_help;
-	private LinearLayout yuyue_control_help;
-	private LinearLayout file_control_help;
+	private View remote_control_help;
+	private View voice_control_help;
+	private View yuyue_control_help;
+	private View file_control_help;
 	private HelpDetailsDialog hdd;
 
 	public AppHelpDialog(final Context context) {
@@ -38,10 +39,10 @@ public class AppHelpDialog extends Dialog {
 		window.setGravity(Gravity.BOTTOM);
 
 		ImageButton helpButton = (ImageButton) findViewById(R.id.cancel_help);
-		remote_control_help = (LinearLayout) findViewById(R.id.remote_control_help);
-		voice_control_help = (LinearLayout) findViewById(R.id.voice_control_help);
-        yuyue_control_help = (LinearLayout) findViewById(R.id.yuyue_control_help);
-        file_control_help = (LinearLayout) findViewById(R.id.file_control_help);
+		remote_control_help =  findViewById(R.id.remote_control_help);
+		voice_control_help =  findViewById(R.id.voice_control_help);
+        yuyue_control_help =  findViewById(R.id.yuyue_control_help);
+        file_control_help =  findViewById(R.id.file_control_help);
 
 		helpButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -51,39 +52,56 @@ public class AppHelpDialog extends Dialog {
 			}
 		});
 
-		remote_control_help.setOnClickListener(new View.OnClickListener() {
+		if (!AppConfig.USE_REMOTER) {
+			remote_control_help.setVisibility(View.GONE);
+		} else {
+			remote_control_help.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-				startDetailsDialog(context, context.getString(R.string.rch_name), context.getString(R.string.rch_content));
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					startDetailsDialog(context, context.getString(R.string.rch_name), context.getString(R.string.rch_content));
+				}
+			});
+		}
 
-		voice_control_help.setOnClickListener(new View.OnClickListener() {
+		if (!AppConfig.USE_VOICE_INPUT) {
+			voice_control_help.setVisibility(View.GONE);
+		} else {
+			voice_control_help.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-				startDetailsDialog(context, context.getString(R.string.vch_name), context.getString(R.string.vch_content));
-			}
-		});
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					startDetailsDialog(context, context.getString(R.string.vch_name), context.getString(R.string.vch_content));
+				}
+			});
+		}
 
-        yuyue_control_help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                startDetailsDialog(context, context.getString(R.string.pch_name), context.getString(R.string.pch_content));
-            }
-        });
-        
-        file_control_help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                startDetailsDialog(context, context.getString(R.string.pdf_ppt_hologram), context.getString(R.string.pdf_ppt_content));
-            }
-        });
+
+		if (!AppConfig.USE_TV) {
+			yuyue_control_help.setVisibility(View.GONE);
+		}else {
+			yuyue_control_help.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					startDetailsDialog(context, context.getString(R.string.pch_name), context.getString(R.string.pch_content));
+				}
+			});
+		}
+
+		if (!AppConfig.USE_OTHER_AIRDISPLAY) {
+			file_control_help.setVisibility(View.GONE);
+		} else {
+			file_control_help.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					startDetailsDialog(context, context.getString(R.string.pdf_ppt_hologram), context.getString(R.string.pdf_ppt_content));
+				}
+			});
+		}
 	}
 	
 	private void startDetailsDialog(Context context,String name,String content){

@@ -7,6 +7,7 @@
     <string name="vch_name">语音控制帮助</string>
     <string name="vch_content">"        "1、请按住屏幕任何地方，开始说话，松开后，助手自动为您识别指令。目前支持的语音指令，可以帮助您换台和启动盒子里的程序，更多指令敬请期待&#8230; \n"        "2、换台指令：如说出“中央一台”，盒子将会换到中央一台\n"        "3、启动程序指令：如说出“打开电视助手”，盒子将自动启动手机助手程序\n"        "4、当语音识别没有响应时，请检查手机网络是否通畅，是否能连接上Internet</string>
 	<string name="system_score">系统评分</string>
+    <string name="system_score_title">系统评分</string>
     <string name="pch_name">预约节目帮助</string>
     <string name="pch_content">"        "1、预约节目会通过两种方式通知你节目即将播放，当你手机处于锁屏状态的时候，系统会通过消息的方式通知你，当你手机正在使用的时候，系统会通过对话框的形式通知你，点击对话框中的节目名，你可以直接观看直播节目。\n"        "2、为了保证你能正常的接收消息，请进入系统设置->应用程序管理->选择电视助手->勾选显示通知</string>
     <string name="pdf_ppt_hologram">PDF投影帮助</string>

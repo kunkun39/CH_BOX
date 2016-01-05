@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="help_details">Help details</string>
+    <string name="help_details">HELP DETAILS</string>
     <string name="rch_name">Remote control help</string>
     <string name="rch_content">"        "1、Fingers under sliding around,can get the same effect as the left and right buttons.\n"        "2、The TV key can make the playing TV to full screen in any interface.\n"        "3、Channel key can quickly switch the program on the STB.\n"        "4、The off button can make the STB is in a low power mode, and does not affect the digital TV program to share mobile devices.\n\n</string>
     <string name="vch_name">Voice control help</string>
@@ -17,7 +17,7 @@
     <string name="about">About</string>
     <string name="version">Version</string>
     <string name="update">Update</string>
-    <string name="faq">Faq</string>
+    <string name="faq">FAQ</string>
     <string name="system_running_environment">System environment</string>
     <string name="network_environment">Network environment-></string>
     <string name="neu_dtv_tag">Please use wired network to connect the STB,otherwise it is difficult to ensure play digital TV play smooth.</string>

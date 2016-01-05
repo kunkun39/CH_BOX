@@ -35,58 +35,89 @@
 
         <!-- 上圆角 -->
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/remote_control_help"
-            style="@style/top_layout" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_layout_selector"
+            android:focusable="true"
+            android:clickable="true">
+            <LinearLayout
 
-            <TextView
-                style="@style/usertext"
-                android:text="@string/rch_name" />
+                style="@style/top_layout" >
 
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
+                <TextView
+                    style="@style/usertext"
+                    android:text="@string/rch_name" />
 
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/voice_control_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mid_layout_selector"
+            android:focusable="true"
+            android:clickable="true">
         <!-- 分割线 -->
 
-        <View style="@style/bg_line" />
+            <View style="@style/bg_line" />
 
-        <!-- 下圆角 -->
+            <!-- 下圆角 -->
 
-        <LinearLayout
-            android:id="@+id/voice_control_help"
-            style="@style/mid_layout" >
+            <LinearLayout
+                style="@style/mid_layout" >
 
-            <TextView
-                style="@style/usertext"
-                android:text="@string/vch_name" />
+                <TextView
+                    style="@style/usertext"
+                    android:text="@string/vch_name" />
 
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </RelativeLayout>
 
-        <View style="@style/bg_line" />
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/yuyue_control_help"
-            style="@style/bottom_layout" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/mid_layout_selector"
+            android:focusable="true"
+            android:clickable="true">
+            <View style="@style/bg_line" />
 
-            <TextView
-                style="@style/usertext"
-                android:text="@string/pch_name" />
+            <LinearLayout
+                style="@style/bottom_layout" >
 
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
-        <View style="@style/bg_line" />
+                <TextView
+                    style="@style/usertext"
+                    android:text="@string/pch_name" />
 
-        <LinearLayout
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/file_control_help"
-            style="@style/bottom_layout" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/top_layout_selector"
+            android:focusable="true"
+            android:clickable="true">
+            <View style="@style/bg_line" />
 
-            <TextView
-                style="@style/usertext"
-                android:text="@string/pdf_ppt_hologram" />
+            <LinearLayout
+                style="@style/bottom_layout" >
 
-            <ImageView style="@style/img_arrow" />
-        </LinearLayout>
+                <TextView
+                    style="@style/usertext"
+                    android:text="@string/pdf_ppt_hologram" />
+
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>
