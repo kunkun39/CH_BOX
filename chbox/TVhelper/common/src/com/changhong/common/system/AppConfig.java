@@ -9,8 +9,12 @@ import java.util.List;
 public class AppConfig {
 
 	public static final boolean USE_MALL_APP = false;
+
+    public static final boolean USE_SHARE = false;
+
+    public static final boolean USE_LOCATION = false;
 	
-	public static final boolean NOT_USE_MSG_PUSH = false;
+	public static final boolean NOT_USE_MSG_PUSH = true;
     /**
      * the parameter which decide the min size of the file we compress 1M
      */
