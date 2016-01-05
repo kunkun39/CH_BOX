@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.setting.R;
@@ -170,15 +171,21 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-		helpBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				appHelpDialog = new AppHelpDialog(SettingActivity.this);
-				appHelpDialog.setTitle(getResources().getString(R.string.system_help));
-				appHelpDialog.show();
-			}
-		});
+		if (AppConfig.USE_TV
+				|| AppConfig.USE_OTHER_AIRDISPLAY
+				|| AppConfig.USE_VOICE_INPUT) {
+			helpBtn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					appHelpDialog = new AppHelpDialog(SettingActivity.this);
+					appHelpDialog.setTitle(getResources().getString(R.string.system_help));
+					appHelpDialog.show();
+				}
+			});
+		}else {
+			helpBtn.setVisibility(View.GONE);
+		}
 
 //		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 //

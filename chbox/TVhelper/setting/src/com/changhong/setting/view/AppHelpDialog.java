@@ -52,7 +52,7 @@ public class AppHelpDialog extends Dialog {
 			}
 		});
 
-		if (!AppConfig.USE_REMOTER) {
+		if (!AppConfig.USE_TV) {
 			remote_control_help.setVisibility(View.GONE);
 		} else {
 			remote_control_help.setOnClickListener(new View.OnClickListener() {
