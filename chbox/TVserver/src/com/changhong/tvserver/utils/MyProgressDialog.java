@@ -51,7 +51,7 @@ public class MyProgressDialog extends Dialog {
 		seekBar = (SeekBar) view.findViewById(R.id.progress);
 		seekBar.setProgress(0);
 		bt_backload = (TextImageButton) findViewById(R.id.bt_loadbackground);
-		bt_backload.setText("后台下载");
+		bt_backload.setText(context.getString(R.string.background_download));
 		bt_backload.setTextColor(Color.WHITE);
 		bt_backload.setTextSize(26);
 		bt_backload.setOnClickListener(new View.OnClickListener() {

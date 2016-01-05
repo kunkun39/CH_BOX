@@ -68,6 +68,15 @@ public class MyApplication extends Application {
      */
     public static NetworkStatus networkStatus = NetworkStatus.NET_NULL;
 
+    public static MyApplication myApp=null;
+    
+    public static MyApplication getInstance(){
+    	if(null==myApp){
+    		myApp=new MyApplication();
+    	}
+    	return myApp;
+    }
+    
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -127,7 +136,7 @@ public class MyApplication extends Application {
 
     /******************************************get all server application info*****************************************/
 
-    public static void generateApplicationInfoIndexJson(Context context) {
+    public void generateApplicationInfoIndexJson(Context context) {
         try {
             JSONArray all = new JSONArray();
             PackageManager pm = context.getPackageManager();
@@ -175,11 +184,11 @@ public class MyApplication extends Application {
         }
     }
 
-    private static void addSpecialSystemAppInfo(JSONArray all) throws JSONException {
+    private void addSpecialSystemAppInfo(JSONArray all) throws JSONException {
         //电视助手
         JSONObject single = new JSONObject();
         single.put("packageName", "com.changhong.tvserver");
-        single.put("applicationName", "电视助手");
+        single.put("applicationName",getString(R.string.app_name) );
         all.put(single);
 
 

@@ -93,7 +93,7 @@ public class TVSocketControllerService extends Service {
         /**
          * 系统默认启动是不启动activity, 而是启动Service, 所以Service也需要从新读一下名称
          */
-        MainActivity.CH_BOX_NAME = MainActivity.getBoxName(TVSocketControllerService.this);
+        MainActivity.getInstance().CH_BOX_NAME = MainActivity.getBoxName(TVSocketControllerService.this);
 
         DeviceInfo.CollectInfo();
         DeviceModel = DeviceInfo.DeviceModel;
@@ -327,7 +327,7 @@ public class TVSocketControllerService extends Service {
 							}
                             break;
                         case 2:
-                            Toast.makeText(TVSocketControllerService.this, "������߳�����ͻ����޷����룡����", 3000).show();
+//                            Toast.makeText(TVSocketControllerService.this, "������߳�����ͻ����޷����룡����", 3000).show();
                             break;
                         default:
                             break;
@@ -366,7 +366,7 @@ public class TVSocketControllerService extends Service {
 
                         if (StringUtils.hasLength(ip) && !ip.equals("0.0.0.0")) {
                         	dgSocket = new DatagramSocket(9001, InetAddress.getByName(ip));
-                            serverInfo = MainActivity.CH_BOX_NAME;
+                            serverInfo = MainActivity.getInstance().CH_BOX_NAME;
 
                             /**
                              * 添加服务端网络信息到心跳

@@ -54,7 +54,7 @@
 		        android:layout_height="wrap_content"  
 		        android:background="#00FFFFFF"		        
 		        android:singleLine="true"           
-		        android:hint="影片名字"
+		        android:hint="@string/film_name"
 		        android:layout_toLeftOf="@+id/mall_list_name_search"
 		        android:layout_centerVertical="true" 
 		        android:textColor="#FFFFFFFF"
@@ -93,7 +93,7 @@
 		        android:id="@id/menu_tips"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content" 
-		        android:text="按【菜单键】进行高级搜索"
+		        android:text="@string/ad_search"
 		        android:layout_alignParentRight="true"
 		        android:layout_centerVertical="true"
 		        />

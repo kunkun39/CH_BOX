@@ -142,7 +142,7 @@ public class OtherShowService extends Service{
 		if (fileType == TYPE_PPT) {
 			if(((ActivityManager)this.getSystemService(Service.ACTIVITY_SERVICE)).getRunningTasks(1).get(0).topActivity.getClassName().contains("cn.wps.moffice"))
 			{
-				Toast.makeText(this, "请先退出PPT,再进行投影，谢谢！", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, getString(R.string.othershow_projection), Toast.LENGTH_SHORT).show();
 				return ;
 			}
 		}
@@ -160,7 +160,7 @@ public class OtherShowService extends Service{
 		Log.e("ppt", "pptUrl:" + pptUrl);
     	
     	if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-    		Toast.makeText(this, "无SD卡，无法推送PDF文件!", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(this, getString(R.string.no_sdcard), Toast.LENGTH_SHORT).show();
     		return;
     	}
     	
@@ -228,12 +228,12 @@ public class OtherShowService extends Service{
 							mAlertDialog.cancel();
 							mAlertDialog = null;			
 						}
-						Toast.makeText(OtherShowService.this.getApplicationContext(), "网络异常，下载退出", Toast.LENGTH_SHORT).show();
+						Toast.makeText(OtherShowService.this.getApplicationContext(), getString(R.string.network_ex_exit), Toast.LENGTH_SHORT).show();
 					}
 		            
 		    	} catch (Exception e) {
 		    		e.printStackTrace();
-		    		Toast.makeText(OtherShowService.this.getApplicationContext(), "网络异常，下载退出", Toast.LENGTH_SHORT).show();
+		    		Toast.makeText(OtherShowService.this.getApplicationContext(), getString(R.string.network_ex_exit), Toast.LENGTH_SHORT).show();
 		    	}
 				finally
 				{

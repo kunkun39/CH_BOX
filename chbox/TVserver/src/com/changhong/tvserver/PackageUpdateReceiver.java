@@ -15,7 +15,7 @@ public class PackageUpdateReceiver extends BroadcastReceiver {
         Log.e("TVServer_Package_Update", intent.getAction());
 
         if (intent.getAction().equals("android.intent.action.PACKAGE_ADDED") || intent.getAction().equals("android.intent.action.PACKAGE_REMOVED")) {
-            MyApplication.generateApplicationInfoIndexJson(context);
+            MyApplication.getInstance().generateApplicationInfoIndexJson(context);
         }
     }
 

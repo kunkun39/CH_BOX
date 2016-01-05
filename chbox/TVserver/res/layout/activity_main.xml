@@ -16,7 +16,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="40px"
                 android:textColor="@android:color/black"
-                android:text="机顶盒标识:" />
+                android:text="@string/stb_name" />
         <EditText
                 android:id="@+id/ch_box_name"
                 android:layout_width="300dp"
@@ -25,7 +25,7 @@
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 android:singleLine="true"
-                android:text="客厅" />
+                android:text="@string/sitting_room" />
         <Button
                 android:id="@+id/ch_box_save"
                 android:layout_width="150dp"
@@ -33,7 +33,7 @@
                 android:textSize="40px"
                 android:gravity="center"
                 android:textColor="@android:color/black"
-                android:text="保存" />
+                android:text="@string/save" />
     </LinearLayout>
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:textSize="40px"
         android:textColor="@android:color/black"
-        android:text="扫描以下二维码，下载手机助手客户端" />
+        android:text="@string/qr_code" />
 
     <LinearLayout
             android:layout_width="fill_parent"
@@ -102,6 +102,6 @@
         android:layout_height="wrap_content"
         android:textSize="36px"
         android:textColor="@android:color/black"
-        android:text="友情提示：由于微信限制第三方二维码，请用微信外的其他工具扫描二维码。苹果手机也可以通过APP STORE搜索CHBOX进行下载" />
+        android:text="@string/main_tag" />
 
 </LinearLayout>

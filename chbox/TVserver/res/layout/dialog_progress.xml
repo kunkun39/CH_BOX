@@ -29,7 +29,7 @@
             android:layout_marginLeft="15dp"
             android:layout_toRightOf="@+id/iv_dialog_title"
             android:singleLine="true"
-            android:text="当前下载进度："
+            android:text="@string/cur_loading"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_title_textsize" />
     </RelativeLayout>
@@ -112,7 +112,7 @@
             android:paddingTop="1.4dp"
             android:scaleType="fitXY"
             android:src="@drawable/btn_dialog"
-            textImageView:text="后台下载"
+            textImageView:text="@string/back_download"
             textImageView:textColor="@android:color/white"
             textImageView:textSize="26sp" />
     </RelativeLayout>

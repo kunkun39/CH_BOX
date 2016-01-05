@@ -106,7 +106,7 @@ public class MallListActivity extends FragmentActivity{
 	Runnable mDelayRunnable  = new Runnable() {		
 		@Override
 		public void run() {
-			Toast.makeText(MallListActivity.this, "未找到资源,请重新搜索!", Toast.LENGTH_LONG).show();
+			Toast.makeText(MallListActivity.this, getString(R.string.search_again), Toast.LENGTH_LONG).show();
 		}
 	};
 	

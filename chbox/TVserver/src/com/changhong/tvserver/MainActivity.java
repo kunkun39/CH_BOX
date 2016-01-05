@@ -22,11 +22,19 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "TVServer";
 
-    public static String CH_BOX_NAME = "客    厅";
+    public String CH_BOX_NAME = getString(R.string.stb_title);
 
     private EditText chboxName;
 
     private Button chboxSave;
+    public static MainActivity mainActivity=null;
+    
+    public static MainActivity getInstance(){
+    	if(null==mainActivity){
+    		mainActivity=new MainActivity();
+    	}
+    	return mainActivity;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 String content = chboxName.getText().toString();
                 if (!StringUtils.hasLength(content)) {
-                    Toast.makeText(MainActivity.this, "请输入机顶盒的标识!", 3000).show();
+                    Toast.makeText(MainActivity.this, getString(R.string.stb_tag), 3000).show();
                 } else {
                     try {
                         if (!CH_BOX_NAME.equals(content)) {
@@ -56,9 +64,9 @@ public class MainActivity extends Activity {
                             saveBoxName(MainActivity.this, content);
                             CH_BOX_NAME = content;
                         }
-                        Toast.makeText(MainActivity.this, "保存成功!", 3000).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.save_successful), 3000).show();
                     } catch (Exception e) {
-                        Toast.makeText(MainActivity.this, "保存失败!", 3000).show();
+                        Toast.makeText(MainActivity.this,getString(R.string.save_failure), 3000).show();
                     }
                 }
             }
@@ -75,7 +83,7 @@ public class MainActivity extends Activity {
 
     public static String getBoxName(Context context) {
         SharedPreferences preferences = context.getSharedPreferences("changhong_box_name", Context.MODE_PRIVATE);
-        return preferences.getString("CH_BOX_NAME", "客    厅");
+        return preferences.getString("CH_BOX_NAME", context.getString(R.string.stb_title));
     }
 
 

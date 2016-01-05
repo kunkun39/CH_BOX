@@ -171,7 +171,7 @@ public class VideoViewPlayingActivity extends Activity implements OnPreparedList
 					int height = getWindow().getDecorView().getHeight();
 					int magin = 40;
 					TextView textView = new TextView(VideoViewPlayingActivity.this);					
-					textView.setText("电视助手与机顶盒网络断开或电视助手已退出，无法获取资源");					
+					textView.setText(getString(R.string.music_disconnects));					
 					textView.setTextSize(40);	
 					textView.setWidth((width - magin) >> 1);
 					textView.setGravity(Gravity.CENTER);										

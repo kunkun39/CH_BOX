@@ -10,6 +10,9 @@ import java.util.Map.Entry;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.changhong.tvserver.MyApplication;
+import com.changhong.tvserver.R;
+
 public class IpSelectorDataServer
 {
 	/**
@@ -20,8 +23,8 @@ public class IpSelectorDataServer
 	/**
 	 * Static Final String
 	 */
-	private static final String DEFAULT_IP_NAME = "手机";
-	private static final String DEFAULT_LINKLESSNESS = "未连接";
+	private  String DEFAULT_IP_NAME = MyApplication.getInstance().getString(R.string.phone);
+	private  String DEFAULT_LINKLESSNESS = MyApplication.getInstance().getString(R.string.disconnect);
 	private static final int  DELAY_TIME = 30 * 60 * 1000;
 	
 	/**
