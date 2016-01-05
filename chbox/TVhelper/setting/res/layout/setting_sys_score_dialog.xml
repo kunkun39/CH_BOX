@@ -50,12 +50,13 @@
             <com.changhong.setting.view.RoundProgressBar
                 android:id="@+id/circleProgressBar"
                 android:layout_width="180dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="180dp" />
             <ImageView 
                 android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="160dp"
-                android:layout_marginLeft="65dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="155dp"
+                android:layout_gravity="center_horizontal"
                 android:background="#FFF0F0F0"
                 />
 
@@ -105,20 +106,12 @@
                         android:background="@drawable/wifiicon" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="3dp"
-                        android:gravity="center_vertical"
-                        android:text="@string/network_environment" 
-                        android:textColor="@color/white"
-                        android:textSize="15sp" />
-
-                    <TextView
                         android:id="@+id/text_wireless_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:paddingLeft="2dp"
+                        android:paddingRight="10dp"
                         android:singleLine="false"
                         android:textColor="@color/white"
                         android:textSize="15sp" />

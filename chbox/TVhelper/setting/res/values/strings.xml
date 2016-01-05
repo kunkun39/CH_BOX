@@ -3,14 +3,14 @@
     
     <string name="help_details">Help details</string>
     <string name="rch_name">Remote control help</string>
-    <string name="rch_content">"        "1、Fingers under sliding around,can get the same effect as the left and right buttons\n"        "2、The TV key can make the playing TV to full screen in any interface\n"        "3、Channel key can quickly switch the program on the STB \n"        "4、The off button can make the STB is in a low power mode, and does not affect the digital TV program to share mobile devices\n\n</string>
+    <string name="rch_content">"        "1、Fingers under sliding around,can get the same effect as the left and right buttons.\n"        "2、The TV key can make the playing TV to full screen in any interface.\n"        "3、Channel key can quickly switch the program on the STB.\n"        "4、The off button can make the STB is in a low power mode, and does not affect the digital TV program to share mobile devices.\n\n</string>
     <string name="vch_name">Voice control help</string>
-    <string name="vch_content">"        "1、Please hold down the screen anywhere, start to speak, after the release, the assistant automatically for you to identify the instructions. Currently supports voice commands, can help you change the channel and start box program, please look forward to more instructions&#8230; \n"        "2、The instructions of change channels:such as says "CCTV-1",the STB will be changed to CCTV-1\n"        "3、Boot program instructions: such as to say "turn on the TV assistant", the STB will automatically start the mobile assistant program\n"        "4、When the speech recognition does not respond, please make sure the mobile phone network is open,and connect to the Internet</string>
+    <string name="vch_content">"        "1、Please hold down the screen anywhere, start to speak, after the release, the assistant automatically for you to identify the instructions. Currently supports voice commands, can help you change the channel and start box program, please look forward to more instructions&#8230; \n"        "2、The instructions of change channels:such as says "CCTV-1",the STB will be changed to CCTV-1.\n"        "3、Boot program instructions: such as to say "turn on the TV assistant", the STB will automatically start the mobile assistant program.\n"        "4、When the speech recognition does not respond, please make sure the mobile phone network is open,and connect to the Internet.</string>
 	<string name="system_score">System score</string>
     <string name="pch_name">Reservation program help</string>
-    <string name="pch_content">"        "1、Reservation TV will notice by two ways,when your phone is in the lock screen, the system will inform you by message. When your phone is in use, the system will inform you through a dialog,click the name of a program in the dialog, you can directly watch living programs.\n"        "2、In order to ensure you can receive a message, please enter the system settings - > Application Management - > select TV assistant - > uncheck show notification</string>
+    <string name="pch_content">"        "1、Reservation TV will notice by two ways,when your phone is in the lock screen, the system will inform you by message. When your phone is in use, the system will inform you through a dialog,click the name of a program in the dialog, you can directly watch living programs.\n"        "2、In order to ensure you can receive a message, please enter the system settings - > Application Management - > select TV assistant - > uncheck show notification.</string>
     <string name="pdf_ppt_hologram">PDF projection help</string>
-    <string name="pdf_ppt_content">"        "1、We can project the PDF and PPT file by click.\n"        "2、We can control the PDF file by remote control,and exit by return key。</string>
+    <string name="pdf_ppt_content">"        "1、We can project the PDF and PPT file by click.\n"        "2、We can control the PDF file by remote control,and exit by return key.</string>
     <string name="setting">Setting</string>
     <string name="advanced">Advanced settings</string>
     <string name="help">Help</string>
@@ -18,8 +18,8 @@
     <string name="version">Version</string>
     <string name="update">Update</string>
     <string name="faq">Faq</string>
-    <string name="system_running_environment">The environment of running system</string>
-    <string name="network_environment">The environment of network-></string>
+    <string name="system_running_environment">System environment</string>
+    <string name="network_environment">Network environment-></string>
     <string name="neu_dtv_tag">Please use wired network to connect the STB,otherwise it is difficult to ensure play digital TV play smooth.</string>
     <string name="neu_24g">The current connection is in the range of 2.4G, HD program will may be cards</string>
     <string name="loading_waiting">"The update file is loading,please wait patiently."</string>
@@ -37,7 +37,7 @@
     <string name="phone_no_network">You are not connected to the network, please check the settings</string>
     <string name="network_anomaly">Network connection exception, please try again later</string>
     <string name="system_help">System help</string>
-    <string name="cur_version">Current system version:</string>
+    <string name="cur_version">Software version:</string>
     <string name="update_check">Check for updates</string>
     <string name="score">score</string>
 
