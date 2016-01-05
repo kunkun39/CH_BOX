@@ -2,7 +2,7 @@
 <resources>
 
     <string name="vedio_description">useage ：We can make the media resources to TV by choose the media and then click the resources, the control interface does the following,such as play,pause,volume,please keep the wifi connection in the play</string>
-    <string name="add_list">Create playlist</string>
+    <string name="add_list">CREATE PLAYLIST</string>
     <string name="devide">-</string>
     <string name="playlistname">Playlist name</string>
     <string name="playlistcomment_pre"></string>
@@ -12,9 +12,9 @@
     <string name="playlist_createfile_failed">Fail to create file</string>
     <string name="PlayList_play">play</string>
     <string name="music_view_playlist">playlist</string>
-    <string name="playlist_del">delete</string>
+    <string name="playlist_del">Delete</string>
     <string name="whatdoyouwanttodo">What do you want to do？</string>
-    <string name="PlayList_modify">modify</string>
+    <string name="PlayList_modify">Modify</string>
     <string name="byplaylist">by playlist</string>
     <string name="byspecial">by special</string>
     <string name="nametoolong">The name is too long, please re name the name</string>
@@ -22,9 +22,9 @@
     <string name="share">share</string>
     <string name="share_title">STB SUIT</string>
     <string name="disconnected">disconnected</string>
-    <string name="single">single</string>
-    <string name="singer">singer</string>
-    <string name="songlist">songlist</string>
+    <string name="single">SINGLE</string>
+    <string name="singer">SINGER</string>
+    <string name="songlist">PLAYLIST</string>
     <string name="music">music</string>
     <string name="cancel">cancel</string>
     <string name="upslide_began_to_projection">Upslide began to projection</string>
@@ -51,9 +51,9 @@
     <string name="album">album</string>
     <string name="song_name">song name</string>
     <string name="get_music_failed">Error in song acquisition</string>
-    <string name="enter_the_playlist_name">Please enter a playlist name</string>
-    <string name="confirm_space">confirm</string>
-    <string name="cancel_space">cancel</string>
+    <string name="enter_the_playlist_name">Please input a playlist name</string>
+    <string name="confirm_space">OK</string>
+    <string name="cancel_space">Cancel</string>
     <string name="didnot_enter_any_information">Information can not be empty</string>
     <string name="videos_no">videos</string>
 

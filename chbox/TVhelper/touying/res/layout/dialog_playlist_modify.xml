@@ -58,7 +58,7 @@
             android:background="@drawable/btn_notext"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="删  除"
+            android:text="@string/playlist_del"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
 
@@ -72,7 +72,7 @@
             android:background="@drawable/btn_notext"
             android:gravity="center"
             android:src="@drawable/btn_notext"
-            android:text="修   改"
+            android:text="@string/PlayList_modify"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
         <Button
@@ -85,7 +85,7 @@
             android:background="@drawable/btn_notext"
             android:gravity="center"
             android:src="@drawable/btn_notext"
-            android:text="取  消"
+            android:text="@string/cancel_space"
             android:textColor="@android:color/white"
             android:textSize="@dimen/dialog_btn_textsize" />
     </RelativeLayout>
