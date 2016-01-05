@@ -44,6 +44,7 @@
     <string name="send_pdf_failed">PDF文件推送失败</string>
     <string name="get_pdf_failed">PDF文件获取失败</string>
     <string name="total">       共</string>
+    <string name="space_total">       共</string>
     <string name="song_unit">首</string>
     <string name="share_song_tag">分享一首好听的歌曲给您，</string>
     <string name="album">专辑</string>

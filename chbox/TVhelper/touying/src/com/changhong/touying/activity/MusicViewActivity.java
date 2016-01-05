@@ -92,7 +92,7 @@ public class MusicViewActivity extends FragmentActivity {
         musicListView.setAdapter(singleMusicAdapter);
 
         musicSinger = (TextView) findViewById(R.id.music_singer);
-        musicSinger.setText(playlistName + getResources().getString(R.string.total) + musics.size()+ getResources().getString(R.string.song_unit));
+        musicSinger.setText(playlistName + getResources().getString(R.string.space_total) + musics.size()+ getResources().getString(R.string.song_unit));
         
     }
     

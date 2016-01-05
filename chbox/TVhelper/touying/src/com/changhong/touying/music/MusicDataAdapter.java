@@ -93,7 +93,7 @@ public class MusicDataAdapter extends BaseAdapter {
 		Music music = (Music) list.get(0);
 
 		musicName.setText(music.getArtist());
-		musicNO.setText("共" + list.size() + "首");
+		musicNO.setText(context.getResources().getString(R.string.total) + list.size() +context.getResources().getString(R.string.song_unit));
 		fullPath.setText("");
 
 		String musicImagePath = DiskCacheFileManager.isSmallImageExist(music
