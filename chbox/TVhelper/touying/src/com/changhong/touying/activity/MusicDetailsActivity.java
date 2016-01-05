@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.thirdpart.sharesdk.ShareFactory;
 import com.changhong.thirdpart.sharesdk.util.L;
@@ -147,8 +148,14 @@ public class MusicDetailsActivity extends FragmentActivity {
      * **********************************************分享相关********************************************************
      */
     public void initShare() {
-		findViewById(R.id.bt_sharemusic).setOnClickListener(new OnClickListener() {
-			
+		View v = findViewById(R.id.bt_sharemusic);
+		if (!AppConfig.USE_SHARE)
+		{
+			v.setVisibility(View.INVISIBLE);
+			return;
+		}
+		v.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
 				doShare();

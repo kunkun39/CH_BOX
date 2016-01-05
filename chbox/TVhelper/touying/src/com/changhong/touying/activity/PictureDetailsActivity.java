@@ -760,13 +760,19 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     
     public void initShare() {
-		findViewById(R.id.bt_sharepic).setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				doShare();
-			}
-		});
+        View v = findViewById(R.id.bt_sharepic);
+        if (!AppConfig.USE_SHARE)
+        {
+            v.setVisibility(View.INVISIBLE);
+            return ;
+        }
+        v.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                doShare();
+            }
+        });
 		
 	}
     public void doShare() {
