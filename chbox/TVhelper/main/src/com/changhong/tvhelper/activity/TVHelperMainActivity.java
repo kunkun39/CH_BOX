@@ -100,7 +100,9 @@ public class TVHelperMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_helper_main);
         
-        setContentView(R.layout.activity_maim_new);
+        //setContentView(R.layout.activity_maim_new);
+        setContentView(R.layout.activity_maim_muil_lang);
+
         
         initViewAndEvent();
 
@@ -127,113 +129,148 @@ public class TVHelperMainActivity extends Activity {
         /**
          * init all event for every view
          */
-        controller.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, TVRemoteControlActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (controller != null) {
+            controller.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, TVRemoteControlActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
-        tvplayer.setOnClickListener(new OnClickListener() {
+        if (tvplayer != null)
+        {
+            tvplayer.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, TVChannelShowActivity.class);
-                startActivity(intent);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, TVChannelShowActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        if (setting != null)
+        {
+            setting.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
-        setting.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
-        });
-        shoucang.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, TVChannelShouCangShowActivity.class);
-                startActivity(intent);
-            }
-        });
-        sousuo.setOnClickListener(new OnClickListener() {
+        if (shoucang != null)
+        {
+            shoucang.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, TVChannelShouCangShowActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, TVChannelSearchActivity.class);
-                startActivity(intent);
-            }
-        });
+        if (sousuo != null)
+        {
+            sousuo.setOnClickListener(new OnClickListener() {
 
-        musicTouYing.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, MusicCategoryActivity.class);
-                startActivity(intent);
-            }
-        });
-        vedioTouYing.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, VedioCategoryActivity.class);
-                startActivity(intent);
-            }
-        });
-        pictureTouYing.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, PictureCategoryActivity.class);
-                startActivity(intent);
-            }
-        });
-        otherTouTing.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent(TVHelperMainActivity.this, OtherDetailsActivity.class);               
-                intent.putExtra("forwardIntent", new Intent(TVHelperMainActivity.this, TVRemoteControlActivity.class));
-                startActivity(intent);
-			}
-		});
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, TVChannelSearchActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        if (musicTouYing != null)
+        {
+            musicTouYing.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, MusicCategoryActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        if (vedioTouYing != null)
+        {
+            vedioTouYing.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, VedioCategoryActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        if (pictureTouYing != null)
+        {
+            pictureTouYing.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, PictureCategoryActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+        if (otherTouTing != null)
+        {
+            otherTouTing.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent(TVHelperMainActivity.this, OtherDetailsActivity.class);
+                    intent.putExtra("forwardIntent", new Intent(TVHelperMainActivity.this, TVRemoteControlActivity.class));
+                    startActivity(intent);
+                }
+            });
+        }
+
+
 
         /**关闭电源键**/
-        power.setOnClickListener(new OnClickListener() {
+        if(power != null)
+        {
+            power.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
-                		"是否打开或关闭机顶盒?","",new DialogBtnOnClickListener() {
-					
-					@Override
-					public void onSubmit(DialogMessage dialogMessage) {
-						 ClientSendCommandService.msg = "key:power";
-                       ClientSendCommandService.handler.sendEmptyMessage(1);
-                       if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
-					}
-					
-					@Override
-					public void onCancel(DialogMessage dialogMessage) {
-						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
-					}
-				});
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                            "是否打开或关闭机顶盒?","",new DialogBtnOnClickListener() {
+
+                                @Override
+                                public void onSubmit(DialogMessage dialogMessage) {
+                                    ClientSendCommandService.msg = "key:power";
+                                    ClientSendCommandService.handler.sendEmptyMessage(1);
+                                    if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+                                        dialogMessage.dialog.cancel();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancel(DialogMessage dialogMessage) {
+                                    if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+                                        dialogMessage.dialog.cancel();
+                                    }
+                                }
+                            });
+                }
+            });
+        }
+
 
         /**
          * Ip部分

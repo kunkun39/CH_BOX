@@ -70,6 +70,7 @@ import android.widget.Toast;
 
 import com.changhong.common.db.sqlite.DatabaseContainer;
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.CaVerifyUtil;
 import com.changhong.common.utils.StringUtils;
@@ -995,6 +996,11 @@ public class TVChannelPlayActivity extends Activity implements CaVerifyUtil.OnFe
 		rl_content = (RelativeLayout) findViewById(R.id.rl_cutscreencontent);
 		pb_cutscreen = (ProgressBar) findViewById(R.id.pb_cutscreen);
 		pb_cutscreen.setVisibility(View.INVISIBLE);
+		if (!AppConfig.USE_SHARE)
+		{
+			bt_share.setVisibility(View.INVISIBLE);
+			return ;
+		}
 		bt_share.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
