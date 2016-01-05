@@ -1,63 +1,26 @@
 package com.changhong.tvhelper.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import android.app.Activity;
-import android.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.media.ThumbnailUtils;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment.SavedState;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.*;
+import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.changhong.common.db.sqlite.DatabaseContainer;
-import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.DateUtils;
-import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelecter;
-import com.changhong.touying.activity.MusicDetailsActivity;
-import com.changhong.touying.activity.VedioDetailsActivity;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicProvider;
-import com.changhong.touying.vedio.Vedio;
-import com.changhong.touying.vedio.VedioProvider;
 import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.domain.Program;
-import com.changhong.tvhelper.service.ChannelService;
-import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.tvhelper.utils.YuYingWordsUtils;
 import com.changhong.tvhelper.view.SearchPageDefault;
 import com.changhong.tvhelper.view.SearchPageList;
-import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 public class TVChannelSearchActivity extends FragmentActivity {
 

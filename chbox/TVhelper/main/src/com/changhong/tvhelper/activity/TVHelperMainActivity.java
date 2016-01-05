@@ -1,58 +1,13 @@
 package com.changhong.tvhelper.activity;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
+import java.io.StringReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
-
-import android.app.Dialog;
-import android.content.*;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.*;
-import android.text.TextUtils;
-import android.util.JsonReader;
-
-import android.view.MotionEvent;
-
-import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
-import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.system.MyApplication;
-import com.changhong.common.widgets.BoxSelecter;
-import com.changhong.common.widgets.IpSelectorDataServer;
-import com.changhong.setting.view.AppHelpDialog;
-import com.changhong.touying.activity.MusicCategoryActivity;
-import com.changhong.touying.activity.OtherDetailsActivity;
-import com.changhong.touying.activity.PictureCategoryActivity;
-import com.changhong.touying.activity.VedioCategoryActivity;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
-import com.changhong.touying.service.M3UListProviderService;
-import com.changhong.tvhelper.R;
-import com.changhong.tvhelper.service.AppLogService;
-import com.changhong.tvhelper.service.ClientGetCommandService;
-import com.changhong.tvhelper.utils.PushSimpleNotifyUtil;
-//import com.changhong.faq.activity.QuestionListActivity;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.changhong.setting.activity.SettingActivity;
-import com.changhong.setting.service.UpdateLogService;
-import com.changhong.setting.service.UserUpdateService;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -65,11 +20,57 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
+//import com.changhong.faq.activity.QuestionListActivity;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.JsonReader;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
-import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.DialogUtil.DialogBtnOnClickListener;
 import com.changhong.common.utils.DialogUtil.DialogMessage;
+import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.widgets.IpSelectorDataServer;
+import com.changhong.setting.activity.SettingActivity;
+import com.changhong.setting.service.UpdateLogService;
+import com.changhong.setting.service.UserUpdateService;
+import com.changhong.setting.view.AppHelpDialog;
+import com.changhong.touying.activity.MusicCategoryActivity;
+import com.changhong.touying.activity.OtherDetailsActivity;
+import com.changhong.touying.activity.PictureCategoryActivity;
+import com.changhong.touying.activity.VedioCategoryActivity;
+import com.changhong.touying.nanohttpd.NanoHTTPDService;
+import com.changhong.touying.service.M3UListProviderService;
+import com.changhong.tvhelper.R;
+import com.changhong.tvhelper.service.AppLogService;
 
 public class TVHelperMainActivity extends Activity {
 
@@ -249,7 +250,7 @@ public class TVHelperMainActivity extends Activity {
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
                     Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
-                            "是否打开或关闭机顶盒?","",new DialogBtnOnClickListener() {
+                            getString(R.string.powerkey),"",new DialogBtnOnClickListener() {
 
                                 @Override
                                 public void onSubmit(DialogMessage dialogMessage) {

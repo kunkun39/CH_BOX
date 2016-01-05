@@ -22,7 +22,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@string/disconnected"
+                android:text="未连接"
                 android:textSize="20sp" />
 
             <ImageView
@@ -91,7 +91,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/music"
+                            android:text="音乐"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_gravity="center"
                             android:textColor="#FFFFFFFF"
@@ -118,7 +118,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/video"
+                            android:text="视频"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_gravity="center"
                             android:textColor="#FFFFFFFF"
@@ -145,7 +145,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/pic"
+                            android:text="图片"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:gravity="center"
                             android:textColor="#FFFFFFFF"
@@ -174,7 +174,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:layout_gravity="center"                            
-                            android:text="@string/other"
+                            android:text="其他"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="#FFFFFFFF"
                             android:layout_weight="1"/>                                                      
