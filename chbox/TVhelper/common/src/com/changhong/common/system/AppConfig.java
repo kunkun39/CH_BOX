@@ -15,6 +15,14 @@ public class AppConfig {
     public static final boolean USE_LOCATION = false;
 	
 	public static final boolean NOT_USE_MSG_PUSH = true;
+
+    public static final boolean USE_VOICE_INPUT = false;
+
+    public static final boolean USE_REMOTER = true;
+
+    public static final boolean USE_TV = false;
+
+    public static final boolean USE_OTHER_AIRDISPLAY = false;
     /**
      * the parameter which decide the min size of the file we compress 1M
      */
