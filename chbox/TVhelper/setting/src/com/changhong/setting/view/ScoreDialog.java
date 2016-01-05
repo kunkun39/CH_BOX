@@ -83,7 +83,7 @@ public class ScoreDialog extends Dialog {
         
         roundProgressBar.setMax(score);
 		handler.sendEmptyMessageDelayed(i++, 1);
-        textScoreAll.setText(String.valueOf(score) + getContext().getResources().getString(R.string.score));
+        textScoreAll.setText(String.valueOf(score) + getContext().getResources().getString(R.string.points));
     }
 
     private void initEvent() {

@@ -90,7 +90,9 @@
             <TableLayout
                 android:id="@+id/table_layout_score"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content" 
+                android:layout_marginRight="10dp"
+                >
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -110,8 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:paddingLeft="2dp"
-                        android:paddingRight="10dp"
+                        android:layout_marginLeft="2dp"
                         android:singleLine="false"
                         android:textColor="@color/white"
                         android:textSize="15sp" />

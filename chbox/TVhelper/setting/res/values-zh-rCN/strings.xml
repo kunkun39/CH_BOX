@@ -40,5 +40,6 @@
     <string name="cur_version">当前系统版本:</string>
     <string name="update_check">检查更新</string>
     <string name="score">分</string>
+    <string name="points">分</string>
 
 </resources>
