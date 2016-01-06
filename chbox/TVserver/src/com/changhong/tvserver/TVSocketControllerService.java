@@ -23,6 +23,7 @@ import android.os.*;
 import android.os.Process;
 
 import com.changhong.tvserver.utils.CaVerifyUtil;
+import com.changhong.tvserver.utils.Config;
 import com.changhong.tvserver.utils.NetworkUtils;
 import com.changhong.tvserver.utils.StringUtils;
 import com.chome.virtualkey.virtualkey;
@@ -140,7 +141,11 @@ public class TVSocketControllerService extends Service {
                                 t.vkey_input(113, 1);
                             } else if (msgCpy.equals("key:power")) {
                                 Log.e(TAG, "key:power");
-                                t.vkey_input(0x7f01, 1);
+                                if (Config.PLATFORM == Config.PLATFORM_S805) {
+                                    t.vkey_input(116, 1);
+                                } else {
+                                    t.vkey_input(0x7f01, 1);
+                                }
                             } else if (msgCpy.equals("key:0")) {
                                 Log.e(TAG, "key:0");
                                 t.vkey_input(11, 1);
