@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 
     private static final String TAG = "TVServer";
 
-    public String CH_BOX_NAME = getString(R.string.stb_title);
+    public String CH_BOX_NAME = null;
 
     private EditText chboxName;
 
@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
         chboxName = (EditText) findViewById(R.id.ch_box_name);
         chboxSave = (Button) findViewById(R.id.ch_box_save);
 
+        CH_BOX_NAME = getString(R.string.stb_title);
         CH_BOX_NAME = getBoxName(MainActivity.this);
         chboxName.setText(CH_BOX_NAME);
 
