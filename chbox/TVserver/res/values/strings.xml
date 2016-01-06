@@ -60,7 +60,7 @@
     <string name="stb_tag">Please enter the STB\'s name!</string>
     <string name="save_successful">Save successful!</string>
     <string name="save_failure">Save failure!</string>
-    <string name="music_disconnects">STB suit and STB network disconnected or STB suit has quit, unable to access resources</string>
+    <string name="music_disconnects">STB suit and STB network disconnected or STB suit has quit, unable to access the resource</string>
     <string name="background_download">Download background</string>
     <string name="search_again">Resources not found, please try again!</string>
     <string name="othershow_projection">Before the projection, please exit PPT, thank you!</string>
