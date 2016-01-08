@@ -23,10 +23,10 @@
     <string name="neu_dtv_tag">Please use wired network to connect the STB,otherwise it is difficult to ensure play digital TV play smooth.</string>
     <string name="neu_24g">The current connection is in the range of 2.4G, HD program will may be cards</string>
     <string name="loading_waiting">"The update file is loading,please wait patiently."</string>
-    <string name="mobile_data_tag">Attention:you are now connected to the mobile network,operator will change fees\n\n</string>
+    <string name="mobile_data_tag">Attention: You are now not connected to wireless network, operator may charge for this.\n\n</string>
     <string name="stb_version_update">Update the version of STB suit</string>
     <string name="update_prepared">prepared for update</string>
-    <string name="setup_prompt">The latest version has been downloaded to complete, whether or not to install the update？</string>
+    <string name="setup_prompt">Finish Download of the latest version is completed, do you want to install it?</string>
     <string name="wired_5g">Network environment is very good</string>
     <string name="wired_24g">You can choose a better router</string>
     <string name="wireless24g_5g">Please connect the STB with cable.</string>
@@ -34,7 +34,7 @@
     <string name="no_network">Mobile phone or STB without networking</string>
     <string name="downloading">Downloading updates</string>
     <string name="the_latest_version">Congratulations, it\'s the latest version.</string>
-    <string name="phone_no_network">You are not connected to the network, please check the settings</string>
+    <string name="phone_no_network">Mobile phone or STB is disconnected</string>
     <string name="network_anomaly">Network connection exception, please try again later</string>
     <string name="system_help">System help</string>
     <string name="cur_version">Software version:</string>
