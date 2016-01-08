@@ -510,7 +510,7 @@
     <string name="current_channel_token">Playing：</string>
     <string name="next_channel_token">Next Program：</string>
     <string name="share">Share</string>
-    <string name="disconnected">NONE</string>
+    <string name="disconnected">NO STB</string>
     <string name="search_tip">Search channel or program</string>
     <string name="favorite_channel_notoken">Favorite</string>
     <string name="order_channel">Order</string>
