@@ -3,14 +3,14 @@
 
     <string name="menu_controller">Remoter</string>
     <string name="menu_faq">User FeedBack </string>
-    <string name="menu_search">Seach</string>
+    <string name="menu_search">Search</string>
     <string name="menu_setting">Settings</string>
     <string name="menu_shoucang">Favorite</string>
-    <string name="menu_touying">AirDisPlay</string>
+    <string name="menu_touying">Projection</string>
     <string name="menu_tv">TV</string>
     <string name="menu_items">Menu</string>
     <string name="menu_exit">Menu Exit</string>
-    <string name="notify_information">STB SUIT TIP</string>
+    <string name="notify_information">STB SUIT TIPS</string>
     <string name="return_button">Back</string>
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>
@@ -22,6 +22,6 @@
     <string name="cancel">cancel</string>
     <string name="confrim">OK</string>
     <string name="default_name">default_name</string>
-    <string name="server_isnt_exist">No STB Found，Please Confirm The STB And Phone Linked In The Same Router?</string>
+    <string name="server_isnt_exist">No STB Found，Please Confirm if the STB And Phone are connected to the Same Router?</string>
     <string name="disconnected">No STB</string>
 </resources>
