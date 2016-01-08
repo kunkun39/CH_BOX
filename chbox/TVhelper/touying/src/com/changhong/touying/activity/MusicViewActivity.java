@@ -106,7 +106,6 @@ public class MusicViewActivity extends FragmentActivity {
 				if (isLastSong) {
 					player.stopTVPlayer();
 					isLastSong = false;
-                    getSupportFragmentManager().beginTransaction().hide(player).commitAllowingStateLoss();
 				}
 				else {
 						player.nextMusic();					
@@ -121,8 +120,6 @@ public class MusicViewActivity extends FragmentActivity {
 				else {
 					isLastSong = false;
 				}
-                getSupportFragmentManager().beginTransaction().show(player).commitAllowingStateLoss();
-				
 			}
 		});
     }

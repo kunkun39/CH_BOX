@@ -140,8 +140,6 @@ public class SingleMusicAdapter extends BaseAdapter {
     
     
     private void playMusics(List<Music> musics, Music music) {
-    	((FragmentActivity)context).getSupportFragmentManager().beginTransaction()
-				.show(player).commitAllowingStateLoss();
 		if (music != null) {
 			player.playMusics(music);
 		} else {

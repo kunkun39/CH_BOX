@@ -320,7 +320,7 @@ public class MusicPlayer extends DialogFragment{
             List<Music> list = new ArrayList<Music>();
             for(int i = musics.indexOf(music);i < musics.size();i ++)
             	list.add(musics.get(i));
-            touYing(list,playlistName);
+            touYing(list, playlistName);
     		return true;
     		
 		}
@@ -399,6 +399,8 @@ public class MusicPlayer extends DialogFragment{
     		Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
             view.startAnimation(animation);
             view.setVisibility(View.INVISIBLE);
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.hide(this).commitAllowingStateLoss();
 		}
     	
     }
@@ -456,6 +458,8 @@ public class MusicPlayer extends DialogFragment{
 			//Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
 	        //view.startAnimation(animation);
 	        view.setVisibility(View.INVISIBLE);
+			getActivity().getSupportFragmentManager().beginTransaction()
+					.hide(MusicPlayer.this).commitAllowingStateLoss();
 		}
 		
 	}
@@ -503,10 +507,13 @@ public class MusicPlayer extends DialogFragment{
 	                        if (view.getVisibility() == View.INVISIBLE 
 	                        		&& progress > 0
 	                        		&& seekBar.getMax() - seekBar.getProgress() > 5) {
+								getActivity().getSupportFragmentManager().beginTransaction()
+										.show(MusicPlayer.this).commitAllowingStateLoss();
+
 	                            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
-	                            view.startAnimation(animation);
+								view.startAnimation(animation);
 	                            view.setVisibility(View.VISIBLE);
-	
+
 	                            int totalTime = music.getDuration() / 1000;
 	                            seekBar.setMax(totalTime);
 	                            String musicTotalTime = DateUtils.getTimeShow(totalTime);
@@ -578,6 +585,7 @@ public class MusicPlayer extends DialogFragment{
         else {
         	view.setMinimumHeight(100);        	
 		}
+		view.setVisibility(View.INVISIBLE);
         view.invalidate();
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
@@ -708,6 +716,8 @@ public class MusicPlayer extends DialogFragment{
     
     private void touYing(List<Music> musics,String playlistName)
     {
+
+
     	List<JsonMusicObject> objectsList = new ArrayList<JsonMusicObject>();
     	
     	try {
