@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="vedio_description">useage ：We can make the media resources to TV by choose the media and then click the resources, the control interface does the following,such as play,pause,volume,please keep the wifi connection in the play</string>
+    <string name="vedio_description">Tip ：Select and click the media resources, then they can play on the TV.</string>
     <string name="add_list">CREATE PLAYLIST</string>
     <string name="devide">-</string>
     <string name="playlistname">Playlist name</string>
@@ -17,17 +17,18 @@
     <string name="PlayList_modify">Modify</string>
     <string name="byplaylist">by playlist</string>
     <string name="byspecial">by special</string>
-    <string name="nametoolong">The name is too long, please re name the name</string>
+    <string name="nametoolong">The name is too long, please rename it</string>
     <string name="filenotfound">File not found！</string>
     <string name="share">share</string>
     <string name="share_title">STB SUIT</string>
-    <string name="disconnected">disconnected</string>
+    <string name="disconnected">NO STB</string>
     <string name="single">SINGLE</string>
     <string name="singer">SINGER</string>
     <string name="songlist">PLAYLIST</string>
     <string name="music">music</string>
+    <string name="cancel_projection">Cancel projection</string>
     <string name="cancel">cancel</string>
-    <string name="upslide_began_to_projection">Upslide began to projection</string>
+    <string name="upslide_began_to_projection">Upslide to project</string>
     <string name="previous">previous</string>
     <string name="next">next</string>
     <string name="scaling_pictures">Scaling pictures</string>
@@ -37,13 +38,13 @@
     <string name="duration">"DUR"</string>
     <string name="connect_wifi">Please connect wireless network!</string>
     <string name="get_video_failed">Failed to get video</string>
-    <string name="phone_disconnect">Mobile not connected the TV, please projection after confirm again</string>
-    <string name="get_image_failed">I\'m sorry, pictures get wrong!</string>
+    <string name="phone_disconnect">Make sure mobile is connected to TV and project again.</string>
+    <string name="get_image_failed">Sorry, fail to get the pictures</string>
     <string name="share_image_tag">There is a beautiful picture and share it with you</string>
     <string name="no_sdcard">No sdcard</string>
     <string name="loading">Loading,please wait</string>
-    <string name="send_pdf_failed">PDF file push failed</string>
-    <string name="get_pdf_failed">PDF file access failed</string>
+    <string name="send_pdf_failed">Fail to project PDF file to STB</string>
+    <string name="get_pdf_failed">Fail to get the PDF file</string>
     <string name="total"> </string>
     <string name="space_total">"     "</string>
     <string name="song_unit">" "songs</string>
