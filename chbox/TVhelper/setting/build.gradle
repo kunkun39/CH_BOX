@@ -1,9 +1,7 @@
 apply plugin: 'com.android.library'
 buildscript {
     repositories {
-        jcenter {
-            maven { url 'http://maven.oschina.net/content/groups/public/' }
-        }
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
     }
 
     dependencies {

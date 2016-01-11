@@ -26,7 +26,7 @@
     <string name="mobile_data_tag">Attention: You are now not connected to wireless network, operator may charge for this.\n\n</string>
     <string name="stb_version_update">Update the version of STB suit</string>
     <string name="update_prepared">prepared for update</string>
-    <string name="setup_prompt">Finish Download of the latest version is completed, do you want to install it?</string>
+    <string name="setup_prompt">Download of the latest version is completed, do you want to install it?</string>
     <string name="wired_5g">Network environment is very good</string>
     <string name="wired_24g">You can choose a better router</string>
     <string name="wireless24g_5g">Please connect the STB with cable.</string>
