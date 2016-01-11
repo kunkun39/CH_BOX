@@ -702,7 +702,7 @@ public class TVHelperMainActivity extends Activity {
                  */
 
                 Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
-                 		"已经为您准备好更新","最新的版本已经下载完成,是否安装更新？",new DialogBtnOnClickListener() {
+                 		getApplicationContext().getString(R.string.update_prepared),getApplicationContext().getString(R.string.setup_prompt),new DialogBtnOnClickListener() {
  					
  					@Override
  					public void onSubmit(DialogMessage dialogMessage) {

@@ -497,7 +497,7 @@
     <string name="order_text_11">Replace with</string>
     <string name="order_text_2">STB SUIT：Program Ordered Is Start!</string>
     <string name="help">HELP</string>
-    <string name="close_stb_tip">StartUp or ShutDown STB?</string>
+    <string name="close_stb_tip">StartUp or ShutDown STB</string>
     <string name="notify_mesg">STB SUIT NOTE：New message is received,Please check!</string>
     <string name="comfirm_del">Sure to Delete?</string>
     <string name="cancel_favorite">Del\nFavor</string>
@@ -531,7 +531,7 @@
     <string name="search_history_tip">History:</string>
     <string name="message_tip">STB SUIT MESSAGE:</string>
     <string name="ok">Okay</string>
-    <string name="powerkey">Whether on or off the STB?</string>
+    <string name="powerkey">StartUp or ShutDown STB?</string>
 
 
 
