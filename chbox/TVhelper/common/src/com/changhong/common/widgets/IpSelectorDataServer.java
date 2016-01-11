@@ -31,7 +31,6 @@ public class IpSelectorDataServer
 	 * Static Final String
 	 */
 	private static final String DEFAULT_IP_NAME = NetworkUtils.BOX_DEFAULT_NAME;
-	private static final String DEFAULT_LINKLESSNESS = MyApplication.getContext().getString(R.string.disconnected);
 	private static final int  DELAY_TIME = 5000;
 	
 	/**
@@ -197,10 +196,10 @@ public class IpSelectorDataServer
 	
 	public final String getName(String ip) {
 		if (ip == null|| ip.length() < 1) {
-			return DEFAULT_LINKLESSNESS;
+			return MyApplication.getContext().getString(R.string.disconnected);
 		}
 		if (mServerIpListMap.size() < 1) {
-			return DEFAULT_LINKLESSNESS;
+			return MyApplication.getContext().getString(R.string.disconnected);
 		}
 		
 		String name = mServerIpListMap.get(ip);
