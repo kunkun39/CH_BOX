@@ -114,7 +114,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="top"
                         android:layout_marginLeft="2dp"
+                        android:drawableStart="@drawable/wifiicon"
                         android:drawableLeft="@drawable/wifiicon"
+                        android:drawablePadding="4dp"
                         android:singleLine="false"
                         android:textColor="@color/white"
                         android:textSize="15sp" />

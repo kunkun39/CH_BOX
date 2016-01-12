@@ -11,7 +11,7 @@
     <string name="pch_content">"        "1、Reservation TV will notice by two ways,when your phone is in the lock screen, the system will inform you by message. When your phone is in use, the system will inform you through a dialog,click the name of a program in the dialog, you can directly watch living programs.\n"        "2、In order to ensure you can receive a message, please enter the system settings - > Application Management - > select TV assistant - > uncheck show notification.</string>
     <string name="pdf_ppt_hologram">PDF projection help</string>
     <string name="pdf_ppt_content">"        "1、We can project the PDF and PPT file by click.\n"        "2、We can control the PDF file by remote control,and exit by return key.</string>
-    <string name="setting">Setting</string>
+    <string name="setting">Settings</string>
     <string name="advanced">Advanced settings</string>
     <string name="setting_help">Help</string>
     <string name="about">About</string>

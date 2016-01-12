@@ -86,8 +86,8 @@ public class UserUpdateService {
      */
 //   public final static String JSON_URL = "http://192.168.0.107:8080/update/download/update.json";
 //   public final static String UPDATE_URL = "http://192.168.0.107:8080/update/download/tvhelper.apk";
-    public final static String JSON_URL = "http://www.ottserver.com:8080/update/download/update.json";
-    public final static String UPDATE_URL = "http://www.ottserver.com:8080/update/download/tvhelper.apk";
+    public final static String JSON_URL = "http://52.74.48.175/update_tv/update.json";
+    public final static String UPDATE_URL = "http://52.74.48.175/update_tv/tvhelper.apk";
 
     /**
      * 更新信息和版本
@@ -369,6 +369,7 @@ public class UserUpdateService {
 
     public BroadcastReceiver updateReceiver = new BroadcastReceiver() {
 
+        Dialog mDialog = null;
         public void onReceive(Context mContext, Intent mIntent) {
             /**
              * 升级文件下载
@@ -381,7 +382,10 @@ public class UserUpdateService {
                 } else {
                 	content=mContext.getResources().getString(R.string.mobile_data_tag) + updateMsgContent;
                 }
-            	Dialog  dialog =DialogUtil.showAlertDialog(context,
+                if (mDialog != null)
+                    mDialog.dismiss();
+
+                mDialog =DialogUtil.showAlertDialog(context,
                  		context.getResources().getString(R.string.stb_version_update),content,new DialogBtnOnClickListener() {
  					
  					@Override
@@ -534,7 +538,9 @@ public class UserUpdateService {
                     intent.setDataAndType(uri, "application/vnd.android.package-archive");
                     context.startActivity(intent);
                 } else {
-                	 Dialog  dialog =DialogUtil.showAlertDialog(context,
+                    if (mDialog != null)
+                        mDialog.dismiss();
+                    mDialog =DialogUtil.showAlertDialog(context,
                      		context.getResources().getString(R.string.update_prepared),context.getResources().getString(R.string.setup_prompt),new DialogBtnOnClickListener() {
      					
      					@Override
