@@ -375,7 +375,7 @@
     <string name="zhongxuesheng">中学生</string>
 
     <!-- External Storage State Messages -->
-    <string name="header_sd_media"><b>External Media Unavailable</b>\n\nThe SD Card is a required part of i-jetty, and needs to be present, formatted, mounted, <u>not</u> read-only, and with sufficient space to hold the temporary files that i-jetty needs.\n\nPlease correct your SD-Card state.</string>
+    <string name="header_sd_media"><b>External media unavailable</b>\n\nThe SD Card is a required part of i-jetty, and needs to be present, formatted, mounted, <u>not</u> read-only, and with sufficient space to hold the temporary files that i-jetty needs.\n\nPlease correct your SD-Card state.</string>
     <string name="sd_media_removed"><b>MEDIA_REMOVED</b>\n\nPlease replace the SD Card and try again.</string>
     <string name="sd_media_unmounted"><b>MEDIA_UNMOUNTED</b>\n\nMedia is present, but not mounted.\nSee your System Settings &gt; SD Card screen for mounting instructions.</string>
     <string name="sd_media_checking"><b>MEDIA_CHECKING</b>\n\nMedia is present, but is being disk-checked by the OS.\nPlease wait a few minutes for this process to finish and try again.</string>
@@ -441,37 +441,37 @@
 	<string name="dialog_baidu_voice_mall_help">
 	\n如说出”魔力“,“魔力影音”,“电影”,”电视剧“,”综艺“,”体育“,”少儿“,”动画“,”音乐“，或节目名,盒子会启动魔力影音进行播放。
 	</string>
-    <string name="cancel_favorite_success">Cancel Favorite Succeed </string>
-    <string name="cancel_favorite_failed">Cancel Favorite Failed</string>
-    <string name="add_favorite_success">Add To Favorite Succeed</string>
-    <string name="add_favorite_failed">Add To Favorite Failed</string>
-    <string name="press_again_to_exit">Press Again To Exist</string>
-    <string name="ca_insert_tip">Please Insert CA Card ,Before Watching TV</string>
-    <string name="play_outoftime">Loading Out Of Time，Exit！！！</string>
-    <string name="update_faied">Update Failed，Start Later</string>
-    <string name="order_channel_success">Order Program Succeed</string>
-    <string name="order_channel_failed">Order Program Failed</string>
-    <string name="cancel_order_success">Delete The Ordered Program Succeed</string>
-    <string name="cancel_order_failed">Delete The Ordered Program Failed</string>
-    <string name="favorite_empty">Favorite Is Empty</string>
-    <string name="order_empty">Ordered List Is Empty</string>
-    <string name="channel_list_empty">Channel List Is Empty！</string>
-    <string name="server_isnt_exist">No STB Found，Please Comfirm Phone and STB Linked In The Same Router?</string>
-    <string name="phone_resolution_not_satisfied">By Resulution Of Your Phone Lower Than 1080p, HQ Channel Is Forbidden.</string>
-    <string name="channel_load_wait">Loading Program List，Please Wait</string>
-    <string name="check_network">Please Check Network Connection</string>
-    <string name="sorry_bad_network_failed">Sorry，Network Is Not Stable，Translate Failed</string>
-    <string name="sorry_empty_message">Sorry，The Command Cannot Recognised</string>
-    <string name="sorry_message_cannot_support">Sorry，The Command Is Not Supported Right Now:</string>
+    <string name="cancel_favorite_success">Cancel favorite succeed </string>
+    <string name="cancel_favorite_failed">Cancel favorite failed</string>
+    <string name="add_favorite_success">Add to favorite succeed</string>
+    <string name="add_favorite_failed">Add to favorite failed</string>
+    <string name="press_again_to_exit">Press again to exist</string>
+    <string name="ca_insert_tip">Please insert CA card ,Before watching TV</string>
+    <string name="play_outoftime">Loading out of time，Exit！！！</string>
+    <string name="update_faied">Update failed，Start later</string>
+    <string name="order_channel_success">Order program succeed</string>
+    <string name="order_channel_failed">Order program failed</string>
+    <string name="cancel_order_success">Delete the ordered program succeed</string>
+    <string name="cancel_order_failed">Delete the ordered program failed</string>
+    <string name="favorite_empty">Favorite is empty</string>
+    <string name="order_empty">Ordered list is empty</string>
+    <string name="channel_list_empty">Channel list is empty！</string>
+    <string name="server_isnt_exist">No STB found，Please comfirm phone and stb linked in the same router?</string>
+    <string name="phone_resolution_not_satisfied">By resulution of your phone lower than 1080p, HQ channel is forbidden.</string>
+    <string name="channel_load_wait">Loading program list，Please wait</string>
+    <string name="check_network">Please check network connection</string>
+    <string name="sorry_bad_network_failed">Sorry，Network is not stable，Translate failed</string>
+    <string name="sorry_empty_message">Sorry，The command cannot recognised</string>
+    <string name="sorry_message_cannot_support">Sorry，The command is not supported right now:</string>
     <string name="voice_result">Translate:</string>
     <string name="app_result">Application:</string>
     <string name="channel_result">Channel:</string>
-    <string name="order_tip">Tip：Please Press Channel List To Change Channel,Or Close List by Pressing Cancel Button.</string>
-    <string name="no_channel_find">No Program or Channel Searched Out！</string>
+    <string name="order_tip">Tip：please press channel list to change channel,Or close list by pressing cancel button.</string>
+    <string name="no_channel_find">No program or channel searched out！</string>
     <string name="start_voice_input">Listening...</string>
-    <string name="network_error">Network Connecting Error，Please Retry Later</string>
-    <string name="voice_tip1">Press Down To Start，Finish While Released</string>
-    <string name="voice_analyse_error">Decompile Failed，Please Retry</string>
+    <string name="network_error">Network connecting error，Please retry later</string>
+    <string name="voice_tip1">Press down to start，Finish while released</string>
+    <string name="voice_analyse_error">Decompile failed，Please retry</string>
     <string name="favorite">Favor</string>
     <string name="delete">Del</string>
     <string name="channel">Chan</string>
@@ -493,13 +493,13 @@
     <string name="share_test_13">]，It is Fatastic!</string>
     <string name="share_text_22">，It is Fatastic!</string>
     <string name="time">TIME</string>
-    <string name="order_text_1">The Program You Ordered</string>
+    <string name="order_text_1">The program you ordered</string>
     <string name="order_text_11">Replace with</string>
-    <string name="order_text_2">STB SUIT：Program Ordered Is Start!</string>
+    <string name="order_text_2">STB SUIT：Program ordered is start!</string>
     <string name="help">HELP</string>
     <string name="close_stb_tip">StartUp or ShutDown STB</string>
     <string name="notify_mesg">STB SUIT NOTE：New message is received,Please check!</string>
-    <string name="comfirm_del">Sure to Delete?</string>
+    <string name="comfirm_del">Sure to delete?</string>
     <string name="cancel_favorite">Del\nFavor</string>
 
     <string name="cancel_order">Del\nOrder</string>
@@ -532,8 +532,5 @@
     <string name="message_tip">STB SUIT MESSAGE:</string>
     <string name="ok">Okay</string>
     <string name="powerkey">StartUp or ShutDown STB?</string>
-
-
-
 
 </resources>
