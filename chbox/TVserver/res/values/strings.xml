@@ -2,7 +2,7 @@
 
     <string name="app_name">STB SUIT</string>
     <string name="version">1.8 (git build)</string>
-    <string name="no_media_warning">Storage media not present</string>
+    <string name="no_media_warning">Storage media not found</string>
     <string name="no_media_hint">Sharing the storage media with a PC can make it inaccessible</string>
     <string name="cancel">Cancel</string>
     <string name="search_backwards">Search backwards</string>
@@ -44,9 +44,9 @@
     <string name="cannot_open_document">Cannot open document</string>
     <string name="cannot_open_document_Reason">Cannot open document: %1$s</string>
     <string name="cannot_open_file_Path">Cannot open file: %1$s</string>
-    <string name="cannot_open_buffer">Cannot open buffer</string>
+    <string name="cannot_open_buffer">Cannot read data</string>
     <string name="fill_out_text_field">Fill out text field</string>
-    <string name="okay">Okay</string>
+    <string name="okay">OK</string>
     <string name="choose_value">Choose value</string>
     <string name="not_supported">Not supported</string>
     <string name="copy_text_to_the_clipboard">Copy text to the clipboard</string>
@@ -63,14 +63,14 @@
     <string name="music_disconnects">STB suit and STB network disconnected or STB suit has quit, unable to access the resource</string>
     <string name="background_download">Download background</string>
     <string name="search_again">Resources not found, please try again!</string>
-    <string name="othershow_projection">Before the projection, please exit PPT, thank you!</string>
-    <string name="no_sdcard">No SD card, can not push the PDF file!</string>
+    <string name="othershow_projection">Press back button and project again</string>
+    <string name="no_sdcard">No SD card found, PDF file cannot be pushed to STB!</string>
     <string name="network_ex_exit">Network exception, exit the download</string>
     <string name="phone">mobile</string>
     <string name="disconnect">Disconnect</string>
     <string name="stb_name">The STB name:</string>
     <string name="sitting_room">Sitting room</string>
-    <string name="qr_code">Scan the following QR code, download STB suit mobile client</string>
+    <string name="qr_code">Scan QR code below to download STB suit mobile client</string>
     <string name="main_tag"> </string>
     <string name="film_name">Film name</string>
     <string name="ad_search">Press [menu button] for advanced search</string>

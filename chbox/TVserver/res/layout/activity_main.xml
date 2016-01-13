@@ -61,11 +61,11 @@
                  android:visibility="invisible"
                  />
 
-        <ImageView
+        <!--ImageView
                 android:src="@drawable/tv_server_code_ios"
                 android:layout_width="240dip"
                 android:layout_height="240dip"
-                />
+                /-->
     </LinearLayout>
     <LinearLayout
             android:layout_width="fill_parent"
@@ -88,13 +88,13 @@
                 android:visibility="invisible"
                 />
 
-        <TextView
+        <!--TextView
                 android:layout_width="240dip"
                 android:layout_height="wrap_content"
                 android:textSize="36px"
                 android:textColor="@android:color/black"
                 android:gravity="center"
-                android:text="IOS" />
+                android:text="IOS" /-->
     </LinearLayout>
 
     <TextView
