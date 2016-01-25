@@ -38,7 +38,6 @@ import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.common.widgets.IpSelectorDataServer;
-import com.changhong.setting.utils.NetEstimateUtils;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
 import com.changhong.tvhelper.service.ChannelService;

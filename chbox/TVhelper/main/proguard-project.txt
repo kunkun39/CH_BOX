@@ -19,6 +19,9 @@
 #   public *;
 #}
 
+-keep class com.changhong.common.**{*;}
+-dontwarn com.changhong.common.**
+
 -keep class com.changhong.touying.music.** {*;}
 -dontwarn com.changhong.touying.music.**
 
