@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/search_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true" >
+
+    <include layout="@layout/activity_channel_search" />
+
+    <LinearLayout
+        android:id="@+id/ip_view"
+        android:layout_width="300dip"
+        android:layout_height="fill_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="64.3dip"
+            android:paddingLeft="20dip"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="@string/disconnected"
+            android:textSize="20sp" />
+
+        <ListView
+            android:id="@+id/clients"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="67.6dip"
+            android:background="@drawable/bkg"
+            android:listSelector="@drawable/title_ip_list"
+            android:visibility="visible" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>
