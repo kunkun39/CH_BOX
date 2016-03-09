@@ -1,11 +1,7 @@
 package com.changhong.touying.tab;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,118 +16,120 @@ import com.changhong.touying.R;
 import com.changhong.touying.activity.OtherDetailsActivity;
 import com.changhong.touying.file.FileItem;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class PDFTouyingTab extends Fragment {
 
-	private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
-	ArrayList<FileItem> mPathList = new ArrayList<FileItem>();
-	View mView = null;
+    ArrayList<FileItem> mPathList = new ArrayList<FileItem>();
+    View mView = null;
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-	
-		mRecyclerView = (RecyclerView) inflater.inflate(R.layout.touying_recyclerview,
-				container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-		return mRecyclerView;
+        mRecyclerView = (RecyclerView) inflater.inflate(R.layout.touying_recyclerview,
+                container, false);
 
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
+        return mRecyclerView;
 
-	}
+    }
 
-	public void setdata(Collection<FileItem> list) {
-		if (list == null) {
-			return;
-		}
-		mPathList.clear();
-		mPathList.addAll(list);
-		
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-		mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(),mPathList));
-	}
-
-	public class RecyclerViewAdapter extends
-			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
-		private Context mContext;
-		ArrayList<FileItem> PathList = new ArrayList<FileItem>();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
 
-		public RecyclerViewAdapter(Context context,ArrayList<FileItem> mPathList) {
-			this.mContext = context;
-			PathList=mPathList;
-	
-		}
+    }
 
-		@Override
-		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
-				ViewGroup parent, int viewType) {
+    public void setdata(Collection<FileItem> list) {
+        if (list == null) {
+            return;
+        }
+        mPathList.clear();
+        mPathList.addAll(list);
 
-			View view = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.ppt_list_item, parent, false);
-			return new ViewHolder(view);
-		}
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(), mPathList));
+    }
 
-		@Override
-		public void onBindViewHolder(
-				final RecyclerViewAdapter.ViewHolder holder, final int position) {
-			final View view = holder.mView;
+    public class RecyclerViewAdapter extends
+            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-			final FileItem pdf = mPathList.get(position);
-			holder.defaultImage.setBackgroundResource(R.drawable.pdf_icon);
-			holder.pptName.setText(pdf.getTitle());
-			holder.fullPath.setText(pdf.getPath());
+        private Context mContext;
+        ArrayList<FileItem> PathList = new ArrayList<FileItem>();
 
-			holder.playBtn.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					OtherDetailsActivity.touYing(getActivity(), pdf.getPath());
-				}
-			});
+        public RecyclerViewAdapter(Context context, ArrayList<FileItem> mPathList) {
+            this.mContext = context;
+            PathList = mPathList;
 
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					OtherDetailsActivity.touYing(getActivity(),mPathList.get(position).getPath());
-				}
-			});
+        }
 
-		}
+        @Override
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
 
-		@Override
-		public int getItemCount() {
-			return PathList.size();
-		}
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.ppt_list_item, parent, false);
+            return new ViewHolder(view);
+        }
 
-		public  class ViewHolder extends RecyclerView.ViewHolder {
-			
-			TextView pptName = null;
-			TextView fullPath = null;
-			ImageView playBtn = null;
-			ImageView defaultImage = null;
+        @Override
+        public void onBindViewHolder(
+                final RecyclerViewAdapter.ViewHolder holder, final int position) {
+            final View view = holder.mView;
 
-			public final View mView;
+            final FileItem pdf = mPathList.get(position);
+            holder.defaultImage.setBackgroundResource(R.drawable.pdf_icon);
+            holder.pptName.setText(pdf.getTitle());
+            holder.fullPath.setText(pdf.getPath());
 
-			public ViewHolder(View view) {
+            holder.playBtn.setOnClickListener(new OnClickListener() {
 
-				super(view);
+                @Override
+                public void onClick(View v) {
+                    OtherDetailsActivity.touYing(getActivity(), pdf.getPath());
+                }
+            });
 
-				mView = view;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OtherDetailsActivity.touYing(getActivity(), mPathList.get(position).getPath());
+                }
+            });
 
-				pptName = (TextView) view.findViewById(R.id.file_item_name);
-				fullPath = (TextView) view.findViewById(R.id.file_item_path);
-				playBtn = (ImageView) view.findViewById(R.id.file_list_play);
-				defaultImage = (ImageView) view.findViewById(R.id.file_item_image);
+        }
 
-			}
-		}
+        @Override
+        public int getItemCount() {
+            return PathList.size();
+        }
 
-	}
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            TextView pptName = null;
+            TextView fullPath = null;
+            ImageView playBtn = null;
+            ImageView defaultImage = null;
+
+            public final View mView;
+
+            public ViewHolder(View view) {
+
+                super(view);
+
+                mView = view;
+
+                pptName = (TextView) view.findViewById(R.id.file_item_name);
+                fullPath = (TextView) view.findViewById(R.id.file_item_path);
+                playBtn = (ImageView) view.findViewById(R.id.file_list_play);
+                defaultImage = (ImageView) view.findViewById(R.id.file_item_image);
+            }
+        }
+
+    }
 }

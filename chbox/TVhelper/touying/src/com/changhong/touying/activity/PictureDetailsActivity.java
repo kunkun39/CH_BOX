@@ -1,6 +1,5 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -11,43 +10,54 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.*;
+import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
-import android.view.View.OnClickListener;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.thirdpart.sharesdk.ShareFactory;
 import com.changhong.thirdpart.sharesdk.util.L;
-import com.changhong.touying.images.DragImageView;
-import com.changhong.common.utils.NetworkUtils;
-import com.changhong.common.widgets.IpSelectorDataServer;
-import com.changhong.common.system.AppConfig;
 import com.changhong.touying.R;
+import com.changhong.touying.images.DragImageView;
 import com.changhong.touying.nanohttpd.NanoHTTPDService;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.nostra13.universalimageloader.utils.StorageUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URI;
 import java.util.List;
 
 /**
  * Created by Jack Wang
  */
-public class PictureDetailsActivity extends Activity implements OnGestureListener {
+public class PictureDetailsActivity extends AppCompatActivity implements OnGestureListener {
     /**
      * 传过来所有的图片
      */
@@ -129,7 +139,12 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     private float currentRotationPosition = 0f;
 
-    /*******************************************手势图片**************************************************************/
+
+    private DrawerLayout mDrawerLayout;
+
+    /**
+     * ****************************************手势图片*************************************************************
+     */
 
     private ImageView gestureUp;
     private ImageView gestureLeft;
@@ -150,11 +165,11 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         initData();
 
         initEvent();
-        initShare();
+//        initShare();
     }
 
     private void initView() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_picture_details);
 
         detector = new GestureDetector(this);
@@ -177,6 +192,12 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         textRight = (TextView) findViewById(R.id.text_right);
         textScale = (TextView) findViewById(R.id.text_scale);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.picture_detail_drawer);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.picture_detai_content_toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
         currentShow = false;
     }
 
@@ -401,7 +422,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             /**
              * 竖上滑动, 投影
              */
-            if ( StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+            if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                 isImageContinueShow = true;
                 isImageContinueMove = false;
                 imageContinueShow.setVisibility(View.VISIBLE);
@@ -754,19 +775,19 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
             Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.get_image_failed), Toast.LENGTH_SHORT).show();
         }
     }
-    
+
     /**
      * **********************************************分享相关********************************************************
      */
     
     public void initShare() {
-        View v = findViewById(R.id.bt_sharepic);
+        View v = new View(this);// = findViewById(R.id.bt_sharepic);
         if (!AppConfig.USE_SHARE)
         {
             v.setVisibility(View.INVISIBLE);
             return ;
         }
-        v.setOnClickListener(new OnClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -789,6 +810,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
 	}
     
 
+
     /**
      * **********************************************系统重载********************************************************
      */
@@ -809,5 +831,27 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
     protected void onDestroy() {
         super.onDestroy();
         cleanAllFlipperImages();
+    }
+
+    //右上角menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.picture_share, menu);
+        return true;
+    }
+
+    //返回按钮
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+
+        if (item.getItemId() == R.id.picture_share) {
+            doShare();
+
+        }
+
+        return true;
     }
 }

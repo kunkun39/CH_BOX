@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/list_tab"
     android:layout_width="match_parent"
@@ -28,4 +28,4 @@
         app:backgroundTint="#ec407a"
         app:rippleColor="#e82dca69" />
 
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -3,32 +3,20 @@
  */
 package com.changhong.touying.tab;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager.LayoutParams;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
-import android.widget.BaseAdapter;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,14 +27,18 @@ import com.changhong.common.utils.DialogUtil.DialogMessage;
 import com.changhong.touying.R;
 import com.changhong.touying.activity.MusicPlayListActivity;
 import com.changhong.touying.activity.MusicViewActivity;
+import com.changhong.touying.adapter.DividerItemDecoration;
 import com.changhong.touying.music.M3UPlayList;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicPlayList;
 import com.changhong.touying.music.MusicProvider;
-import com.changhong.touying.music.PlayListAdatper;
 import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yves.yang
@@ -122,7 +114,7 @@ public class MusicCategoryPlaylistTab extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
                 .getContext()));
         mRecyclerView.setAdapter(RecyclerViewAdapter);
-
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     private void initEvent() {
@@ -214,14 +206,14 @@ public class MusicCategoryPlaylistTab extends Fragment {
     }
 
     private void addPlayList() {
-        Dialog dialog = DialogUtil.showEditDialog(getActivity(),getResources().getString(R.string.enter_the_playlist_name), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
+        Dialog dialog = DialogUtil.showEditDialog(getActivity(), "请输入播放列表名字", "确    认", "取    消", new DialogBtnOnClickListener() {
 
             @Override
             public void onSubmit(DialogMessage dialogMessage) {
                 String playListName = dialogMessage.msg;
                 if (playListName == null
                         || playListName.isEmpty()) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.didnot_enter_any_information), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "未输入任何信息", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 MusicPlayList list = M3UPlayList.generalplaylist(MusicCategoryPlaylistTab.this.getActivity(), playListName);
@@ -237,15 +229,15 @@ public class MusicCategoryPlaylistTab extends Fragment {
 
                 startActivityForResult(intent, RETURN_ACTIVITY_ADD);
                 if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                	dialogMessage.dialog.cancel();
-				}
+                    dialogMessage.dialog.cancel();
+                }
             }
 
             @Override
             public void onCancel(DialogMessage dialogMessage) {
-            	if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                	dialogMessage.dialog.cancel();
-				}
+                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                    dialogMessage.dialog.cancel();
+                }
             }
 
         });
@@ -449,6 +441,6 @@ public class MusicCategoryPlaylistTab extends Fragment {
         public Object getItem(int position) {
             return musicPlayLists.get(position);
         }
-
     }
+
 }

@@ -67,5 +67,4 @@ public class MusicPlayList implements Serializable{
 		this.playList = playList;
 	}
 	
-	
 }

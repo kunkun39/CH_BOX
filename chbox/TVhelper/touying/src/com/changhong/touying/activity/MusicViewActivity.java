@@ -1,7 +1,6 @@
 package com.changhong.touying.activity;
 
-import java.util.List;
-
+import android.content.Context;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,9 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.widgets.BoxSelecter;
@@ -41,6 +38,8 @@ import com.changhong.touying.music.Music;
 import com.changhong.touying.music.SetDefaultImage;
 import com.changhong.touying.music.SingleMusicAdapter;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
+
+import java.util.List;
 
 /**
  * Created by Jack Wang

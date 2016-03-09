@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.changhong.touying.R;
+import com.changhong.touying.adapter.DividerItemDecoration;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
 
@@ -40,7 +41,8 @@ public class MusicCategorySpecialTab extends Fragment {
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
 				.getContext()));
 		mRecyclerView.setAdapter(new MusicDataRecyclerViewAdapter(getActivity()));
-		
+		mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

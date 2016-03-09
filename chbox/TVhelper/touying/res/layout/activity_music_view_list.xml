@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#009688"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true">
 
-    <include layout="@layout/category_content" />
+    <include layout="@layout/category_content_music" />
 
     <!-- IP选择 -->
 
@@ -17,7 +17,7 @@
         android:layout_height="fill_parent"
         android:layout_gravity="start"
         android:background="@color/white"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/ip_title"

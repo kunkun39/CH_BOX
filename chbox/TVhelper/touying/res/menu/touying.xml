@@ -6,6 +6,5 @@
         android:icon="@drawable/power"
         android:showAsAction="always|withText"
         android:title="@string/disconnected"/>
-       
-     
+
 </menu>

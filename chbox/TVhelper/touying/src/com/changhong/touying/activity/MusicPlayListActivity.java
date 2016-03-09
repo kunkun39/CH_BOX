@@ -3,18 +3,6 @@
  */
 package com.changhong.touying.activity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.changhong.touying.R;
-import com.changhong.touying.adapter.MusicPlayListFragmentPagerAdapter;
-import com.changhong.touying.music.M3UPlayList;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicPlayList;
-import com.changhong.touying.music.MusicProvider;
-import com.changhong.touying.tab.MusicPlayListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +17,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ListView;
+
+import com.changhong.touying.R;
+import com.changhong.touying.adapter.MusicPlayListFragmentPagerAdapter;
+import com.changhong.touying.music.M3UPlayList;
+import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicPlayList;
+import com.changhong.touying.music.MusicProvider;
+import com.changhong.touying.tab.MusicPlayListFragment;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yves.yang

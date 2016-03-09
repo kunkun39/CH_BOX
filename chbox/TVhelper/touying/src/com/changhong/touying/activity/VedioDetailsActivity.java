@@ -8,13 +8,20 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.*;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.*;
+
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.*;
@@ -27,7 +34,7 @@ import com.changhong.touying.R;
 /**
  * Created by Jack Wang
  */
-public class VedioDetailsActivity extends Activity {
+public class VedioDetailsActivity extends AppCompatActivity {
 
     /**
      * 消息处理
@@ -67,7 +74,7 @@ public class VedioDetailsActivity extends Activity {
     /**
      * 返回按钮
      */
-    private ImageView returnImage;
+//    private ImageView returnImage;
 
     /**
      * 播放按钮
@@ -132,6 +139,11 @@ public class VedioDetailsActivity extends Activity {
     private ImageView volUpBtn;
     private ImageView volDownBtn;
 
+    /**
+     * DrawerLayout
+     */
+    private DrawerLayout mDrawerLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +158,6 @@ public class VedioDetailsActivity extends Activity {
     }
 
     private void initialViews() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_vedio_details);
 
         vedioTotalTime = DateUtils.getTimeShow(selectedVedio.getDuration() / 1000);
@@ -162,7 +173,7 @@ public class VedioDetailsActivity extends Activity {
         vedioDuring = (TextView) findViewById(R.id.vedio_during);
         vedioDuring.setText(getResources().getString(R.string.duration)+"： " + vedioTotalTime);
 
-        returnImage = (ImageView) findViewById(R.id.d_btn_return);
+//        returnImage = (ImageView) findViewById(R.id.d_btn_return);
         playImage = (ImageView) findViewById(R.id.d_btn_play);
 
         seekBar = (SeekBar) findViewById(R.id.play_seekbar);
@@ -176,7 +187,15 @@ public class VedioDetailsActivity extends Activity {
         controlButton = (ImageView) findViewById(R.id.vedio_control_button);
 
         volDownBtn = (ImageView) findViewById(R.id.control_volume_small);
-        volUpBtn= (ImageView) findViewById(R.id.control_volume_bigger);
+        volUpBtn = (ImageView) findViewById(R.id.control_volume_bigger);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.video_detai_drawer);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.video_detai_content_toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
@@ -187,9 +206,9 @@ public class VedioDetailsActivity extends Activity {
 
                     String[] content = StringUtils.delimitedListToStringArray(((String) msg.obj), "|");
                     //有可能出现空指向错误，
-                    if (content!=null&&content.length>0&&selectedVedio!=null &&
-                    		selectedVedio.getDisplayName()!=null && selectedVedio.getDisplayName().equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
-                          /**
+                    if (content != null && content.length > 0 && selectedVedio != null &&
+                            selectedVedio.getDisplayName() != null && selectedVedio.getDisplayName().equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
+                        /**
                          * set the play ui and play process
                          */
                         int progress = Integer.parseInt(content[1]);
@@ -234,47 +253,50 @@ public class VedioDetailsActivity extends Activity {
                 }
             }
         };
-    }
-    public boolean OnKeyPress(int keyCode, KeyEvent event)
-    {
-    	if (!isPlaying) {
-			return false;
-		}
-    	
-    	switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			ClientSendCommandService.sendMessage("key:volumedown");				
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			ClientSendCommandService.sendMessage("key:volumeup");		
-			return true;
 
-		default:
-			break;
-		}
-    	
-    	return false;
+
     }
+
+    public boolean OnKeyPress(int keyCode, KeyEvent event) {
+        if (!isPlaying) {
+            return false;
+        }
+
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                ClientSendCommandService.sendMessage("key:volumedown");
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                ClientSendCommandService.sendMessage("key:volumeup");
+                return true;
+
+            default:
+                break;
+        }
+
+        return false;
+    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if (!isPlaying) {
-			return super.onKeyDown(keyCode, event);
-		}
-    	
-    	switch (keyCode) {
-		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			ClientSendCommandService.sendMessage("key:volumedown");				
-			return true;
-		case KeyEvent.KEYCODE_VOLUME_UP:
-			ClientSendCommandService.sendMessage("key:volumeup");		
-			return true;
+        if (!isPlaying) {
+            return super.onKeyDown(keyCode, event);
+        }
 
-		default:
-			break;
-		}
-    	return super.onKeyDown(keyCode, event);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                ClientSendCommandService.sendMessage("key:volumedown");
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                ClientSendCommandService.sendMessage("key:volumeup");
+                return true;
+
+            default:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
     }
-    
+
     private void initialEvents() {
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -306,7 +328,7 @@ public class VedioDetailsActivity extends Activity {
             public void onClick(View v) {
                 try {
                     if (NetworkUtils.isWifiConnected(VedioDetailsActivity.this)) {
-                        if ( !StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+                        if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                             Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
                             return;
                         }
@@ -398,13 +420,13 @@ public class VedioDetailsActivity extends Activity {
             }
         });
 
-        returnImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
+//        returnImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                MyApplication.vibrator.vibrate(100);
+//                finish();
+//            }
+//        });
 
         /**
          * 视频投影音量控制
@@ -427,5 +449,18 @@ public class VedioDetailsActivity extends Activity {
             }
         });
     }
+
+    //返回按钮
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+
+            finish();
+        }
+
+        return true;
+    }
+
 
 }

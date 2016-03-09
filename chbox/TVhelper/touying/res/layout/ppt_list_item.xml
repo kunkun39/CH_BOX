@@ -1,60 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:descendantFocusability="blocksDescendants"
     android:background="#f2ffa3a8"
+    android:backgroundTint="#f2ffa3a8"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:paddingBottom="10dp"
-    android:paddingLeft="10dp" >
-    
-    <ImageView 
+    android:paddingLeft="10dp"
+    app:cardBackgroundColor="#f2ffa3a8">
+
+    <ImageView
+        android:id="@+id/file_item_image"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:id="@+id/file_item_image"  
-        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        />	
-	
+        android:layout_centerVertical="true" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/file_item_image"
         android:layout_toLeftOf="@+id/file_list_play"
-        android:paddingLeft="5dp"
-        android:orientation="vertical">
+        android:layout_toRightOf="@id/file_item_image"
+        android:orientation="vertical"
+        android:paddingLeft="5dp">
+
         <TextView
             android:id="@+id/file_item_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"            
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
-            android:lines="1"            
+            android:lines="1"
+            android:paddingLeft="48dp"
             android:textColor="@color/white"
             android:textSize="16sp" />
+
         <TextView
-	        android:id="@+id/file_item_path"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textSize="8sp"
-	        android:ellipsize="middle"
-	        android:singleLine="true"
-	        android:textColor="@color/white"
-	        android:visibility="visible" />
-    </LinearLayout>   
+            android:id="@+id/file_item_path"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="middle"
+            android:paddingLeft="48dp"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:visibility="visible" />
+    </LinearLayout>
+
     <ImageButton
-	    android:id="@id/file_list_play"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginRight="5dp"	    
-	    android:layout_gravity="center_vertical"	    
-	    android:background="@android:color/transparent"
-	    android:layout_alignParentRight="true"
-	    android:layout_centerVertical="true"
-	    android:paddingBottom="10dp"
-	    android:paddingLeft="15dp"
-	    android:paddingRight="15dp"
-	    android:paddingTop="10dp"
-	    android:src="@drawable/file_play" /> 
-</RelativeLayout>
+        android:id="@id/file_list_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:background="@android:color/transparent"
+        android:paddingBottom="10dp"
+        android:paddingLeft="305dp"
+        android:paddingRight="15dp"
+        android:paddingTop="10dp"
+        android:src="@drawable/file_play" />
+</android.support.v7.widget.CardView>

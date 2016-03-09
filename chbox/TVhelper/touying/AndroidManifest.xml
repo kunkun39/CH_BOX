@@ -20,7 +20,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.PictureDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.OtherDetailsActivity"
             android:screenOrientation="portrait"
@@ -35,7 +36,8 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.MusicCategoryActivity"
             android:screenOrientation="portrait"
