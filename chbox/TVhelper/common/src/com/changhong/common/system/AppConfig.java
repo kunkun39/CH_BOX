@@ -10,17 +10,17 @@ public class AppConfig {
 
 	public static final boolean USE_MALL_APP = false;
 
-    public static final boolean USE_SHARE = false;
+    public static final boolean USE_SHARE = true;
 
     public static final boolean USE_LOCATION = false;
 	
 	public static final boolean NOT_USE_MSG_PUSH = true;
 
-    public static final boolean USE_VOICE_INPUT = false;
+    public static final boolean USE_VOICE_INPUT = true;
 
     public static final boolean USE_REMOTER = true;
 
-    public static final boolean USE_TV = false;
+    public static final boolean USE_TV = true;
 
     public static final boolean USE_OTHER_AIRDISPLAY = false;
     /**
