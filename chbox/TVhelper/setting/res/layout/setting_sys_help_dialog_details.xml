@@ -2,49 +2,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F3F6"
+    android:background="#ffe2b280"
     android:orientation="vertical" >
     <LinearLayout
+        android:id="@+id/bar"
         android:layout_width="fill_parent"
-        android:layout_height="67.6dip"
-        android:background="@drawable/title_banner"
+        android:layout_height="62dp"
+        android:background="@color/mid_blue"
         android:focusable="false"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/cancel_help"
-            android:layout_width="70.5dip"
-            android:layout_height="67.6dip"
-            android:layout_marginLeft="0dip"
-            android:background="@drawable/title_btn_back_selector"/>
+            android:layout_width="23dip"
+            android:layout_height="23dip"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/ic_action_back_new"/>
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_details"
+            android:textColor="@color/white"
+            android:layout_marginLeft="16dp"
             android:textSize="20sp"/>
     </LinearLayout>
-    
-    <TextView 
-        android:id="@+id/help_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="12dp"
-        android:textColor="@color/black"
-        android:textSize="16sp"/>
-    <View style="@style/bg_line" />
-    
-    <TextView 
-        android:id="@+id/help_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="12dp"
-        android:lineSpacingExtra="8dp"
-        android:textColor="@color/text_clo"
-        android:textSize="14sp"/>
-        
+
+    <LinearLayout
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/help_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View style="@style/bg_line" />
+
+        <TextView
+            android:id="@+id/help_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="22dp"
+            android:lineSpacingExtra="8dp"
+            android:textColor="@color/text_clo"
+            android:textSize="14sp" />
+    </LinearLayout>
+
 </LinearLayout>

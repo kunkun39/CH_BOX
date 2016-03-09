@@ -20,6 +20,11 @@ import com.changhong.setting.R;
  */
 
 public class AppHelpDialog extends Dialog {
+	
+	
+	Boolean barDisplayControl = true;
+	LinearLayout mView;
+	LinearLayout navigationBar;
 
 	private View remote_control_help;
 	private View voice_control_help;
@@ -39,10 +44,12 @@ public class AppHelpDialog extends Dialog {
 		window.setGravity(Gravity.BOTTOM);
 
 		ImageButton helpButton = (ImageButton) findViewById(R.id.cancel_help);
-		remote_control_help =  findViewById(R.id.remote_control_help);
-		voice_control_help =  findViewById(R.id.voice_control_help);
-        yuyue_control_help =  findViewById(R.id.yuyue_control_help);
-        file_control_help =  findViewById(R.id.file_control_help);
+		remote_control_help = findViewById(R.id.remote_control_help);
+		voice_control_help = findViewById(R.id.voice_control_help);
+		yuyue_control_help = findViewById(R.id.yuyue_control_help);
+		file_control_help = findViewById(R.id.file_control_help);
+		mView = (LinearLayout) findViewById(R.id.view);
+		navigationBar = (LinearLayout) findViewById(R.id.bar);
 
 		helpButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -81,7 +88,7 @@ public class AppHelpDialog extends Dialog {
 
 		if (!AppConfig.USE_TV) {
 			yuyue_control_help.setVisibility(View.GONE);
-		}else {
+		} else {
 			yuyue_control_help.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -99,6 +106,20 @@ public class AppHelpDialog extends Dialog {
 				public void onClick(View v) {
 					MyApplication.vibrator.vibrate(100);
 					startDetailsDialog(context, context.getString(R.string.pdf_ppt_hologram), context.getString(R.string.pdf_ppt_content));
+				}
+			});
+			mView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+
+					if (barDisplayControl) {
+						navigationBar.setVisibility(View.GONE);
+						barDisplayControl = false;
+					} else {
+						navigationBar.setVisibility(View.VISIBLE);
+						barDisplayControl = true;
+					}
 				}
 			});
 		}

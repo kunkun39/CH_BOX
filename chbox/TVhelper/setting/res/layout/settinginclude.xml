@@ -1,0 +1,106 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/setting_include_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/mid_blue" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="55dp"
+        android:background="#ffe2b280"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/titletext"
+            android:text="高级设置" />
+
+        <LinearLayout style="@style/wrap_layout">
+
+            <!-- 上圆角 -->
+
+            <LinearLayout
+                android:id="@+id/btn_sys_score"
+                style="@style/top_layout">
+
+                <TextView
+                    style="@style/usertext"
+                    android:text="系统评分" />
+
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+
+            <!-- 分割线 -->
+
+            <View style="@style/bg_line" />
+
+            <!-- 下圆角 -->
+
+            <LinearLayout
+                android:id="@+id/btn_sys_help"
+                style="@style/bottom_layout">
+
+                <TextView
+                    style="@style/usertext"
+                    android:text="帮助" />
+
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- 全圆角 -->
+
+        <TextView
+            style="@style/titletext"
+            android:text="关于"
+            android:textColor="#d9060607" />
+
+        <LinearLayout style="@style/wrap_layout">
+
+            <!-- 上圆角 -->
+
+            <LinearLayout style="@style/top_layout">
+
+                <TextView
+                    style="@style/usertext"
+                    android:text="版本" />
+
+                <TextView
+                    android:id="@+id/update_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1.0" />
+            </LinearLayout>
+            <!-- 分割线 -->
+
+            <View style="@style/bg_line" />
+            <!-- 下圆角 -->
+
+            <LinearLayout
+                android:id="@+id/update_info_btn"
+                style="@style/bottom_layout">
+
+                <TextView
+                    style="@style/usertext"
+                    android:text="检查更新" />
+
+                <ImageView style="@style/img_arrow" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

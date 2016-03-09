@@ -2,122 +2,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F3F6"
+    android:background="#ffe2b280"
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/bar"
         android:layout_width="fill_parent"
-        android:layout_height="67.6dip"
-        android:background="@drawable/title_banner"
+        android:layout_height="62dip"
+        android:background="@color/mid_blue"
         android:focusable="false"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/cancel_help"
-            android:layout_width="70.5dip"
-            android:layout_height="67.6dip"
-            android:layout_marginLeft="0dip"
-            android:background="@drawable/title_btn_back_selector" />
+            android:layout_width="23dip"
+            android:layout_height="23dip"
+            android:layout_marginLeft="16dip"
+            android:background="@drawable/ic_action_back_new" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_details"
+            android:textColor="@color/white"
+            android:layout_marginLeft="10dp"
             android:textSize="20sp" />
     </LinearLayout>
 
-    <TextView
-        style="@style/titletext"
-        android:text="@string/faq" />
+    <LinearLayout
+        android:id="@+id/view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <TextView
+            style="@style/titletext"
+            android:textColor="@color/black"
+            android:text="常见问题" />
 
     <LinearLayout style="@style/wrap_layout" >
 
         <!-- 上圆角 -->
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/remote_control_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_layout_selector"
-            android:focusable="true"
-            android:clickable="true">
-            <LinearLayout
+            style="@style/top_layout" >
 
-                style="@style/top_layout" >
+            <TextView
+                style="@style/usertext"
+                android:text="@string/rch_name" />
 
-                <TextView
-                    style="@style/usertext"
-                    android:text="@string/rch_name" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
-                <ImageView style="@style/img_arrow" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/voice_control_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/mid_layout_selector"
-            android:focusable="true"
-            android:clickable="true">
         <!-- 分割线 -->
 
-            <View style="@style/bg_line" />
+        <View style="@style/bg_line" />
 
-            <!-- 下圆角 -->
+        <!-- 下圆角 -->
 
-            <LinearLayout
-                style="@style/mid_layout" >
+        <LinearLayout
+            android:id="@+id/voice_control_help"
+            style="@style/mid_layout" >
 
-                <TextView
-                    style="@style/usertext"
-                    android:text="@string/vch_name" />
+            <TextView
+                style="@style/usertext"
+                android:text="@string/vch_name" />
 
-                <ImageView style="@style/img_arrow" />
-            </LinearLayout>
-        </RelativeLayout>
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
-        <RelativeLayout
+        <View style="@style/bg_line" />
+
+        <LinearLayout
             android:id="@+id/yuyue_control_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/mid_layout_selector"
-            android:focusable="true"
-            android:clickable="true">
-            <View style="@style/bg_line" />
+            style="@style/bottom_layout" >
 
-            <LinearLayout
-                style="@style/bottom_layout" >
+            <TextView
+                style="@style/usertext"
+                android:text="@string/pch_name" />
 
-                <TextView
-                    style="@style/usertext"
-                    android:text="@string/pch_name" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
+        <View style="@style/bg_line" />
 
-                <ImageView style="@style/img_arrow" />
-            </LinearLayout>
-        </RelativeLayout>
-
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/file_control_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/top_layout_selector"
-            android:focusable="true"
-            android:clickable="true">
-            <View style="@style/bg_line" />
+            style="@style/bottom_layout" >
 
-            <LinearLayout
-                style="@style/bottom_layout" >
-
-                <TextView
-                    style="@style/usertext"
-                    android:text="@string/pdf_ppt_hologram" />
+            <TextView
+                style="@style/usertext"
+                android:text="@string/pdf_ppt_hologram" />
 
                 <ImageView style="@style/img_arrow" />
             </LinearLayout>
-        </RelativeLayout>
-
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

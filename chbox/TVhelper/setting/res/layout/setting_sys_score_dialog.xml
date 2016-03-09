@@ -6,31 +6,37 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/bar"
         android:layout_width="fill_parent"
-        android:layout_height="67.6dip"
-        android:background="@drawable/title_banner"
+        android:layout_height="62dp"
+        android:background="@color/mid_blue"
         android:focusable="false"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/cancel_system_score"
-            android:layout_width="70.5dip"
-            android:layout_height="67.6dip"
-            android:layout_marginLeft="0dip"
-            android:background="@drawable/title_btn_back_selector" />
+            android:layout_width="23dip"
+            android:layout_height="23dip"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/ic_action_back_new" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
             android:text="@string/system_score"
+            android:textColor="@color/white"
             android:textSize="20sp" />
     </LinearLayout>
 
+
     <LinearLayout
+        android:id="@+id/view"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
         android:orientation="vertical"
         android:weightSum="1" >
 
@@ -44,19 +50,18 @@
                 android:layout_width="130dp"
                 android:layout_height="130dp"
                 android:background="@drawable/scorebackground"
-                android:layout_gravity="center_horizontal" 
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="25dp"/>
 
             <com.changhong.setting.view.RoundProgressBar
                 android:id="@+id/circleProgressBar"
                 android:layout_width="180dp"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="180dp" />
-            <ImageView 
+            <ImageView
                 android:layout_width="50dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="155dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_height="20dp"
+                android:layout_marginTop="160dp"
+                android:layout_marginLeft="65dp"
                 android:background="#FFF0F0F0"
                 />
 
@@ -76,7 +81,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
                 android:layout_marginTop="200dp"
-                android:text="@string/system_running_environment"
+                android:text="系统运行环境"
                 android:textColor="@color/black"
                 android:textSize="22sp" />
         </FrameLayout>
@@ -90,33 +95,36 @@
             <TableLayout
                 android:id="@+id/table_layout_score"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" 
-               
-                >
+                android:layout_height="wrap_content" >
 
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp"
-                     android:layout_marginRight="10dp"
                     android:gravity="center_vertical" >
-<!--
+
                     <ImageView
                         android:layout_width="35dp"
                         android:layout_height="30dp"
                         android:layout_marginLeft="1dp"
-                        android:background="@drawable/wifiicon" />  -->
+                        android:background="@drawable/wifiicon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:gravity="center_vertical"
+                        android:text="网络环境->"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/text_wireless_suggestion"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="top"
-                        android:layout_marginLeft="2dp"
-                        android:drawableStart="@drawable/wifiicon"
-                        android:drawableLeft="@drawable/wifiicon"
-                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="2dp"
                         android:singleLine="false"
                         android:textColor="@color/white"
                         android:textSize="15sp" />

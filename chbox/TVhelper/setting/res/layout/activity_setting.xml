@@ -31,13 +31,13 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="80dip"
                 android:layout_height="64.3dip"
                 android:layout_marginLeft="55dip"
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@string/setting"
+                android:text="设置"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -61,12 +61,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="67.6dip"
-            android:background="#F0F3F6"
+            android:background="#ff8f00"
             android:orientation="vertical" >
 
             <TextView
                 style="@style/titletext"
-                android:text="@string/advanced" />
+                android:text="高级设置" />
 
             <LinearLayout style="@style/wrap_layout" >
 
@@ -78,7 +78,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/system_score" />
+                        android:text="系统评分" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>
@@ -95,7 +95,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/setting_help" />
+                        android:text="帮助" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>
@@ -104,7 +104,7 @@
 
             <TextView
                 style="@style/titletext"
-                android:text="@string/about" />
+                android:text="关于" />
 
             <LinearLayout style="@style/wrap_layout" >
 
@@ -114,7 +114,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/version" />
+                        android:text="版本" />
 
                     <TextView
                         android:id="@+id/update_info"
@@ -133,7 +133,7 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/update" />
+                        android:text="检查更新" />
 
                     <ImageView style="@style/img_arrow" />
                 </LinearLayout>

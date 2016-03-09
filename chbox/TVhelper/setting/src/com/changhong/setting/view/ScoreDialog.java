@@ -26,6 +26,10 @@ public class ScoreDialog extends Dialog {
 
     private TextView textNetSuggestion;
 
+    Boolean barDisplayControl = true;
+    View mView;
+    View navigationBar;
+
     private TextView textScoreAll;
 
     private ImageButton scoreButton;
@@ -63,6 +67,8 @@ public class ScoreDialog extends Dialog {
         window.setAttributes(wlp);
         window.setGravity(Gravity.BOTTOM);
 
+        navigationBar = findViewById(R.id.bar);
+        mView = findViewById(R.id.view);
         scoreButton = (ImageButton) findViewById(R.id.cancel_system_score);
         textScoreAll = (TextView) findViewById(R.id.realityScore);
         textNetSuggestion = (TextView) findViewById(R.id.text_wireless_suggestion);
@@ -87,6 +93,23 @@ public class ScoreDialog extends Dialog {
     }
 
     private void initEvent() {
+
+        mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+
+                if (barDisplayControl) {
+                    navigationBar.setVisibility(View.GONE);
+                    barDisplayControl = false;
+                } else {
+                    navigationBar.setVisibility(View.VISIBLE);
+                    barDisplayControl = true;
+                }
+            }
+        });
+
+
         scoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

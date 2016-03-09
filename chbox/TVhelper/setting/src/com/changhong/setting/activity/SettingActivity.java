@@ -6,8 +6,15 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -28,7 +35,7 @@ import com.changhong.setting.view.ScoreDialog;
 /**
  * Created by Jack Wang
  */
-public class SettingActivity extends Activity {
+public class SettingActivity extends AppCompatActivity {
 
 	private static final String LOG_TAG = "SettingActivity";
 
@@ -59,9 +66,11 @@ public class SettingActivity extends Activity {
 	 */
 	private Handler handler;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private DrawerLayout mDrawerLayout;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 		initialViews();
 
@@ -70,10 +79,28 @@ public class SettingActivity extends Activity {
 		initData();
 	}
 
-	private void initialViews() {
-		// 初始化主界面
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_setting);
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.setting, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+
+            finish();
+        }
+
+        return true;
+    }
+
+    private void initialViews() {
+        // 初始化主界面
+        setContentView(R.layout.setting_content);
+
 //		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
 		// 初始化按钮和事件
 		settingReturn = (Button) findViewById(R.id.btn_back);
@@ -94,6 +121,14 @@ public class SettingActivity extends Activity {
 		m_pDialog.setIndeterminate(false);
 		m_pDialog.setCancelable(false);
 		// m_pDialog.setProgress(0);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_content);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" 设置 ");
+        setSupportActionBar(toolbar);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 	}
 
 	private void initialEvents() {
@@ -145,13 +180,6 @@ public class SettingActivity extends Activity {
 //			}
 //		});
 
-		settingReturn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				finish();
-			}
-		});
 
 		updateBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

@@ -16,6 +16,10 @@ import com.changhong.setting.R;
 
 public class HelpDetailsDialog extends Dialog{
 
+	Boolean barDisplayControl = true;
+	View mView;
+	View navigationBar;
+
 	private TextView help_name;
 	private TextView help_content;
 	private String name,content;
@@ -36,11 +40,13 @@ public class HelpDetailsDialog extends Dialog{
 		wlp.height = WindowManager.LayoutParams.MATCH_PARENT;
 		window.setAttributes(wlp);
 		window.setGravity(Gravity.BOTTOM);
-		
-		help_name=(TextView)findViewById(R.id.help_name);
-		help_content=(TextView)findViewById(R.id.help_content);
-		ibCancel=(ImageButton)findViewById(R.id.cancel_help);
-		Log.i("mmmm","content==" +name+content);
+
+		navigationBar =  findViewById(R.id.bar);
+		mView =  findViewById(R.id.view);
+		help_name = (TextView) findViewById(R.id.help_name);
+		help_content = (TextView) findViewById(R.id.help_content);
+		ibCancel = (ImageButton) findViewById(R.id.cancel_help);
+		Log.i("mmmm", "content==" + name + content);
 
 		ibCancel.setOnClickListener(new View.OnClickListener() {
 			
@@ -50,10 +56,23 @@ public class HelpDetailsDialog extends Dialog{
 				dismiss();
 			}
 		});
+		
+       	mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                
+               if(barDisplayControl){
+            	   navigationBar.setVisibility(View.GONE);
+            	   barDisplayControl=false;
+               }else{
+            	   navigationBar.setVisibility(View.VISIBLE);
+            	   barDisplayControl=true;
+               }
+            }
+        });
 	}
-	
-	
-	
+
 	@Override
 	public void show() {
 		super.show();
