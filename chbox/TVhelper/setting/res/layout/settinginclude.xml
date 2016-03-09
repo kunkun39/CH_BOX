@@ -27,7 +27,8 @@
 
         <TextView
             style="@style/titletext"
-            android:text="高级设置" />
+            android:text="高级设置"
+            android:textColor="#d9060607" />
 
         <LinearLayout style="@style/wrap_layout">
 

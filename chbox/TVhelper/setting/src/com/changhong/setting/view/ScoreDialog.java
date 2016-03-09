@@ -3,6 +3,8 @@ package com.changhong.setting.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,7 +20,7 @@ import com.changhong.setting.service.ScoreService;
 
 /**
  * Ma Ren
- * 		edited by cym
+ * edited by cym
  */
 public class ScoreDialog extends Dialog {
 
@@ -33,19 +35,21 @@ public class ScoreDialog extends Dialog {
     private TextView textScoreAll;
 
     private ImageButton scoreButton;
-    
+
     private RoundProgressBar roundProgressBar;
-	private int i = 0;
-    
+    private int i = 0;
+
     Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			roundProgressBar.setProgress(msg.what);
-			if (i <= roundProgressBar.getMax()) {
-				handler.sendEmptyMessageDelayed(i++, 1);
-			}
+        public void handleMessage(android.os.Message msg) {
+            roundProgressBar.setProgress(msg.what);
+            if (i <= roundProgressBar.getMax()) {
+                handler.sendEmptyMessageDelayed(i++, 1);
+            }
             textScoreAll.setText(String.valueOf(msg.what) + getContext().getResources().getString(R.string.points));
-		};
-	};
+        }
+
+        ;
+    };
 
     public ScoreDialog(Context context) {
         super(context, R.style.Translucent_NoTitle);
@@ -73,7 +77,12 @@ public class ScoreDialog extends Dialog {
         textScoreAll = (TextView) findViewById(R.id.realityScore);
         textNetSuggestion = (TextView) findViewById(R.id.text_wireless_suggestion);
         roundProgressBar = (RoundProgressBar) findViewById(R.id.circleProgressBar);
-		
+
+//        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+//        toolbar.setTitle(" 设置 ");
+//        setSupportActionBar(toolbar);
+//        final ActionBar ab = getSupportActionBar();
+//        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     private void initData() {
@@ -86,9 +95,9 @@ public class ScoreDialog extends Dialog {
         ScoreItem item = scoreService.getItemDetails("NET");
         String netSuggestion = item.getCurrentSuggestion();
         textNetSuggestion.setText(context.getResources().getString(R.string.network_environment)+ "\n" +String.valueOf(netSuggestion));
-        
+
         roundProgressBar.setMax(score);
-		handler.sendEmptyMessageDelayed(i++, 1);
+        handler.sendEmptyMessageDelayed(i++, 1);
         textScoreAll.setText(String.valueOf(score) + getContext().getResources().getString(R.string.points));
     }
 
@@ -130,5 +139,4 @@ public class ScoreDialog extends Dialog {
         }
         return super.onKeyDown(keyCode, event);
     }
-
 }

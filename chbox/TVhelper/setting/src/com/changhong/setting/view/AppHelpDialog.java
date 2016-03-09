@@ -50,6 +50,9 @@ public class AppHelpDialog extends Dialog {
 		file_control_help = findViewById(R.id.file_control_help);
 		mView = (LinearLayout) findViewById(R.id.view);
 		navigationBar = (LinearLayout) findViewById(R.id.bar);
+        
+        mView = (LinearLayout) findViewById(R.id.view);
+        navigationBar = (LinearLayout) findViewById(R.id.bar);
 
 		helpButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -123,6 +126,23 @@ public class AppHelpDialog extends Dialog {
 				}
 			});
 		}
+        
+        
+      	mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                
+               if(barDisplayControl){
+            	   navigationBar.setVisibility(View.GONE);
+            	   barDisplayControl=false;
+               }else{
+            	   navigationBar.setVisibility(View.VISIBLE);
+            	   barDisplayControl=true;
+               }
+            }
+        });
+      	
 	}
 	
 	private void startDetailsDialog(Context context,String name,String content){
