@@ -88,7 +88,7 @@ public class PictureCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//		getMenuInflater().inflate(R.menu.touying, menu);
+        getMenuInflater().inflate(R.menu.touying, menu);
         return true;
     }
 
@@ -115,7 +115,6 @@ public class PictureCategoryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
         toolbar.setTitle(" ");
         setSupportActionBar(toolbar);
-
         final ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 

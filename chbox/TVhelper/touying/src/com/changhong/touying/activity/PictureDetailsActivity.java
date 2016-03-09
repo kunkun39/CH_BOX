@@ -441,7 +441,7 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
                 //这里不在客户端自己设置，通过盒子回传信息设置播放是否成功
                 currentShow = true;
             } else {
-                Toast.makeText(PictureDetailsActivity.this,getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
             }
             actionDone = true;
         }
@@ -736,7 +736,7 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
                     mContentResolver.update(mImageUri, values, MediaStore.Images.Media.DATA + " = '" + fullpath + "'", null);
                 } catch (Exception e1) {
                     e.printStackTrace();
-                    Toast.makeText(PictureDetailsActivity.this,getResources().getString(R.string.get_image_failed), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PictureDetailsActivity.this, getResources().getString(R.string.get_image_failed), Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
@@ -779,13 +779,12 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
     /**
      * **********************************************分享相关********************************************************
      */
-    
+
     public void initShare() {
         View v = new View(this);// = findViewById(R.id.bt_sharepic);
-        if (!AppConfig.USE_SHARE)
-        {
+        if (!AppConfig.USE_SHARE) {
             v.setVisibility(View.INVISIBLE);
-            return ;
+            return;
         }
         v.setOnClickListener(new View.OnClickListener() {
 
@@ -794,21 +793,21 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
                 doShare();
             }
         });
-		
-	}
+
+    }
+
     public void doShare() {
-    	String title=getResources().getString(R.string.share_title);//标题
-    	String curImgPath=imagePaths.get(currentImagePosistion);
-    	String picName="";
-    	
-    	if (!TextUtils.isEmpty(curImgPath)) {
-			picName=curImgPath.substring(curImgPath.lastIndexOf("/")+1, curImgPath.length());
-		}
-    	L.d("sharepic "+picName+"  "+curImgPath);
-    	String text=getResources().getString(R.string.share_image_tag)+picName;
-		ShareFactory.getShareCenter(PictureDetailsActivity.this).showShareMenu(title, text, curImgPath);
-	}
-    
+        String title = getResources().getString(R.string.share_title);//标题
+        String curImgPath = imagePaths.get(currentImagePosistion);
+        String picName = "";
+
+        if (!TextUtils.isEmpty(curImgPath)) {
+            picName = curImgPath.substring(curImgPath.lastIndexOf("/") + 1, curImgPath.length());
+        }
+        L.d("sharepic " + picName + "  " + curImgPath);
+        String text = getResources().getString(R.string.share_image_tag) + picName;
+        ShareFactory.getShareCenter(PictureDetailsActivity.this).showShareMenu(title, text, curImgPath);
+    }
 
 
     /**

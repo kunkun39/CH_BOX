@@ -4,7 +4,6 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mid_blue"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -34,6 +33,7 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/select_data"
         android:layout_width="fill_parent"
@@ -42,7 +42,6 @@
         android:gravity="center"
         android:paddingTop="13dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
