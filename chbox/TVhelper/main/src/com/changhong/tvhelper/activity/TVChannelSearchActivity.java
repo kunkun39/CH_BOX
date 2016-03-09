@@ -1,30 +1,74 @@
 package com.changhong.tvhelper.activity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.media.ThumbnailUtils;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment.SavedState;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
+import android.util.Log;
+import android.view.*;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.changhong.common.db.sqlite.DatabaseContainer;
+import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.touying.activity.MusicDetailsActivity;
+import com.changhong.touying.activity.VedioDetailsActivity;
+import com.changhong.touying.music.Music;
+import com.changhong.touying.music.MusicProvider;
+import com.changhong.touying.vedio.Vedio;
+import com.changhong.touying.vedio.VedioProvider;
 import com.changhong.tvhelper.R;
+import com.changhong.tvhelper.domain.Program;
+import com.changhong.tvhelper.service.ChannelService;
+import com.changhong.tvhelper.service.ClientGetCommandService;
+import com.changhong.tvhelper.utils.YuYingWordsUtils;
 import com.changhong.tvhelper.view.SearchPageDefault;
 import com.changhong.tvhelper.view.SearchPageList;
+import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
-public class TVChannelSearchActivity extends FragmentActivity {
+public class TVChannelSearchActivity extends AppCompatActivity {
 
 	private static final String TAG = "tvplayer";
+	
+	private DrawerLayout mDrawerLayout;
 
 	/**
 	 * *****************************************Server IP Part ******************************************************
@@ -46,25 +90,52 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_channel_search);
+        setContentView(R.layout.search_page_list_new);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 		imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.search_drawer);
+		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+		toolbar.setTitle(" ");
 
+		setSupportActionBar(toolbar);
+
+		final ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
 		initData();
 
 		initViewAndEvent();
 	}
 
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.search_menu, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			finish();
+		} else if (item.getItemId() == R.id.ipbutton) {
+			mDrawerLayout.openDrawer(GravityCompat.START);
+		}
+		return true;
+	}
+
+	
+	
+	
 	private void initData() {		
 		fragmentDefault = new  SearchPageDefault();
 		fragmentList = new SearchPageList();		
 	}
 
 	private void initViewAndEvent() {
-		back = (Button) findViewById(R.id.btn_back);
-
-
+		
 		searchEditText = (EditText) findViewById(R.id.searchstring);
 		searchButton = (Button) findViewById(R.id.btn_search);
 		searchEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
@@ -125,17 +196,7 @@ public class TVChannelSearchActivity extends FragmentActivity {
 			}
 		});
 
-		/**
-		 * Ip Part
-		 */
-		back.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				finish();
-			}
-		});
-		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));		
+		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), new Handler(getMainLooper()));		
 	}
 
 	/**
@@ -161,9 +222,6 @@ public class TVChannelSearchActivity extends FragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-//		if (ClientSendCommandService.titletxt != null) {
-//			title.setText(ClientSendCommandService.titletxt);
-//		}
 	}
 
 	@Override

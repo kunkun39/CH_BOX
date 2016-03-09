@@ -1,55 +1,52 @@
 apply plugin: 'com.android.application'
 
 buildscript {
-	repositories {
-		jcenter {
-			maven{ url 'http://maven.oschina.net/content/groups/public/'}
-		}
-	}
-	
-	dependencies {
-		classpath 'com.android.tools.build:gradle:1.3.0'
-	}
+    repositories {
+        maven { url 'http://maven.oschina.net/content/groups/public/' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
 }
 
 dependencies {
-	compile fileTree(include: ['*.jar'], dir: 'libs')
-	compile project(':common')
-	compile project(':setting')
-	compile project(':thirdpart')
-	compile project(':touying')
-	compile project(':vitamio4.21')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':common')
+    compile project(':setting')
+    compile project(':thirdpart')
+    compile project(':touying')
+    compile project(':vitamio4.2')
+    compile 'com.android.support:support-v4:21.0.3'
 }
 
+
 android {
-	compileSdkVersion 19
-	buildToolsVersion '21.1.1'
+    compileSdkVersion 21
+    buildToolsVersion '21.1.1'
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            res.srcDirs = ['res']
+            jniLibs.srcDirs = ['libs']
+        }
 
-	sourceSets {
-		main {
-			manifest.srcFile 'AndroidManifest.xml'
-			java.srcDirs = ['src']
-			resources.srcDirs = ['src']
-			res.srcDirs = ['res']
-			jniLibs.srcDirs = ['libs']
-			assets.srcDirs = ['assets']
-		}
-
-		debug.setRoot('build-types/debug')
-		release.setRoot('build-types/release')
-	}
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_6
-		targetCompatibility JavaVersion.VERSION_1_6
-	}
-	packagingOptions {
-		exclude 'META-INF/NOTICE.txt'
-		exclude 'META-INF/LICENSE.txt'
-	}
-	buildTypes {
-		release {
-			minifyEnabled true
-			proguardFile 'proguard-project.txt'
-		}
-	}
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+    defaultConfig {
+        minSdkVersion 9
+    }
+    productFlavors {
+    }
 }

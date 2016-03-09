@@ -6,4 +6,5 @@
    <dimen name="channel_item_name_width">125dip</dimen>
    <dimen name="channel_item_logo_width">115dip</dimen> 
    <dimen name="channel_item_name_margintop">0dip</dimen> 
+   <dimen name="detail_backdrop_height">200dp</dimen>
 </resources>

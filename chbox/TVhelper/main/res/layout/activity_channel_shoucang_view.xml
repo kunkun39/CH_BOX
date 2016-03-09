@@ -19,7 +19,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bk"
+        android:background="#ff7043"
         android:orientation="vertical" >
 
         <!-- ip选择部分 -->
@@ -40,7 +40,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@string/disconnected"
+                android:text="未连接"
                 android:textSize="20sp" />
 
             <ImageView
@@ -90,7 +90,7 @@
                 android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="@string/favorite_channel_notoken"
+                android:text="频道收藏"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -110,7 +110,7 @@
                 android:background="@drawable/channel_titlebg"
                 android:clickable="true"
                 android:gravity="center"
-                android:text="@string/order_channel"
+                android:text="节目预约"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_title_textsize" />
         </LinearLayout>
@@ -156,7 +156,7 @@
             android:layout_width="match_parent"
             android:layout_height="558dip"
             android:layout_marginTop="67.6dip"
-            android:background="@drawable/title_ip_list_bg"
+            android:background="@drawable/bkg"
             android:listSelector="@drawable/title_ip_list"
             android:visibility="gone" />
 

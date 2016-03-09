@@ -57,7 +57,7 @@
                 android:layout_toLeftOf="@+id/program_yuyue"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="@string/no_channel_detail"
+                android:text="无节目信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
@@ -70,7 +70,7 @@
                 android:layout_toLeftOf="@+id/channel_play_button"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="@string/cancel_order"
+                android:text="取消\n预约"
                 android:textColor="@color/white"
                 android:textSize="@dimen/channel_item_textsize" />
 
@@ -83,7 +83,7 @@
                 android:layout_gravity="center_vertical"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="@string/channel_info"
+                android:text="节目\n信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
         </RelativeLayout>

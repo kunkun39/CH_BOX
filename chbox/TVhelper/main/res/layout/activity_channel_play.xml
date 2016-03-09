@@ -54,7 +54,7 @@
             android:background="@drawable/btn_shar_stroke"
             android:gravity="center"
             android:paddingLeft="5dp"
-            android:text="@string/all_channel"
+            android:text="全部频道"
             android:textColor="@color/white"
             android:textSize="15sp" />
 
@@ -129,7 +129,7 @@
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/layout_logo_text"
             android:gravity="center_vertical"
-            android:text="@string/current_channel_token"
+            android:text="当前播放节目："
             android:textSize="12sp" />
 
         <TextView
@@ -141,7 +141,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/layout_logo_text"
             android:gravity="center_vertical"
-            android:text="@string/next_channel_token"
+            android:text="下一节目："
             android:textSize="12sp" />
     </RelativeLayout>
 
@@ -214,7 +214,7 @@
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:layout_above="@+id/ll_deliver_share"
-            android:text="@string/favorite_channel"
+            android:text="收藏\n频道"
             android:textSize="12sp"
             android:textColor="@color/white"
             android:visibility="visible" />
@@ -237,9 +237,9 @@
             android:layout_above="@+id/bt_tv_line"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="@string/share"
+            android:text="分享"
             android:textSize="12sp"
-            android:background="@color/transparent"
+            android:background="@android:color/transparent"
             android:textColor="@color/white"
             android:visibility="visible" />
         <View
@@ -259,7 +259,7 @@
            android:layout_alignParentBottom="true"
            android:paddingTop="10dp"
            android:paddingBottom="10dp"
-           android:background="@color/transparent"
+           android:background="@android:color/transparent"
            android:gravity="center"
            android:src="@drawable/tv_show_tv"
            />

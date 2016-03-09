@@ -19,7 +19,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bk"
+        android:background="#33691e"
         android:orientation="vertical" >
 
         <!-- ip选择部分 -->
@@ -40,7 +40,7 @@
                 android:ellipsize="marquee"
                 android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@string/disconnected"
+                android:text="未连接"
                 android:textSize="20sp" />
 
             <ImageView
@@ -102,7 +102,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/all"
+                android:text="全部"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -123,7 +123,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/hd"
+                android:text="高清"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -144,7 +144,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/local_tv"
+                android:text="卫视"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -165,7 +165,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/cartoon"
+                android:text="少儿"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -186,7 +186,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/cctv"
+                android:text="央视"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize" />
 
@@ -207,7 +207,7 @@
                 android:focusable="true"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/atst"
+                android:text="同时看"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_title_textsize"
                 android:visibility="gone" />
@@ -227,7 +227,7 @@
             android:layout_width="match_parent"
             android:layout_height="558dip"
             android:layout_marginTop="67.6dip"
-            android:background="@drawable/title_ip_list_bg"
+            android:background="@drawable/bkg"
             android:listSelector="@drawable/title_ip_list"
             android:visibility="gone" />
 

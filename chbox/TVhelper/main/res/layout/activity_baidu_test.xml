@@ -17,12 +17,12 @@
 
     <Button
             android:id="@+id/control_start"
-            android:text="@string/begin"
+            android:text="开始"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     <Button
             android:id="@+id/control_confirm"
-            android:text="@string/confrim"
+            android:text="确认"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

@@ -22,7 +22,7 @@
                 android:textSize="20sp"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:text="@string/voice_tip1"
+                android:text="按下开始语音识别，送开完成"
                 />
         <Button
                 android:id="@+id/baidu_pressbutton"
@@ -44,7 +44,7 @@
                 android:id="@+id/baidu_closebutton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/close"/>
+                android:text="关闭"/>
     </LinearLayout>
 </LinearLayout>
 

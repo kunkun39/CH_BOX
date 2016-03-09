@@ -58,6 +58,14 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
      */
     private long time = 0l;
 
+    public static Observable mDataNotifier = new Observable(){
+        @Override
+        public void notifyObservers() {
+            super.setChanged();
+            super.notifyObservers();
+        }
+    };
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -82,10 +90,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         break;
                     case 1:
                         //use change server refresh the all channel, please also check ClientSendCommandService
-                        if (TVChannelShowActivity.mHandler != null) {
-                            Log.e(TAG, "刷新...");
-                            TVChannelShowActivity.mHandler.sendEmptyMessage(0);
-                        }
+                        mDataNotifier.notifyObservers();
 //                        if (TVChannelSearchActivity.mHandler != null) {
 //                            Log.e(TAG, "刷新...");
 //                            TVChannelSearchActivity.mHandler.sendEmptyMessage(0);
@@ -93,10 +98,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         break;
                     case 2:
                         //异频点换台以后操作
-                        if (TVChannelShowActivity.selectedChanncelTabIndex == 5 && TVChannelShowActivity.mHandler != null) {
-                            Log.e(TAG, "刷新同时看");
-                            TVChannelShowActivity.mHandler.sendEmptyMessage(0);
-                        }
+                        mDataNotifier.notifyObservers();
                         break;
                     case 3:
                         break;

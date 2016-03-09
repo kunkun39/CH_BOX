@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
@@ -39,10 +40,18 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -72,11 +81,15 @@ import com.changhong.touying.service.M3UListProviderService;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.service.AppLogService;
 
-public class TVHelperMainActivity extends Activity {
+public class TVHelperMainActivity extends AppCompatActivity {
 
     private static final String TAG = "TVHelperMainActivity";
+    CollapsingToolbarLayout collapsingToolbar;
+    private DrawerLayout mDrawerLayout;
 
-    /**************************************************IP连接部分*******************************************************/
+    /**************************************************
+     * IP连接部分
+     *******************************************************/
 
     private BoxSelecter ipSelecter = null;
     boolean isReadyExit = false;
@@ -84,9 +97,9 @@ public class TVHelperMainActivity extends Activity {
     /**
      * message handler
      */
-    public static Handler mhandler = null;    
+    public static Handler mhandler = null;
 
-    ServiceConnection conn=new ServiceConnection() {
+    ServiceConnection conn = new ServiceConnection() {
         @Override
         public void onServiceDisconnected(ComponentName name) {
         }
@@ -100,16 +113,63 @@ public class TVHelperMainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_helper_main);
-        
-        //setContentView(R.layout.activity_maim_new);
-        setContentView(R.layout.activity_maim_muil_lang);
 
-        
+        setContentView(R.layout.activity_main_new);
+        //setContentView(R.layout.activity_maim_muil_lang);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_main_drawer);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setDisplayHomeAsUpEnabled(true);
+
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         initViewAndEvent();
 
         initUpdateThread();
 
         initMedia();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.menu_overaction, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.power: {
+                MyApplication.vibrator.vibrate(100);
+                Dialog dialog = DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                        getString(R.string.powerkey), "", new DialogBtnOnClickListener() {
+
+                            @Override
+                            public void onSubmit(DialogMessage dialogMessage) {
+                                ClientSendCommandService.msg = "key:power";
+                                ClientSendCommandService.handler.sendEmptyMessage(1);
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(DialogMessage dialogMessage) {
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+                        });
+            }
+            break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void initViewAndEvent() {
@@ -123,9 +183,9 @@ public class TVHelperMainActivity extends Activity {
         Button shoucang = (Button) findViewById(R.id.main_soucang);
         Button sousuo = (Button) findViewById(R.id.main_sousuo);
         View musicTouYing = findViewById(R.id.main_music_touying);
-        View vedioTouYing =  findViewById(R.id.main_vedio_touying);
-        View pictureTouYing =  findViewById(R.id.main_picture_touying);
-        View otherTouTing =  findViewById(R.id.main_other_touying);
+        View vedioTouYing = findViewById(R.id.main_vedio_touying);
+        View pictureTouYing = findViewById(R.id.main_picture_touying);
+        View otherTouTing = findViewById(R.id.main_other_touying);
         Button power = (Button) findViewById(R.id.power);
         /**
          * init all event for every view
@@ -141,8 +201,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (tvplayer != null)
-        {
+        if (tvplayer != null) {
             tvplayer.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -153,8 +212,7 @@ public class TVHelperMainActivity extends Activity {
                 }
             });
         }
-        if (setting != null)
-        {
+        if (setting != null) {
             setting.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -165,8 +223,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (shoucang != null)
-        {
+        if (shoucang != null) {
             shoucang.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -177,8 +234,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (sousuo != null)
-        {
+        if (sousuo != null) {
             sousuo.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -190,8 +246,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (musicTouYing != null)
-        {
+        if (musicTouYing != null) {
             musicTouYing.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -202,8 +257,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (vedioTouYing != null)
-        {
+        if (vedioTouYing != null) {
             vedioTouYing.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -214,8 +268,7 @@ public class TVHelperMainActivity extends Activity {
             });
         }
 
-        if (pictureTouYing != null)
-        {
+        if (pictureTouYing != null) {
             pictureTouYing.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -225,8 +278,7 @@ public class TVHelperMainActivity extends Activity {
                 }
             });
         }
-        if (otherTouTing != null)
-        {
+        if (otherTouTing != null) {
             otherTouTing.setOnClickListener(new OnClickListener() {
 
                 @Override
@@ -240,30 +292,28 @@ public class TVHelperMainActivity extends Activity {
         }
 
 
-
         /**关闭电源键**/
-        if(power != null)
-        {
+        if (power != null) {
             power.setOnClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
-                    Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
-                            getString(R.string.powerkey),"",new DialogBtnOnClickListener() {
+                    Dialog dialog = DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                            getString(R.string.powerkey), "", new DialogBtnOnClickListener() {
 
                                 @Override
                                 public void onSubmit(DialogMessage dialogMessage) {
                                     ClientSendCommandService.msg = "key:power";
                                     ClientSendCommandService.handler.sendEmptyMessage(1);
-                                    if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+                                    if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
                                         dialogMessage.dialog.cancel();
                                     }
                                 }
 
                                 @Override
                                 public void onCancel(DialogMessage dialogMessage) {
-                                    if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
+                                    if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
                                         dialogMessage.dialog.cancel();
                                     }
                                 }
@@ -276,7 +326,8 @@ public class TVHelperMainActivity extends Activity {
         /**
          * Ip部分
          */
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+
+        ipSelecter = new BoxSelecter(this, collapsingToolbar, (TextView) findViewById(R.id.title));
 
         mhandler = new Handler() {
             @Override
@@ -293,8 +344,8 @@ public class TVHelperMainActivity extends Activity {
                 super.handleMessage(msg1);
             }
         };
-        
-        
+
+
     }
 
     private void initMedia() {
@@ -315,7 +366,9 @@ public class TVHelperMainActivity extends Activity {
         bindService(intent, conn, BIND_AUTO_CREATE);
     }
 
-    /********************************************系统方法重载部分*******************************************************/
+    /********************************************
+     * 系统方法重载部分
+     *******************************************************/
 
     @Override
     protected void onResume() {
@@ -335,12 +388,12 @@ public class TVHelperMainActivity extends Activity {
         super.onDestroy();
 
         if (ipSelecter != null) {
-			ipSelecter.release();
-		}
+            ipSelecter.release();
+        }
         if (updateReceiver != null) {
             unregisterReceiver(updateReceiver);
             updateReceiver = null;
-        } 
+        }
     }
 
     @Override
@@ -349,32 +402,31 @@ public class TVHelperMainActivity extends Activity {
             case KeyEvent.KEYCODE_BACK:
                 Log.i(TAG, "KEYCODE_BACK");
                 if (isReadyExit) {
-                	IpSelectorDataServer.getInstance().clear();
-                	System.exit(0);
-				}
-                else {
-                	isReadyExit = true;
-                	Toast.makeText(TVHelperMainActivity.this, R.string.press_again_to_exit,3000).show();
-                	if (exitRunnable == null) {
-                		exitRunnable = new Runnable() {
-    						
-    						@Override
-    						public void run() {
-    							if (isReadyExit) {
-    								isReadyExit = false;
-    							}
-    							
-    						}
-    					};
-					}
-                	
-					TVHelperMainActivity.mhandler.removeCallbacks(exitRunnable);
-					TVHelperMainActivity.mhandler.postDelayed(exitRunnable, 3000);
-					
-				}                              
+                    IpSelectorDataServer.getInstance().clear();
+                    System.exit(0);
+                } else {
+                    isReadyExit = true;
+                    Toast.makeText(TVHelperMainActivity.this, R.string.press_again_to_exit, 3000).show();
+                    if (exitRunnable == null) {
+                        exitRunnable = new Runnable() {
+
+                            @Override
+                            public void run() {
+                                if (isReadyExit) {
+                                    isReadyExit = false;
+                                }
+
+                            }
+                        };
+                    }
+
+                    TVHelperMainActivity.mhandler.removeCallbacks(exitRunnable);
+                    TVHelperMainActivity.mhandler.postDelayed(exitRunnable, 3000);
+
+                }
                 return true;
             case KeyEvent.KEYCODE_MENU:
-    			return true;
+                return true;
             default:
                 break;
         }
@@ -701,36 +753,36 @@ public class TVHelperMainActivity extends Activity {
                  * 如果用户点击的是直接下载，下载后直接更新，如果下载文件已经存在，就询问用户时候安�?
                  */
 
-                Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
-                 		getApplicationContext().getString(R.string.update_prepared),getApplicationContext().getString(R.string.setup_prompt),new DialogBtnOnClickListener() {
- 					
- 					@Override
- 					public void onSubmit(DialogMessage dialogMessage) {
-                        //休息1秒安装
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                Dialog dialog = DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                        getApplicationContext().getString(R.string.update_prepared), getApplicationContext().getString(R.string.setup_prompt), new DialogBtnOnClickListener() {
 
-                        //安装新的APK
-                        Uri uri = Uri.fromFile(UserUpdateService.updateFile);
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        intent.setDataAndType(uri, "application/vnd.android.package-archive");
-                        startActivity(intent);
-                        if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
- 					}
- 					
- 					@Override
- 					public void onCancel(DialogMessage dialogMessage) {
- 						if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-							dialogMessage.dialog.cancel();
-						}
- 					}
- 				});
+                            @Override
+                            public void onSubmit(DialogMessage dialogMessage) {
+                                //休息1秒安装
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                //安装新的APK
+                                Uri uri = Uri.fromFile(UserUpdateService.updateFile);
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setDataAndType(uri, "application/vnd.android.package-archive");
+                                startActivity(intent);
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(DialogMessage dialogMessage) {
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+                        });
             }
         }
     };

@@ -20,6 +20,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.Selection;
@@ -43,7 +44,7 @@ import com.changhong.tvhelper.R.id;
 import com.changhong.tvhelper.R.layout;
 
 
-public class TVInputDialogActivity extends Activity {
+public class TVInputDialogActivity extends AppCompatActivity {
 
     private static final String TAG = "TVInputDialogActivity";
     public static EditText mEditText = null;

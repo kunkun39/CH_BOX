@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.changhong.tvhelper"
-    android:versionCode="1"
-    android:versionName="1.0"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:versionCode="11"
+    android:versionName="2.1.0">
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -29,21 +29,20 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
-	
-	<!-- ======================================================================= -->
+
+    <!-- ======================================================================= -->
     <!-- Getui -->
     <uses-permission android:name="getui.permission.GetuiService.com.changhong.tvhelper" />
     <!-- 自定义权限 -->
     <permission
         android:name="getui.permission.GetuiService.com.changhong.tvhelper"
-        android:protectionLevel="normal" >
-    </permission>
+        android:protectionLevel="normal"></permission>
     <!-- ======================================================================= -->
     <application
         android:name="com.changhong.common.system.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/helper_fw"
-        android:label="@string/app_name"        
+        android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
         tools:replace="android:label,android:icon">
@@ -65,11 +64,12 @@
         <meta-data
             android:name="PUSH_GROUPID"
             android:value="" />
+
         <activity
             android:name=".activity.TVHelperWelcomeActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Black.NoTitleBar" >
+            android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -80,15 +80,15 @@
         <activity
             android:name=".activity.TVRemoteControlActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".activity.TVVideoViewPlayingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="true"
             android:label="PlayingActivity"
             android:screenOrientation="landscape"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -100,8 +100,8 @@
             android:name=".activity.TVHelperMainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
         <activity
             android:name=".activity.TVChannelPlayActivity"
             android:launchMode="singleTask"
@@ -110,89 +110,120 @@
         <activity
             android:name=".activity.TVChannelShowActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity=""
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.TVChannelSearchActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.TVChannelShouCangShowActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.TVChannelProgramShowActivity"
             android:screenOrientation="portrait" />
-        
-        <activity android:name="io.vov.vitamio.activity.InitActivity" android:screenOrientation="landscape"
+
+        <activity
+            android:name="io.vov.vitamio.activity.InitActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTop"
+            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
-	
-	 <!--问投影部分-->
-		<activity
+
+        <!--问投影部分-->
+        <activity
             android:name="com.changhong.touying.activity.PictureCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.PictureViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.PictureDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.changhong.touying.activity.OtherDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.changhong.touying.activity.MusicCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.MusicViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.MusicDetailsActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
+        <activity
+            android:name="com.changhong.touying.activity.MusicPlayerActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />                
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="audio/*"/>
+                <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
-        <activity android:name="com.changhong.touying.activity.MusicPlayListActivity"/>
+        <activity
+            android:name="com.changhong.touying.activity.MusicPlayListActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
         <service android:name="com.changhong.touying.service.M3UListProviderService">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
             </intent-filter>
         </service>
- <!-- 设置部分 -->
+        <!-- 设置部分 -->
         <activity
             android:name="com.changhong.setting.activity.SettingActivity"
             android:exported="true"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
         <!-- 语音部分 -->
         <activity android:name="com.changhong.baidu.BiaDuTestActivity" />
 
         <!-- 输入法 -->
-        <service android:name=".service.ClientGetCommandService" android:enabled="true" android:exported="true" android:priority="1000"/>
-        <service android:name=".service.ClientLocalThreadRunningService" android:enabled="true" android:exported="true" android:priority="1000"/>
-        <service android:name="com.changhong.common.service.ClientSendCommandService" android:enabled="true" android:exported="true" android:priority="1000"/>
-        <service android:name="com.changhong.remotecontrol.TVRemoteControlService" android:enabled="true" android:exported="true" android:priority="1000"/>
-           <receiver android:name="com.changhong.thirdpart.common.MainBroadCastReceiver" >
+        <service
+            android:name=".service.ClientGetCommandService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000" />
+        <service
+            android:name=".service.ClientLocalThreadRunningService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000" />
+        <service
+            android:name="com.changhong.common.service.ClientSendCommandService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000" />
+        <service
+            android:name="com.changhong.remotecontrol.TVRemoteControlService"
+            android:enabled="true"
+            android:exported="true"
+            android:priority="1000" />
+
+        <receiver android:name="com.changhong.thirdpart.common.MainBroadCastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -208,11 +239,10 @@
             android:name="com.igexin.sdk.PushService"
             android:exported="true"
             android:label="NotificationCenter"
-            android:process=":pushservice" >
-        </service>
+            android:process=":pushservice"></service>
         <service android:name="com.changhong.thirdpart.common.MainService" />
 
-        <receiver android:name="com.igexin.sdk.PushReceiver" >
+        <receiver android:name="com.igexin.sdk.PushReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -225,7 +255,7 @@
         </receiver>
         <receiver
             android:name="com.igexin.sdk.PushManagerReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.pushmanager" />
             </intent-filter>
@@ -237,8 +267,7 @@
             android:exported="false"
             android:process=":pushservice"
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
         <!-- 配置弹框activity -->
         <activity
             android:name="com.igexin.getuiext.activity.GetuiExtActivity"
@@ -251,7 +280,7 @@
 
         <receiver
             android:name="com.igexin.getuiext.service.PayloadReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
 
                 <!-- 这个com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4固定，不能修改 -->
@@ -269,7 +298,7 @@
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
 
-        <receiver android:name="com.igexin.download.DownloadReceiver" >
+        <receiver android:name="com.igexin.download.DownloadReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -288,7 +317,7 @@
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustResize">
 
             <!--
             	AuthorizeAdapter表示一个继承自cn.sharesdk.framework.authorize.AuthorizeAdapter
@@ -326,12 +355,11 @@
             android:screenOrientation="behind"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name="com.changhong.thirdpart.test.CutScreenActivity" />
-        <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity" >
-        </activity>
+        <activity android:name="com.changhong.thirdpart.test.ThirdpartTestActivity"></activity>
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -347,7 +375,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service android:name="com.changhong.thirdpart.test.MainService" />
-        <!-- shareSDK 分享功能添加 end -->     
+        <!-- shareSDK 分享功能添加 end -->
     </application>
 
 </manifest>

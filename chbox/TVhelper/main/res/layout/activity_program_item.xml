@@ -24,7 +24,7 @@
                 android:layout_marginLeft="5dp"
                 android:focusable="false"
                 android:gravity="left|center_vertical"
-                android:text="@string/disconnected"
+                android:text="无节目信息"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
 

@@ -10,11 +10,16 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,7 +60,8 @@ import com.changhong.tvhelper.view.TVNumInputDialog;
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
         OnTouchListener, OnGestureListener {
     private static final String TAG = "TVRemoteControlActivity";
-//    private BidirSlidingLayout bidirSlidingLayout;
+	private DrawerLayout mDrawerLayout;
+
     /**
      * control part
      */
@@ -148,8 +154,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         btn_vdown.setOnTouchListener(this);
         btn_vdown.setOnClickListener(this);
 
-        if (AppConfig.USE_TV)
-        {
+        if (AppConfig.USE_TV) {
             btn_vtv.setOnTouchListener(this);
             btn_vtv.setOnClickListener(new OnClickListener() {
                 @Override
@@ -205,9 +210,9 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         power.setOnClickListener(new OnClickListener() {
 
             @Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				Dialog dialog = DialogUtil.showAlertDialog(
+            public void onClick(View v) {
+                MyApplication.vibrator.vibrate(100);
+                Dialog dialog = DialogUtil.showAlertDialog(
                         TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
                         new DialogBtnOnClickListener() {
 
@@ -216,22 +221,22 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                 ClientSendCommandService.msg = "key:power";
                                 ClientSendCommandService.handler
                                         .sendEmptyMessage(1);
-                                if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-									dialogMessage.dialog.cancel();
-								}
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
                             }
 
                             @Override
                             public void onCancel(DialogMessage dialogMessage) {
-                            	if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-									dialogMessage.dialog.cancel();
-								}
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
                             }
                         });
-			}
+            }
         });
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
-        
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));
+
 //        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 //			
 //			@Override
@@ -270,8 +275,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         }
         centerPoint.set((180.25f - 35.5f) * density, (343.25f - 35.5f) * density);
 
-        if (AppConfig.USE_VOICE_INPUT)
-        {
+        if (AppConfig.USE_VOICE_INPUT) {
             //长按触发语音换台功能
             btn_center.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -291,7 +295,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                      */
                     int code = recognitionClient.startVoiceRecognition(recogListener, config);
                     if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-                        Toast.makeText(TVRemoteControlActivity.this, R.string.check_network , Toast.LENGTH_LONG).show();
+                        Toast.makeText(TVRemoteControlActivity.this, R.string.check_network, Toast.LENGTH_LONG).show();
                     }
 
                     return true;
@@ -299,8 +303,25 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             });
 
             initBaiduConfiguration();
+            //zyt-1
+            mDrawerLayout = (DrawerLayout) findViewById(R.id.remote_drawer);
+            Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+            toolbar.setTitle(" ");
+            setSupportActionBar(toolbar);
+            final ActionBar ab = getSupportActionBar();
+            ab.setDisplayHomeAsUpEnabled(true);
         }
+    }
 
+    //zyt-1
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+
+            finish();
+        }
+        return true;
     }
 
     /*****************************************************系统方法重载部分***********************************************/
