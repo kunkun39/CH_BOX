@@ -17,6 +17,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/mid_blue"
             app:layout_scrollFlags="scroll|enterAlways"
+            app:tabIndicatorColor="@color/white"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
@@ -36,7 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#009688"
-            app:tabIndicatorColor="#009688" />
+            app:tabIndicatorColor="@color/white" />
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.view.ViewPager

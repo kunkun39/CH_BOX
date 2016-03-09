@@ -42,17 +42,19 @@ import java.util.Map;
  */
 public class VedioCategoryActivity extends AppCompatActivity {
 
-    /**************************************************IP连接部分*******************************************************/    
+    /**
+     * ***********************************************IP连接部分******************************************************
+     */
 
-	DrawerLayout mDrawerLayout;
-	private BoxSelecter ipSelecter;
+    DrawerLayout mDrawerLayout;
+    private BoxSelecter ipSelecter;
 
     /**************************************************视频部分*******************************************************/
 
     /**
      * 视频浏览部分
      */
-	private RecyclerView listView;
+    private RecyclerView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,55 +65,58 @@ public class VedioCategoryActivity extends AppCompatActivity {
         initEvent();
     }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 //		getMenuInflater().inflate(R.menu.touying, menu);
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-		if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
 
-			finish();
-		} else if (item.getItemId() == R.id.ipbutton) {
-			mDrawerLayout.openDrawer(GravityCompat.START);
-		}
+            finish();
+        } else if (item.getItemId() == R.id.ipbutton) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
 
-		return true;
-	}
+        return true;
+    }
+
     private void initView() {
         setContentView(R.layout.activity_vedio_category);
 
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
-		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-		toolbar.setTitle(" ");
-		setSupportActionBar(toolbar);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
 
-		final ActionBar ab = getSupportActionBar();
-		ab.setDisplayHomeAsUpEnabled(true);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
         /**
          * 视频部分
          */
-		listView = (RecyclerView) findViewById(R.id.select_data);
-		listView.setLayoutManager(new GridLayoutManager(
-				VedioCategoryActivity.this, 3));
-		listView.setAdapter(new RecyclerViewAdapter(VedioCategoryActivity.this));
+        listView = (RecyclerView) findViewById(R.id.select_data);
+        listView.setLayoutManager(new GridLayoutManager(
+                VedioCategoryActivity.this, 3));
+        listView.setAdapter(new RecyclerViewAdapter(VedioCategoryActivity.this));
 
     }
 
     private void initEvent() {
 
-		/**
-		 * IP连接部分
-		 */
-		ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
-				(ListView) findViewById(R.id.clients), new Handler(getMainLooper()));
+        /**
+         * IP连接部分
+         */
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
+                (ListView) findViewById(R.id.clients), new Handler(getMainLooper()));
 
-	}
+    }
 
-    /**********************************************系统发发重载*********************************************************/
+    /**
+     * *******************************************系统发发重载********************************************************
+     */
 
     @Override
     protected void onResume() {
@@ -120,13 +125,14 @@ public class VedioCategoryActivity extends AppCompatActivity {
 //            title.setText(ClientSendCommandService.titletxt);
 //        }
     }
+
     @Override
     protected void onDestroy() {
-    
-    	super.onDestroy();
-    	if (ipSelecter != null) {
-			ipSelecter.release();
-		}
+
+        super.onDestroy();
+        if (ipSelecter != null) {
+            ipSelecter.release();
+        }
     }
 
     @Override
@@ -140,171 +146,172 @@ public class VedioCategoryActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-     class RecyclerViewAdapter extends
-			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-		private Context mContext;
-		private List<?> vedios;
-		private List<String> vedioList;
-		private Map<String, List<Vedio>> model;
+    class RecyclerViewAdapter extends
+            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-		public RecyclerViewAdapter(Context mContext) {
+        private Context mContext;
+        private List<?> vedios;
+        private List<String> vedioList;
+        private Map<String, List<Vedio>> model;
 
-			this.mContext = mContext;
-			VedioProvider provider = new VedioProvider(this.mContext);
-			vedios = provider.getList();
-			model = provider.getMapStructure(vedios);
-			vedioList = provider.getVedioList(model);
-		}
+        public RecyclerViewAdapter(Context mContext) {
 
-		@Override
-		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
-				ViewGroup parent, int viewType) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.vedio_category_item, parent, false);
-			return new ViewHolder(view);
-		}
+            this.mContext = mContext;
+            VedioProvider provider = new VedioProvider(this.mContext);
+            vedios = provider.getList();
+            model = provider.getMapStructure(vedios);
+            vedioList = provider.getVedioList(model);
+        }
 
-		@Override
-		public void onBindViewHolder(
-				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+        @Override
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.vedio_category_item, parent, false);
+            return new ViewHolder(view);
+        }
 
-			String key = vedioList.get(position);
-			List<Vedio> list = model.get(key);
-			Vedio vedio = (Vedio) list.get(0);
+        @Override
+        public void onBindViewHolder(
+                final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-			if (list.size() > 1) {
-				holder.vedioName.setText(key);
-				holder.vedioNO.setText(list.size() + "个视频");
-				holder.fullPath.setText("");
-			} else {
-				String displayName = StringUtils.hasLength(vedio
-						.getDisplayName()) ? StringUtils.getShortString(
-						vedio.getDisplayName(), 20) : vedio.getTitle();
-				holder.vedioName.setLines(2);
-				holder.vedioName.setText(displayName);
-				holder.fullPath.setText(String.valueOf(position));
-			}
+            String key = vedioList.get(position);
+            List<Vedio> list = model.get(key);
+            Vedio vedio = (Vedio) list.get(0);
 
-			String vedioPath = vedio.getPath();
-			String vedioImagePath = DiskCacheFileManager
-					.isSmallImageExist(vedioPath);
-			if (!vedioImagePath.equals("")) {
-				MyApplication.imageLoader.displayImage("file://"
-						+ vedioImagePath, holder.vedioImage,
-						MyApplication.viewOptions);
-				holder.vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
-			} else {
-				synchronizImageLoad(holder.vedioImage, vedio.getPath());
-			}
+            if (list.size() > 1) {
+                holder.vedioName.setText(key);
+                holder.vedioNO.setText(list.size() + "个视频");
+                holder.fullPath.setText("");
+            } else {
+                String displayName = StringUtils.hasLength(vedio
+                        .getDisplayName()) ? StringUtils.getShortString(
+                        vedio.getDisplayName(), 20) : vedio.getTitle();
+                holder.vedioName.setLines(2);
+                holder.vedioName.setText(displayName);
+                holder.fullPath.setText(String.valueOf(position));
+            }
 
-			final View view = holder.mView;
-			view.setOnClickListener(new View.OnClickListener() {
+            String vedioPath = vedio.getPath();
+            String vedioImagePath = DiskCacheFileManager
+                    .isSmallImageExist(vedioPath);
+            if (!vedioImagePath.equals("")) {
+                MyApplication.imageLoader.displayImage("file://"
+                                + vedioImagePath, holder.vedioImage,
+                        MyApplication.viewOptions);
+                holder.vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
+            } else {
+                synchronizImageLoad(holder.vedioImage, vedio.getPath());
+            }
 
-				public void onClick(View v) {
+            final View view = holder.mView;
+            view.setOnClickListener(new View.OnClickListener() {
 
-					MyApplication.vibrator.vibrate(100);
-					TextView fullpath = (TextView) view
-							.findViewById(R.id.vedio_item_path);
+                public void onClick(View v) {
 
-					if (StringUtils.hasLength(fullpath.getText().toString())) {
-						Intent intent = new Intent();
-						intent.setClass(VedioCategoryActivity.this,
-								VedioDetailsActivity.class);
-						Bundle bundle = new Bundle();
-						Vedio vedio = model.get(vedioList.get(position)).get(0);
-						bundle.putSerializable("selectedVedio", vedio);
-						intent.putExtras(bundle);
-						startActivity(intent);
-					} else {
-						Intent intent = new Intent();
-						intent.setClass(VedioCategoryActivity.this,
-								VedioViewActivity.class);
-						Bundle bundle = new Bundle();
-						List<Vedio> vedios =model.get(vedioList.get(position));
-						bundle.putSerializable("vedios", (Serializable) vedios);
-						intent.putExtras(bundle);
-						startActivity(intent);
-					}
+                    MyApplication.vibrator.vibrate(100);
+                    TextView fullpath = (TextView) view
+                            .findViewById(R.id.vedio_item_path);
 
-				}
+                    if (StringUtils.hasLength(fullpath.getText().toString())) {
+                        Intent intent = new Intent();
+                        intent.setClass(VedioCategoryActivity.this,
+                                VedioDetailsActivity.class);
+                        Bundle bundle = new Bundle();
+                        Vedio vedio = model.get(vedioList.get(position)).get(0);
+                        bundle.putSerializable("selectedVedio", vedio);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    } else {
+                        Intent intent = new Intent();
+                        intent.setClass(VedioCategoryActivity.this,
+                                VedioViewActivity.class);
+                        Bundle bundle = new Bundle();
+                        List<Vedio> vedios = model.get(vedioList.get(position));
+                        bundle.putSerializable("vedios", (Serializable) vedios);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
 
-			});
+                }
 
-		}
+            });
 
-		@Override
-		public int getItemCount() {
+        }
 
-			return vedioList.size();
+        @Override
+        public int getItemCount() {
 
-		}
+            return vedioList.size();
 
-		public class ViewHolder extends RecyclerView.ViewHolder {
+        }
 
-			ImageView vedioImage = null;
-			TextView vedioName = null;
-			TextView vedioNO = null;
-			TextView fullPath = null;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-			public final View mView;
+            ImageView vedioImage = null;
+            TextView vedioName = null;
+            TextView vedioNO = null;
+            TextView fullPath = null;
 
-			public ViewHolder(View view) {
-				super(view);
-				mView = view;
-				vedioImage = (ImageView) mView
-						.findViewById(R.id.vedio_item_image);
-				vedioName = (TextView) mView.findViewById(R.id.vedio_item_name);
-				vedioNO = (TextView) mView.findViewById(R.id.vedio_item_NO);
-				fullPath = (TextView) mView.findViewById(R.id.vedio_item_path);
+            public final View mView;
 
-			}
-		}
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                vedioImage = (ImageView) mView
+                        .findViewById(R.id.vedio_item_image);
+                vedioName = (TextView) mView.findViewById(R.id.vedio_item_name);
+                vedioNO = (TextView) mView.findViewById(R.id.vedio_item_NO);
+                fullPath = (TextView) mView.findViewById(R.id.vedio_item_path);
 
-		private void synchronizImageLoad(final ImageView imageView,
-				final String path) {
-			ImageAsyncTask task = new ImageAsyncTask(imageView);
-			task.execute(path);
-		}
+            }
+        }
 
-		public final class ImageAsyncTask extends
-				AsyncTask<String, Integer, Bitmap> {
-			ImageView imageView;
+        private void synchronizImageLoad(final ImageView imageView,
+                                         final String path) {
+            ImageAsyncTask task = new ImageAsyncTask(imageView);
+            task.execute(path);
+        }
 
-			private ImageAsyncTask(ImageView imageView) {
-				this.imageView = imageView;
-			}
+        public final class ImageAsyncTask extends
+                AsyncTask<String, Integer, Bitmap> {
+            ImageView imageView;
 
-			@Override
-			protected Bitmap doInBackground(String... params) {
-				Bitmap bitmap = null;
-				try {
-					String path = params[0];
-					bitmap = ThumbnailUtils.createVideoThumbnail(path,
-							MediaStore.Images.Thumbnails.MINI_KIND);
-					DiskCacheFileManager.saveSmallImage(bitmap, path);
-					return bitmap;
-				} catch (Exception e) {
-					e.printStackTrace();
-					return bitmap;
-				}
-			}
+            private ImageAsyncTask(ImageView imageView) {
+                this.imageView = imageView;
+            }
 
-			@Override
-			protected void onPostExecute(Bitmap bitmap) {
-				if (bitmap != null && imageView != null) {
-					imageView.setImageBitmap(bitmap);
-					imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-				}
-			}
-		}
+            @Override
+            protected Bitmap doInBackground(String... params) {
+                Bitmap bitmap = null;
+                try {
+                    String path = params[0];
+                    bitmap = ThumbnailUtils.createVideoThumbnail(path,
+                            MediaStore.Images.Thumbnails.MINI_KIND);
+                    DiskCacheFileManager.saveSmallImage(bitmap, path);
+                    return bitmap;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return bitmap;
+                }
+            }
 
-		public Vedio getPositionVedio(int position) {
-			return model.get(vedioList.get(position)).get(0);
-		}
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                if (bitmap != null && imageView != null) {
+                    imageView.setImageBitmap(bitmap);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                }
+            }
+        }
 
-		public List<Vedio> getPositionVedios(int position) {
-			return model.get(vedioList.get(position));
-		}
-	}
+        public Vedio getPositionVedio(int position) {
+            return model.get(vedioList.get(position)).get(0);
+        }
+
+        public List<Vedio> getPositionVedios(int position) {
+            return model.get(vedioList.get(position));
+        }
+    }
 }

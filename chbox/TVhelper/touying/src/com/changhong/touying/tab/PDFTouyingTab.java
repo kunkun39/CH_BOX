@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.changhong.touying.R;
 import com.changhong.touying.activity.OtherDetailsActivity;
+import com.changhong.touying.adapter.DividerItemDecoration;
 import com.changhong.touying.file.FileItem;
 
 import java.util.ArrayList;
@@ -40,8 +41,6 @@ public class PDFTouyingTab extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
     }
 
     public void setdata(Collection<FileItem> list) {
@@ -53,6 +52,7 @@ public class PDFTouyingTab extends Fragment {
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(), mPathList));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
     }
 
     public class RecyclerViewAdapter extends
