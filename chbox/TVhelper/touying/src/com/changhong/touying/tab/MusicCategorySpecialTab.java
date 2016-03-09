@@ -6,6 +6,7 @@ package com.changhong.touying.tab;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,7 +43,7 @@ public class MusicCategorySpecialTab extends Fragment {
 				.getContext()));
 		mRecyclerView.setAdapter(new MusicDataRecyclerViewAdapter(getActivity()));
 		mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-
+		mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
