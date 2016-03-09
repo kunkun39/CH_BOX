@@ -1,6 +1,7 @@
 package com.changhong.common.utils;
 
 import android.util.Log;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -17,7 +18,6 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
