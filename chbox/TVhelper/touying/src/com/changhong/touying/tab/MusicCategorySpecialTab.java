@@ -3,28 +3,20 @@
  */
 package com.changhong.touying.tab;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.zip.Inflater;
-
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListView;
 
-import com.changhong.common.system.MyApplication;
 import com.changhong.touying.R;
-import com.changhong.touying.activity.MusicViewActivity;
-import com.changhong.touying.music.Music;
-import com.changhong.touying.music.MusicDataAdapter;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+
+import com.changhong.touying.adapter.MusicDataRecyclerViewAdapter;
 
 /**
  * @author yves.yang
@@ -38,27 +30,24 @@ public class MusicCategorySpecialTab extends Fragment {
 	/**
 	 * Image List adapter
 	 */
-	private MusicDataAdapter musicAdapter = null;
-	/**
-	 * 视频浏览部分
-	 */
-	private ListView musicGridView = null;
 
-	private View v = null;
+	private RecyclerView mRecyclerView;
 
-
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
+				.getContext()));
+		mRecyclerView.setAdapter(new MusicDataRecyclerViewAdapter(getActivity()));
+		
+	}
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
 
-	/*
-	 * （非 Javadoc）
-	 * 
-	 * @see
-	 * android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
-	 * android.view.ViewGroup, android.os.Bundle)
-	 */
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -67,47 +56,12 @@ public class MusicCategorySpecialTab extends Fragment {
 		 */
 		MusicService musicService = new MusicServiceImpl(getActivity());
 		musicService.findAllMusicLrc();
-
-		// TODO 自动生成的方法存根
-		View v = inflater.inflate(R.layout.music_special_listview, container,
-				false);
-		initView(v);
-		initEvent();
 		
-		return v;
-	}
 
-
-	private void initView(View v) {
-		/**
-		 * 歌曲部分
-		 */
-		musicGridView = (ListView) v.findViewById(R.id.music_special_listview);
-		musicAdapter = new MusicDataAdapter(getActivity());
-		musicGridView.setAdapter(musicAdapter);
-	}
-
-	private void initEvent() {
-
-		/**
-		 * 歌曲部分
-		 */
-		musicGridView
-				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						MyApplication.vibrator.vibrate(100);
-						Intent intent = new Intent();
-						intent.setClass(getActivity(), MusicViewActivity.class);
-						Bundle bundle = new Bundle();
-						List<Music> musics = MusicDataAdapter
-								.getPositionMusics(position);
-						bundle.putSerializable("musics", (Serializable) musics);
-						intent.putExtras(bundle);
-						startActivity(intent);
-					}
-				});
-
+		CoordinatorLayout view = (CoordinatorLayout) inflater.inflate(R.layout.touying_list_fragment,
+				container, false);
+		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+		
+		return view;
 	}
 }

@@ -155,7 +155,7 @@ public class DragImageView extends ImageView {
     		return 1;
     	}
 
-        return FloatMath.sqrt(x * x + y * y);
+        return (float)Math.sqrt(x * x + y * y);
     }
 
     /*************************************************图片缩放任务*******************************************************/
@@ -269,7 +269,13 @@ public class DragImageView extends ImageView {
                 right = Math.min(right, start_Right);
                 bottom = Math.min(bottom, start_Bottom);
                 Log.d("jj", "top=" + top + ",bottom=" + bottom + ",left=" + left + ",right=" + right);
-                onProgressUpdate(new Integer[]{left, top, right, bottom});
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        onProgressUpdate(new Integer[]{left, top, right, bottom});
+                    }
+                });
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
@@ -283,12 +289,7 @@ public class DragImageView extends ImageView {
         @Override
         protected void onProgressUpdate(final Integer... values) {
             super.onProgressUpdate(values);
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    setFrame(values[0], values[1], values[2], values[3]);
-                }
-            });
+            setFrame(values[0], values[1], values[2], values[3]);
         }
 
     }

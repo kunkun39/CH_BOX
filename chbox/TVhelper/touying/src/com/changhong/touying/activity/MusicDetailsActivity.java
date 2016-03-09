@@ -3,7 +3,10 @@ package com.changhong.touying.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +30,7 @@ import com.changhong.touying.service.MusicServiceImpl;
 /**
  * Created by maren on 2015/4/9.
  */
-public class MusicDetailsActivity extends FragmentActivity {
+public class MusicDetailsActivity extends AppCompatActivity {
 
 	/**
 	 * 消息处理
@@ -81,9 +84,13 @@ public class MusicDetailsActivity extends FragmentActivity {
 
 	private MusicService musicService;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    //ToolBar
+    private DrawerLayout mDrawerLayout;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
 		selectedMusic = (Music) intent.getSerializableExtra("selectedMusic");
@@ -115,12 +122,20 @@ public class MusicDetailsActivity extends FragmentActivity {
 		defaultImage=(ImageView)findViewById(R.id.iv_music_ablum);
 		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
-		returnImage = (ImageView) findViewById(R.id.d_btn_return);
-		playImage = (ImageView) findViewById(R.id.d_btn_play);
-		
-		musicPlayer = new MusicPlayer();        
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
-	}
+        returnImage = (ImageView) findViewById(R.id.d_btn_return);
+        playImage = (ImageView) findViewById(R.id.d_btn_play);
+
+        musicPlayer = new MusicPlayer();
+        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout, musicPlayer, MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.music_detail_drawer);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
 
 	@Override
 	protected void onResume() {
@@ -148,13 +163,7 @@ public class MusicDetailsActivity extends FragmentActivity {
      * **********************************************分享相关********************************************************
      */
     public void initShare() {
-		View v = findViewById(R.id.bt_sharemusic);
-		if (!AppConfig.USE_SHARE)
-		{
-			v.setVisibility(View.INVISIBLE);
-			return;
-		}
-		v.setOnClickListener(new OnClickListener() {
+        findViewById(R.id.bt_sharemusic).setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

@@ -18,7 +18,7 @@
         <TextView
                 android:gravity="center_vertical"
                 android:id="@+id/title"
-                android:text="@string/disconnected"
+                android:text="未连接"
                 android:textSize="20sp"
                 android:singleLine="true"
                 android:ellipsize="marquee"
@@ -70,7 +70,7 @@
 
     <ListView
             android:id="@+id/clients"
-            android:background="@drawable/title_ip_list_bg"
+            android:background="@drawable/bkg"
             android:layout_marginTop="67.6dip"
             android:layout_width="match_parent"
             android:layout_height="558dip"

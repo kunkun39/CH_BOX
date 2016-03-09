@@ -12,7 +12,10 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +30,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.utils.DialogUtil;
@@ -52,11 +56,13 @@ public class MusicCategoryPlaylistTab extends Fragment {
     public static final String TAG = "MusicCategoryPlaylistTab";
 
     private static final int RETURN_ACTIVITY_ADD = 1;
-
+    private RecyclerView mRecyclerView = null;
+    PlayListRecyclerViewAdapter RecyclerViewAdapter = null;
     /**
      * 添加列表按钮
      */
-    private Button mAddNewListBtn;
+    // private Button mAddNewListBtn;
+    private FloatingActionButton mAddNewListBtn;
 
     /**
      * 播放列表View
@@ -69,6 +75,9 @@ public class MusicCategoryPlaylistTab extends Fragment {
      * 播放列表的列表
      */
     List<MusicPlayList> musicPlayLists = new ArrayList<MusicPlayList>();
+
+    /*recyclerView*/
+    private int mPreviousVisibleItem;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,10 +115,14 @@ public class MusicCategoryPlaylistTab extends Fragment {
 
     private void initView(View v) {
 
-        mAddNewListBtn = (Button) v.findViewById(R.id.music_list_add);
-        mPlayListView = (ListView) v.findViewById(R.id.music_list_list);
-        mPlayListView.setLongClickable(true);
-        mPlayListView.setAdapter(new PlayListAdatper(getActivity(), musicPlayLists));
+        mAddNewListBtn = (FloatingActionButton) v.findViewById(R.id.music_list_add);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.music_list_list);
+
+        RecyclerViewAdapter = new PlayListRecyclerViewAdapter();
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
+                .getContext()));
+        mRecyclerView.setAdapter(RecyclerViewAdapter);
+
     }
 
     private void initEvent() {
@@ -139,78 +152,9 @@ public class MusicCategoryPlaylistTab extends Fragment {
             }
         });
 
-        mPlayListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                String path = musicPlayLists.get(arg2).getPath();
-                String name = path.substring(path.lastIndexOf("/") + 1, path.length() - M3UPlayList.SUFFIX.length());
 
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), MusicViewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("musics", playPlayList(arg2));
-                bundle.putString("name", name);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
-            }
-        });
-
-        //长按弹出播放，删除操作
-        mPlayListView.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(final AdapterView<?> adapterView, final View v,
-                                           final int arg2, long arg3) {
-                final Dialog dialog = new Dialog(getActivity(), R.style.Dialog_nowindowbg);
-                View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify, null);
-                dialog.setContentView(dialogView);
-                Button bt_modify = (Button) dialogView.findViewById(R.id.bt_modifydia_modify);
-                Button bt_delete = (Button) dialogView.findViewById(R.id.bt_modifydia_delete);
-                Button bt_cancel = (Button) dialogView.findViewById(R.id.bt_modifydia_cancel);
-                bt_modify.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        modifyPlayList(arg2);
-                        if (dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                bt_delete.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        delPlayList(arg2);
-                        if (dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-                bt_cancel.setOnClickListener(new OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        if (dialog != null && dialog.isShowing()) {
-                            dialog.dismiss();
-                        }
-                    }
-                });
-
-                LayoutParams param = dialog.getWindow().getAttributes();
-                param.gravity = Gravity.CENTER;
-                param.width = (int) getActivity().getResources().getDimension(R.dimen.dialog_modify_width);
-                param.height = (int) getActivity().getResources().getDimension(R.dimen.dialog_modify_height);
-                dialog.getWindow().setAttributes(param);
-                dialog.show();
-
-
-                return true;
-            }
-        });
     }
+
 
     private ArrayList<Music> playPlayList(int index) {
         //重新组装列表，然后拿去播放
@@ -264,10 +208,9 @@ public class MusicCategoryPlaylistTab extends Fragment {
             }
         }
 
-        //更新视图
-        if (mPlayListView != null
-                && mPlayListView.getAdapter() != null)
-            ((BaseAdapter) mPlayListView.getAdapter()).notifyDataSetChanged();
+        // 更新视图
+        if (mRecyclerView != null && RecyclerViewAdapter != null)
+            RecyclerViewAdapter.notifyDataSetChanged();
     }
 
     private void addPlayList() {
@@ -354,8 +297,158 @@ public class MusicCategoryPlaylistTab extends Fragment {
         }
 
         //更新列表
-        if (mPlayListView != null
-                && mPlayListView.getAdapter() != null)
-            ((BaseAdapter) mPlayListView.getAdapter()).notifyDataSetChanged();
+        if (mRecyclerView != null && RecyclerViewAdapter != null)
+            RecyclerViewAdapter.notifyDataSetChanged();
+
+
+    }
+
+
+    public class PlayListRecyclerViewAdapter extends
+            RecyclerView.Adapter<PlayListRecyclerViewAdapter.ViewHolder> {
+
+
+        public PlayListRecyclerViewAdapter() {
+
+        }
+
+        @Override
+        public PlayListRecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
+
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.playlist_list_item, parent, false);
+            return new ViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(
+                final PlayListRecyclerViewAdapter.ViewHolder holder,
+                final int position) {
+            final View view = holder.mView;
+
+            MusicPlayList item = (MusicPlayList) getItem(position);
+
+            if (item != null) {
+
+                holder.mIndexText.setText(String.valueOf(position + 1));
+                holder.mPlayListName.setText(item.getName());
+                holder.mPlayListComment.setText(item.getComment());
+
+                holder.mIndexText.setText(String.valueOf(position + 1));
+                holder.mPlayListName.setText(item.getName());
+                holder.mPlayListComment.setText(item.getComment());
+
+            }
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String path = musicPlayLists.get(position).getPath();
+                    String name = path.substring(path.lastIndexOf("/") + 1,
+                            path.length() - M3UPlayList.SUFFIX.length());
+
+                    Intent intent = new Intent();
+                    intent.setClass(getActivity(), MusicViewActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("musics", playPlayList(position));
+                    bundle.putString("name", name);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
+            });
+
+            // 长按弹出播放，删除操作
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(View v) {
+                    final Dialog dialog = new Dialog(getActivity(),
+                            R.style.Dialog_nowindowbg);
+                    View dialogView = LayoutInflater.from(getActivity()).inflate(
+                            R.layout.dialog_playlist_modify, null);
+                    dialog.setContentView(dialogView);
+                    Button bt_modify = (Button) dialogView
+                            .findViewById(R.id.bt_modifydia_modify);
+                    Button bt_delete = (Button) dialogView
+                            .findViewById(R.id.bt_modifydia_delete);
+                    Button bt_cancel = (Button) dialogView
+                            .findViewById(R.id.bt_modifydia_cancel);
+                    bt_modify.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            modifyPlayList(position);
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    bt_delete.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            delPlayList(position);
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                    bt_cancel.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            if (dialog != null && dialog.isShowing()) {
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+
+                    LayoutParams param = dialog.getWindow().getAttributes();
+                    param.gravity = Gravity.CENTER;
+                    param.width = (int) getActivity().getResources().getDimension(
+                            R.dimen.dialog_modify_width);
+                    param.height = (int) getActivity().getResources().getDimension(
+                            R.dimen.dialog_modify_height);
+                    dialog.getWindow().setAttributes(param);
+                    dialog.show();
+
+                    return true;
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return musicPlayLists.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            TextView mIndexText;
+            TextView mPlayListName;
+            TextView mPlayListComment;
+            public final View mView;
+
+            public ViewHolder(View view) {
+
+                super(view);
+                mView = view;
+                mIndexText = (TextView) view
+                        .findViewById(R.id.playlist_listitem_index);
+                mPlayListName = (TextView) view
+                        .findViewById(R.id.playlist_listitem_name);
+                mPlayListComment = (TextView) view
+                        .findViewById(R.id.playlist_listitem_comment);
+
+            }
+        }
+
+        public Object getItem(int position) {
+            return musicPlayLists.get(position);
+        }
+
     }
 }

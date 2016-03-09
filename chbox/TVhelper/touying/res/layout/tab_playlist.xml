@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_tab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/list_tab"
-    android:orientation="vertical" >
-    <RelativeLayout 
-	        android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_weight="1">
-	            
-        <Button
-	            android:id="@+id/music_list_add"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"  
-	            android:textSize="18sp"
-	            android:textColor="@color/textselect"
-	            android:text="@string/add_list"
-	            android:background="@android:color/transparent"
-	            android:layout_marginTop="10dp"
-	            android:layout_marginBottom="10dp"	            
-	            android:layout_alignParentBottom="true"
-	        /> 
-	        
-        <View 
-	            android:id="@+id/divider_line"
-	            android:layout_width="match_parent"
-	            android:layout_height="1px"
-	            android:background="#FFFFFFFF"
-	            android:layout_above="@id/music_list_add"	            
-	            />
-        
-        <ListView
-	            android:id="@+id/music_list_list"
-	            android:layout_width="match_parent"
-	            android:layout_height="match_parent"
-	            android:divider="@null"
-	            android:layout_alignParentTop="true"
-	            android:layout_above="@id/divider_line"	    
-	            android:layout_marginTop="10dp"        	            
-	            />
-	         
-    	</RelativeLayout>
+    android:background="#79BD4C"
+    android:fitsSystemWindows="true">
 
-</LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/music_list_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="#009688"
+        android:gravity="center"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"></android.support.v7.widget.RecyclerView>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/music_list_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="62dp"
+        android:layout_marginRight="16dp"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="#ec407a"
+        app:rippleColor="#e82dca69" />
+
+</FrameLayout>

@@ -1,86 +1,43 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="@drawable/bk"
-                tools:context=".TVRemoteControlActivity" >
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pic_main_drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffc107"
+    android:fitsSystemWindows="true" >
 
-    <!--IP选择-->
+    <include layout="@layout/pic_category_content" />
+
+    <!-- IP选择 -->
 
     <LinearLayout
-            android:background="@drawable/title_banner"
-            android:layout_height="67.6dip"
-            android:layout_width="fill_parent"
-            android:focusable="false"
-            android:orientation="horizontal"
-            android:gravity="center">
+        android:id="@+id/ip_view"
+        android:layout_width="300dip"
+        android:layout_height="fill_parent"
+        android:layout_gravity="start"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
         <TextView
-                android:gravity="center_vertical"
-                android:id="@+id/title"
-                android:text="@string/disconnected"
-                android:textSize="20sp"
-                android:singleLine="true"
-                android:ellipsize="marquee"
-                android:layout_width="80dip"
-                android:layout_height="64.3dip"
-                />
-        <ImageView
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/title_ip_select"
-                android:layout_width="16.7dip"
-                android:layout_height="10.7dip"
-                />
-    </LinearLayout>
-    <Button
-            android:id="@+id/btn_back"
-            android:background="@drawable/title_btn_back_selector"
-            android:layout_width="80.5dip"
-            android:layout_height="77.3dip"
-            android:layout_marginLeft="0dip"
-            />
-
-
-    <!--中间内容-->
-
-    <LinearLayout
-            android:layout_height="fill_parent"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="67.6dip"
-            android:focusable="false"
-            android:orientation="horizontal"
-            android:gravity="center_vertical|center_horizontal">
-
-            <GridView
-                    android:id="@+id/select_package"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:numColumns="2"
-                    android:horizontalSpacing="4dp"
-                    android:verticalSpacing="4dp"
-                    android:gravity="center"
-                    android:stretchMode="columnWidth"
-                    android:listSelector="@drawable/title_btn_list_selector"
-                    />
-    </LinearLayout>
-
-    <!--IP选择-->
-
-    <ListView
-            android:id="@+id/clients"
-            android:background="@drawable/title_ip_list_bg"
-            android:layout_marginTop="67.6dip"
+            android:id="@+id/ip_title"
             android:layout_width="match_parent"
-            android:layout_height="558dip"
+            android:layout_height="64.3dip"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dip"
+            android:singleLine="true"
+            android:text="@string/disconnected"
+            android:textSize="20sp" />
+
+        <ListView
+            android:id="@+id/clients"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="67.6dip"
+            android:background="@drawable/bkg"
             android:listSelector="@drawable/title_ip_list"
-            android:visibility="gone"
-            />
-    <Button
-            android:id="@+id/btn_list"
-            android:background="@drawable/title_btn_list_selector"
-            android:layout_width="204dip"
-            android:layout_height="49.8dip"
-            android:layout_marginLeft="70dip"
-            android:layout_marginTop="10dip"
-            />
-</RelativeLayout>
+            android:visibility="visible" />
+    </LinearLayout>
+
+</android.support.v4.widget.DrawerLayout>

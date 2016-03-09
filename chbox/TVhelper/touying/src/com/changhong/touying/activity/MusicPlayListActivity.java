@@ -3,62 +3,38 @@
  */
 package com.changhong.touying.activity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.changhong.touying.R;
+import com.changhong.touying.adapter.MusicPlayListFragmentPagerAdapter;
 import com.changhong.touying.music.M3UPlayList;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicPlayList;
 import com.changhong.touying.music.MusicProvider;
-import com.changhong.touying.music.MusicUtils;
-import com.changhong.common.utils.UnicodeReader;
-
-import android.R.anim;
-import android.app.Activity;
-import android.content.ContentProvider;
-import android.content.Context;
+import com.changhong.touying.tab.MusicPlayListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.ListFragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.MultiChoiceModeListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.BaseAdapter;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * @author yves.yang
  *
  */
-public class MusicPlayListActivity extends Activity{
+public class MusicPlayListActivity extends AppCompatActivity {
 
 	/**
 	 * 接收到的对象名称
@@ -92,8 +68,16 @@ public class MusicPlayListActivity extends Activity{
 	 */
 	private List<Music> musics;
 
-/**********************************************************系统函数******************************/
-	
+	/*
+	 * CardView添加
+	 */
+
+	private CardView mCardView;
+	private ViewPager viewpager;
+	private ArrayList<ListFragment> listViews; // Tab页面列表
+	MusicPlayListFragment musicPlayListFragment;
+
+	/********************************************************** 系统函数 ******************************/
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -123,35 +107,11 @@ public class MusicPlayListActivity extends Activity{
 		super.onPause();
 	}
 
-	/**************************************************************初始化函数************************/
-	
-	private void initListView()
-	{
-		mFileListView = (ListView)findViewById(R.id.music_playlist);
-		
-		mFileListView.setAdapter(new SimpleAdapter(this
-				, mPlayList
-				, R.layout.playlist_item
-				, new String[]{BTN_SELECTED,TEXT_NAME,TEXT_COMMENT}
-				, new int[]{R.id.playlist_radio_btn,R.id.playlist_item_name,R.id.playlist_item_comment}));
-				
-		mFileListView.setChoiceMode(AbsListView.CHOICE_MODE_NONE);
-		
-		mFileListView.setOnItemClickListener(new OnItemClickListener() {
+	/************************************************************** 初始化函数 ************************/
+	private void initListView() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				// TODO 自动生成的方法存根					
-				Map<String, Object> checkBox = mPlayList.get(arg2);
-				boolean checked = (Boolean)mPlayList.get(arg2).get(BTN_SELECTED);
-				checkBox.put(BTN_SELECTED, !checked);
-				onSelectedChanged(((TextView)arg1.findViewById(R.id.playlist_item_name)).getText().toString()
-						,!checked);
-				((SimpleAdapter)(arg0.getAdapter())).notifyDataSetChanged();
-			}
-		});
-		
+		initCardView();
+
 		Button confirmBtn = (Button) findViewById(R.id.muslic_playlist_comfirm);
 		confirmBtn.setText(android.R.string.yes);
 		confirmBtn.setOnClickListener(new OnClickListener() {
@@ -163,6 +123,15 @@ public class MusicPlayListActivity extends Activity{
 				
 				setResult(isResult ? RESULT_OK : RESULT_CANCELED);
 								
+				finish();
+			}
+		});
+
+		Button cancelBtn = (Button) findViewById(R.id.muslic_playlist_cancel);
+		cancelBtn.setText("退出");
+		cancelBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
 				finish();
 			}
 		});
@@ -204,44 +173,54 @@ public class MusicPlayListActivity extends Activity{
         	mPlayList.add(item);
 		} 
 		
+		musicPlayListFragment = new MusicPlayListFragment(mPlayList, this, mMusicPlayList, musics);
 	}
 
-	/**************************************************************自定义方法************************/			
-	
-	private void onSelectedChanged(String name,boolean isSelected)
-	{		
-		Music music = null;
-		
-		String nameTrimed = name.trim();
-		
-		// 根据名字找歌
-		try {
-			for (Music m : musics) {
-				if (m.getTitle().trim().equals(nameTrimed)) {
-					music = m;					
-					break;
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
-		
-		if (music == null) 
-			return ;
-		
-		//在列表里面天剑或者删除
-		if (isSelected) {
-			
-			for(String song : mMusicPlayList.getPlayList())
-			{
-				if (music.getPath().equals(song)) {					
-					return ;
-				}
-			}
-			mMusicPlayList.getPlayList().add(music.getPath());						
+	/************************************************************** viewerpage适配 ************************/
+
+	private void InitViewPager() {
+		viewpager = (ViewPager) findViewById(R.id.viewpager);
+		listViews = new ArrayList<ListFragment>();
+		listViews.add(musicPlayListFragment);
+		FragmentManager fragmentManager = this.getSupportFragmentManager();
+		viewpager.setAdapter(new MusicPlayListFragmentPagerAdapter(fragmentManager, listViews));
+		viewpager.setCurrentItem(0);
+		viewpager.setOnPageChangeListener(new MyOnPageChangeListener());
+	}
+
+	/************************************************************** CardView及窗体适配 ************************/
+	public void initCardView() {
+		mCardView = (CardView) findViewById(R.id.card_view_list);
+		Window window = getWindow();
+		WindowManager.LayoutParams layoutParams = window.getAttributes();
+		layoutParams.type = android.view.WindowManager.LayoutParams.TYPE_PHONE; // 设置window
+		layoutParams.gravity = Gravity.TOP; // 调整悬浮窗口至右侧中间
+		layoutParams.width = 700;// 设置悬浮窗口长宽数据
+		layoutParams.height = 1100;
+		layoutParams.y = 80;
+		layoutParams.alpha = 1;
+		window.setAttributes(layoutParams);
+		InitViewPager();
+		mCardView.setRadius(30);
+		mCardView.setCardElevation(500);
+	}
+
+	/**
+	 * 页卡切换监听,改变动画位置
+	 */
+	public class MyOnPageChangeListener implements ViewPager.OnPageChangeListener {
+
+		@Override
+		public void onPageSelected(int arg0) {
+
 		}
-		else {
-			mMusicPlayList.getPlayList().remove(music.getPath());
+
+		@Override
+		public void onPageScrolled(int arg0, float arg1, int arg2) {
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int arg0) {
 		}
 	}
 }

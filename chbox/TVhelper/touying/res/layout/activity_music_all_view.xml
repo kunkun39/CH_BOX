@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bk"
+    android:background="#009688"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical" >
 
@@ -11,13 +11,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@android:color/transparent"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/music_seek_layout_all"
+        android:background="@android:color/transparent"        
         android:divider="@null" />
 
     <LinearLayout
-        android:id="@id/music_seek_layout_all"
+        android:id="@+id/music_seek_layout_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

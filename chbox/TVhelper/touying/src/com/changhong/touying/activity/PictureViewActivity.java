@@ -1,17 +1,29 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.*;
-import android.view.View.OnClickListener;
-import android.widget.*;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 
@@ -21,25 +33,22 @@ import java.util.List;
 /**
  * Created by Jack Wang
  */
-public class PictureViewActivity extends Activity {
+public class PictureViewActivity extends AppCompatActivity {
 
+	DrawerLayout mDrawerLayout;
     /**************************************************IP连接部分*******************************************************/
     public Button back;
     private BoxSelecter ipSelecter;
 
     /************************************************图片加载部分*******************************************************/
 
-    private GridView listViewlocal;
+	private RecyclerView listPicView;
 
     /**
      * 传过来需要浏览的图片
      */
     private List<String> imagePaths;
 
-    /**
-     * 图片加载的适配器
-     */
-    private ImageAdapterLocal imageAdapter = new ImageAdapterLocal();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,97 +61,132 @@ public class PictureViewActivity extends Activity {
         initEvent();
     }
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.touying, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			finish();
+		} else if (item.getItemId() == R.id.ipbutton) {
+			mDrawerLayout.openDrawer(GravityCompat.START);
+		}
+
+		return true;
+	}
     private void initData() {
         imagePaths = getIntent().getStringArrayListExtra("imagePaths");
     }
 
     private void initView() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_picture_view);
-        back = (Button) findViewById(R.id.btn_back);
+		
+		setContentView(R.layout.activity_picture_category);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
+		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+		toolbar.setTitle(" ");
+		setSupportActionBar(toolbar);
 
+		final ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
         /**
          * 图片容器
          */
-        listViewlocal = (GridView) findViewById(R.id.select_picture);
-        listViewlocal.setAdapter(imageAdapter);
+		listPicView = (RecyclerView) findViewById(R.id.select_data);
+		listPicView.setLayoutManager(new GridLayoutManager(
+				PictureViewActivity.this, 4));
+		listPicView
+				.setAdapter(new RecyclerViewAdapter(PictureViewActivity.this));
         
     }
 
-    private void initEvent() {
-        /**
-        * IP连接部分
-         */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
+	private void initEvent() {
+		/**
+		 * IP连接部分
+		 */
+		ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
+				(ListView) findViewById(R.id.clients), new Handler(
+						getMainLooper()));
+		
+	}
 
-        /**
-         * 图片部分
-         */
-        listViewlocal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                MyApplication.vibrator.vibrate(100);
-                /**
-                 * 显示图片预览效果
-                 */
-                Intent intent = new Intent();
-                intent.setClass(PictureViewActivity.this, PictureDetailsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("position", position);
-                bundle.putStringArrayList("imagePaths", new ArrayList<String>(imagePaths));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-    }
+	public class RecyclerViewAdapter extends
+			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    public class ImageAdapterLocal extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return imagePaths.size();
-        }
+		private Context mContext;
 
-        @Override
-        public Object getItem(int position) {
-            return imagePaths.get(position);
-        }
+		public RecyclerViewAdapter(Context mContext) {
+			this.mContext = mContext;
+		}
 
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
+		@Override
+		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+				ViewGroup parent, int viewType) {
+			View view = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.activity_picture_row, parent, false);
+			return new ViewHolder(view);
+		}
 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            View view = convertView;
-            if (view == null || ((ViewHolder)(view.getTag())).index != position) {
-                view = getLayoutInflater().inflate(R.layout.activity_picture_row, parent, false);
-                holder = new ViewHolder();
+		@Override
+		public void onBindViewHolder(
+				final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-                holder.imageView = (ImageView) view.findViewById(R.id.grid_picture);
-                holder.index = position;
+			MyApplication.imageLoader.displayImage(
+					"file://" + imagePaths.get(position), holder.imageView,
+					MyApplication.viewOptions);
 
-                MyApplication.imageLoader.displayImage("file://" + imagePaths.get(position), holder.imageView, MyApplication.viewOptions);
-                Log.i("IMAGE_VIEW", imagePaths.get(position));
-                view.setTag(holder);
-            }
+			Log.i("IMAGE_VIEW", imagePaths.get(position));
 
-            return view;
-        }
-    }
+			final View view = holder.mView;
+			view.setOnClickListener(new View.OnClickListener() {
 
-    private class ViewHolder {
-        ImageView imageView;
-        int index;
-    }
+				public void onClick(View v) {
+
+					MyApplication.vibrator.vibrate(100);
+					/**
+					 * 显示图片预览效果
+					 */
+					Intent intent = new Intent();
+					intent.setClass(PictureViewActivity.this,
+							PictureDetailsActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putInt("position", position);
+					bundle.putStringArrayList("imagePaths",
+							new ArrayList<String>(imagePaths));
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+
+			});
+
+		}
+
+		@Override
+		public int getItemCount() {
+
+			return imagePaths.size();
+
+		}
+
+		public class ViewHolder extends RecyclerView.ViewHolder {
+
+			ImageView imageView;
+			int index;
+			public final View mView;
+
+			public ViewHolder(View view) {
+				super(view);
+				mView = view;
+				imageView = (ImageView) view.findViewById(R.id.grid_picture);
+
+			}
+		}
+
+	}
 
     /**********************************************系统发发重载*********************************************************/
 

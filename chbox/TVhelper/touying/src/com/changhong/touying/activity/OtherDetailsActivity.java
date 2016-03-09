@@ -1,5 +1,42 @@
 package com.changhong.touying.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
+import android.os.storage.StorageManager;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.WebUtils;
+import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.widgets.IpSelectorDataServer;
+import com.changhong.touying.R;
+import com.changhong.touying.adapter.FragmentAdapter;
+import com.changhong.touying.file.FileItem;
+import com.changhong.touying.nanohttpd.NanoHTTPDService;
+import com.changhong.touying.tab.PDFTouyingTab;
+import com.changhong.touying.tab.PPTTouyingTab;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -7,49 +44,17 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.os.SystemClock;
-import android.os.storage.StorageManager;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.*;
-
-import com.changhong.common.service.ClientSendCommandService;
-import com.changhong.common.system.MyApplication;
-import com.changhong.common.utils.StringUtils;
-import com.changhong.common.utils.NetworkUtils;
-import com.changhong.common.utils.WebUtils;
-import com.changhong.common.widgets.BoxSelecter;
-import com.changhong.common.widgets.IpSelectorDataServer;
-import com.changhong.touying.R;
-import com.changhong.touying.file.FileItem;
-import com.changhong.touying.nanohttpd.NanoHTTPDService;
-
-import com.changhong.touying.tab.PDFTouyingTab;
-import com.changhong.touying.tab.PPTTouyingTab;
-
 /**
  * Created by Jack Wang
  */
-public class OtherDetailsActivity extends FragmentActivity {
+public class OtherDetailsActivity extends AppCompatActivity {
 	private static final String TAG = "PPTDetailsActivity";
+	
+	private DrawerLayout mDrawerLayout;
+	private ViewPager mViewPager;
+	private TabLayout mTabLayout;
 	private static final int PATH_DEEPTH = 5;
 	
-	private Button back;
     private BoxSelecter ipSelecter;		
 	
 	private List<FileItem> ppts=new ArrayList<FileItem>();
@@ -75,13 +80,66 @@ public class OtherDetailsActivity extends FragmentActivity {
         
     }
 
-    private void initView() {
-        setContentView(R.layout.activity_ppt_category);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.touying, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			finish();
+		} else if (item.getItemId() == R.id.ipbutton) {
+			mDrawerLayout.openDrawer(GravityCompat.START);
+		}
+		return true;
+	}
+
+    private void setupViewPager() {
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
         
-        /**
+
+        List<String> titles = new ArrayList<String>();
+        titles.add("  PDF  ");
+        titles.add("  PPT  ");
+        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(0)));
+        mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(1)));
+        
+        List<Fragment> fragments = new ArrayList<Fragment>();
+        
+      
+        fragments.add(mPDFTouyingTab);
+        fragments.add(mPPTTouyingTab);
+        
+
+        FragmentAdapter adapter =
+                new FragmentAdapter(getSupportFragmentManager(), fragments, titles);
+        mViewPager.setAdapter(adapter);
+        mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.setTabsFromPagerAdapter(adapter);
+
+    }
+    private void initView() {
+	   setContentView(R.layout.activity_category_other);
+		/**
 		 * IP连接部分
 		 */
-		back = (Button) findViewById(R.id.btn_back);				
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.touying_drawer);
+		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+		toolbar.setTitle(" ");
+		setSupportActionBar(toolbar);
+
+		final ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
+		
+		
+		 mViewPager = (ViewPager) findViewById(R.id.viewpager);
+	     setupViewPager();
+        
+        
 		
 		mHandler=new Handler(){
 
@@ -91,8 +149,8 @@ public class OtherDetailsActivity extends FragmentActivity {
 				switch (msg.what) {
 				case PPTLIST_REFRESH:
 					Log.d(TAG, ">>>>>>>>>REFRESH");					
-					mPDFTouyingTab.setList(pdfs);
-					mPPTTouyingTab.setList(ppts);
+					mPDFTouyingTab.setdata(pdfs);
+					mPPTTouyingTab.setdata(ppts);
 					break;
 				default:
 					break;
@@ -101,29 +159,7 @@ public class OtherDetailsActivity extends FragmentActivity {
 			}
 			
 		};
-		TextView pdf_tab =  (TextView)findViewById(R.id.other_category_pdf);
-		pdf_tab.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				getSupportFragmentManager().beginTransaction().hide(mPPTTouyingTab).show(mPDFTouyingTab).commitAllowingStateLoss();
-				((TextView)findViewById(R.id.other_category_ppt)).setTextColor(getResources().getColor(R.color.white));
-				((TextView)findViewById(R.id.other_category_pdf)).setTextColor(getResources().getColor(R.color.orange));
-			}
-		});
-		TextView ppt_tab =  (TextView)findViewById(R.id.other_category_ppt);
-		ppt_tab.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {			
-				getSupportFragmentManager().beginTransaction().hide(mPDFTouyingTab).show(mPPTTouyingTab).commitAllowingStateLoss();
-				((TextView)findViewById(R.id.other_category_ppt)).setTextColor(getResources().getColor(R.color.orange));
-				((TextView)findViewById(R.id.other_category_pdf)).setTextColor(getResources().getColor(R.color.white));
-			}
-		});
-		
-		getSupportFragmentManager().beginTransaction().add(R.id.otherlist, mPDFTouyingTab).hide(mPDFTouyingTab).commitAllowingStateLoss();
-		getSupportFragmentManager().beginTransaction().add(R.id.otherlist, mPPTTouyingTab).commitAllowingStateLoss();
+	
     }
 
 	private void initData() {
@@ -133,7 +169,7 @@ public class OtherDetailsActivity extends FragmentActivity {
 		{
 			mIntentForword = (Intent) getIntent().getParcelableExtra("forwardIntent");
 		}
-		Toast.makeText(this, getResources().getString(R.string.loading), Toast.LENGTH_LONG).show();
+		Toast.makeText(this, "加载中，请稍候。。。", Toast.LENGTH_LONG).show();
     	new Thread(new Runnable() {
 			
 			@Override
@@ -177,14 +213,8 @@ public class OtherDetailsActivity extends FragmentActivity {
     	/**
 		 * IP连接部分
 		 */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
-		back.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				finish();
-			}
-		});
+    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), new Handler(getMainLooper()));        
+
     }
 
 
@@ -198,7 +228,7 @@ public class OtherDetailsActivity extends FragmentActivity {
          * first check the wifi is connected
          */
         if (!NetworkUtils.isWifiConnected(context)) {
-            Toast.makeText(context, context.getResources().getString(R.string.connect_wifi), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "请连接无线网络", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -206,7 +236,7 @@ public class OtherDetailsActivity extends FragmentActivity {
          * second check the mobile is connect to box
          */
         if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-            Toast.makeText(context, context.getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "手机未连接机顶盒，请检查网络", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -240,7 +270,7 @@ public class OtherDetailsActivity extends FragmentActivity {
             try {
                 URI.create(tmpHttpAddress);
             } catch (Exception e) {
-            	Toast.makeText(context, context.getResources().getString(R.string.send_pdf_failed), Toast.LENGTH_SHORT).show();
+            	Toast.makeText(context, "PDF文件推送失败", Toast.LENGTH_SHORT).show();
             	return;
             }
 
@@ -264,7 +294,7 @@ public class OtherDetailsActivity extends FragmentActivity {
             
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context,context.getResources().getString(R.string.get_pdf_failed), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "PDF文件获取失败", Toast.LENGTH_SHORT).show();
         }
     }
     

@@ -9,8 +9,11 @@ import com.changhong.touying.R;
 import com.changhong.touying.activity.OtherDetailsActivity;
 import com.changhong.touying.file.FileItem;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,119 +27,117 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class PPTTouyingTab extends Fragment{
+	private RecyclerView mRecyclerView;
 	ArrayList<FileItem> mPathList = new ArrayList<FileItem>();
 	View mView = null;
-	PPTTouyingAdapter mAdapter = null;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mView = inflater.inflate(R.layout.tab_ppt_list, container, false);
-		ListView list = (ListView)mView.findViewById(R.id.pptlist);
-		list.setOnItemClickListener(new OnItemClickListener() {
 
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-				OtherDetailsActivity.touYing(getActivity(),mPathList.get(arg2).getPath());
-			}
-		});
-		mAdapter = new PPTTouyingAdapter();
-		list.setAdapter(mAdapter);
-		return mView;
+		mRecyclerView = (RecyclerView) inflater.inflate(R.layout.touying_recyclerview,
+				container, false);
+
+		return mRecyclerView;
+
 	}
-	
-	public void setList(Collection<FileItem> list)
-	{
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+	}
+	public void setdata(Collection<FileItem> list) {
 		if (list == null) {
 			return ;
 		}
 		mPathList.clear();
 		mPathList.addAll(list);
-		mAdapter.notifyDataSetChanged();
-	}		
+		mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(),
+				mPathList));
 
-	class PPTTouyingAdapter extends BaseAdapter
-	{
+	}
 
-		@Override
-		public int getCount() {
-			return mPathList.size();
+	class RecyclerViewAdapter extends
+			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+
+		private Context mContext;
+		ArrayList<FileItem> PathList = new ArrayList<FileItem>();
+
+		public RecyclerViewAdapter(Context context,
+				ArrayList<FileItem> mPathList) {
+			this.mContext = context;
+			PathList = mPathList;
+
 		}
 
 		@Override
-		public Object getItem(int position) {
-			return mPathList.get(position);
+		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+				ViewGroup parent, int viewType) {
+
+			View view = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.ppt_list_item, parent, false);
+			return new ViewHolder(view);
 		}
 
 		@Override
-		public long getItemId(int position) {
-			return position;
+		public void onBindViewHolder(
+				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+			final View view = holder.mView;
+
+			final FileItem ppt = mPathList.get(position);
+			holder.defaultImage.setBackgroundResource(R.drawable.pdf_icon);
+			holder.pptName.setText(ppt.getTitle());
+			holder.fullPath.setText(ppt.getPath());
+
+			holder.playBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					OtherDetailsActivity.touYing(getActivity(), ppt.getPath());
+				}
+			});
+
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					OtherDetailsActivity.touYing(getActivity(),
+							mPathList.get(position).getPath());
+				}
+			});
+
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public int getItemCount() {
+			return PathList.size();
+		}
+
+		public class ViewHolder extends RecyclerView.ViewHolder {
+
 			TextView pptName = null;
- 			TextView fullPath = null;
- 			ImageView playBtn = null;
- 			ImageView defaultImage = null;
- 			DataWapper wapper = null;
+			TextView fullPath = null;
+			ImageView playBtn = null;
+			ImageView defaultImage = null;
 
- 			if (convertView == null) {
- 				// 获得view
- 				
- 				convertView = LayoutInflater.from(getActivity()).inflate(R.layout.ppt_list_item, null);
- 				
- 				pptName = (TextView) convertView
- 						.findViewById(R.id.file_item_name);
- 				fullPath = (TextView) convertView
- 						.findViewById(R.id.file_item_path);
- 				playBtn = (ImageView) convertView
- 						.findViewById(R.id.file_list_play);
- 				defaultImage = (ImageView) convertView
- 						.findViewById(R.id.file_item_image);
+			public final View mView;
 
- 				// 组装view
- 				wapper = new DataWapper(pptName, fullPath, playBtn,defaultImage);
- 				convertView.setTag(wapper);
- 			} else {
- 				wapper = (DataWapper) convertView.getTag();
- 				pptName = wapper.pptName;
- 				fullPath = wapper.fullPath;
- 				playBtn = wapper.playBtn;
- 				defaultImage = wapper.defaultImage;
- 			}
+			public ViewHolder(View view) {
 
- 			final FileItem ppt = mPathList.get(position);
- 			pptName.setText(ppt.getTitle());
- 			fullPath.setText(ppt.getPath());
- 			defaultImage.setBackgroundResource(R.drawable.ppt_icon);
+				super(view);
 
- 			playBtn.setOnClickListener(new OnClickListener() {
+				mView = view;
 
- 				@Override
- 				public void onClick(View v) {
- 					OtherDetailsActivity.touYing(getActivity(),ppt.getPath());
- 				}
- 			});
- 			
- 			return convertView;
+				pptName = (TextView) view.findViewById(R.id.file_item_name);
+				fullPath = (TextView) view.findViewById(R.id.file_item_path);
+				playBtn = (ImageView) view.findViewById(R.id.file_list_play);
+				defaultImage = (ImageView) view
+						.findViewById(R.id.file_item_image);
+
+			}
 		}
-		
-	}
-	
-	private final class DataWapper {
 
-		public TextView pptName;
-		public TextView fullPath;
-		public ImageView playBtn;
-		public ImageView defaultImage;
-
-		private DataWapper(TextView pptName, TextView fullPath, ImageView playBtn, ImageView defaultImage) {
-			this.pptName = pptName;
-			this.fullPath = fullPath;
-			this.playBtn = playBtn;
-			this.defaultImage = defaultImage;
-		}
 	}
+
 }

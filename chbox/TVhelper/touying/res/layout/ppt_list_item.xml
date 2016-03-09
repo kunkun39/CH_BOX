@@ -3,8 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants"
+    android:background="#f2ffa3a8"
     android:orientation="horizontal"
-    android:background="@drawable/transparent_line_bg"
     android:paddingBottom="10dp"
     android:paddingLeft="10dp" >
     

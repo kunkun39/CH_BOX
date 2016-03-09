@@ -2,6 +2,7 @@ package com.changhong.touying.activity;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +11,17 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,13 +43,12 @@ import java.util.Map;
 /**
  * Created by Jack Wang
  */
-public class PictureCategoryActivity extends Activity {
+public class PictureCategoryActivity extends AppCompatActivity {
 
     /**************************************************IP连接部分*******************************************************/
 
-    private Button back;    
-    private BoxSelecter ipSelecter;
-    
+	private BoxSelecter ipSelecter;
+	DrawerLayout mDrawerLayout;
 
     /**************************************************图片部分*********************************************************/
 
@@ -53,11 +63,10 @@ public class PictureCategoryActivity extends Activity {
     /**
      * 文件夹选项适配器
      */
-    private PackageAdapterLocal packageAdapter;
     /**
      * 本地文宽夹显示VIEW
      */
-    private GridView listPackageView;
+	private RecyclerView listPackageView;
 
     /**
      * 处理主线程消息
@@ -75,28 +84,52 @@ public class PictureCategoryActivity extends Activity {
         initData();
     }
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.touying, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			finish();
+		} else if (item.getItemId() == R.id.ipbutton) {
+			mDrawerLayout.openDrawer(GravityCompat.START);
+		}
+
+		return true;
+	}
     private void initView() {
         setContentView(R.layout.activity_picture_category);
 
         /**
          * IP连接部分
          */
-        back = (Button) findViewById(R.id.btn_back);        
-        
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
+		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+		toolbar.setTitle(" ");
+		setSupportActionBar(toolbar);
+
+		final ActionBar ab = getSupportActionBar();
+		ab.setDisplayHomeAsUpEnabled(true);
 
         /**
          * 图片部分
          */
-        listPackageView = (GridView) findViewById(R.id.select_package);
+		listPackageView = (RecyclerView) findViewById(R.id.select_data);
 
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case 0:
-                        packageAdapter = new PackageAdapterLocal();
-                        listPackageView.setAdapter(packageAdapter);
-                        packageAdapter.notifyDataSetChanged();
+					
+					listPackageView.setLayoutManager(new GridLayoutManager(PictureCategoryActivity.this,2));
+					listPackageView.setAdapter(new RecyclerViewAdapter(PictureCategoryActivity.this));
+	
                         break;
                     default:
                         break;
@@ -110,35 +143,11 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));       
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
+		ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
+				(ListView) findViewById(R.id.clients), new Handler(
+						getMainLooper()));
 
-        /**
-         * 图片部分
-         */
-        listPackageView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyApplication.vibrator.vibrate(100);
-                String packageName = (String) packageNames.get(position);
-                List<String> imagePaths = packageList.get(packageName);
-
-                //跳转到每个文件夹下面的图片
-                Intent intent = new Intent();
-                intent.setClass(PictureCategoryActivity.this, PictureViewActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("imagePaths", new ArrayList<String>(imagePaths));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-    }
+	}
 
     private void initData() {
         /**
@@ -205,103 +214,6 @@ public class PictureCategoryActivity extends Activity {
 
     /***********************************************图片部分************************************************************/
 
-    public class PackageAdapterLocal extends BaseAdapter {
-
-        @Override
-        public int getCount() {
-            return packageNames.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final PackageViewHolder holder;
-            View view = convertView;
-
-            if (view == null || ((PackageViewHolder)(view.getTag())).index != position) {
-                view = getLayoutInflater().inflate(R.layout.activity_picture_category_item, parent, false);
-                holder = new PackageViewHolder();
-
-                holder.packageName = (TextView) view.findViewById(R.id.package_name);
-                holder.imageView1 = (ImageView) view.findViewById(R.id.package_picture_1);
-                holder.imageView2 = (ImageView) view.findViewById(R.id.package_picture_2);
-                holder.imageView3 = (ImageView) view.findViewById(R.id.package_picture_3);
-                holder.imageView4 = (ImageView) view.findViewById(R.id.package_picture_4);
-                holder.index = position;
-
-                view.setTag(holder);
-
-                //准备数据
-                String packageName = packageNames.get(position);
-                List<String> images = packageList.get(packageName);
-                int size = images.size();
-
-                //设置文字
-                holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + getResources().getString(R.string.picture_no));
-
-                //设置图片
-                try {
-                    if (images.size() == 1) {
-                        displayImage(holder.imageView1, images.get(0));
-                        holder.imageView2.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView3.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                    }
-
-                    if (images.size() == 2) {
-                        displayImage(holder.imageView1, images.get(0));
-                        displayImage(holder.imageView2, images.get(1));
-                        holder.imageView3.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                    }
-
-                    if (images.size() == 3) {
-                        displayImage(holder.imageView1, images.get(0));
-                        displayImage(holder.imageView2, images.get(1));
-                        displayImage(holder.imageView3, images.get(2));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-
-                    }
-
-                    if (images.size() >= 4) {
-                        displayImage(holder.imageView1, images.get(0));
-                        displayImage(holder.imageView2, images.get(1));
-                        displayImage(holder.imageView3, images.get(2));
-                        displayImage(holder.imageView4, images.get(3));
-                    }
-                } catch (Exception e) {
-                }
-
-                view.setTag(holder);
-            }
-
-            return view;
-        }
-    }
-
-    static class PackageViewHolder {
-
-        TextView packageName;
-
-        ImageView imageView1;
-
-        ImageView imageView2;
-
-        ImageView imageView3;
-
-        ImageView imageView4;
-
-        int index;
-    }
 
     private void displayImage(ImageView imageView, String path) {
         MyApplication.imageLoader.displayImage("file://" + path, imageView, MyApplication.viewOptions);
@@ -336,4 +248,131 @@ public class PictureCategoryActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+	public class RecyclerViewAdapter extends
+			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+
+		private Context mContext;
+
+		public RecyclerViewAdapter(Context mContext) {
+			this.mContext = mContext;
+		}
+
+		@Override
+		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+				ViewGroup parent, int viewType) {
+			View view = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.activity_picture_category_item, parent, false);
+			return new ViewHolder(view);
+		}
+
+		@Override
+		public void onBindViewHolder(
+				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+
+			// 准备数据
+			String packageName = packageNames.get(position);
+			List<String> images = packageList.get(packageName);
+			int size = images.size();
+
+			// 设置文字
+			holder.packageName.setText(StringUtils.getShortString(packageName,
+					12) + "    " + size + "张");
+
+			// 设置图片
+			try {
+				if (images.size() == 1) {
+					displayImage(holder.imageView1, images.get(0));
+					holder.imageView2.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+					holder.imageView3.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+					holder.imageView4.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+				}
+
+				if (images.size() == 2) {
+					displayImage(holder.imageView1, images.get(0));
+					displayImage(holder.imageView2, images.get(1));
+					holder.imageView3.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+					holder.imageView4.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+				}
+
+				if (images.size() == 3) {
+					displayImage(holder.imageView1, images.get(0));
+					displayImage(holder.imageView2, images.get(1));
+					displayImage(holder.imageView3, images.get(2));
+					holder.imageView4.setBackground(getResources().getDrawable(
+							R.drawable.ic_stub));
+
+				}
+
+				if (images.size() >= 4) {
+					displayImage(holder.imageView1, images.get(0));
+					displayImage(holder.imageView2, images.get(1));
+					displayImage(holder.imageView3, images.get(2));
+					displayImage(holder.imageView4, images.get(3));
+				}
+			} catch (Exception e) {
+			}
+
+			final View view = holder.mView;
+			view.setOnClickListener(new View.OnClickListener() {
+
+				public void onClick(View v) {
+					
+					MyApplication.vibrator.vibrate(100);
+					String packageName = (String) packageNames.get(position);
+					List<String> imagePaths = packageList.get(packageName);
+
+					// 跳转到每个文件夹下面的图片
+					Intent intent = new Intent();
+					intent.setClass(PictureCategoryActivity.this,
+							PictureViewActivity.class);
+					Bundle bundle = new Bundle();
+					bundle.putStringArrayList("imagePaths", new ArrayList<String>(
+							imagePaths));
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
+			});
+
+		}
+
+		@Override
+		public int getItemCount() {
+			
+			return packageNames.size();
+			
+		}
+
+		public class ViewHolder extends RecyclerView.ViewHolder {
+
+			TextView packageName;
+			ImageView imageView1;
+			ImageView imageView2;
+			ImageView imageView3;
+			ImageView imageView4;
+
+			public final View mView;
+
+			public ViewHolder(View view) {
+				super(view);
+				mView = view;
+				packageName = (TextView) view.findViewById(R.id.package_name);
+				imageView1 = (ImageView) view
+						.findViewById(R.id.package_picture_1);
+				imageView2 = (ImageView) view
+						.findViewById(R.id.package_picture_2);
+				imageView3 = (ImageView) view
+						.findViewById(R.id.package_picture_3);
+				imageView4 = (ImageView) view
+						.findViewById(R.id.package_picture_4);
+
+			}
+		}
+
+	}
+	
 }

@@ -43,10 +43,7 @@ public class PlayListAdatper extends BaseAdapter
 	 * 音乐列表
 	 */
 	ArrayList<Music> musics;
-	
-	/**
-	 * @param musicCategoryActivity
-	 */
+
 	public PlayListAdatper(FragmentActivity activity,List<MusicPlayList> musicPlayLists) {
 		super();
 		this.musicPlayLists = musicPlayLists;

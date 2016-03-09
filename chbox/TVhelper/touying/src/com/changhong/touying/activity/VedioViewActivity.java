@@ -1,6 +1,5 @@
 package com.changhong.touying.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,17 +8,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Log;
-import android.view.*;
-import android.view.View.OnClickListener;
-import android.widget.*;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
-import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelecter;
-import com.changhong.touying.vedio.Vedio;
 import com.changhong.touying.R;
+import com.changhong.touying.vedio.Vedio;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 import java.util.List;
@@ -27,28 +37,24 @@ import java.util.List;
 /**
  * Created by Jack Wang
  */
-public class VedioViewActivity extends Activity {
+public class VedioViewActivity extends AppCompatActivity {
+
+	DrawerLayout mDrawerLayout;
 
     /**
      * server ip part
      */
-    private Button back;
     private BoxSelecter ipSelecter;
 
     /**
      * 视频浏览部分
      */
-    private GridView vedioGridView;
+	private RecyclerView listView;
 
     /**
      * 从上个Activity传过来的veidos
      */
     private List<Vedio> vedios;
-
-    /**
-     * 数据适配器
-     */
-    private PictureAdapter pictureAdapter;
 
 
     @Override
@@ -67,52 +73,56 @@ public class VedioViewActivity extends Activity {
 
         initViews();
 
-        initEvents();
-    }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		getMenuInflater().inflate(R.menu.touying, menu);
+		return true;
+	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if (item.getItemId() == android.R.id.home) {
+
+			finish();
+		} else if (item.getItemId() == R.id.ipbutton) {
+			mDrawerLayout.openDrawer(GravityCompat.START);
+		}
+
+		return true;
+	}
     private void initData() {
         vedios = (List<Vedio>) getIntent().getSerializableExtra("vedios");
     }
 
     private void initViews() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_vedio_view);
+		setContentView(R.layout.activity_vedio_category);
 
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
+		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+		toolbar.setTitle(" ");
+		setSupportActionBar(toolbar);
 
-        back = (Button) findViewById(R.id.btn_back);
-        
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+		final ActionBar ab = getSupportActionBar();
 
-        vedioGridView = (GridView) findViewById(R.id.vedio_grid_view);
-        pictureAdapter = new PictureAdapter(this, vedios);
-        vedioGridView.setAdapter(pictureAdapter);
+		ab.setDisplayHomeAsUpEnabled(true);
+
+		/**
+		 * 图片容器
+		 */
+		listView = (RecyclerView) findViewById(R.id.select_data);
+		listView.setLayoutManager(new GridLayoutManager(VedioViewActivity.this,
+				3));
+		listView.setAdapter(new RecyclerViewAdapter(VedioViewActivity.this,
+				vedios));
+
+		ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
+				(ListView) findViewById(R.id.clients), new Handler(
+						getMainLooper()));
     }
 
-    private void initEvents() {
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
-
-        //设置点击item事件
-        vedioGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MyApplication.vibrator.vibrate(100);
-                Intent intent = new Intent();
-                intent.setClass(VedioViewActivity.this, VedioDetailsActivity.class);
-                Bundle bundle = new Bundle();
-                Vedio vedio = vedios.get(position);
-                bundle.putSerializable("selectedVedio", vedio);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-    }
     @Override
     protected void onDestroy() {
     	super.onDestroy();
@@ -123,75 +133,101 @@ public class VedioViewActivity extends Activity {
 
     /**********************************************数据适配器**********************************************************/
 
-    public class PictureAdapter extends BaseAdapter {
+	public class RecyclerViewAdapter extends
+			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-        private LayoutInflater inflater;
+		private Context mContext;
+		private List<Vedio> mvedios;
 
-        private List<Vedio> vedios;
+		public RecyclerViewAdapter(Context mContext, List<Vedio> vedios) {
+			this.mContext = mContext;
+			mvedios = vedios;
+		}
 
-        public PictureAdapter(Context context, List<Vedio> vedios) {
-            this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.vedios = vedios;
-        }
+		@Override
+		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+				ViewGroup parent, int viewType) {
+			View view = LayoutInflater.from(parent.getContext()).inflate(
+					R.layout.vedio_category_item, parent, false);
+			return new ViewHolder(view);
+		}
 
-        public int getCount() {
-            return vedios.size();
-        }
+		@Override
+		public void onBindViewHolder(
+				final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-        public Object getItem(int item) {
-            return item;
-        }
+			try {
+				Vedio vedio = vedios.get(position);
+				String displayName = StringUtils.hasLength(vedio
+						.getDisplayName()) ? StringUtils.getShortString(
+						vedio.getDisplayName(), 20) : vedio.getTitle();
+				holder.vedioName.setText(displayName);
+				holder.fullPath.setText(String.valueOf(position));
 
-        public long getItemId(int id) {
-            return id;
-        }
+				String vedioPath = vedio.getPath();
+				String vedioImagePath = DiskCacheFileManager
+						.isSmallImageExist(vedioPath);
+				if (!vedioImagePath.equals("")) {
+					MyApplication.imageLoader.displayImage("file://"
+							+ vedioImagePath, holder.vedioImage,
+							MyApplication.viewOptions);
+					holder.vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
+				} else {
+					synchronizImageLoad(holder.vedioImage, vedioPath);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-        //创建View方法
-        public View getView(int position, View convertView, ViewGroup parent) {
+			final View view = holder.mView;
+			view.setOnClickListener(new View.OnClickListener() {
 
-            ImageView vedioImage = null;
+				public void onClick(View v) {
 
-            TextView vedioName = null;
+					MyApplication.vibrator.vibrate(100);
+					Intent intent = new Intent();
+					intent.setClass(VedioViewActivity.this,
+							VedioDetailsActivity.class);
+					Bundle bundle = new Bundle();
+					Vedio vedio = vedios.get(position);
+					bundle.putSerializable("selectedVedio", vedio);
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
 
-            TextView fullPath = null;
+			});
 
-            if (convertView == null) {
-                //获得view
-                convertView = inflater.inflate(R.layout.vedio_category_item, null);
-                vedioImage = (ImageView) convertView.findViewById(R.id.vedio_item_image);
-                vedioName = (TextView) convertView.findViewById(R.id.vedio_item_name);
-                fullPath = (TextView) convertView.findViewById(R.id.vedio_item_path);
+		}
 
-                //组装view
-                DataWapper wapper = new DataWapper(vedioImage, vedioName, fullPath);
-                convertView.setTag(wapper);
-            } else {
-                DataWapper wapper = (DataWapper) convertView.getTag();
-                vedioImage = wapper.getVedioImage();
-                vedioName = wapper.getVedioName();
-                fullPath = wapper.getFullPath();
-            }
+		@Override
+		public int getItemCount() {
 
-            try {
-                Vedio vedio = vedios.get(position);
-                String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
-                vedioName.setText(displayName);
-                fullPath.setText(String.valueOf(position));
+			return mvedios.size();
 
-                String vedioPath = vedio.getPath();
-                String vedioImagePath = DiskCacheFileManager.isSmallImageExist(vedioPath);
-                if (!vedioImagePath.equals("")) {
-                    MyApplication.imageLoader.displayImage("file://" + vedioImagePath, vedioImage, MyApplication.viewOptions);
-                    vedioImage.setScaleType(ImageView.ScaleType.FIT_XY);
-                } else {
-                    synchronizImageLoad(vedioImage, vedioPath);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+		}
+		
+		
 
-            return convertView;
-        }
+		public class ViewHolder extends RecyclerView.ViewHolder {
+
+			ImageView vedioImage = null;
+			TextView vedioName = null;
+			TextView fullPath = null;
+			public final View mView;
+
+			public ViewHolder(View view) {
+				super(view);
+				mView = view;
+
+				vedioImage = (ImageView) view
+						.findViewById(R.id.vedio_item_image);
+				vedioName = (TextView) view.findViewById(R.id.vedio_item_name);
+				fullPath = (TextView) view.findViewById(R.id.vedio_item_path);
+
+			}
+		}
+
+	}
 
         private void synchronizImageLoad(final ImageView imageView, final String path) {
             ImageAsyncTask task = new ImageAsyncTask(imageView);
@@ -232,49 +268,6 @@ public class VedioViewActivity extends Activity {
             }
         }
 
-        private final class DataWapper {
-
-            //视频的图标
-            private ImageView vedioImage;
-
-            //视频的名字
-            private TextView vedioName;
-
-            //视屏的全路径
-            private TextView fullPath;
-
-
-            private DataWapper(ImageView vedioImage, TextView vedioName, TextView fullPath) {
-                this.vedioImage = vedioImage;
-                this.vedioName = vedioName;
-                this.fullPath = fullPath;
-            }
-
-            public ImageView getVedioImage() {
-                return vedioImage;
-            }
-
-            public void setVedioImage(ImageView vedioImage) {
-                this.vedioImage = vedioImage;
-            }
-
-            public TextView getVedioName() {
-                return vedioName;
-            }
-
-            public void setVedioName(TextView vedioName) {
-                this.vedioName = vedioName;
-            }
-
-            public TextView getFullPath() {
-                return fullPath;
-            }
-
-            public void setFullPath(TextView fullPath) {
-                this.fullPath = fullPath;
-            }
-        }
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

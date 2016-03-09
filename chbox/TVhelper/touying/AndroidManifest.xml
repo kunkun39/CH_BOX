@@ -1,64 +1,72 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changhong.touying"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="16"
         android:targetSdkVersion="17" />
 
-    <application
-        android:label="touying part" >
+    <application android:label="touying part">
 
         <!--问投影部分-->
-		<activity
+        <activity
             android:name="com.changhong.touying.activity.PictureCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.PictureViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.PictureDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.changhong.touying.activity.OtherDetailsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.VedioDetailsActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.changhong.touying.activity.MusicCategoryActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.MusicViewActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.changhong.touying.activity.MusicDetailsActivity"
-            android:screenOrientation="portrait" />
-
-        <activity android:name="com.changhong.touying.activity.MusicPlayerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.changhong.touying.activity.MusicPlayerActivity"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />                
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="audio/*"/>
+                <data android:mimeType="audio/*" />
             </intent-filter>
         </activity>
+
         <service android:name="com.changhong.touying.nanohttpd.NanoHTTPDService" />
         <service android:name="com.changhong.touying.service.M3UListProviderService">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.MEDIA_MOUNTED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
             </intent-filter>
         </service>
-        
+
     </application>
 
 </manifest>
