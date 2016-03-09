@@ -1,38 +1,45 @@
 apply plugin: 'com.android.library'
-
 buildscript {
-	repositories {
-		jcenter {
-			maven{ url 'http://maven.oschina.net/content/groups/public/'}
-		}
-	}
-	
-	dependencies {
-		classpath 'com.android.tools.build:gradle:1.3.0'
-	}
+    repositories {
+            maven { url 'http://maven.oschina.net/content/groups/public/' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.5.0'
+    }
 }
 
 dependencies {
-	compile fileTree(include: '*.jar', dir: 'libs')
+    compile 'org.apache.httpcomponents:httpcore:4.4.4'
+    compile 'org.apache.httpcomponents:httpclient:4.5.1'
+    compile 'commons-httpclient:commons-httpclient:3.1'
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.alibaba:fastjson:1.1.34'
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
 }
-
 android {
-	compileSdkVersion 19
-	buildToolsVersion '21.1.1'
-	sourceSets {
-		main {
-			manifest.srcFile 'AndroidManifest.xml'
-			java.srcDirs = ['src']
-			resources.srcDirs = ['src']
-			res.srcDirs = ['res']
-			jniLibs.srcDirs = ['libs']			
-		}		
-	}
-	compileOptions {
-		sourceCompatibility JavaVersion.VERSION_1_6
-		targetCompatibility JavaVersion.VERSION_1_6
-	}
-	packagingOptions {
-		exclude 'META-INF/NOTICE.txt'
-	}
+    compileSdkVersion 21
+    buildToolsVersion '21.1.1'
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            res.srcDirs = ['res']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+    }
+    defaultConfig {
+        minSdkVersion 9
+    }
+    productFlavors {
+    }
 }

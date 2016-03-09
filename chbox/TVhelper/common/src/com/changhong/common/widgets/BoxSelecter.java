@@ -4,6 +4,7 @@ import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+
 
 import com.changhong.common.R;
 import com.changhong.common.service.ClientSendCommandService;
@@ -38,6 +40,7 @@ public class BoxSelecter implements Observer
 	 */
 	Activity mActivity = null;
 	
+    CollapsingToolbarLayout mcollapsingToolbar;
 	/**
 	 *  Cotrollers
 	 */
@@ -93,10 +96,40 @@ public class BoxSelecter implements Observer
 				}
 			}
 		});
+
+        IpSelectorDataServer.getInstance().addViewObserver(this);
+    }
+
+    public BoxSelecter(Activity activity, CollapsingToolbarLayout collapsingToolbar, TextView textView) {
+        mActivity = activity;
+        mcollapsingToolbar = collapsingToolbar;
+        mTitle = textView;
+
+        mTitle.setText(IpSelectorDataServer.getInstance().getName());
+        mcollapsingToolbar.setTitle(IpSelectorDataServer.getInstance().getName());
 		
 		IpSelectorDataServer.getInstance().addViewObserver(this);
 	}
-	
+    public BoxSelecter(Activity activity, TextView title, ListView view, Handler handler) {
+        //	mActivity = activity;
+        mView = view;
+        mTitle = title;
+        mHandler = handler;
+
+        mTitle.setText(IpSelectorDataServer.getInstance().getName());
+
+        mAdapter = new BoxSelectAdapter(activity);
+        mView.setAdapter(mAdapter);
+
+        mView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                IpSelectorDataServer.getInstance().setCurrentIp(mAdapter.ipList.get(arg2));
+            }
+        });
+
+        IpSelectorDataServer.getInstance().addViewObserver(this);
+    }
 	// YVES YANG:!!!! Must Call This Function To Release Its Self
 	public void release()
 	{
