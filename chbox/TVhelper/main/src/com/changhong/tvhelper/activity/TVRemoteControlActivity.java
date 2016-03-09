@@ -10,7 +10,8 @@ import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -119,7 +120,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         float density = metric.density;      // 屏幕密度（0.75 / 1.0 / 1.5）
         int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
         detector = new GestureDetector(this);
-//        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+//      bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
         img_d = findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
         smoothBall = (ImageView) findViewById(R.id.ball);
@@ -321,8 +322,23 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 
             finish();
         }
+
         return true;
+
+
     }
+
+
+//    //zyt-1
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        if (item.getItemId() == android.R.id.home) {
+//
+//            finish();
+//        }
+//        return true;
+//    }
 
     /*****************************************************系统方法重载部分***********************************************/
 

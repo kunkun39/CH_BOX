@@ -4,7 +4,7 @@
     android:id="@+id/search_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/activity_channel_search" />
 
@@ -14,15 +14,15 @@
         android:layout_height="fill_parent"
         android:layout_gravity="start"
         android:background="@color/white"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="64.3dip"
-            android:paddingLeft="20dip"
             android:ellipsize="marquee"
             android:gravity="center_vertical"
+            android:paddingLeft="20dip"
             android:singleLine="true"
             android:text="@string/disconnected"
             android:textSize="20sp" />

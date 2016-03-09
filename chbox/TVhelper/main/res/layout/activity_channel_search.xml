@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffc478be"
-    android:fitsSystemWindows="true" >
+    android:fitsSystemWindows="true">
 
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"	
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" >
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
             android:background="@color/mid_blue"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
             <TextView
                 android:id="@+id/title"
@@ -40,20 +40,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffc478be"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffc478be"
-            >
+            android:background="#ffc478be">
 
             <LinearLayout
                 android:id="@+id/search_linear_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="49.8dip"
                 android:gravity="center"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <View
                     android:layout_width="0dp"
@@ -65,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:background="@drawable/search_frame"
-                    android:gravity="center" >
+                    android:gravity="center">
 
                     <Button
                         android:id="@+id/btn_search"
@@ -82,8 +81,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@id/btn_search"
                         android:layout_marginTop="18dip"
+                        android:layout_toLeftOf="@id/btn_search"
                         android:background="#00000000"
                         android:focusable="true"
                         android:focusableInTouchMode="true"

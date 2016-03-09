@@ -6,7 +6,6 @@
     android:orientation="vertical">
 
 
-
     <com.changhong.common.widgets.BidirSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/bidir_sliding_layout"
@@ -317,77 +316,75 @@
     </com.changhong.common.widgets.BidirSlidingLayout>
 
 
-
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--android:layout_marginLeft="15dp"-->
+    <!--android:layout_marginRight="15dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:layout_weight="3">-->
 
     <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:layout_marginLeft="15dp"-->
-        <!--android:layout_marginRight="15dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:layout_weight="3">-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginRight="3dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
+    <!--<Button-->
+    <!--android:id="@+id/main_player"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginTop="36dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/main_player_new" />-->
 
-            <!--<Button-->
-                <!--android:id="@+id/main_player"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginTop="36dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/main_player_new" />-->
+    <!--<Button-->
+    <!--android:id="@+id/main_control"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginTop="36dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/main_control_new" />-->
+    <!--</LinearLayout>-->
 
-            <!--<Button-->
-                <!--android:id="@+id/main_control"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginTop="36dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/main_control_new" />-->
-        <!--</LinearLayout>-->
+    <!--<LinearLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginLeft="3dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:orientation="vertical">-->
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
+    <!--<Button-->
+    <!--android:id="@+id/main_soucang"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginTop="36dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/main_soucang_new" />-->
 
-            <!--<Button-->
-                <!--android:id="@+id/main_soucang"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginTop="36dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/main_soucang_new" />-->
+    <!--<Button-->
+    <!--android:id="@+id/main_sousuo"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginTop="18dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/main_sousuo_new" />-->
 
-            <!--<Button-->
-                <!--android:id="@+id/main_sousuo"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginTop="18dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/main_sousuo_new" />-->
-
-            <!--<Button-->
-                <!--android:id="@+id/main_setting"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent"-->
-                <!--android:layout_marginBottom="5dp"-->
-                <!--android:layout_marginTop="18dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@drawable/main_setting_new" />-->
-        <!--</LinearLayout>-->
+    <!--<Button-->
+    <!--android:id="@+id/main_setting"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="fill_parent"-->
+    <!--android:layout_marginBottom="5dp"-->
+    <!--android:layout_marginTop="18dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/main_setting_new" />-->
+    <!--</LinearLayout>-->
     <!--</LinearLayout>-->
 
 </LinearLayout>
