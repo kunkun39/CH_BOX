@@ -40,7 +40,6 @@
         android:layout_height="match_parent"
         android:background="#fff4dd52"
         android:gravity="center"
-        android:paddingTop="13dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </android.support.v7.widget.RecyclerView>
 

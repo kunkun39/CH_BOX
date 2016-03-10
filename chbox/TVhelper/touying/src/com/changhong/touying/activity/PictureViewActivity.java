@@ -103,7 +103,7 @@ public class PictureViewActivity extends AppCompatActivity {
          */
         listPicView = (RecyclerView) findViewById(R.id.select_data);
         listPicView.setLayoutManager(new GridLayoutManager(
-                PictureViewActivity.this, 4));
+                PictureViewActivity.this, 3));
         listPicView
                 .setAdapter(new RecyclerViewAdapter(PictureViewActivity.this));
 
@@ -187,7 +187,6 @@ public class PictureViewActivity extends AppCompatActivity {
                 super(view);
                 mView = view;
                 imageView = (ImageView) view.findViewById(R.id.grid_picture);
-
             }
         }
 
