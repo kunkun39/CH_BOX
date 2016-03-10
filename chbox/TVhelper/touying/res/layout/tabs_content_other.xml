@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
-    android:background="#f2ffa3a8"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f2ffa3a8">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -37,8 +37,8 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:tabIndicatorColor="@color/white"
-            android:background="#f2ffa3a8">
+            android:background="#f2ffa3a8"
+            app:tabIndicatorColor="@color/white">
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>

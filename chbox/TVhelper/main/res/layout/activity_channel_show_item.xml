@@ -9,7 +9,7 @@
         android:orientation="horizontal" >
 
         <!-- 第一部分，台标和频道名 -->
-        
+
         <LinearLayout
             android:id="@+id/ll_channellogo"
             android:layout_width="@dimen/channel_item_name_width"
