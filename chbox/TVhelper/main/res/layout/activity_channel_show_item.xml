@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/channel_item_height"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <!-- 第一部分，台标和频道名 -->
 
@@ -16,7 +16,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="5dp"
-            android:paddingTop="5dp" >
+            android:paddingTop="5dp">
 
             <ImageView
                 android:id="@+id/channel_logo"
@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@id/ll_channellogo"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/channel_play_info"
@@ -84,7 +84,15 @@
                 android:text="节目\n信息"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/channel_item_textsize" />
+
+
         </RelativeLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#000000" />
+
     </RelativeLayout>
 
 </RelativeLayout>

@@ -35,14 +35,18 @@ import java.util.List;
  */
 public class PictureViewActivity extends AppCompatActivity {
 
-	DrawerLayout mDrawerLayout;
-    /**************************************************IP连接部分*******************************************************/
+    DrawerLayout mDrawerLayout;
+    /**
+     * ***********************************************IP连接部分******************************************************
+     */
     public Button back;
     private BoxSelecter ipSelecter;
 
-    /************************************************图片加载部分*******************************************************/
+    /**
+     * *********************************************图片加载部分******************************************************
+     */
 
-	private RecyclerView listPicView;
+    private RecyclerView listPicView;
 
     /**
      * 传过来需要浏览的图片
@@ -61,134 +65,137 @@ public class PictureViewActivity extends AppCompatActivity {
         initEvent();
     }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 //		getMenuInflater().inflate(R.menu.touying, menu);
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-		if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
 
-			finish();
-		} else if (item.getItemId() == R.id.ipbutton) {
-			mDrawerLayout.openDrawer(GravityCompat.START);
-		}
+            finish();
+        } else if (item.getItemId() == R.id.ipbutton) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
 
-		return true;
-	}
+        return true;
+    }
+
     private void initData() {
         imagePaths = getIntent().getStringArrayListExtra("imagePaths");
     }
 
     private void initView() {
-		
-		setContentView(R.layout.activity_picture_category);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
-		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-		toolbar.setTitle(" ");
-		setSupportActionBar(toolbar);
 
-		final ActionBar ab = getSupportActionBar();
-		ab.setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.activity_picture_category);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
+
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
         /**
          * 图片容器
          */
-		listPicView = (RecyclerView) findViewById(R.id.select_data);
-		listPicView.setLayoutManager(new GridLayoutManager(
-				PictureViewActivity.this, 4));
-		listPicView
-				.setAdapter(new RecyclerViewAdapter(PictureViewActivity.this));
-        
+        listPicView = (RecyclerView) findViewById(R.id.select_data);
+        listPicView.setLayoutManager(new GridLayoutManager(
+                PictureViewActivity.this, 4));
+        listPicView
+                .setAdapter(new RecyclerViewAdapter(PictureViewActivity.this));
+
     }
 
-	private void initEvent() {
-		/**
-		 * IP连接部分
-		 */
-		ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
-				(ListView) findViewById(R.id.clients), new Handler(
-						getMainLooper()));
-		
-	}
+    private void initEvent() {
+        /**
+         * IP连接部分
+         */
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title),
+                (ListView) findViewById(R.id.clients), new Handler(
+                getMainLooper()));
 
-	public class RecyclerViewAdapter extends
-			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+    }
 
-		private Context mContext;
+    public class RecyclerViewAdapter extends
+            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-		public RecyclerViewAdapter(Context mContext) {
-			this.mContext = mContext;
-		}
+        private Context mContext;
 
-		@Override
-		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
-				ViewGroup parent, int viewType) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.activity_picture_row, parent, false);
-			return new ViewHolder(view);
-		}
+        public RecyclerViewAdapter(Context mContext) {
+            this.mContext = mContext;
+        }
 
-		@Override
-		public void onBindViewHolder(
-				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+        @Override
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.activity_picture_row, parent, false);
+            return new ViewHolder(view);
+        }
 
-			MyApplication.imageLoader.displayImage(
-					"file://" + imagePaths.get(position), holder.imageView,
-					MyApplication.viewOptions);
+        @Override
+        public void onBindViewHolder(
+                final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-			Log.i("IMAGE_VIEW", imagePaths.get(position));
+            MyApplication.imageLoader.displayImage(
+                    "file://" + imagePaths.get(position), holder.imageView,
+                    MyApplication.viewOptions);
 
-			final View view = holder.mView;
-			view.setOnClickListener(new View.OnClickListener() {
+            Log.i("IMAGE_VIEW", imagePaths.get(position));
 
-				public void onClick(View v) {
+            final View view = holder.mView;
+            view.setOnClickListener(new View.OnClickListener() {
 
-					MyApplication.vibrator.vibrate(100);
-					/**
-					 * 显示图片预览效果
-					 */
-					Intent intent = new Intent();
-					intent.setClass(PictureViewActivity.this,
-							PictureDetailsActivity.class);
-					Bundle bundle = new Bundle();
-					bundle.putInt("position", position);
-					bundle.putStringArrayList("imagePaths",
-							new ArrayList<String>(imagePaths));
-					intent.putExtras(bundle);
-					startActivity(intent);
-				}
+                public void onClick(View v) {
 
-			});
+                    MyApplication.vibrator.vibrate(100);
+                    /**
+                     * 显示图片预览效果
+                     */
+                    Intent intent = new Intent();
+                    intent.setClass(PictureViewActivity.this,
+                            PictureDetailsActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("position", position);
+                    bundle.putStringArrayList("imagePaths",
+                            new ArrayList<String>(imagePaths));
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
 
-		}
+            });
 
-		@Override
-		public int getItemCount() {
+        }
 
-			return imagePaths.size();
+        @Override
+        public int getItemCount() {
 
-		}
+            return imagePaths.size();
 
-		public class ViewHolder extends RecyclerView.ViewHolder {
+        }
 
-			ImageView imageView;
-			int index;
-			public final View mView;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-			public ViewHolder(View view) {
-				super(view);
-				mView = view;
-				imageView = (ImageView) view.findViewById(R.id.grid_picture);
+            ImageView imageView;
+            int index;
+            public final View mView;
 
-			}
-		}
+            public ViewHolder(View view) {
+                super(view);
+                mView = view;
+                imageView = (ImageView) view.findViewById(R.id.grid_picture);
 
-	}
+            }
+        }
 
-    /**********************************************系统发发重载*********************************************************/
+    }
+
+    /**
+     * *******************************************系统发发重载********************************************************
+     */
 
     @Override
     protected void onResume() {
@@ -199,12 +206,13 @@ public class PictureViewActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {    
-    	super.onDestroy();
-    	if (ipSelecter != null) {
-			ipSelecter.release();
-		}
+    protected void onDestroy() {
+        super.onDestroy();
+        if (ipSelecter != null) {
+            ipSelecter.release();
+        }
     }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {

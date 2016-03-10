@@ -49,14 +49,17 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-public class TVChannelShowActivity extends AppCompatActivity implements Observer,RecycleViewFragment.OnFragmentInteractionListener {
+public class TVChannelShowActivity extends AppCompatActivity implements Observer, RecycleViewFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "TVChannelShowActivity";
 
-    
+
     private DrawerLayout mDrawerLayout;
     ViewPager pages;
     private TabLayout mTabLayout;
+
+//    private RecyclerView mRecyclerView;
+//    private RecyclerViewAdapter mRecyclerViewAdapter;
 
     /**
      * ***********************************************IP连接部分******************************************************
@@ -83,7 +86,7 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
     private Map<String, Program> currentChannelPlayData = new HashMap<String, Program>();
     private List<String> allShouChangChannel = new ArrayList<String>();
     private ChannelService channelService;
-    private BroadcastReceiver  broadcastReceiver;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,30 +105,29 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
         initViewAndEvent();
         initData();
     }
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 //		getMenuInflater().inflate(R.menu.touying, menu);
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-		if (item.getItemId() == android.R.id.home) {
+        if (item.getItemId() == android.R.id.home) {
 
-			finish();
-		} else if (item.getItemId() == R.id.ipbutton) {
-			mDrawerLayout.openDrawer(GravityCompat.START);
-		}
+            finish();
+        } else if (item.getItemId() == R.id.ipbutton) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	
-	
+
     private void setupTab() {
-    	
+
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         List<String> titles = new ArrayList<String>();
         titles.add("  全部  ");
@@ -153,47 +155,43 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
         });
         mTabLayout.setupWithViewPager(pages);
     }
-    
-    
+
+
     private void initViewAndEvent() {
-    	
-    	//recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        pages = (ViewPager)findViewById(R.id.content_view);
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.tvhelper_drawer);
-		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-		toolbar.setTitle(" ");
-		setSupportActionBar(toolbar);
 
-		final ActionBar ab = getSupportActionBar();
-		ab.setDisplayHomeAsUpEnabled(true);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        pages = (ViewPager) findViewById(R.id.content_view);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.tvhelper_drawer);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
 
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
-		//recycler_view.setLayoutManager(new LinearLayoutManager(TVChannelShowActivity.this));
-		//mRecyclerViewAdapter = new RecyclerViewAdapter(TVChannelShowActivity.this);
-		//recycler_view.setAdapter(mRecyclerViewAdapter);
-		
-		setupTab();
-	     
+//        mRecyclerView.setLayoutManager(new LinearLayoutManager(TVChannelShowActivity.this));
+//        mRecyclerViewAdapter = new RecyclerViewAdapter(this,0);
+//        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+
+        setupTab();
 //		});
 
         /**
          * IP part
          */
         ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), new Handler(getMainLooper()));
-        
-        
-        broadcastReceiver = new BroadcastReceiver()
-        {
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				initData();
-			}        	
+
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                initData();
+            }
         };
         this.registerReceiver(broadcastReceiver, new IntentFilter(AppConfig.BROADCAST_INTENT_EPGDB_UPDATE));
     }
 
-    List<Map<String, Object>> generateList(int position)
-    {
+    List<Map<String, Object>> generateList(int position) {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
         switch (position) {
             case 0://全部频道
@@ -222,7 +220,7 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
                         }
                     }
                 } else {
-                                        Toast.makeText(TVChannelShowActivity.this, R.string.phone_resolution_not_satisfied, Toast.LENGTH_LONG).show();
+                    Toast.makeText(TVChannelShowActivity.this, R.string.phone_resolution_not_satisfied, Toast.LENGTH_LONG).show();
                 }
                 break;
             case 2://卫视频道
@@ -266,6 +264,7 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
         }
         return data;
     }
+
     private void initData() {
         new Thread(new Runnable() {
             @Override
@@ -294,7 +293,6 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
     }
 
 
-
     /**
      * ****************************************************系统方法重载部分********************************************
      */
@@ -304,16 +302,17 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
         super.onResume();
 
     }
+
     @Override
-    protected void onDestroy() {   
-    	super.onDestroy();
-    	if (ipSelecter != null) {
-			ipSelecter.release();
-		}
-    	if (broadcastReceiver != null) {
-    		this.unregisterReceiver(broadcastReceiver);
-		}
-    	
+    protected void onDestroy() {
+        super.onDestroy();
+        if (ipSelecter != null) {
+            ipSelecter.release();
+        }
+        if (broadcastReceiver != null) {
+            this.unregisterReceiver(broadcastReceiver);
+        }
+
     }
 
     @Override
@@ -332,203 +331,205 @@ public class TVChannelShowActivity extends AppCompatActivity implements Observer
      * 频道名称、频道ICON，频道当前信息
      */
     public class RecyclerViewAdapter extends
-			RecycleViewFragment.RecycleViewAdapter<RecyclerViewAdapter.ViewHolder> {
+            RecycleViewFragment.RecycleViewAdapter<RecyclerViewAdapter.ViewHolder> {
 
-		private Context mContext;
+        private Context mContext;
         private int mPosition;
         List<Map<String, Object>> mData;
-		public RecyclerViewAdapter(Context context,int position) {
-			this.mContext = context;
+
+        public RecyclerViewAdapter(Context context, int position) {
+            this.mContext = context;
             mPosition = position;
             mData = generateList(mPosition);
 
-		}
+        }
 
 
         @Override
-		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
-				ViewGroup parent, int viewType) {
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
 
-			View view = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.activity_channel_show_item, parent, false);
-			return new ViewHolder(view);
-		}
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.activity_channel_show_item, parent, false);
 
-		@Override
-		public void onBindViewHolder(
-				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+            return new ViewHolder(view);
+        }
 
-			/**
-			 * 观看直播
-			 */
-			holder.channelLogo.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MyApplication.vibrator.vibrate(100);
-					Map<String, Object> map = mData.get(position);
+        @Override
+        public void onBindViewHolder(
+                final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-					TVChannelPlayActivity.name = (String) map
-							.get("service_name");
-					TVChannelPlayActivity.path = ChannelService
-							.obtainChannlPlayURL(map);
+            /**
+             * 观看直播
+             */
+            holder.channelLogo.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Map<String, Object> map = mData.get(position);
 
-					Intent intent = new Intent(TVChannelShowActivity.this,
-							TVChannelPlayActivity.class);
-					String name = (String) map.get("service_name");
-					intent.putExtra("channelname", name);
-					startActivity(intent);
-				}
-			});
+                    TVChannelPlayActivity.name = (String) map
+                            .get("service_name");
+                    TVChannelPlayActivity.path = ChannelService
+                            .obtainChannlPlayURL(map);
 
-			final String channelServiceId = (String) mData.get(
-					position).get("service_id");
-			String serviceName = (String) mData.get(position).get(
-					"service_name");
-			if (StringUtils.hasLength(serviceName)) {
-				serviceName = serviceName.trim();
-			}
-			final String channelName = serviceName;
-			final String channelIndex = (String) mData.get(position)
-					.get("channel_index");
+                    Intent intent = new Intent(TVChannelShowActivity.this,
+                            TVChannelPlayActivity.class);
+                    String name = (String) map.get("service_name");
+                    intent.putExtra("channelname", name);
+                    startActivity(intent);
+                }
+            });
 
-			/**
-			 * 收藏频道和取消收藏
-			 */
-			if (allShouChangChannel.contains(channelServiceId)) {
-				holder.channelShouCang.setText("取消\n收藏");
-				holder.channelShouCang.setTextColor(getResources().getColor(
-						R.color.orange));
-			} else {
-				holder.channelShouCang.setText("收藏\n频道");
-				holder.channelShouCang.setTextColor(getResources().getColor(
-						R.color.white));
-			}
+            final String channelServiceId = (String) mData.get(
+                    position).get("service_id");
+            String serviceName = (String) mData.get(position).get(
+                    "service_name");
+            if (StringUtils.hasLength(serviceName)) {
+                serviceName = serviceName.trim();
+            }
+            final String channelName = serviceName;
+            final String channelIndex = (String) mData.get(position)
+                    .get("channel_index");
 
-			holder.channelShouCang.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MyApplication.vibrator.vibrate(100);
+            /**
+             * 收藏频道和取消收藏
+             */
+            if (allShouChangChannel.contains(channelServiceId)) {
+                holder.channelShouCang.setText("取消\n收藏");
+                holder.channelShouCang.setTextColor(getResources().getColor(
+                        R.color.orange));
+            } else {
+                holder.channelShouCang.setText("收藏\n频道");
+                holder.channelShouCang.setTextColor(getResources().getColor(
+                        R.color.white));
+            }
 
-					if (allShouChangChannel.contains(channelServiceId)) {
-						// 取消收藏操作
-						boolean success = channelService
-								.cancelChannelShouCang(channelServiceId);
-						if (success) {
-							holder.channelShouCang.setText("收藏\n频道");
-							holder.channelShouCang.setTextColor(getResources()
-									.getColor(R.color.white));
-							allShouChangChannel.remove(channelServiceId);
+            holder.channelShouCang.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
 
-							Toast.makeText(TVChannelShowActivity.this,
-									"取消频道收藏成功", Toast.LENGTH_SHORT).show();
-						} else {
-							Toast.makeText(TVChannelShowActivity.this,
-									"取消频道收藏失败", Toast.LENGTH_SHORT).show();
-						}
-					} else {
-						// 收藏操作
-						boolean success = channelService
-								.channelShouCang(channelServiceId);
-						if (success) {
-							holder.channelShouCang.setText("取消\n收藏");
-							holder.channelShouCang.setTextColor(getResources()
-									.getColor(R.color.orange));
-							allShouChangChannel.add(channelServiceId);
+                    if (allShouChangChannel.contains(channelServiceId)) {
+                        // 取消收藏操作
+                        boolean success = channelService
+                                .cancelChannelShouCang(channelServiceId);
+                        if (success) {
+                            holder.channelShouCang.setText("收藏\n频道");
+                            holder.channelShouCang.setTextColor(getResources()
+                                    .getColor(R.color.white));
+                            allShouChangChannel.remove(channelServiceId);
 
-							Toast.makeText(TVChannelShowActivity.this,
-									"频道收藏成功", Toast.LENGTH_SHORT).show();
-						} else {
-							Toast.makeText(TVChannelShowActivity.this,
-									"频道收藏失败", Toast.LENGTH_SHORT).show();
-						}
-					}
-				}
-			});
+                            Toast.makeText(TVChannelShowActivity.this,
+                                    "取消频道收藏成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(TVChannelShowActivity.this,
+                                    "取消频道收藏失败", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        // 收藏操作
+                        boolean success = channelService
+                                .channelShouCang(channelServiceId);
+                        if (success) {
+                            holder.channelShouCang.setText("取消\n收藏");
+                            holder.channelShouCang.setTextColor(getResources()
+                                    .getColor(R.color.orange));
+                            allShouChangChannel.add(channelServiceId);
 
-			/**
-			 * 查看频道节目
-			 */
-			holder.channelPlayButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MyApplication.vibrator.vibrate(100);
+                            Toast.makeText(TVChannelShowActivity.this,
+                                    "频道收藏成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(TVChannelShowActivity.this,
+                                    "频道收藏失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            });
 
-					Intent intent = new Intent(TVChannelShowActivity.this,
-							TVChannelProgramShowActivity.class);
-					intent.putExtra("channelName", channelName);
-					intent.putExtra("channelIndex", channelIndex);
-					startActivity(intent);
-				}
-			});
+            /**
+             * 查看频道节目
+             */
+            holder.channelPlayButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
 
-			/**
-			 * 设置数据
-			 */
-			if (ClientGetCommandService.channelLogoMapping.get(channelName) != null
-					&& !ClientGetCommandService.channelLogoMapping.get(
-							channelName).equals("null")
-					&& !ClientGetCommandService.channelLogoMapping.get(
-							channelName).equals("")) {
-				holder.channelLogo
-						.setImageResource(ClientGetCommandService.channelLogoMapping
-								.get(channelName));
-			} else {
-				holder.channelLogo.setImageResource(R.drawable.logotv);
-			}
-			Log.e("", "channel Name " + channelName + " \n");
-			holder.channelName.setText((position + 1) + "  " + channelName);
-			Program program = currentChannelPlayData.get(channelName);
-			if (program != null) {
-				String time = "正在播放:"
-						+ program.getProgramStartTime()
-						+ " - "
-						+ program.getProgramEndTime()
-						+ "\n\n"
-						+ StringUtils.getShortString(program.getProgramName(),
-								12);
-				holder.channelPlayInfo.setText(time);
-			} else {
-				holder.channelPlayInfo.setText("无节目信息");
-			}
+                    Intent intent = new Intent(TVChannelShowActivity.this,
+                            TVChannelProgramShowActivity.class);
+                    intent.putExtra("channelName", channelName);
+                    intent.putExtra("channelIndex", channelIndex);
+                    startActivity(intent);
+                }
+            });
 
-		}
+            /**
+             * 设置数据
+             */
+            if (ClientGetCommandService.channelLogoMapping.get(channelName) != null
+                    && !ClientGetCommandService.channelLogoMapping.get(
+                    channelName).equals("null")
+                    && !ClientGetCommandService.channelLogoMapping.get(
+                    channelName).equals("")) {
+                holder.channelLogo
+                        .setImageResource(ClientGetCommandService.channelLogoMapping
+                                .get(channelName));
+            } else {
+                holder.channelLogo.setImageResource(R.drawable.logotv);
+            }
+            Log.e("", "channel Name " + channelName + " \n");
+            holder.channelName.setText((position + 1) + "  " + channelName);
+            Program program = currentChannelPlayData.get(channelName);
+            if (program != null) {
+                String time = "正在播放:"
+                        + program.getProgramStartTime()
+                        + " - "
+                        + program.getProgramEndTime()
+                        + "\n\n"
+                        + StringUtils.getShortString(program.getProgramName(),
+                        12);
+                holder.channelPlayInfo.setText(time);
+            } else {
+                holder.channelPlayInfo.setText("无节目信息");
+            }
 
-		@Override
-		public int getItemCount() {
-			return mData.size();
-		}
+        }
 
-		public class ViewHolder extends RecyclerView.ViewHolder {
+        @Override
+        public int getItemCount() {
+            return mData.size();
+        }
 
-			public ImageView channelLogo;
-			public TextView channelName;
-			public TextView channelPlayInfo;
-			public TextView channelShouCang;
-			public TextView channelPlayButton;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-			public final View mView;
+            public ImageView channelLogo;
+            public TextView channelName;
+            public TextView channelPlayInfo;
+            public TextView channelShouCang;
+            public TextView channelPlayButton;
 
-			public ViewHolder(View view) {
+            public final View mView;
 
-				super(view);
+            public ViewHolder(View view) {
 
-				mView = view;
-				channelLogo = (ImageView) view.findViewById(R.id.channel_logo);
-				channelName = (TextView) view.findViewById(R.id.channel_name);
-				channelPlayInfo = (TextView) view
-						.findViewById(R.id.channel_play_info);
-				channelShouCang = (TextView) view
-						.findViewById(R.id.channel_shoucang);
-				channelPlayButton = (TextView) view
-						.findViewById(R.id.channel_play_button);
+                super(view);
 
-			}
-		}
-	}
+                mView = view;
+                channelLogo = (ImageView) view.findViewById(R.id.channel_logo);
+                channelName = (TextView) view.findViewById(R.id.channel_name);
+                channelPlayInfo = (TextView) view
+                        .findViewById(R.id.channel_play_info);
+                channelShouCang = (TextView) view
+                        .findViewById(R.id.channel_shoucang);
+                channelPlayButton = (TextView) view
+                        .findViewById(R.id.channel_play_button);
+
+            }
+        }
+    }
 
     @Override
     public void update(Observable observable, Object data) {
-        if(pages != null)
+        if (pages != null)
             pages.getAdapter().notifyDataSetChanged();
     }
 
