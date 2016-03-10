@@ -4,7 +4,7 @@
     android:paddingLeft="3dip"
     android:paddingTop="3dip"
     android:layout_height="145dip">
-    
+
     <ImageView
         android:id="@+id/grid_picture"
         android:layout_width="116dip"
