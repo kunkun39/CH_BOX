@@ -88,7 +88,7 @@ public class PictureCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.touying, menu);
+//        getMenuInflater().inflate(R.menu.touying, menu);
         return true;
     }
 
