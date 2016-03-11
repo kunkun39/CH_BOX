@@ -57,7 +57,7 @@ import java.util.List;
 /**
  * Created by Jack Wang
  */
-public class PictureDetailsActivity extends AppCompatActivity implements OnGestureListener {
+public class PictureDetailsActivity extends AppCompatActivity implements OnGestureListener,View.OnTouchListener {
     /**
      * 传过来所有的图片
      */
@@ -113,6 +113,7 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
      * 取消左右投影
      */
     private TextView imageContinueShow;
+    private View bottomLinear;
 
     /**
      * 向右旋转
@@ -172,12 +173,14 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_picture_details);
 
-        detector = new GestureDetector(this);
+        detector = new GestureDetector(this,this);
         flipper = (ViewFlipper) findViewById(R.id.image_flipper);
         flipper.setDrawingCacheEnabled(false);
 
+
+        bottomLinear =  findViewById(R.id.bottom_linear);
         imageContinueShow = (TextView) findViewById(R.id.pic_continue_show);
-        imageContinueShow.setVisibility(View.GONE);
+        imageContinueShow.setText("上滑投影");
         relativeLayout = (RelativeLayout) findViewById(R.id.gesture_layout);
 
         rotationLeft = (ImageView) findViewById(R.id.rotation_left);
@@ -193,6 +196,7 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
         textScale = (TextView) findViewById(R.id.text_scale);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.picture_detail_drawer);
+        mDrawerLayout.setOnTouchListener(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.picture_detai_content_toolbar);
         toolbar.setTitle(" ");
         setSupportActionBar(toolbar);
@@ -294,7 +298,7 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
 
                 currentShow = false;
                 isImageContinueShow = false;
-                imageContinueShow.setVisibility(View.GONE);
+                imageContinueShow.setText("上滑投影");
 
                 flipper.setInAnimation(AnimationUtils.loadAnimation(PictureDetailsActivity.this, R.anim.push_bottom_in));
                 flipper.setOutAnimation(AnimationUtils.loadAnimation(PictureDetailsActivity.this, R.anim.push_bottom_out));
@@ -425,7 +429,8 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
             if (StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
                 isImageContinueShow = true;
                 isImageContinueMove = false;
-                imageContinueShow.setVisibility(View.VISIBLE);
+                bottomLinear.setVisibility(View.VISIBLE);
+                imageContinueShow.setText("取消投影");
 
                 /**
                  * 如果是上滑操作已经执行，不必在相应
@@ -583,6 +588,12 @@ public class PictureDetailsActivity extends AppCompatActivity implements OnGestu
      * **********************************************手势部分, 图片缩放************************************************
      */
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return onTouchEvent(event);
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         boolean touch = detector.onTouchEvent(event);
 
