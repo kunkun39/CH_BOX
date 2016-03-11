@@ -99,7 +99,7 @@ public class VedioCategoryActivity extends AppCompatActivity {
          */
         listView = (RecyclerView) findViewById(R.id.select_data);
         listView.setLayoutManager(new GridLayoutManager(
-                VedioCategoryActivity.this, 3));
+                VedioCategoryActivity.this, 2));
         listView.setAdapter(new RecyclerViewAdapter(VedioCategoryActivity.this));
 
     }
