@@ -5,10 +5,24 @@ import java.util.List;
 import java.util.Map;
 
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDialog;
+import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,163 +30,139 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+
+import com.changhong.common.adapter.ViewPageAdapter;
+import com.changhong.common.fragment.RecycleViewFragment;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.Executor;
 import com.changhong.tvhelper.R;
+import com.changhong.common.fragment.TabFragment;
 import com.changhong.tvhelper.service.ClientGetCommandService;
 
-public class TVChannelSwitchDialog extends Dialog {
+public class TVChannelSwitchDialog extends DialogFragment {
 
     public static Handler mHandler = null;
-    private Context context;
 
-    /**
-     * all the channel data, which will copy from ClientSendCommandService.channelData
-     */
-    private List<Map<String, Object>> searchData = new ArrayList<Map<String, Object>>();
-    private ImageAdapter adapter = null;
-
-    /**
-     * all the channel data
-     */
-    private GridView channels = null;
-
+    List<String> dataNumber;
+    List<TabFragment> fragments = new ArrayList<TabFragment>();
     /**
      * id which indicate which channel tab the user selected
      */
-    public int selectedChanncelTabIndex = 0;
-    private TextView ALL;
-    private TextView HD;
-    private TextView WS;
-    private TextView SE;
-    private TextView YS;
 
     private Button cancle;
 
-    public TVChannelSwitchDialog(Context context) {
-        super(context, R.style.InputTheme);
-        this.context = context;
+    private View v;
 
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         initData();
+        setRetainInstance(true);
+        setStyle(STYLE_NO_TITLE, 0);
+        return super.onCreateDialog(savedInstanceState);
 
-        initViewAndEvent();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if(v == null){
+            v = inflater.inflate(R.layout.activity_channel_switch,container,false);
+            initViewAndEvent();
+        }
+        return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        DisplayMetrics metrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        getDialog().getWindow().setLayout(metrics.widthPixels, getDialog().getWindow().getAttributes().height);
     }
 
     private void initData() {
-        searchData.clear();
-        for (int j = 0; j < ClientSendCommandService.channelData.size(); j++) {
-            searchData.add(ClientSendCommandService.channelData.get(j));
-        }
+
+        Resources res = getActivity().getResources();
+        dataNumber = new ArrayList<String>();
+        dataNumber.add(res.getString(R.string.all));
+        dataNumber.add(res.getString(R.string.hd));
+        dataNumber.add(res.getString(R.string.local_tv));
+        dataNumber.add(res.getString(R.string.cartoon));
+        dataNumber.add(res.getString(R.string.cctv));
     }
 
     private void initViewAndEvent() {
         /**
          * init all views
          */
-        Window window = this.getWindow();
-        WindowManager.LayoutParams wlp = window.getAttributes();
-        wlp.alpha = 0.85f;
-        wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        window.setAttributes(wlp);
-        window.setGravity(Gravity.BOTTOM);
-        setContentView(R.layout.activity_channel_switch);
+        TabLayout tabs = (TabLayout)v.findViewById(R.id.channel_switch_tabs);
+        ViewPager viewPager = (ViewPager)v.findViewById(R.id.channel_switch_viewpager);
+        ViewPageAdapter pageAdapter = new ViewPageAdapter(getChildFragmentManager());
 
-        channels = (GridView) findViewById(R.id.dialogchannellist);
-        ALL = (TextView) findViewById(R.id.dialogall);
-        HD = (TextView) findViewById(R.id.dialoghd);
-        WS = (TextView) findViewById(R.id.dialogws);
-        SE = (TextView) findViewById(R.id.dialogse);
-        YS = (TextView) findViewById(R.id.dialogys);
-        cancle = (Button) findViewById(R.id.dialogcancle);
+;
+        Executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                final ViewPager viewPager = (ViewPager) v.findViewById(R.id.channel_switch_viewpager);
+                while (viewPager.getAdapter() == null){
+                    try {
+                        Thread.sleep(20);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (String name : dataNumber) {
+                            TabLayout tabs = (TabLayout) v.findViewById(R.id.channel_switch_tabs);
+
+                            TabFragment fragment = TabFragment.newInstance(new ChannelRecycleViewAdapter(name), name, 2);
+                            fragments.add(fragment);
+                            tabs.addTab(tabs.newTab().setText(name));
+                            ((ViewPageAdapter) viewPager.getAdapter()).addItem(fragment);
+
+                        }
+                    }
+                });
+
+            }
+        });
+        viewPager.setAdapter(pageAdapter);
+        tabs.setupWithViewPager(viewPager);
+        tabs.setTabsFromPagerAdapter(pageAdapter);
+
+        cancle = (Button) v.findViewById(R.id.dialogcancle);
 
         /**
          * init all events
          */
-        adapter = new ImageAdapter(context, searchData);
-        channels.setAdapter(adapter);
-        channels.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                MyApplication.vibrator.vibrate(100);
-
-                ClientSendCommandService.msg = "key:dtv";
-                ClientSendCommandService.handler.sendEmptyMessage(1);
-
-                Map<String, Object> channelInfo = searchData.get(arg2);
-                ClientSendCommandService.msgSwitchChannel = channelInfo.get("service_id") + "#" + channelInfo.get("tsId") + "#" + channelInfo.get("orgNId");
-                ClientSendCommandService.handler.sendEmptyMessage(3);
-            }
-        });
-
-        ALL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                selectedChanncelTabIndex = 0;
-                mHandler.sendEmptyMessage(0);
-            }
-        });
-
-        HD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                selectedChanncelTabIndex = 1;
-                mHandler.sendEmptyMessage(0);
-            }
-        });
-
-        WS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                selectedChanncelTabIndex = 2;
-                mHandler.sendEmptyMessage(0);
-            }
-        });
-
-        SE.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                selectedChanncelTabIndex = 3;
-                mHandler.sendEmptyMessage(0);
-            }
-        });
-
-        YS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                selectedChanncelTabIndex = 4;
-                mHandler.sendEmptyMessage(0);
-            }
-        });
 
         cancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                dismiss();
+                getDialog().hide();
             }
         });
 
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                if(v == null)
+                    return;
+
+                List<Map<String, Object>> searchData = new ArrayList<Map<String, Object>>();
                 switch (msg.what) {
                     case 0:
-                        searchData.clear();
                         int size = ClientSendCommandService.channelData.size();
 
-                        switch (selectedChanncelTabIndex) {
+                        switch (((ViewPager) v.findViewById(R.id.viewpager)).getCurrentItem()) {
                             case 0://全部频道
                                 for (int j = 0; j < size; j++) {
                                     searchData.add(ClientSendCommandService.channelData.get(j));
@@ -222,13 +212,7 @@ public class TVChannelSwitchDialog extends Dialog {
                         /**
                          * 触发频道TAB变化
                          */
-                        switchChannelTab();
-
-                        /**
-                         * 触发频道列表变换
-                         */
-                        adapter.initData(searchData);
-                        adapter.notifyDataSetChanged();
+                        ((ChannelRecycleViewAdapter)fragments.get(((ViewPager) v.findViewById(R.id.viewpager)).getCurrentItem()).getmAdapter()).setmData(searchData);
                         break;
                     default:
                         break;
@@ -237,92 +221,128 @@ public class TVChannelSwitchDialog extends Dialog {
             }
 
         };
-
-        /**
-         * 默认选中全部频道0
-         */
-        switchChannelTab();
     }
 
-    private void switchChannelTab() {
-        ALL.setTextColor(context.getResources().getColor(R.color.white));
-        HD.setTextColor(context.getResources().getColor(R.color.white));
-        WS.setTextColor(context.getResources().getColor(R.color.white));
-        SE.setTextColor(context.getResources().getColor(R.color.white));
-        YS.setTextColor(context.getResources().getColor(R.color.white));
 
-        switch (selectedChanncelTabIndex) {
-            case 0:
-                ALL.setTextColor(context.getResources().getColor(R.color.orange));
-                break;
-            case 1:
-                HD.setTextColor(context.getResources().getColor(R.color.orange));
-                break;
-            case 2:
-                WS.setTextColor(context.getResources().getColor(R.color.orange));
-                break;
-            case 3:
-                SE.setTextColor(context.getResources().getColor(R.color.orange));
-                break;
-            case 4:
-                YS.setTextColor(context.getResources().getColor(R.color.orange));
-                break;
-            default:
-                break;
-        }
-    }
 
-    class ImageAdapter extends BaseAdapter {
-        private LayoutInflater minflater;
+    class ChannelRecycleViewAdapter extends TabFragment.RecycleViewAdapter<ChannelRecycleViewAdapter.ViewHolder>{
         private List<Map<String, Object>> mData = new ArrayList<Map<String, Object>>();
+        String kind;
+        ChannelRecycleViewAdapter(String kind){
+            this.kind = kind;
+            init();
+        }
+        void init(){
+            int size = ClientSendCommandService.channelData.size();
+            List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 
-        public ImageAdapter(Context context, List<Map<String, Object>> data) {
-            this.minflater = LayoutInflater.from(context);
-            mData = data;
+
+            for(int i = 0;i < dataNumber.size() ;i ++){
+                if (dataNumber.get(i).equalsIgnoreCase(kind)){
+                    switch (i){
+                        case 0:{
+                            for (int j = 0; j < size; j++) {
+                                Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(j);
+                                String name = ((String) channelInfo.get("service_name")).toLowerCase();
+                                data.add(channelInfo);
+                            }
+                        }break;
+                        case 1:{
+                            for (int j = 0; j < size; j++) {
+                                Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(j);
+                                String name = ((String) channelInfo.get("service_name")).toLowerCase();
+                                if (name.indexOf("HD".toLowerCase()) >= 0
+                                        || name.indexOf("高清".toLowerCase()) >= 0) {
+                                    data.add(channelInfo);
+                                }
+                            }
+                        }break;
+                        case 2:{
+                            for (int j = 0; j < size; j++) {
+                                Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(j);
+                                String name = ((String) channelInfo.get("service_name")).toLowerCase();
+                                if (name.indexOf("卫视".toLowerCase()) >= 0) {
+                                    data.add(channelInfo);
+                                }
+                            }
+                        }break;
+                        case 3:{
+                            for (int j = 0; j < size; j++) {
+                                Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(j);
+                                String name = ((String) channelInfo.get("service_name")).toLowerCase();
+                                if (name.indexOf("少儿".toLowerCase()) >= 0
+                                        || name.indexOf("卡通".toLowerCase()) >= 0
+                                        || name.indexOf("动漫".toLowerCase()) >= 0
+                                        || name.indexOf("成长".toLowerCase()) >= 0){
+                                    data.add(channelInfo);
+                                }
+                            }
+                        }break;
+                        case 4:{
+                            for (int j = 0; j < size; j++) {
+                                Map<String, Object> channelInfo = ClientSendCommandService.channelData.get(j);
+                                String name = ((String) channelInfo.get("service_name")).toLowerCase();
+                                 if (name.indexOf("中央".toLowerCase()) >= 0
+                                        || name.indexOf("cctv".toLowerCase()) >= 0){
+                                     data.add(channelInfo);
+                                }
+                            }
+                        }break;
+                    }
+                }
+            }
+            setmData(data);
+        }
+        public ChannelRecycleViewAdapter setmData(List<Map<String, Object>> mData) {
+            this.mData.clear();
+            this.mData.addAll(mData);
+            notifyDataSetChanged();
+            return this;
         }
 
-        public void initData(List<Map<String, Object>> data) {
-            mData = data;
+        @Override
+        public ChannelRecycleViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder( LayoutInflater.from(getActivity()).inflate(R.layout.activity_channel_switch_item, null));
         }
 
-        public int getCount() {
+        @Override
+        public void onBindViewHolder(ChannelRecycleViewAdapter.ViewHolder holder, int position) {
+
+            final Map<String, Object> channelInfo = mData.get(position);
+            if (ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("")) {
+                holder.iv.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")));
+            } else {
+                holder.iv.setImageResource(R.drawable.logotv);
+            }
+            holder.tv.setText((position + 1) + "  " + (String) channelInfo.get("service_name"));
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+
+                    ClientSendCommandService.msg = "key:dtv";
+                    ClientSendCommandService.handler.sendEmptyMessage(1);
+
+                    ClientSendCommandService.msgSwitchChannel = channelInfo.get("service_id") + "#" + channelInfo.get("tsId") + "#" + channelInfo.get("orgNId");
+                    ClientSendCommandService.handler.sendEmptyMessage(3);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
             return mData.size();
         }
 
-        public Object getItem(int position) {
-            return position;
-        }
-
-        public long getItemId(int position) {
-            return position;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder vh = null;
-            if (convertView == null) {
-                vh = new ViewHolder();
-                convertView = minflater.inflate(R.layout.activity_channel_switch_item, null);
-                vh.txt1 = (TextView) convertView.findViewById(R.id.tvtxt);
-                vh._v1 = (ImageView) convertView.findViewById(R.id.tvimg);
-                convertView.setTag(vh);
-            } else {
-                vh = (ViewHolder) convertView.getTag();
+        class ViewHolder extends RecyclerView.ViewHolder{
+            TextView tv;
+            ImageView iv;
+            public ViewHolder(View itemView) {
+                super(itemView);
+                tv = (TextView) itemView.findViewById(R.id.tvtxt);
+                iv = (ImageView) itemView.findViewById(R.id.tvimg);
             }
-
-            Map<String, Object> channelInfo = mData.get(position);
-            if (ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")) != null && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("null") && !ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")).equals("")) {
-                vh._v1.setImageResource(ClientGetCommandService.channelLogoMapping.get((String) channelInfo.get("service_name")));
-            } else {
-                vh._v1.setImageResource(R.drawable.logotv);
-            }
-            vh.txt1.setText((position + 1) + "  " + (String)channelInfo.get("service_name"));
-
-            return convertView;
-        }
-
-        public final class ViewHolder {
-            public TextView txt1;
-            public ImageView _v1;
         }
     }
 

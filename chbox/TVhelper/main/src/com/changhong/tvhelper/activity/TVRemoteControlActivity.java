@@ -7,6 +7,7 @@ import java.util.Map;
 
 import android.app.Dialog;
 import android.graphics.PointF;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -43,6 +44,7 @@ import com.baidu.voicerecognition.android.VoiceRecognitionConfig;
 import com.changhong.baidu.BaiDuVoiceChannelControlDialog;
 import com.changhong.baidu.BaiDuVoiceConfiguration;
 import com.changhong.common.domain.AppInfo;
+import com.changhong.common.fragment.RecycleViewFragment;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
@@ -59,7 +61,7 @@ import com.changhong.tvhelper.view.TVChannelSwitchDialog;
 import com.changhong.tvhelper.view.TVNumInputDialog;
 
 public class TVRemoteControlActivity extends TVInputDialogActivity implements OnClickListener,
-        OnTouchListener, OnGestureListener {
+        OnTouchListener, OnGestureListener,RecycleViewFragment.OnFragmentInteractionListener {
     private static final String TAG = "TVRemoteControlActivity";
 	private DrawerLayout mDrawerLayout;
 
@@ -174,8 +176,13 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     if (ClientSendCommandService.channelData.isEmpty()) {
                         Toast.makeText(TVRemoteControlActivity.this, R.string.channel_list_empty, 3000).show();
                     } else {
-                        if (switchChannelDialog != null && !switchChannelDialog.isShowing()) {
-                            switchChannelDialog.show();
+                        if (switchChannelDialog != null) {
+                            if(getSupportFragmentManager().findFragmentByTag("switchChannelDialog") != null){;
+                                switchChannelDialog.getDialog().show();
+                            } else {
+                                switchChannelDialog.show(getSupportFragmentManager(),"switchChannelDialog");
+                            }
+
                         }
                     }
                 }
@@ -193,49 +200,56 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             });
         }
 
-        back.setOnTouchListener(this);
+        if(back != null){
+            back.setOnTouchListener(this);
+            back.setOnClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    finish();
+                }
+            });
+        }
+
         home.setOnClickListener(this);
         home.setOnTouchListener(this);
         menu.setOnClickListener(this);
         menu.setOnTouchListener(this);
         fanhui.setOnClickListener(this);
         fanhui.setOnTouchListener(this);
-        back.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
-        power.setOnClickListener(new OnClickListener() {
+        if (power != null){
+            power.setOnClickListener(new OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                Dialog dialog = DialogUtil.showAlertDialog(
-                        TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
-                        new DialogBtnOnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MyApplication.vibrator.vibrate(100);
+                    Dialog dialog = DialogUtil.showAlertDialog(
+                            TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
+                            new DialogBtnOnClickListener() {
 
-                            @Override
-                            public void onSubmit(DialogMessage dialogMessage) {
-                                ClientSendCommandService.msg = "key:power";
-                                ClientSendCommandService.handler
-                                        .sendEmptyMessage(1);
-                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                                    dialogMessage.dialog.cancel();
+                                @Override
+                                public void onSubmit(DialogMessage dialogMessage) {
+                                    ClientSendCommandService.msg = "key:power";
+                                    ClientSendCommandService.handler
+                                            .sendEmptyMessage(1);
+                                    if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                        dialogMessage.dialog.cancel();
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onCancel(DialogMessage dialogMessage) {
-                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                                    dialogMessage.dialog.cancel();
+                                @Override
+                                public void onCancel(DialogMessage dialogMessage) {
+                                    if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                        dialogMessage.dialog.cancel();
+                                    }
                                 }
-                            }
-                        });
-            }
-        });
+                            });
+                }
+            });
+        }
+
         ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));
 
 //        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
@@ -272,7 +286,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             });
         }
         if (switchChannelDialog == null) {
-            switchChannelDialog = new TVChannelSwitchDialog(TVRemoteControlActivity.this);
+            switchChannelDialog = new TVChannelSwitchDialog();
         }
         centerPoint.set((180.25f - 35.5f) * density, (343.25f - 35.5f) * density);
 
@@ -883,6 +897,11 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         }
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     /**
      * 百度语音监听器
      */
@@ -949,6 +968,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         public void onNetworkStatusChange(int status, Object obj) {
             // 这里不做任何操作不影响简单识别
         }
+
 
         /**
          * 将识别结果更新到UI上，搜索模式结果类型为List<String>,输入模式结果类型为List<List<Candidate>>

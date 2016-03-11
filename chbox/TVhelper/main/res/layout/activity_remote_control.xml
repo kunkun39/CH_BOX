@@ -6,35 +6,4 @@
     android:fitsSystemWindows="true">
 
     <include layout="@layout/remote_content" />
-
-    <LinearLayout
-        android:id="@+id/ip_view"
-        android:layout_width="300dip"
-        android:layout_height="fill_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="64.3dip"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dip"
-            android:singleLine="true"
-            android:text="@string/disconnected"
-            android:textSize="20sp" />
-
-        <ListView
-            android:id="@+id/clients"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginTop="67.6dip"
-            android:background="#ffab61ff"
-            android:listSelector="@drawable/title_ip_list"
-            android:visibility="visible" />
-    </LinearLayout>
-
-
 </android.support.v4.widget.DrawerLayout>

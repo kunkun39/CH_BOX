@@ -1,15 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="fill_parent"
-             android:orientation="vertical"
-             android:background="@drawable/bk">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    style="@style/Base.V21.Theme.AppCompat.Dialog"
+    android:background="@color/LightBlue_500">
 
     <!--上面取消按钮-->
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="50dip"
             android:orientation="horizontal"
+            android:background="@color/LightBlue_800"
             android:gravity="right|center_vertical">
         <Button
                 android:id="@+id/dialogcancle"
@@ -21,127 +24,20 @@
 
     <!--中间频道选择部分-->
     <LinearLayout
-            android:layout_marginTop="50dip"
-            android:layout_height="40dip"
+            android:layout_height="match_parent"
             android:layout_width="fill_parent"
             android:orientation="vertical">
 
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="40dip"
-                android:orientation="horizontal">
-
-                <!--全部频道TAB-->
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:background="@drawable/channel_titlebg"
-                        android:layout_weight="1" >
-                    <TextView
-                            android:id="@+id/dialogall"
-                            android:focusable="true"
-                            android:clickable="true"
-                            android:layout_height="match_parent"
-                            android:layout_width="match_parent"
-                            android:text="全部"
-                            android:textColor="@android:color/white"
-                            android:textSize="18sp"
-                            android:singleLine="true"
-                            android:gravity="center"/>
-                </LinearLayout>
-
-                <!--高清频道TAB-->
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:background="@drawable/channel_titlebg"
-                        android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/dialoghd"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_height="fill_parent"
-                        android:layout_width="fill_parent"
-                        android:text="高清"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:singleLine="true"
-                        android:gravity="center"/>
-                </LinearLayout>
-
-                <!--卫视频道TAB-->
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:background="@drawable/channel_titlebg"
-                        android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/dialogws"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_height="fill_parent"
-                        android:layout_width="fill_parent"
-                        android:text="卫视"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        />
-                </LinearLayout>
-
-                <!--少儿频道TAB-->
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:background="@drawable/channel_titlebg"
-                        android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/dialogse"
-                        android:focusable="true"
-                        android:clickable="true"
-                        android:layout_height="fill_parent"
-                        android:layout_width="fill_parent"
-                        android:text="少儿"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        />
-                </LinearLayout>
-
-                <!--央视频道TAB-->
-                <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:orientation="horizontal"
-                        android:background="@drawable/channel_titlebg"
-                        android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/dialogys"
-                        android:clickable="true"
-                        android:layout_height="fill_parent"
-                        android:layout_width="fill_parent"
-                        android:text="央视"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        />
-                </LinearLayout>
-        </LinearLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/channel_switch_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/LightBlue_50"
+            app:tabTextColor="@color/LightBlue_50"/>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/channel_switch_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
     </LinearLayout>
-
-    <GridView
-            android:layout_marginTop="90dip"
-            android:id="@+id/dialogchannellist"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:numColumns="2"
-            android:verticalSpacing="5dp"
-            android:horizontalSpacing="5dp"
-            android:listSelector="@drawable/title_btn_list_selector"/>
-</FrameLayout>
+</LinearLayout>

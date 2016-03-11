@@ -42,9 +42,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowFrame">@null</item>
-        <item name="android:background">#00000000</item>
+        <item name="android:background">@color/LightBlue_500</item>
         <item name="android:windowIsTranslucent">false</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/LightBlue_500</item>
         <item name="android:backgroundDimEnabled">true</item>
     </style>
 

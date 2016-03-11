@@ -38,7 +38,7 @@ import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.tvhelper.R;
 import com.changhong.tvhelper.domain.Program;
-import com.changhong.tvhelper.fragment.RecycleViewFragment;
+import com.changhong.common.fragment.RecycleViewFragment;
 import com.changhong.tvhelper.service.ChannelService;
 import com.changhong.tvhelper.service.ClientGetCommandService;
 

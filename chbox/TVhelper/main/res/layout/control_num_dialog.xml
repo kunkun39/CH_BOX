@@ -1,102 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/relativeLayout2"
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:background="@drawable/numback">
-	
-    
-    <Button 
-        android:layout_marginTop="4dip"
-        android:id="@+id/num1"
-        android:background="@drawable/h_btn_1_selector"
-        android:layout_width="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayout2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/Grey_700"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-    <Button 
-        android:layout_marginTop="4dip"
-        android:id="@+id/num2"
-        android:background="@drawable/h_btn_2_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dip"
-        />
-    <Button 
-        android:layout_marginTop="4dip"
-        android:id="@+id/num3"
-        android:background="@drawable/h_btn_3_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="240dip"
-        />
-    <Button 
-        android:layout_marginTop="79.5dip"
-        android:id="@+id/num4"
-        android:background="@drawable/h_btn_4_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <Button 
-        android:layout_marginTop="79.5dip"
-        android:id="@+id/num5"
-        android:background="@drawable/h_btn_5_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dip"
-        />
-    <Button 
-        android:layout_marginTop="79.5dip"
-        android:id="@+id/num6"
-        android:background="@drawable/h_btn_6_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="240dip"
-        />
-    <Button 
-        android:layout_marginTop="154.5dip"
-        android:id="@+id/num7"
-        android:background="@drawable/h_btn_7_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <Button 
-        android:layout_marginTop="154.5dip"
-        android:id="@+id/num8"
-        android:background="@drawable/h_btn_8_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dip"
-        />
-    <Button 
-        android:layout_marginTop="154.5dip"
-        android:id="@+id/num9"
-        android:background="@drawable/h_btn_9_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="240dip"
-        />
-    <Button 
-        android:layout_marginTop="229.5dip"
-        android:id="@+id/numok"
-        android:background="@drawable/h_btn_ok_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        />
-    <Button 
-        android:layout_marginTop="229.5dip"
-        android:id="@+id/num0"
-        android:background="@drawable/h_btn_0_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="120dip"
-        />
-    <Button 
-        android:layout_marginTop="229.5dip"
-        android:id="@+id/numcancle"
-        android:background="@drawable/h_btn_cancle_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="240dip"
-        />
-    
-</FrameLayout>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/num1"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_1_selector" />
+
+        <Button
+            android:id="@+id/num2"
+            android:background="@drawable/h_btn_2_selector"
+            style="@style/remote_num_item" />
+
+        <Button
+            android:id="@+id/num3"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_3_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/num4"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_4_selector" />
+
+        <Button
+            android:id="@+id/num5"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_5_selector" />
+
+        <Button
+            android:id="@+id/num6"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_6_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/num7"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_7_selector" />
+
+        <Button
+            android:id="@+id/num8"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_8_selector" />
+
+        <Button
+            android:id="@+id/num9"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_9_selector" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/numok"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_ok_selector" />
+
+        <Button
+            android:id="@+id/num0"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_0_selector" />
+
+        <Button
+            android:id="@+id/numcancle"
+            style="@style/remote_num_item"
+            android:background="@drawable/h_btn_cancle_selector" />
+    </LinearLayout>
+
+</LinearLayout>
