@@ -4,9 +4,8 @@
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffc478be"
+    android:background="#ffffff"
     android:fitsSystemWindows="true">
-
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -36,76 +35,74 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<android.support.v4.widget.NestedScrollView-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:background="#ffc478be"-->
-    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="56dip"
         android:background="#ffc478be">
 
         <LinearLayout
             android:id="@+id/search_linear_layout"
             android:layout_width="fill_parent"
-            android:layout_height="49.8dip"
+            android:layout_height="150dip"
+            android:layout_alignParentTop="true"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_alignParentTop="true">
 
-            <RelativeLayout
-                android:layout_width="0dp"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true">
+
+                    <EditText
+                        android:id="@+id/searchstring"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#00ffffff"
+                        android:hint="搜索频道或节目"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="8dp"
+                        android:singleLine="true"
+                        android:textColor="#ffd46c" />
+
+
+                </android.support.design.widget.TextInputLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/btn_search"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:background="@drawable/search_frame"
-                android:gravity="center">
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/ic_search"
+                android:scaleType="centerInside"
+                app:backgroundTint="#ffffffff"
+                app:elevation="2dp"
+                app:pressedTranslationZ="4dp"
+                app:rippleColor="#efefef" />
 
-                <Button
-                    android:id="@+id/btn_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="21dp"
-                    android:background="@drawable/search_button" />
 
-                <EditText
-                    android:id="@+id/searchstring"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="18dip"
-                    android:layout_toLeftOf="@id/btn_search"
-                    android:background="#00000000"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="搜索频道或节目"
-                    android:singleLine="true"
-                    android:textSize="16sp" />
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+
         </LinearLayout>
 
         <FrameLayout
             android:id="@+id/search_page_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/search_linear_layout"
+            android:layout_below="@+id/search_linear_layout"
             android:background="#ffc478be"
             android:orientation="vertical" />
     </RelativeLayout>
-    <!--</android.support.v4.widget.NestedScrollView>-->
 
 </android.support.design.widget.CoordinatorLayout>
