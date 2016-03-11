@@ -45,8 +45,13 @@ public class ProgramListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mRecyclerView = (RecyclerView) inflater.inflate(
-                R.layout.recyclerview, container, false);
+        if(mRecyclerView == null){
+            mRecyclerView = (RecyclerView) inflater.inflate(
+                    R.layout.recyclerview, container, false);
+
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mRecyclerView.setAdapter(new RecyclerViewAdapter());
+        }
 
         return mRecyclerView;
     }
@@ -62,9 +67,9 @@ public class ProgramListFragment extends Fragment {
 
         if (orderProgramList.size() > 0 && orderProgramShowData.size() > 0) {
             mchannelService = channelService;
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(),
-                    orderProgramList, orderProgramShowData));
+            if(mRecyclerView != null){
+                ((RecyclerViewAdapter)mRecyclerView.getAdapter()).setData(orderProgramList,orderProgramShowData);
+            }
         } else {
             return;
         }
@@ -74,19 +79,18 @@ public class ProgramListFragment extends Fragment {
     public class RecyclerViewAdapter extends
             RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-        private Context mContext;
         private List<OrderProgram> mAllOrderData = new ArrayList<OrderProgram>();
         private List<Map<String, Object>> mOrderShowData = new ArrayList<Map<String, Object>>();
 
-        public RecyclerViewAdapter(Context context, List<OrderProgram> orderProgramList,
-                                   List<Map<String, Object>> orderProgramShowData) {
+        public RecyclerViewAdapter() {}
 
-            this.mContext = context;
+        public void setData(List<OrderProgram> orderProgramList,
+                       List<Map<String, Object>> orderProgramShowData){
             mAllOrderData.clear();
             mOrderShowData.clear();
             mAllOrderData.addAll(orderProgramList);
             mOrderShowData.addAll(orderProgramShowData);
-
+            notifyDataSetChanged();
         }
 
         @Override
@@ -137,7 +141,7 @@ public class ProgramListFragment extends Fragment {
                         TVChannelPlayActivity.path = ChannelService
                                 .obtainChannlPlayURL(map);
 
-                        Intent intent = new Intent(mContext,
+                        Intent intent = new Intent(getActivity(),
                                 TVChannelPlayActivity.class);
                         String name = orderProgram.getChannelName();
                         intent.putExtra("channelname", name);
@@ -174,11 +178,11 @@ public class ProgramListFragment extends Fragment {
                             mAllOrderData.remove(orderProgram);
                             notifyDataSetChanged();
 
-                            Toast.makeText(mContext, "取消节目预约成功",
+                            Toast.makeText(getActivity(), "取消节目预约成功",
                                     Toast.LENGTH_SHORT).show();
 
                         } else {
-                            Toast.makeText(mContext, "取消节目预约失败",
+                            Toast.makeText(getActivity(), "取消节目预约失败",
                                     Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -197,7 +201,7 @@ public class ProgramListFragment extends Fragment {
                         public void onClick(View v) {
                             MyApplication.vibrator.vibrate(100);
 
-                            Intent intent = new Intent(mContext,
+                            Intent intent = new Intent(getActivity(),
                                     TVChannelProgramShowActivity.class);
                             intent.putExtra("channelName",
                                     orderProgram.getChannelName());

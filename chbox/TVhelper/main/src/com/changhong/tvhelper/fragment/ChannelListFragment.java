@@ -33,6 +33,7 @@ public class ChannelListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     ChannelService mchannelService = null;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,16 +44,15 @@ public class ChannelListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        RecyclerView mRecyclerView;
+        if(mRecyclerView == null){
+            mRecyclerView = (RecyclerView) inflater.inflate(R.layout.recyclerview,
+                    container, false);
 
-        mRecyclerView = (RecyclerView) inflater.inflate(R.layout.recyclerview,
-                container, false);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
+                    .getContext()));
 
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
-//                .getContext()));
-//
-//        mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(), null, null, null));
-
+            mRecyclerView.setAdapter(new RecyclerViewAdapter());
+        }
         return mRecyclerView;
     }
 
@@ -66,10 +66,9 @@ public class ChannelListFragment extends Fragment {
                         List<String> allShouChangChannel, Map<String, Program> currentChannelPlayData) {
 
         if (channelShowData.size() > 0 && allShouChangChannel.size() > 0 && currentChannelPlayData.size() > 0) {
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
-                    .getContext()));
 
-            mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(), channelShowData, allShouChangChannel, currentChannelPlayData));
+            //mRecyclerView.setAdapter(new RecyclerViewAdapter(getActivity(), channelShowData, allShouChangChannel, currentChannelPlayData));
+            ((RecyclerViewAdapter)mRecyclerView.getAdapter()).setData(channelShowData, allShouChangChannel, currentChannelPlayData);
             mchannelService = channelService;
         } else {
             return;
@@ -79,16 +78,18 @@ public class ChannelListFragment extends Fragment {
 
     public class RecyclerViewAdapter extends
             RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-
-        private Context mContext;
         private List<Map<String, Object>> mShouCangShowData = new ArrayList<Map<String, Object>>();
         private List<String> mallShouCangChannelData = new ArrayList<String>();
         private Map<String, Program> mShouCangCurrentChannelPlayData = new HashMap<String, Program>();
 
-        public RecyclerViewAdapter(Context context, List<Map<String, Object>> ShouCangShowData,
-                                   List<String> allShouCangChannelData, Map<String, Program> ShouCangCurrentChannelPlayData) {
+        public RecyclerViewAdapter() {
+            mShouCangShowData.clear();
+            mallShouCangChannelData.clear();
+            mShouCangCurrentChannelPlayData.clear();
+        }
 
-            this.mContext = context;
+        public RecyclerViewAdapter( List<Map<String, Object>> ShouCangShowData,
+                                   List<String> allShouCangChannelData, Map<String, Program> ShouCangCurrentChannelPlayData) {;
             mShouCangShowData.clear();
             mallShouCangChannelData.clear();
             mShouCangCurrentChannelPlayData.clear();
@@ -127,7 +128,7 @@ public class ChannelListFragment extends Fragment {
                                 .get("service_name");
                         TVChannelPlayActivity.path = ChannelService
                                 .obtainChannlPlayURL(map);
-                        Intent intent = new Intent(mContext, TVChannelPlayActivity.class);
+                        Intent intent = new Intent(getActivity(), TVChannelPlayActivity.class);
                         String name = (String) map.get("service_name");
                         intent.putExtra("channelname", name);
                         startActivity(intent);
@@ -169,10 +170,10 @@ public class ChannelListFragment extends Fragment {
 
                             notifyDataSetChanged();
 
-                            Toast.makeText(mContext,
+                            Toast.makeText(getActivity(),
                                     "取消频道收藏成功", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(mContext,
+                            Toast.makeText(getActivity(),
                                     "取消频道收藏失败", Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -188,7 +189,7 @@ public class ChannelListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     MyApplication.vibrator.vibrate(100);
-                    Intent intent = new Intent(mContext, TVChannelProgramShowActivity.class);
+                    Intent intent = new Intent(getActivity(), TVChannelProgramShowActivity.class);
                     intent.putExtra("channelName", channelName);
                     intent.putExtra("channelIndex", channelIndex);
                     startActivity(intent);
@@ -234,7 +235,19 @@ public class ChannelListFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
 
+        public void setData(List<Map<String, Object>> ShouCangShowData,
+                     List<String> allShouCangChannelData, Map<String, Program> ShouCangCurrentChannelPlayData) {;
+            mShouCangShowData.clear();
+            mallShouCangChannelData.clear();
+            mShouCangCurrentChannelPlayData.clear();
+
+            mShouCangShowData.addAll(ShouCangShowData);
+            mallShouCangChannelData.addAll(allShouCangChannelData);
+            mShouCangCurrentChannelPlayData.putAll(ShouCangCurrentChannelPlayData);
+
+            notifyDataSetChanged();
         }
 
         @Override
