@@ -2,19 +2,19 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="132dp"
     android:background="#f48fb1">
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="120dp">
+        android:layout_height="140dp">
 
         <ImageView
             android:id="@+id/vedio_item_image"
-            android:layout_width="160dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"></ImageView>
+            android:layout_width="186dp"
+            android:layout_height="95dp"
+            android:layout_marginTop="0.8dp"
+            android:gravity="center|center_horizontal"></ImageView>
 
         <TextView
             android:id="@+id/vedio_item_name"
@@ -23,21 +23,19 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/vedio_item_image"
             android:ellipsize="end"
-            android:gravity="bottom"
+            android:gravity="center_horizontal"
             android:lines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="10sp"></TextView>
 
         <TextView
             android:id="@+id/vedio_item_NO"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/vedio_item_name"
-            android:layout_marginBottom="5dp"
             android:ellipsize="end"
-            android:gravity="top"
             android:lines="1"
+            android:paddingLeft="61dp"
             android:textColor="@color/black"
             android:textSize="10sp"></TextView>
 

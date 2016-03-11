@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="175dp"
-            android:layout_height="193dp"
+            android:layout_height="196dp"
             android:layout_gravity="center"
             android:paddingBottom="10dip"
             android:orientation="vertical">
@@ -92,8 +92,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
+        android:paddingTop="183dip"
         android:textSize="10sp" />
 
 </android.support.v7.widget.CardView>
