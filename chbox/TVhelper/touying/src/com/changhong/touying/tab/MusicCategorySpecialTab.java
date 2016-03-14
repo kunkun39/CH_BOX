@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.changhong.touying.tab;
 
@@ -22,49 +22,49 @@ import com.changhong.touying.adapter.MusicDataRecyclerViewAdapter;
 
 /**
  * @author yves.yang
- *
  */
 public class MusicCategorySpecialTab extends Fragment {
 
-	public static final String TAG = "MusicCategorySpecialTab";
-	/************************************************** 歌曲部分 *******************************************************/
+    public static final String TAG = "MusicCategorySpecialTab";
+    /************************************************** 歌曲部分 *******************************************************/
 
-	/**
-	 * Image List adapter
-	 */
+    /**
+     * Image List adapter
+     */
 
-	private RecyclerView mRecyclerView;
-
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
-				.getContext()));
-		mRecyclerView.setAdapter(new MusicDataRecyclerViewAdapter(getActivity()));
-		mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-		mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-	}
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    private RecyclerView mRecyclerView;
 
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		/**
-		 * 启动歌词扫描服务
-		 */
-		MusicService musicService = new MusicServiceImpl(getActivity());
-		musicService.findAllMusicLrc();
-		
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mRecyclerView
+                .getContext()));
+        mRecyclerView.setAdapter(new MusicDataRecyclerViewAdapter(getActivity()));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+    }
 
-		CoordinatorLayout view = (CoordinatorLayout) inflater.inflate(R.layout.touying_list_fragment,
-				container, false);
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
-		
-		return view;
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        /**
+         * 启动歌词扫描服务
+         */
+        MusicService musicService = new MusicServiceImpl(getActivity());
+        musicService.findAllMusicLrc();
+
+
+        CoordinatorLayout view = (CoordinatorLayout) inflater.inflate(R.layout.touying_list_fragment,
+                container, false);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+
+        return view;
+    }
 }

@@ -1,7 +1,6 @@
 package com.changhong.touying.activity;
 
 import android.content.Context;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,13 +16,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,11 +27,11 @@ import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
+import com.changhong.touying.adapter.DividerItemDecoration;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.SetDefaultImage;
-import com.changhong.touying.music.SingleMusicAdapter;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 import java.util.List;
@@ -46,11 +41,13 @@ import java.util.List;
  */
 public class MusicViewActivity extends AppCompatActivity {
 
-    /**************************************************IP连接部分*******************************************************/
+    /**
+     * ***********************************************IP连接部分******************************************************
+     */
 
-    private BoxSelecter ipBoxSelecter; 
-	DrawerLayout mDrawerLayout;
-	private RecyclerView listPackageView;
+    private BoxSelecter ipBoxSelecter;
+    DrawerLayout mDrawerLayout;
+    private RecyclerView listPackageView;
 
     /************************************************music basic related info******************************************/
 
@@ -60,27 +57,27 @@ public class MusicViewActivity extends AppCompatActivity {
     private List<Music> musics;
 
     private String playlistName;
-  
+
     private MusicPlayer player;
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.touying, menu);
-		return true;
-	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.touying, menu);
+        return true;
+    }
 
-		if (item.getItemId() == android.R.id.home) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-			finish();
-		} else if (item.getItemId() == R.id.ipbutton) {
-			mDrawerLayout.openDrawer(GravityCompat.START);
-		}
+        if (item.getItemId() == android.R.id.home) {
 
-		return true;
-	}
+            finish();
+        } else if (item.getItemId() == R.id.ipbutton) {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
+
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,188 +94,190 @@ public class MusicViewActivity extends AppCompatActivity {
         musics = (List<Music>) getIntent().getSerializableExtra("musics");
         playlistName = getIntent().getStringExtra("name");
         if (playlistName == null) {
-        	playlistName = musics.get(0).getArtist();
-		}          
+            playlistName = musics.get(0).getArtist();
+        }
     }
 
     private void initViews() {
-    	
+
         setContentView(R.layout.activity_music_view_list);
-        
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.pic_main_drawer);
-		Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
-		toolbar.setTitle(" ");
-		setSupportActionBar(toolbar);
+        Toolbar toolbar = (Toolbar) this.findViewById(R.id.toolbar);
+        toolbar.setTitle(" ");
+        setSupportActionBar(toolbar);
 
-		final ActionBar ab = getSupportActionBar();
-		ab.setDisplayHomeAsUpEnabled(true);
+        final ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
 
-		initPlayer();
-		 
-		listPackageView = (RecyclerView) findViewById(R.id.select_data);
-        
-		listPackageView.setLayoutManager(new LinearLayoutManager(listPackageView
-				.getContext()));
-		listPackageView.setAdapter(new RecyclerViewAdapter(MusicViewActivity.this,musics,player));
-        
+        initPlayer();
+
+        listPackageView = (RecyclerView) findViewById(R.id.select_data);
+
+        listPackageView.setLayoutManager(new LinearLayoutManager(listPackageView
+                .getContext()));
+        listPackageView.setAdapter(new RecyclerViewAdapter(MusicViewActivity.this, musics, player));
+        listPackageView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
+
+
     }
-    
-    private void initPlayer(){
-    	player = new MusicPlayer();
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).show(player).commitAllowingStateLoss();
+
+    private void initPlayer() {
+        player = new MusicPlayer();
+        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout, player, MusicPlayer.TAG).show(player).commitAllowingStateLoss();
         player.setOnPlayListener(new OnPlayListener() {
-			boolean isLastSong = false;
-			@Override
-			public void OnPlayFinished() {
-				if (isLastSong) {
-					player.stopTVPlayer();
-					isLastSong = false;
-				}
-				else {
-						player.nextMusic();					
-				}
-			}
-			
-			@Override
-			public void OnPlayBegin(String path, String name, String artist) {
-				if (musics.get(musics.size() -1).getPath().equals(path)) {
-					isLastSong = true;
-				}
-				else {
-					isLastSong = false;
-				}
-				
-			}
-		});
+            boolean isLastSong = false;
+
+            @Override
+            public void OnPlayFinished() {
+                if (isLastSong) {
+                    player.stopTVPlayer();
+                    isLastSong = false;
+                } else {
+                    player.nextMusic();
+                }
+            }
+
+            @Override
+            public void OnPlayBegin(String path, String name, String artist) {
+                if (musics.get(musics.size() - 1).getPath().equals(path)) {
+                    isLastSong = true;
+                } else {
+                    isLastSong = false;
+                }
+
+            }
+        });
     }
 
     private void initEvents() {
-    	
+
         /**
          * IP part
          */
-        
-    	ipBoxSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), new Handler(getMainLooper()));        
-  
+
+        ipBoxSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), new Handler(getMainLooper()));
+
     }
-	public class RecyclerViewAdapter extends
-			RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-		private Context mContext;
-		private List<Music> mMusics;
-		private MusicPlayer mplayer;
+    public class RecyclerViewAdapter extends
+            RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-		public RecyclerViewAdapter(Context Context, List<Music> musics,
-				MusicPlayer player) {
-			this.mContext = Context;
-			this.mMusics = musics;
-			this.mplayer = player;
-		}
+        private Context mContext;
+        private List<Music> mMusics;
+        private MusicPlayer mplayer;
 
-		@Override
-		public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
-				ViewGroup parent, int viewType) {
-			View view = LayoutInflater.from(parent.getContext()).inflate(
-					R.layout.music_list_item, parent, false);
-			return new ViewHolder(view);
-		}
+        public RecyclerViewAdapter(Context Context, List<Music> musics,
+                                   MusicPlayer player) {
+            this.mContext = Context;
+            this.mMusics = musics;
+            this.mplayer = player;
+        }
 
-		@Override
-		public void onBindViewHolder(
-				final RecyclerViewAdapter.ViewHolder holder, final int position) {
+        @Override
+        public RecyclerViewAdapter.ViewHolder onCreateViewHolder(
+                ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(
+                    R.layout.music_list_item, parent, false);
+            return new ViewHolder(view);
+        }
 
-			final View view = holder.mView;
-			
-			final Music music = mMusics.get(position);
-			holder.musicName.setText(music.getTitle());
-			holder.artist.setText(music.getArtist() + "  ["
-					+ DateUtils.getTimeShow(music.getDuration() / 1000) + "]");
+        @Override
+        public void onBindViewHolder(
+                final RecyclerViewAdapter.ViewHolder holder, final int position) {
 
-			holder.fullPath.setText(music.getPath());
+            final View view = holder.mView;
 
-			String musicImagePath = DiskCacheFileManager
-					.isSmallImageExist(music.getPath());
-			if (!musicImagePath.equals("")) {
-				MyApplication.imageLoader.displayImage("file://"
-						+ musicImagePath, holder.defaultImage,
-						MyApplication.musicPicOptions);
-				holder.defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
-			} else {
-				SetDefaultImage.getInstance().startExecutor(
-						holder.defaultImage, music);
-			}
+            final Music music = mMusics.get(position);
+            holder.musicName.setText(music.getTitle());
+            holder.artist.setText(music.getArtist() + "  ["
+                    + DateUtils.getTimeShow(music.getDuration() / 1000) + "]");
 
-			holder.playBtn.setOnClickListener(new OnClickListener() {
+            holder.fullPath.setText(music.getPath());
 
-				@Override
-				public void onClick(View v) {
-					playMusics(mMusics, music);
-				}
-			});
+            String musicImagePath = DiskCacheFileManager
+                    .isSmallImageExist(music.getPath());
+            if (!musicImagePath.equals("")) {
+                MyApplication.imageLoader.displayImage("file://"
+                                + musicImagePath, holder.defaultImage,
+                        MyApplication.musicPicOptions);
+                holder.defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
+            } else {
+                SetDefaultImage.getInstance().startExecutor(
+                        holder.defaultImage, music);
+            }
 
-			view.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
+            holder.playBtn.setOnClickListener(new OnClickListener() {
 
-	                MyApplication.vibrator.vibrate(100);
-	                Intent intent = new Intent();
-	                Music music = musics.get(position);
-	                Bundle bundle = new Bundle();
-	                bundle.putSerializable("selectedMusic", music);
-	                intent.putExtras(bundle);
-	                intent.setClass(MusicViewActivity.this, MusicDetailsActivity.class);
-	                startActivity(intent);
+                @Override
+                public void onClick(View v) {
+                    playMusics(mMusics, music);
+                }
+            });
 
-				}
-			});
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-		}
+                    MyApplication.vibrator.vibrate(100);
+                    Intent intent = new Intent();
+                    Music music = musics.get(position);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selectedMusic", music);
+                    intent.putExtras(bundle);
+                    intent.setClass(MusicViewActivity.this, MusicDetailsActivity.class);
+                    startActivity(intent);
 
-		@Override
-		public int getItemCount() {
+                }
+            });
 
-			return mMusics.size();
+        }
 
-		}
+        @Override
+        public int getItemCount() {
 
-		public class ViewHolder extends RecyclerView.ViewHolder {
+            return mMusics.size();
 
-			public TextView musicName;
-			public TextView fullPath;
-			public ImageView playBtn;
-			public ImageView defaultImage;
-			public TextView artist;
+        }
 
-			public final View mView;
+        public class ViewHolder extends RecyclerView.ViewHolder {
 
-			public ViewHolder(View view) {
+            public TextView musicName;
+            public TextView fullPath;
+            public ImageView playBtn;
+            public ImageView defaultImage;
+            public TextView artist;
 
-				super(view);
+            public final View mView;
 
-				mView = view;
-				musicName = (TextView) view.findViewById(R.id.music_item_name);
-				fullPath = (TextView) view.findViewById(R.id.music_item_path);
-				artist = (TextView) view
-						.findViewById(R.id.music_item_artist_duration);
-				playBtn = (ImageView) view.findViewById(R.id.music_list_play);
-				defaultImage = (ImageView) view
-						.findViewById(R.id.music_list_image);
+            public ViewHolder(View view) {
 
-			}
-		}
+                super(view);
 
-		private void playMusics(List<Music> musics, Music music) {
-			((FragmentActivity) mContext).getSupportFragmentManager()
-					.beginTransaction().show(mplayer).commitAllowingStateLoss();
-			if (music != null) {
-				mplayer.playMusics(music);
-			} else {
-				mplayer.autoPlaying(true);
-			}
-		}
+                mView = view;
+                musicName = (TextView) view.findViewById(R.id.music_item_name);
+                fullPath = (TextView) view.findViewById(R.id.music_item_path);
+                artist = (TextView) view
+                        .findViewById(R.id.music_item_artist_duration);
+                playBtn = (ImageView) view.findViewById(R.id.music_list_play);
+                defaultImage = (ImageView) view
+                        .findViewById(R.id.music_list_image);
 
-	}
-	
+            }
+        }
+
+        private void playMusics(List<Music> musics, Music music) {
+            ((FragmentActivity) mContext).getSupportFragmentManager()
+                    .beginTransaction().show(mplayer).commitAllowingStateLoss();
+            if (music != null) {
+                mplayer.playMusics(music);
+            } else {
+                mplayer.autoPlaying(true);
+            }
+        }
+
+    }
+
 
     /**
      * *******************************************系统发发重载********************************************************
@@ -288,17 +287,18 @@ public class MusicViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-		player.attachMusics(musics,playlistName).autoPlaying(true);
-		
-		
+        player.attachMusics(musics, playlistName).autoPlaying(true);
+
+
     }
+
     @Override
     protected void onDestroy() {
-    
-    	super.onDestroy();
-    	if (ipBoxSelecter != null) {
-			ipBoxSelecter.release();
-		}
+
+        super.onDestroy();
+        if (ipBoxSelecter != null) {
+            ipBoxSelecter.release();
+        }
     }
 
     @Override
@@ -312,5 +312,5 @@ public class MusicViewActivity extends AppCompatActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
-    
+
 }
