@@ -13,7 +13,6 @@ buildscript {
 android {
     compileSdkVersion 19
     buildToolsVersion '21.1.1'
-
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -26,6 +25,11 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
         targetCompatibility JavaVersion.VERSION_1_6
+    }
+    buildTypes {
+        release {
+            proguardFile 'proguard-project.txt'
+        }
     }
 }
 dependencies {

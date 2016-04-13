@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/folat_dialog_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/pass_inf_bkg" >
+
+    <TextView
+        android:id="@+id/tv_alertdia_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="@dimen/dialog_title_margintop"
+        android:singleLine="true"
+        android:text="@string/notify_information"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/dialog_title_textsize" />
+
+    <ImageView
+        android:id="@+id/iv_alertdia_dilver"
+        android:layout_width="match_parent"
+        android:layout_height="1.5dp"
+        android:layout_below="@id/tv_alertdia_title"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@android:color/holo_blue_light" />
+
+    <TextView
+        android:id="@+id/tv_alertdia_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_alertdia_dilver"
+        android:layout_centerHorizontal="true"
+        android:paddingLeft="15dp"
+        android:layout_marginLeft="4dp"
+        android:paddingRight="15dp"
+        android:maxLines="24"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="outsideInset"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:scrollbarSize="20dp"
+        android:fadeScrollbars="false"
+        android:singleLine="false"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/dialog_content_textsize" />
+
+    <Button
+        android:id="@+id/bt_alertdia_cancel"
+        android:layout_width="@dimen/dialog_btn_width"
+        android:layout_height="@dimen/dialog_btn_height"
+        android:layout_below="@id/tv_alertdia_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_notext"
+        android:text="@string/return_button"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/dialog_btn_textsize" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/bt_alertdia_cancel" />
+
+</RelativeLayout>

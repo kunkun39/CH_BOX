@@ -21,29 +21,35 @@ dependencies {
 	compile project(':vitamio4.21')
 }
 
-android{
+android {
 	compileSdkVersion 19
 	buildToolsVersion '21.1.1'
-	
+
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
 			java.srcDirs = ['src']
 			resources.srcDirs = ['src']
 			res.srcDirs = ['res']
-			jniLibs.srcDirs = ['libs']		
+			jniLibs.srcDirs = ['libs']
 			assets.srcDirs = ['assets']
 		}
-		
+
 		debug.setRoot('build-types/debug')
-        release.setRoot('build-types/release')
+		release.setRoot('build-types/release')
 	}
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_6
-        targetCompatibility JavaVersion.VERSION_1_6
-    }
-    packagingOptions {
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/LICENSE.txt'
-    }
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_6
+		targetCompatibility JavaVersion.VERSION_1_6
+	}
+	packagingOptions {
+		exclude 'META-INF/NOTICE.txt'
+		exclude 'META-INF/LICENSE.txt'
+	}
+	buildTypes {
+		release {
+			minifyEnabled true
+			proguardFile 'proguard-project.txt'
+		}
+	}
 }

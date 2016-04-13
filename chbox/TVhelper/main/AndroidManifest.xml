@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.changhong.tvhelper"
     android:versionCode="1"
-    android:versionName="1.0.0"
+    android:versionName="1.0"
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
@@ -42,7 +42,7 @@
     <application
         android:name="com.changhong.common.system.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/helper_fw"
+        android:icon="@drawable/yupptvscope_icon"
         android:label="@string/app_name"        
         android:largeHeap="true"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
