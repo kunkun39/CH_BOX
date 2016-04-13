@@ -24,8 +24,8 @@
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="67.6dip"
-            android:background="@drawable/title_banner"
+            android:layout_height="65dip"
+            android:background="@drawable/title_background"
             android:focusable="false"
             android:orientation="horizontal" >
 
@@ -41,12 +41,12 @@
                 android:textSize="20sp" />
         </LinearLayout>
 
-        <Button
+      <!--   <Button
             android:id="@+id/btn_back"
             android:layout_width="70.5dip"
-            android:layout_height="67.6dip"
+            android:layout_height="65dip"
             android:layout_marginLeft="0dip"
-            android:background="@drawable/title_btn_back_selector" />
+            android:background="@drawable/title_btn_back_selector" /> -->
         
         <ImageButton
             android:id="@+id/setting_sidemunubutton"
@@ -60,57 +60,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="67.6dip"
-            android:background="#F0F3F6"
+            android:layout_marginTop="62dip"
+            android:background="@drawable/boby_background"
             android:orientation="vertical" >
 
             <TextView
                 style="@style/titletext"
-                android:text="@string/advanced" />
-
-            <LinearLayout style="@style/wrap_layout" >
-
-                <!-- 上圆角 -->
-
-                <LinearLayout
-                    android:id="@+id/btn_sys_score"
-                    style="@style/top_layout" >
-
-                    <TextView
-                        style="@style/usertext"
-                        android:text="@string/system_score" />
-
-                    <ImageView style="@style/img_arrow" />
-                </LinearLayout>
-
-                <!-- 分割线 -->
-
-                <View style="@style/bg_line" />
-
-                <!-- 下圆角 -->
-
-                <LinearLayout
-                    android:id="@+id/btn_sys_help"
-                    style="@style/bottom_layout" >
-
-                    <TextView
-                        style="@style/usertext"
-                        android:text="@string/setting_help" />
-
-                    <ImageView style="@style/img_arrow" />
-                </LinearLayout>
-            </LinearLayout>
-            <!-- 全圆角 -->
-
-            <TextView
-                style="@style/titletext"
+                android:layout_marginLeft="12dp"
                 android:text="@string/about" />
+            
+            <View android:layout_marginLeft="12dp"
+                style="@style/bg_line" />
+            
+            <LinearLayout android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" 
+                android:layout_marginLeft="12dp">
 
-            <LinearLayout style="@style/wrap_layout" >
-
-                <!-- 上圆角 -->
-
-                <LinearLayout style="@style/top_layout" >
+                <LinearLayout style="@style/base_layout" >
 
                     <TextView
                         style="@style/usertext"
@@ -125,20 +92,23 @@
                 <!-- 分割线 -->
 
                 <View style="@style/bg_line" />
-                <!-- 下圆角 -->
 
                 <LinearLayout
                     android:id="@+id/update_info_btn"
-                    style="@style/bottom_layout" >
+                    style="@style/base_layout" >
 
-                    <TextView
+                    <TextView 
                         style="@style/usertext"
                         android:text="@string/update" />
 
-                    <ImageView style="@style/img_arrow" />
                 </LinearLayout>
+                <View style="@style/bg_line" />
+                
             </LinearLayout>
+            
+            
         </LinearLayout>
+        
     </RelativeLayout>
 
 </RelativeLayout>

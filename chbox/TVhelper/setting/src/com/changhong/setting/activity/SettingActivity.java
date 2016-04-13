@@ -47,14 +47,6 @@ public class SettingActivity extends Activity {
 	private UserUpdateService updateService;
 
 	/**
-	 * 系统评分、系统帮助
-	 */
-	private LinearLayout scoreBtn;
-	private LinearLayout helpBtn;
-	private ScoreDialog scoreDialog;
-	private AppHelpDialog appHelpDialog;
-
-	/**
 	 * 消息处理
 	 */
 	private Handler handler;
@@ -74,15 +66,11 @@ public class SettingActivity extends Activity {
 		// 初始化主界面
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_setting);
-//		bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
+
 		// 初始化按钮和事件
-		settingReturn = (Button) findViewById(R.id.btn_back);
+//		settingReturn = (Button) findViewById(R.id.btn_back);
 		updateInfo = (TextView) findViewById(R.id.update_info);
 		updateBtn = (LinearLayout) findViewById(R.id.update_info_btn);
-		scoreBtn = (LinearLayout) findViewById(R.id.btn_sys_score);
-		helpBtn = (LinearLayout) findViewById(R.id.btn_sys_help);
-//		setting_smb = (ImageButton) findViewById(R.id.setting_sidemunubutton);
-
 		
 
 		/**
@@ -136,22 +124,14 @@ public class SettingActivity extends Activity {
 			}
 		};
 		
-//		setting_smb.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				bidirSlidingLayout.clickSideMenu();
-//			}
-//		});
 
-		settingReturn.setOnClickListener(new View.OnClickListener() {
+		/*settingReturn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				finish();
 			}
-		});
+		});*/
 
 		updateBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -161,40 +141,6 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-		scoreBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				scoreDialog = new ScoreDialog(SettingActivity.this);
-				scoreDialog.setTitle(getResources().getString(R.string.system_score));
-				scoreDialog.show();
-			}
-		});
-
-		if (AppConfig.USE_TV
-				|| AppConfig.USE_OTHER_AIRDISPLAY
-				|| AppConfig.USE_VOICE_INPUT) {
-			helpBtn.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MyApplication.vibrator.vibrate(100);
-					appHelpDialog = new AppHelpDialog(SettingActivity.this);
-					appHelpDialog.setTitle(getResources().getString(R.string.system_help));
-					appHelpDialog.show();
-				}
-			});
-		}else {
-			helpBtn.setVisibility(View.GONE);
-		}
-
-//		bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				// TODO Auto-generated method stub
-//				bidirSlidingLayout.closeRightMenu();
-//			}
-//		});
 	}
 
 	private void initData() {
@@ -243,17 +189,5 @@ public class SettingActivity extends Activity {
 			updateService.updateReceiver = null;
 		}
 	}
-
-//	@Override
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		switch (keyCode) {
-//		case KeyEvent.KEYCODE_MENU:
-//			bidirSlidingLayout.clickSideMenu();
-//			return true;
-//		default:
-//			break;
-//		}
-//		return super.onKeyDown(keyCode, event);
-//	}
 
 }
