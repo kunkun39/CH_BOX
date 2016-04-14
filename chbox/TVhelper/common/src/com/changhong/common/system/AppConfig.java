@@ -50,8 +50,8 @@ public class AppConfig {
     /**
      * Project For
      */
-    public final static String PROJECT_DEFAULT = "default";
-    public final static String PROJECT_INDIA_DAS = "das";
+    public final static int PROJECT_DEFAULT = 0;
+    public final static int PROJECT_INDIA_DAS = 1;
 
-    public static final String PROJECT_NAME = PROJECT_INDIA_DAS;
+    public static final int PROJECT_NAME = PROJECT_INDIA_DAS;
 }
