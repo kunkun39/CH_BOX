@@ -46,4 +46,12 @@ public class AppConfig {
      * Intent
      */
     public final static String BROADCAST_INTENT_EPGDB_UPDATE = "com.changhong.epg.db.update";
+
+    /**
+     * Project For
+     */
+    public final static String PROJECT_DEFAULT = "default";
+    public final static String PROJECT_INDIA_DAS = "das";
+
+    public static final String PROJECT_NAME = PROJECT_INDIA_DAS;
 }
