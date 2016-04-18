@@ -59,7 +59,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     /**
      * control part
      */
-    View img_d = null;
+    ImageView img_d = null;
     View img_v = null;
 
     private GestureDetector detector;
@@ -95,12 +95,16 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     private PointF centerPoint = new PointF();
     int width, height;
 
-    /**************************************************百度语音换台部分**************************************************/
+    /**************************************************
+     * 百度语音换台部分
+     **************************************************/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AppConfig.USE_TV) {
+        if (AppConfig.PROJECT_NAME == AppConfig.PROJECT_INDIA_DAS) {
+            setContentView(R.layout.activity_remote_control_multi_das);
+        } else if (AppConfig.USE_TV) {
             setContentView(R.layout.activity_remote_control);
         } else {
             setContentView(R.layout.activity_remote_control_multi);
@@ -114,7 +118,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         int densityDpi = metric.densityDpi;  // 屏幕密度DPI（120 / 160 / 240）
         detector = new GestureDetector(this);
 //        bidirSlidingLayout = (BidirSlidingLayout) findViewById(R.id.bidir_sliding_layout);
-        img_d = findViewById(R.id.img_d);
+        img_d = (ImageView)findViewById(R.id.img_d);
         img_v = findViewById(R.id.img_volume);
         smoothBall = (ImageView) findViewById(R.id.ball);
         Button btn_up = (Button) findViewById(R.id.up);
@@ -122,12 +126,13 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         Button btn_left = (Button) findViewById(R.id.left);
         Button btn_right = (Button) findViewById(R.id.right);
         Button btn_center = (Button) findViewById(R.id.center);
-        Button btn_vup = (Button) findViewById(R.id.volumeup);
-        Button btn_vdown = (Button) findViewById(R.id.volumedown);
+        View btn_vup = (View) findViewById(R.id.volumeup);
+        View btn_vdown = (View) findViewById(R.id.volumedown);
         Button btn_vtv = (Button) findViewById(R.id.tv);
         Button btn_vchannel = (Button) findViewById(R.id.channel);
         Button btn_vnum = (Button) findViewById(R.id.num);
         Button back = (Button) findViewById(R.id.btn_back);
+        Button search = (Button) findViewById(R.id.search);
         Button power = (Button) findViewById(R.id.power);
         Button home = (Button) findViewById(R.id.btn_home);
         Button menu = (Button) findViewById(R.id.btn_menu);
@@ -143,13 +148,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         btn_right.setOnClickListener(this);
         btn_center.setOnTouchListener(this);
         btn_center.setOnClickListener(this);
-        btn_vup.setOnTouchListener(this);
-        btn_vup.setOnClickListener(this);
-        btn_vdown.setOnTouchListener(this);
-        btn_vdown.setOnClickListener(this);
 
-        if (AppConfig.USE_TV)
-        {
+        if (AppConfig.USE_TV) {
             btn_vtv.setOnTouchListener(this);
             btn_vtv.setOnClickListener(new OnClickListener() {
                 @Override
@@ -186,52 +186,20 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 }
             });
         }
+        setButtonOnClick(back);
+        setButtonOnClick(home);
+        setButtonOnClick(menu);
+        setButtonOnClick(power);
+        setButtonOnClick(fanhui);
+        setButtonOnClick(btn_vup);
+        setButtonOnClick(btn_vdown);
+        setButtonOnClick(findViewById(R.id.btn_play));
+        setButtonOnClick(findViewById(R.id.search));
+        setButtonOnClick(findViewById(R.id.mediabackward));
+        setButtonOnClick(findViewById(R.id.mediaforward));
 
-        back.setOnTouchListener(this);
-        home.setOnClickListener(this);
-        home.setOnTouchListener(this);
-        menu.setOnClickListener(this);
-        menu.setOnTouchListener(this);
-        fanhui.setOnClickListener(this);
-        fanhui.setOnTouchListener(this);
-        back.setOnClickListener(new OnClickListener() {
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));
 
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                finish();
-            }
-        });
-        power.setOnClickListener(new OnClickListener() {
-
-            @Override
-			public void onClick(View v) {
-				MyApplication.vibrator.vibrate(100);
-				Dialog dialog = DialogUtil.showAlertDialog(
-                        TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
-                        new DialogBtnOnClickListener() {
-
-                            @Override
-                            public void onSubmit(DialogMessage dialogMessage) {
-                                ClientSendCommandService.msg = "key:power";
-                                ClientSendCommandService.handler
-                                        .sendEmptyMessage(1);
-                                if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-									dialogMessage.dialog.cancel();
-								}
-                            }
-
-                            @Override
-                            public void onCancel(DialogMessage dialogMessage) {
-                            	if (dialogMessage.dialog!=null && dialogMessage.dialog.isShowing()) {
-									dialogMessage.dialog.cancel();
-								}
-                            }
-                        });
-			}
-        });
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
-        
 //        bidirSlidingLayout.setOnClickListener(new View.OnClickListener() {
 //			
 //			@Override
@@ -270,8 +238,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
         }
         centerPoint.set((180.25f - 35.5f) * density, (343.25f - 35.5f) * density);
 
-        if (AppConfig.USE_VOICE_INPUT)
-        {
+        if (AppConfig.USE_VOICE_INPUT) {
             //长按触发语音换台功能
             btn_center.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -291,7 +258,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                      */
                     int code = recognitionClient.startVoiceRecognition(recogListener, config);
                     if (code != VoiceRecognitionClient.START_WORK_RESULT_WORKING) {
-                        Toast.makeText(TVRemoteControlActivity.this, R.string.check_network , Toast.LENGTH_LONG).show();
+                        Toast.makeText(TVRemoteControlActivity.this, R.string.check_network, Toast.LENGTH_LONG).show();
                     }
 
                     return true;
@@ -303,94 +270,113 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
 
     }
 
-    /*****************************************************系统方法重载部分***********************************************/
+    /*****************************************************
+     * 系统方法重载部分
+     ***********************************************/
 
     @Override
     public void onClick(View v) {
+        MyApplication.vibrator.vibrate(100);
         switch (v.getId()) {
             case R.id.up:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:up";
                 break;
             case R.id.down:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:down";
                 break;
             case R.id.left:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:left";
                 break;
             case R.id.right:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:right";
                 break;
             case R.id.center:
             case R.id.numok:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:ok";
                 break;
             case R.id.btn_b:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:back";
                 break;
             case R.id.btn_menu:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:menu";
                 break;
             case R.id.btn_home:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:home";
                 break;
             case R.id.volumeup:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:volumeup";
                 break;
             case R.id.volumedown:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:volumedown";
                 break;
-            case R.id.power:
+            case R.id.search:
+                ClientSendCommandService.msg = "key:search";
+                break;
+            case R.id.mediabackward:
+                ClientSendCommandService.msg = "key:media_backward";
+                break;
+            case R.id.mediaforward:
+                ClientSendCommandService.msg = "key:media_forward";
+                break;
+            case R.id.btn_play:
+                ClientSendCommandService.msg = "key:media_play_pause";
+                break;
+            case R.id.power: {
                 MyApplication.vibrator.vibrate(100);
-                ClientSendCommandService.msg = "key:power";
+                Dialog dialog = DialogUtil.showAlertDialog(
+                        TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
+                        new DialogBtnOnClickListener() {
+
+                            @Override
+                            public void onSubmit(DialogMessage dialogMessage) {
+                                ClientSendCommandService.msg = "key:power";
+                                ClientSendCommandService.handler
+                                        .sendEmptyMessage(1);
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+
+                            @Override
+                            public void onCancel(DialogMessage dialogMessage) {
+                                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                                    dialogMessage.dialog.cancel();
+                                }
+                            }
+                        });
+            }
+            break;
+            case R.id.btn_back:
+                finish();
                 break;
             case R.id.num0:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:0";
                 break;
             case R.id.num1:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:1";
                 break;
             case R.id.num2:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:2";
                 break;
             case R.id.num3:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:3";
                 break;
             case R.id.num4:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:4";
                 break;
             case R.id.num5:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:5";
                 break;
             case R.id.num6:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:6";
                 break;
             case R.id.num7:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:7";
                 break;
             case R.id.num8:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:8";
                 break;
             case R.id.num9:
-                MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:9";
                 break;
             default:
@@ -476,8 +462,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 /**
                  * 语音识别对话结束
                  */
-                if (AppConfig.USE_VOICE_INPUT)
-                {
+                if (AppConfig.USE_VOICE_INPUT) {
                     if (v.getId() == R.id.center) {
                         recognitionClient.speakFinish();
                     }
@@ -485,186 +470,19 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 break;
         }
 
-        int background_bg = 0;
-        switch (v.getId()) {
-            case R.id.up:
-                if (AppConfig.USE_VOICE_INPUT) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_directory_up;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_direction;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.pad_up;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.pad;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:up";
-                    img_d.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_d.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.down:
-                if (AppConfig.USE_VOICE_INPUT) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_directory_down;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_direction;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.pad_down;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.pad;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:down";
-                    img_d.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_d.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.left:
-                if (AppConfig.USE_VOICE_INPUT) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_directory_left;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_direction;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.pad_left;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.pad;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:left";
-                    img_d.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_d.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.right:
-                if (AppConfig.USE_VOICE_INPUT) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_directory_right;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_direction;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.pad_right;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.pad;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:right";
-                    img_d.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_d.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.center:
-                if (AppConfig.USE_VOICE_INPUT) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_directory_center;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_direction;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.pad_center;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.pad;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "";
-                    img_d.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_d.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.volumeup:
-                if (AppConfig.USE_TV) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_menu_volumplus;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_menu;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.volumeplus;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.volume;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:volumeup";
-                    img_v.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_v.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.volumedown:
-                if (AppConfig.USE_TV) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.tv_control_menu_volumminus;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.tv_control_menu;
-                    }
-                } else {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        background_bg = R.drawable.volumeminus;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        background_bg = R.drawable.volume;
-                    }
-                }
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "key:volumedown";
-                    img_v.setBackgroundResource(background_bg);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_v.setBackgroundResource(background_bg);
-                }
-                break;
-            case R.id.tv:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "";
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu_tv);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
-                }
-                break;
-            case R.id.channel:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "";
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu_channel);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
-                }
-                break;
-            case R.id.num:
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    LongKeyValue = "";
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu_num);
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
-                }
-                break;
-            case R.id.btn_home:
-            case R.id.btn_menu:
-            case R.id.btn_b:
-                LongKeyValue = "";
-                break;
-            default:
-                break;
+        boolean result = false;
+        if (AppConfig.PROJECT_NAME == AppConfig.PROJECT_INDIA_DAS
+                && !result) {
+            result = onTouchWithProjectDas(v, event);
+        }
+        if (AppConfig.USE_TV && !result) {
+            result = onTouchWithTV(v, event);
+        }
+        if (AppConfig.USE_VOICE_INPUT && !result) {
+            result = onTouchWithVoiceInput(v, event);
+        }
+        if (!result) {
+            result = onTouchDefault(v, event);
         }
         return false;
     }
@@ -820,10 +638,447 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
     protected void onDestroy() {
         super.onDestroy();
         if (ipSelecter != null) {
-			ipSelecter.release();
-		}
+            ipSelecter.release();
+        }
     }
 
+    private void setButtonOnClick(View view) {
+        if (view != null) {
+            view.setOnClickListener(this);
+            view.setOnTouchListener(this);
+        }
+
+    }
+
+
+    private boolean onTouchWithProjectDas(View v, MotionEvent event) {
+        boolean result = false;
+        int background_bg = 0;
+        View vol = null, mediacontroller = null;
+        switch (v.getId()) {
+            case R.id.up:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_keypad_up;
+                    LongKeyValue = "key:up";
+                    img_d.setImageResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_keypad;
+                    img_d.setImageResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.down:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_keypad_down;
+                    LongKeyValue = "key:down";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_keypad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP){
+                    img_d.setImageResource(background_bg);
+                }
+
+                result = true;
+                break;
+            case R.id.left:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_keypad_left;
+                    LongKeyValue = "key:left";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_keypad;
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP){
+                    img_d.setImageResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.right:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_keypad_right;
+                    LongKeyValue = "key:right";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_keypad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP){
+                    img_d.setImageResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.center:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_keypad_center;
+                    LongKeyValue = "";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_keypad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN
+                        || event.getAction() == MotionEvent.ACTION_UP){
+                    img_d.setImageResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.volumeup:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_vol_plus;
+                    LongKeyValue = "";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_vol;
+                }
+                vol = findViewById(R.id.volume);
+                if (vol != null) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN
+                            || event.getAction() == MotionEvent.ACTION_UP) {
+                        vol.setBackgroundResource(background_bg);
+                    }
+                } else {
+                    break;
+                }
+                result = true;
+                break;
+            case R.id.volumedown:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_vol_minus;
+                    LongKeyValue = "";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_vol;
+                }
+                vol = findViewById(R.id.volume);
+                if (vol != null) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN
+                            || event.getAction() == MotionEvent.ACTION_UP) {
+                        vol.setBackgroundResource(background_bg);
+                    }
+                } else {
+                    break;
+                }
+                result = true;
+                break;
+            case R.id.mediabackward:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_media_controller_backward;
+                    LongKeyValue = "";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_media_contoller;
+                }
+                mediacontroller = findViewById(R.id.mediacontroller);
+                if (mediacontroller != null) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN
+                            || event.getAction() == MotionEvent.ACTION_UP) {
+                        mediacontroller.setBackgroundResource(background_bg);
+                    }
+                } else {
+                    break;
+                }
+                result = true;
+                break;
+            case R.id.mediaforward:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.das_media_controller_forward;
+                    LongKeyValue = "";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.das_media_contoller;
+                }
+                mediacontroller = findViewById(R.id.mediacontroller);
+                if (mediacontroller != null) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN
+                            || event.getAction() == MotionEvent.ACTION_UP) {
+                        mediacontroller.setBackgroundResource(background_bg);
+                    }
+                } else {
+                    break;
+                }
+                result = true;
+                break;
+        }
+        return result;
+    }
+
+    private boolean onTouchWithTV(View v, MotionEvent event) {
+        boolean result = false;
+        int background_bg = 0;
+        switch (v.getId()) {
+            case R.id.volumeup:
+                if (AppConfig.USE_TV) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        background_bg = R.drawable.tv_control_menu_volumplus;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        background_bg = R.drawable.tv_control_menu;
+                    }
+                    result = true;
+                } else {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        background_bg = R.drawable.volumeplus;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        background_bg = R.drawable.volume;
+                    }
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:volumeup";
+                    img_v.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(background_bg);
+                }
+                break;
+            case R.id.volumedown:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_menu_volumminus;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_menu;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:volumedown";
+                    img_v.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private boolean onTouchWithVoiceInput(View v, MotionEvent event) {
+        boolean result = false;
+        int background_bg = 0;
+        switch (v.getId()) {
+            case R.id.up:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_directory_up;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_direction;
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:up";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.down:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_directory_down;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_direction;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:down";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.left:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_directory_left;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_direction;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:left";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.right:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_directory_right;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_direction;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:right";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.center:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_directory_center;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_direction;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.volumeup:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.tv_control_menu_volumplus;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.tv_control_menu;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:volumeup";
+                    img_v.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private boolean onTouchDefault(View v, MotionEvent event) {
+        boolean result = false;
+        int background_bg = 0;
+        switch (v.getId()) {
+            case R.id.up:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.pad_up;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.pad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:up";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.down:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.pad_down;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.pad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:down";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.left:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.pad_left;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.pad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:left";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.right:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.pad_right;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.pad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "key:right";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.center:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.pad_center;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.pad;
+                }
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "";
+                    img_d.setBackgroundResource(background_bg);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_d.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.volumeup:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.volumeplus;
+                    LongKeyValue = "key:volumeup";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.volume;
+                }
+                if (img_v != null) {
+                    img_v.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.volumedown:
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    background_bg = R.drawable.volumeminus;
+                    LongKeyValue = "key:volumedown";
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    background_bg = R.drawable.volume;
+                }
+                if (img_v != null) {
+                    img_v.setBackgroundResource(background_bg);
+                }
+                result = true;
+                break;
+            case R.id.tv:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "";
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu_tv);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
+                }
+                result = true;
+                break;
+            case R.id.channel:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "";
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu_channel);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
+                }
+                result = true;
+                break;
+            case R.id.num:
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    LongKeyValue = "";
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu_num);
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    img_v.setBackgroundResource(R.drawable.tv_control_menu);
+                }
+                result = true;
+                break;
+            case R.id.btn_home:
+            case R.id.btn_menu:
+            case R.id.btn_b:
+                LongKeyValue = "";
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
     /**********************************************语音部分代码*********************************************************/
 
     /**
@@ -861,8 +1116,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
          * channel match list, integer value stand for match time, compare han zi one by one
          */
         private Map<String, Integer> matchChannel = new HashMap<String, Integer>();
-        
-        
+
 
         @Override
         public void onClientStatusChange(int status, Object obj) {
@@ -894,16 +1148,15 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
             }
         }
 
-        
+
         @Override
         public void onError(int errorType, int errorCode) {
-        	if (errorCode == VoiceRecognitionClient.ERROR_NETWORK_CONNECT_ERROR) {
-        		Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_bad_network_failed , Toast.LENGTH_LONG).show();
-			}
-        	else {
-        		Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_empty_message , Toast.LENGTH_LONG).show();
-			}
-            
+            if (errorCode == VoiceRecognitionClient.ERROR_NETWORK_CONNECT_ERROR) {
+                Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_bad_network_failed, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(TVRemoteControlActivity.this, R.string.sorry_empty_message, Toast.LENGTH_LONG).show();
+            }
+
             isRecognitioning = false;
             recognitionClient.stopVoiceRecognition();
         }
@@ -944,24 +1197,23 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
              * 2 - else go to switch channel way
              */
             boolean hasResult = false;
-            if(AppConfig.USE_MALL_APP)
-			{
-            	String SEARCH_STRING[] = {"魔力","魔力影音","电影","电视剧","综艺","体育","少儿","动画","音乐"};
-            	if (!hasResult) {
-            		for (String tempString : SEARCH_STRING) {
-						if (recognitionResult.equals(tempString)) {
-							hasResult = true;
-							ClientSendCommandService.msg = "mall:" + recognitionResult;
+            if (AppConfig.USE_MALL_APP) {
+                String SEARCH_STRING[] = {"魔力", "魔力影音", "电影", "电视剧", "综艺", "体育", "少儿", "动画", "音乐"};
+                if (!hasResult) {
+                    for (String tempString : SEARCH_STRING) {
+                        if (recognitionResult.equals(tempString)) {
+                            hasResult = true;
+                            ClientSendCommandService.msg = "mall:" + recognitionResult;
                             ClientSendCommandService.handler.sendEmptyMessage(1);
-                            return ;
-						}
-					}
-				}
-            	
-			}
+                            return;
+                        }
+                    }
+                }
+
+            }
             if (!hasResult || StringUtils.hasLength(recognitionResult)) {
-                /********************************************处理用户说的话********************************************/            	
-            	
+                /********************************************处理用户说的话********************************************/
+
                 String commands = YuYingWordsUtils.isSearchContainsControl(recognitionResult);
                 if (StringUtils.hasLength(commands)) {
                     //TODO:流程->主页
@@ -1177,7 +1429,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                                     }
                                 }
 
-                                if(findSpecial) {
+                                if (findSpecial) {
                                     break;
                                 }
                             }
@@ -1210,7 +1462,7 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                         }
 
                         //TODO:流程->如果频道没有搜索到，再次搜索应用
-                        if(!hasResult) {
+                        if (!hasResult) {
                             recognitionResult = beforeConvertRecognitionResult;
 
                             /**
@@ -1305,21 +1557,18 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                     BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
                     yuYingHelpDialog.show();
                 } else {
-				if(AppConfig.USE_MALL_APP)
-				{
-					if (recognitionResult.equals(getString(R.string.help))) {
-						BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
-	                    yuYingHelpDialog.show();
-					}else {
-						ClientSendCommandService.msg = "mall:" + recognitionResult;
-	                    ClientSendCommandService.handler.sendEmptyMessage(1);
-					}					
-                	
-				}
-				else
-				{
-                    Toast.makeText(TVRemoteControlActivity.this, getString(R.string.sorry_message_cannot_support) + recognitionResult, Toast.LENGTH_LONG).show();
-				}
+                    if (AppConfig.USE_MALL_APP) {
+                        if (recognitionResult.equals(getString(R.string.help))) {
+                            BaiDuVoiceChannelControlDialog yuYingHelpDialog = new BaiDuVoiceChannelControlDialog(TVRemoteControlActivity.this);
+                            yuYingHelpDialog.show();
+                        } else {
+                            ClientSendCommandService.msg = "mall:" + recognitionResult;
+                            ClientSendCommandService.handler.sendEmptyMessage(1);
+                        }
+
+                    } else {
+                        Toast.makeText(TVRemoteControlActivity.this, getString(R.string.sorry_message_cannot_support) + recognitionResult, Toast.LENGTH_LONG).show();
+                    }
                 }
             } else {
                 recognitioningFailedTimes = 0;

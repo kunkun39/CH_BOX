@@ -45,6 +45,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -53,6 +54,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
+import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.DialogUtil;
@@ -106,7 +108,7 @@ public class TVHelperMainActivity extends Activity {
         //setContentView(R.layout.activity_maim_new);
         setContentView(R.layout.activity_maim_muil_lang_pan);
 
-        
+
         initViewAndEvent();
 
         initUpdateThread();
@@ -312,7 +314,7 @@ public class TVHelperMainActivity extends Activity {
         /**
          * 通知系统媒体去更新媒体库
          */
-        String[] types = {"video/3gpp", "video/x-msvideo", "video/mp4", "video/mpeg", "video/quicktime",
+        String[] types = {"video/x-msvideo","video/3gpp", "video/x-msvideo", "video/mp4", "video/mpeg", "video/quicktime",
                 "audio/x-wav", "audio/x-pn-realaudio", "audio/x-ms-wma", "audio/x-ms-wmv", "audio/x-mpeg", "image/jpeg", "image/png"};
         MediaScannerConnection.scanFile(getApplicationContext(), new String[]{Environment.getExternalStorageDirectory().getAbsolutePath()}, types, null);
 
