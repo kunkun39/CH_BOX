@@ -65,14 +65,19 @@ public class BoxSelecter implements Observer
 	
 	public BoxSelecter(Activity activity,TextView title,ListView view,Button dropDownBtn,Handler handler)
 	{
+		if (view == null){
+			return;
+		}
 		mActivity = activity;
 		mView = view;
 		mTitle = title;
 		mDropDownBtn = dropDownBtn;
 		
 		mHandler = handler;
-		
-		mTitle.setText(IpSelectorDataServer.getInstance().getName());
+		if (mTitle != null){
+			mTitle.setText(IpSelectorDataServer.getInstance().getName());
+		}
+
 		mAdapter = new BoxSelectAdapter(activity);
 		mView.setAdapter(mAdapter);    //data and adapter 绑定
 		
@@ -149,7 +154,10 @@ public class BoxSelecter implements Observer
 					mLinearLayout.setBackgroundResource(R.drawable.ip_connect_title);
 					
 					// Update Name
-					mTitle.setText(dataServer.getName());
+					if(mTitle != null){
+						mTitle.setText(dataServer.getName());
+					}
+
 					
 				}catch(Exception e) {
 					e.printStackTrace();
