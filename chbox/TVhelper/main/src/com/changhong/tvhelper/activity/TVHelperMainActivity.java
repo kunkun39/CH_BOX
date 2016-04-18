@@ -21,6 +21,7 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 //import com.changhong.faq.activity.QuestionListActivity;
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
@@ -45,6 +46,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -107,7 +109,6 @@ public class TVHelperMainActivity extends Activity {
         
         //setContentView(R.layout.activity_maim_new);
         setContentView(R.layout.activity_maim_muil_lang_pan);
-
 
         initViewAndEvent();
 
