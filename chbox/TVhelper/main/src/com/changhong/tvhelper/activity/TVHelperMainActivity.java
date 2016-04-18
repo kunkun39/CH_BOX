@@ -46,6 +46,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -102,7 +104,7 @@ public class TVHelperMainActivity extends Activity {
         //setContentView(R.layout.activity_helper_main);
         
         //setContentView(R.layout.activity_maim_new);
-        setContentView(R.layout.activity_maim_muil_lang);
+        setContentView(R.layout.activity_maim_muil_lang_pan);
 
         
         initViewAndEvent();
@@ -126,7 +128,10 @@ public class TVHelperMainActivity extends Activity {
         View vedioTouYing =  findViewById(R.id.main_vedio_touying);
         View pictureTouYing =  findViewById(R.id.main_picture_touying);
         View otherTouTing =  findViewById(R.id.main_other_touying);
-        Button power = (Button) findViewById(R.id.power);
+//        Button power = (Button) findViewById(R.id.power);
+//        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.banner);
+        
+//        linearLayout.setBackgroundResource(R.drawable.title_banner);
         /**
          * init all event for every view
          */
@@ -242,7 +247,7 @@ public class TVHelperMainActivity extends Activity {
 
 
         /**关闭电源键**/
-        if(power != null)
+       /* if(power != null)
         {
             power.setOnClickListener(new OnClickListener() {
 
@@ -270,13 +275,13 @@ public class TVHelperMainActivity extends Activity {
                             });
                 }
             });
-        }
+        }*/
 
 
         /**
          * Ip部分
          */
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list),(LinearLayout)findViewById(R.id.banner),(ImageView)findViewById(R.id.ip_list_item_bg),new Handler(getMainLooper()));        
 
         mhandler = new Handler() {
             @Override

@@ -28,7 +28,7 @@ public class VedioCategoryActivity extends Activity {
 
     /**************************************************IP连接部分*******************************************************/    
     private Button back;
-    private BoxSelecter ipSelecter;
+//    private BoxSelecter ipSelecter;
 
     /**************************************************视频部分*******************************************************/
 
@@ -71,7 +71,7 @@ public class VedioCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+//    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,9 +123,9 @@ public class VedioCategoryActivity extends Activity {
     protected void onDestroy() {
     
     	super.onDestroy();
-    	if (ipSelecter != null) {
+    	/*if (ipSelecter != null) {
 			ipSelecter.release();
-		}
+		}*/
     }
 
     @Override

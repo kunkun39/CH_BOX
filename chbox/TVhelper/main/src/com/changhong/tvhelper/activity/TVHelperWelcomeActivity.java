@@ -28,7 +28,7 @@ public class TVHelperWelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tvhelper_welcome);
         imageView = (ImageView) findViewById(R.id.img_welcome_activity);
-        animation = AnimationUtils.loadAnimation(this, R.anim.activity_welcome_anim);
+        animation = AnimationUtils.loadAnimation(this, R.anim.activity_welcome_anim); //加载动画资源,生成对话对象
         imageView.startAnimation(animation);
 
         handler = new Handler();

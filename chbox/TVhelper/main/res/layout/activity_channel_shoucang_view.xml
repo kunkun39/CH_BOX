@@ -28,7 +28,7 @@
             android:id="@+id/linearLayout_ip"
             android:layout_width="fill_parent"
             android:layout_height="67.6dip"
-            android:background="@drawable/title_banner"
+            android:background="@drawable/title_banner1"
             android:focusable="false"
             android:gravity="center"
             android:orientation="horizontal" >
@@ -47,7 +47,7 @@
                 android:layout_width="16.7dip"
                 android:layout_height="10.7dip"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/title_ip_select" />
+                android:background="@drawable/title_ip_select1" />
         </LinearLayout>
 
         <Button

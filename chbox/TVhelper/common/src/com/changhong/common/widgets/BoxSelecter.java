@@ -1,5 +1,6 @@
 package com.changhong.common.widgets;
 
+import android.R.color;
 import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +14,8 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,11 +47,15 @@ public class BoxSelecter implements Observer
 	TextView mTitle = null;
 	ListView mView = null;
 	Button mDropDownBtn = null;
+	LinearLayout mLinearLayout = null;
+	ImageView mImageView = null;
 	
 	/**
 	 * IP List Adapter
+	 * 
+	 * 自定义类型
 	 */
-	BoxSelectAdapter mAdapter = null;
+	BoxSelectAdapter mAdapter = null;   
 	
 	/**
 	 * A Handler With MainLooper To Redraw Surface
@@ -62,11 +69,14 @@ public class BoxSelecter implements Observer
 		mView = view;
 		mTitle = title;
 		mDropDownBtn = dropDownBtn;
+		
 		mHandler = handler;
 		
 		mTitle.setText(IpSelectorDataServer.getInstance().getName());
 		mAdapter = new BoxSelectAdapter(activity);
-		mView.setAdapter(mAdapter);
+		mView.setAdapter(mAdapter);    //data and adapter 绑定
+		
+        //触摸返回		
 		mView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
@@ -74,13 +84,18 @@ public class BoxSelecter implements Observer
 				return false;
 			}
 		});
+		
+        //listView Item 选择		
 		mView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {								
                 IpSelectorDataServer.getInstance().setCurrentIp(mAdapter.ipList.get(arg2));                
                 mView.setVisibility(View.GONE);
+                mImageView.setVisibility(View.GONE);
 			}
 		});
+		
+       //触发IP选择按钮		
 		mDropDownBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -90,11 +105,27 @@ public class BoxSelecter implements Observer
 							.show();
 				} else {
 					mView.setVisibility(View.VISIBLE);
+					mImageView.setVisibility(View.VISIBLE);
 				}
 			}
 		});
 		
 		IpSelectorDataServer.getInstance().addViewObserver(this);
+	}
+	
+	public BoxSelecter(Activity activity,TextView title,ListView view,Button dropDownBtn,LinearLayout linearLayout,ImageView imageView,Handler handler)
+	{
+		
+		
+		this(activity,title,view,dropDownBtn,handler);
+		mLinearLayout = linearLayout;
+		mImageView = imageView;
+		
+		if(IpSelectorDataServer.getInstance().getCurrentIp() != null){
+			mLinearLayout.setBackgroundResource(R.drawable.ip_connect_title);
+		}else {
+			mLinearLayout.setBackgroundResource(R.drawable.ip_unconnect_title);
+		}
 	}
 	
 	// YVES YANG:!!!! Must Call This Function To Release Its Self
@@ -114,9 +145,12 @@ public class BoxSelecter implements Observer
 
 					// Update List
 					mAdapter.updateList(list);
-
+					
+					mLinearLayout.setBackgroundResource(R.drawable.ip_connect_title);
+					
 					// Update Name
 					mTitle.setText(dataServer.getName());
+					
 				}catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -177,20 +211,28 @@ public class BoxSelecter implements Observer
 	        final ViewHolder vh;
 	        if (convertView == null) {
 	            vh = new ViewHolder();
-	            convertView = minflater.inflate(android.R.layout.simple_list_item_1, null);
-	            vh.boxInfo = (TextView) convertView.findViewById(android.R.id.text1);
+//	            convertView = minflater.inflate(android.R.layout.simple_list_item_1, null);
+	            convertView = minflater.inflate(R.layout.list_item1, null);
+//	            vh.boxInfo = (TextView) convertView.findViewById(android.R.id.text1);
+	            vh.boxInfo = (TextView) convertView.findViewById(R.id.ip_list_item);
 
-	            convertView.setTag(vh);
+	            convertView.setTag(vh);  //将VH存在convertView中
 	        } else {
-	            vh = (ViewHolder) convertView.getTag();
+	            vh = (ViewHolder) convertView.getTag();  //重新获取
 	        }
 
 	        String serverIP = ipList.get(position);
 
-	        vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP) +  " [" + serverIP + "]");
-
+//            vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP) +  " [" + serverIP + "]");
+            vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP));
+            vh.boxInfo.setTextSize(16);
 	        return convertView;
 	    }
+	    
+	    /*
+	     * 内部类对控件的实例进行缓存
+	     * 
+	     * */
 
 	    public final class ViewHolder {
 	        public TextView boxInfo;

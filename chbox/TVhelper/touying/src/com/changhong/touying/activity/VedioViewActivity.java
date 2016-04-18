@@ -33,7 +33,7 @@ public class VedioViewActivity extends Activity {
      * server ip part
      */
     private Button back;
-    private BoxSelecter ipSelecter;
+//    private BoxSelecter ipSelecter;
 
     /**
      * 视频浏览部分
@@ -81,7 +81,7 @@ public class VedioViewActivity extends Activity {
 
         back = (Button) findViewById(R.id.btn_back);
         
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+//        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
 
         vedioGridView = (GridView) findViewById(R.id.vedio_grid_view);
         pictureAdapter = new PictureAdapter(this, vedios);
@@ -116,9 +116,9 @@ public class VedioViewActivity extends Activity {
     @Override
     protected void onDestroy() {
     	super.onDestroy();
-    	if (ipSelecter != null) {
-			ipSelecter.release();
-		}
+//    	if (ipSelecter != null) {
+//			ipSelecter.release();
+//		}
     }
 
     /**********************************************数据适配器**********************************************************/

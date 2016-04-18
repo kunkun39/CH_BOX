@@ -2,6 +2,7 @@
 <resources>
 
     <string name="vedio_description">Tip ：Select and click the media resources, then they can play on the TV.</string>
+    <string name="video">Videos</string>
     <string name="add_list">CREATE PLAYLIST</string>
     <string name="devide">-</string>
     <string name="playlistname">Playlist name</string>
