@@ -26,6 +26,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,7 +57,8 @@ public class MusicCategoryPlaylistTab extends Fragment {
     /**
      * 添加列表按钮
      */
-    private Button mAddNewListBtn;
+//    private Button mAddNewListBtn;
+    private ImageButton mAddNewListBtn;
 
     /**
      * 播放列表View
@@ -106,7 +108,8 @@ public class MusicCategoryPlaylistTab extends Fragment {
 
     private void initView(View v) {
 
-        mAddNewListBtn = (Button) v.findViewById(R.id.music_list_add);
+//        mAddNewListBtn = (Button) v.findViewById(R.id.music_list_add);
+        mAddNewListBtn = (ImageButton) v.findViewById(R.id.music_list_add);
         mPlayListView = (ListView) v.findViewById(R.id.music_list_list);
         mPlayListView.setLongClickable(true);
         mPlayListView.setAdapter(new PlayListAdatper(getActivity(), musicPlayLists));
@@ -164,7 +167,7 @@ public class MusicCategoryPlaylistTab extends Fragment {
             public boolean onItemLongClick(final AdapterView<?> adapterView, final View v,
                                            final int arg2, long arg3) {
                 final Dialog dialog = new Dialog(getActivity(), R.style.Dialog_nowindowbg);
-                View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify, null);
+                View dialogView = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_playlist_modify_pan, null);
                 dialog.setContentView(dialogView);
                 Button bt_modify = (Button) dialogView.findViewById(R.id.bt_modifydia_modify);
                 Button bt_delete = (Button) dialogView.findViewById(R.id.bt_modifydia_delete);
@@ -271,7 +274,7 @@ public class MusicCategoryPlaylistTab extends Fragment {
     }
 
     private void addPlayList() {
-        Dialog dialog = DialogUtil.showEditDialog(getActivity(),getResources().getString(R.string.enter_the_playlist_name), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
+        Dialog dialog = DialogUtil.showEditDialog(getActivity(),getResources().getString(R.string.create_playlist), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
 
             @Override
             public void onSubmit(DialogMessage dialogMessage) {

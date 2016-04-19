@@ -214,15 +214,15 @@ public class DialogUtil {
 		final Dialog dialog = new Dialog(context, R.style.Dialog_nowindowbg);
 
 		View view = LayoutInflater.from(context).inflate(
-				R.layout.view_editdialog, null);
+				R.layout.view_editdialog_pan, null);
 		dialog.setContentView(view);
 		LayoutParams param = dialog.getWindow().getAttributes();
 		param.gravity = Gravity.CENTER;
 		param.width = (int) context.getResources().getDimension(R.dimen.dialog_width);
 		param.height = (int) context.getResources().getDimension(R.dimen.dialog_height);
 
-		Button bt_submit = (Button) view.findViewById(R.id.bt_editdia_submit);
-		Button bt_cancel = (Button) view.findViewById(R.id.bt_editdia_cancel);
+		final Button bt_submit = (Button) view.findViewById(R.id.bt_editdia_submit);
+		final Button bt_cancel = (Button) view.findViewById(R.id.bt_editdia_cancel);
 		if (!TextUtils.isEmpty(positiveBtnName)) {
 			bt_submit.setText(positiveBtnName);
 		}
@@ -252,7 +252,8 @@ public class DialogUtil {
 				}
 			}
 		});
-		TextView tv_title = (TextView) view.findViewById(R.id.tv_editdia_title);
+		//TextView tv_title = (TextView) view.findViewById(R.id.tv_editdia_title);
+		TextView tv_title = (TextView) view.findViewById(R.id.edit_dialog_title);
 		if (!TextUtils.isEmpty(title)) {
 			tv_title.setText(title);
 		}

@@ -5,6 +5,7 @@
     <string name="add_list">新建播放列表</string>
     <string name="devide">-</string>
     <string name="playlistname">播放列表名</string>
+    <string name="playlist_operate">歌单操作</string>
     <string name="playlistcomment_pre">有</string>
     <string name="playlistcomment_end">首歌曲</string>
     <string name="playlist_nameexist">名字已存在</string>
@@ -52,9 +53,11 @@
     <string name="song_name">歌曲名字</string>
     <string name="get_music_failed">歌曲获取出错</string>
     <string name="enter_the_playlist_name">请输入播放列表名字</string>
+    <string name="create_playlist">新建播放列表</string>
     <string name="confirm_space">确    认</string>
     <string name="cancel_space">取    消</string>
     <string name="didnot_enter_any_information">未输入任何信息</string>
     <string name="videos_no">个视频</string>
+    <string name="music_alert_input">请输入播放列表名称</string>
     
 </resources>

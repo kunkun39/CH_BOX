@@ -1,0 +1,91 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?> -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/view_editdialog_bg" >
+    
+    <!-- 标题 -->
+    <TextView android:id="@+id/edit_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:singleLine="true"
+        android:text="@string/playlist_operate"
+        android:textSize="16dp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="2dp"/>
+    
+    <ImageView android:id="@+id/edit_dialog_title_deliver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_dialog_title"
+        android:src="@drawable/view_editdialog_title_dilver"/>
+    
+    <!-- 内容 -->
+       
+    <TextView android:id="@+id/edt_editdia_content"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/edit_dialog_title_deliver"
+      android:layout_marginTop="22dp"
+      android:layout_centerHorizontal="true"
+      android:singleLine="true"
+      android:text="@string/whatdoyouwanttodo"
+      android:textSize="@dimen/dialog_title_textsize"
+      android:textColor="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/edt_editdia_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_modifydia_delete"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"  
+            android:layout_marginTop="25dp"        
+            android:gravity="center"
+            android:text="@string/playlist_del"
+            android:background="@drawable/music_dialog_btn_selector"         
+            android:textSize="@dimen/dialog_btn_textsize" />
+        
+        <View
+              android:layout_width="1px"
+              android:layout_height="34dp"
+              android:background="#f0000000"
+              android:layout_marginTop="26dp" />
+
+        <Button
+            android:id="@+id/bt_modifydia_modify"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1" 
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="@string/PlayList_modify" 
+            android:background="@drawable/music_dialog_btn_selector"        
+            android:textSize="@dimen/dialog_btn_textsize" />
+        
+        <View
+              android:layout_width="1px"
+              android:layout_height="34dp"
+              android:background="#f0000000"
+              android:layout_marginTop="26dp" />
+        
+        <Button
+            android:id="@+id/bt_modifydia_cancel"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_weight="1" 
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="@string/cancel_space" 
+            android:focusable="true"
+            android:background="@drawable/music_dialog_btn_selector"        
+            android:textSize="@dimen/dialog_btn_textsize" />
+    </LinearLayout>
+
+</RelativeLayout>
+

@@ -24,5 +24,7 @@
     <string name="default_name">default_name</string>
     <string name="server_isnt_exist">No STB found，Please confirm if the stb and phone are connected to the same router?</string>
     <string name="disconnected">No STB</string>
+    <string name="edit_dialog_title">Create Playlist</string>
+    <string name="music_add_playlist_alert">Enter Playlist Name</string>
     <string name="tv_remote">TV Remote</string>
 </resources>

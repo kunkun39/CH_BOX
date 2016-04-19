@@ -23,4 +23,7 @@
     <string name="default_name">客    厅</string>
     <string name="server_isnt_exist">没有发现长虹智能机顶盒，请确认盒子和手机连在同一个路由器?</string>
     <string name="disconnected">未连接</string>
+    <string name="edit_dialog_title">新建播放列表</string>
+    <string name="music_add_playlist_alert">请输入播放列表名称</string>
+    
 </resources>

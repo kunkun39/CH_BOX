@@ -6,6 +6,7 @@
     <string name="add_list">CREATE PLAYLIST</string>
     <string name="devide">-</string>
     <string name="playlistname">Playlist name</string>
+    <string name="playlist_operate">Playlist Operate</string>
     <string name="playlistcomment_pre"></string>
     <string name="playlistcomment_end">" "songs</string>
     <string name="playlist_nameexist">Name already exists</string>
@@ -54,9 +55,11 @@
     <string name="song_name">song name</string>
     <string name="get_music_failed">Error in song acquisition</string>
     <string name="enter_the_playlist_name">Please input a playlist name</string>
+    <string name="create_playlist">Create Playlist</string>
     <string name="confirm_space">OK</string>
     <string name="cancel_space">Cancel</string>
     <string name="didnot_enter_any_information">Information can not be empty</string>
     <string name="videos_no">videos</string>
+    <string name="music_alert_input">Enter Playlist Name</string>
 
 </resources>
