@@ -1,0 +1,351 @@
+<com.changhong.common.widgets.BidirSlidingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/bidir_sliding_layout"
+    android:orientation="vertical"
+    tools:context=".TVRemoteControlActivity" >
+
+    <RelativeLayout
+        android:id="@+id/right_menu"
+        android:layout_width="150dip"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:background="#00ffcc"
+        android:visibility="gone" >
+
+        <include layout="@layout/sidemenu" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bk_das"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ball"
+            android:layout_width="71dip"
+            android:layout_height="72dip"
+            android:background="@drawable/smoothball"
+            android:visibility="invisible" />
+
+        <LinearLayout
+            android:id="@+id/banner"
+            android:layout_width="fill_parent"
+            android:layout_height="67.6dip"
+            android:background="@drawable/das_remote_actionbar_bg"
+            android:focusable="false"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/das_title_back" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:singleLine="true"
+                android:text="@string/tv_remote"
+                android:textColor="@color/white"
+                android:layout_marginLeft="8dp"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="16.7dip"
+                android:layout_height="10.7dip"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/title_ip_select"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/banner"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4">
+            <Button
+                android:id="@+id/power"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="32dip"
+                android:background="@drawable/das_btn_power_selector"
+                style="@style/das_remote_small_btn" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/poweroff"
+                android:layout_alignLeft="@id/power"
+                android:layout_alignRight="@id/power"
+                android:gravity="center_horizontal"
+                style="@style/remote_text_das"
+                android:layout_below="@id/power"/>
+            <Button
+                android:id="@+id/search"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="32dip"
+                android:background="@drawable/das_btn_search_selector"
+                style="@style/das_remote_small_btn"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search"
+                android:layout_alignLeft="@id/search"
+                android:layout_alignRight="@id/search"
+                android:gravity="center_horizontal"
+                style="@style/remote_text_das"
+                android:layout_below="@id/search"/>
+            <Button
+                android:id="@+id/btn_b"
+                android:layout_alignParentLeft="true"
+                android:layout_above="@+id/back_text"
+                android:layout_marginLeft="24dp"
+                android:background="@drawable/das_btn_back_selector"
+                style="@style/das_remote_small_btn"/>
+            <TextView
+                android:id="@id/back_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="@string/back"
+                android:layout_alignLeft="@id/btn_b"
+                android:layout_alignRight="@id/btn_b"
+                style="@style/remote_text_das"
+                android:gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/btn_menu"
+                android:layout_alignParentRight="true"
+                android:layout_above="@+id/menu_text"
+                android:layout_marginRight="24dp"
+                android:background="@drawable/das_btn_menu_selector"
+                style="@style/das_remote_small_btn"/>
+            <TextView
+                android:id="@id/menu_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/menu"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@id/btn_menu"
+                android:layout_alignRight="@id/btn_menu"
+                style="@style/remote_text_das"
+                android:gravity="center_horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="60dp">
+
+                <ImageView
+                    android:id="@+id/img_d"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/das_keypad"
+                    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" android:layout_alignParentBottom="true">
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        >
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                        <Button
+                            android:id="@+id/left"
+                            android:background="@drawable/left_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        >
+                        <Button
+                            android:id="@+id/up"
+                            android:background="@drawable/up_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                        <Button
+                            android:id="@+id/center"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/center_back" />
+
+                        <Button
+                            android:id="@+id/down"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/up_back" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical" >
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                        <Button
+                            android:id="@+id/right"
+                            android:background="@drawable/left_back"
+                            android:layout_width="101dp"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.97"
+                            />
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/volume"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/das_vol"
+                android:layout_margin="16dp"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/volumeup"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/vol"
+                    android:layout_marginRight="4dp"
+                    style="@style/remote_text_das"/>
+                <View
+                    android:id="@+id/volumedown"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <Button
+                    android:id="@+id/btn_home"
+                    style="@style/das_remote_small_btn"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/das_btn_home_selector" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/home"
+                    android:layout_alignLeft="@id/btn_home"
+                    android:layout_alignRight="@id/btn_home"
+                    android:gravity="center_horizontal"
+                    android:layout_below="@id/btn_home"
+                    style="@style/remote_text_das"/>
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/mediacontroller"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="16dp"
+                android:background="@drawable/das_media_contoller"
+                android:orientation="vertical">
+                <View
+                    android:id="@+id/mediaforward"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/fwrw"
+                    android:layout_marginLeft="4dp"
+                    style="@style/remote_text_das" />
+                <View
+                    android:id="@+id/mediabackward"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"/>
+            <Button
+                android:id="@+id/btn_play"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="80dp"
+                android:background="@drawable/das_btn_play_selector"
+                style="@style/das_remote_small_btn"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/play_pause"
+                android:gravity="center_horizontal"
+                style="@style/remote_text_das"
+                android:layout_gravity="center_horizontal"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</com.changhong.common.widgets.BidirSlidingLayout>
