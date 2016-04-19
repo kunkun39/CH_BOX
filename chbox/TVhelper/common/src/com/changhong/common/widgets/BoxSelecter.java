@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -63,7 +64,7 @@ public class BoxSelecter implements Observer
 	Handler mHandler = null;
 	
 	
-	public BoxSelecter(Activity activity,TextView title,ListView view,Button dropDownBtn,Handler handler)
+	public BoxSelecter(final Activity activity,TextView title,ListView view,Button dropDownBtn,Handler handler)
 	{
 		if (view == null){
 			return;
@@ -109,6 +110,7 @@ public class BoxSelecter implements Observer
 							R.string.server_isnt_exist, Toast.LENGTH_LONG)
 							.show();
 				} else {
+					mView.setAnimation(AnimationUtils.loadAnimation(activity, android.R.anim.fade_in));
 					mView.setVisibility(View.VISIBLE);
 					mImageView.setVisibility(View.VISIBLE);
 				}
