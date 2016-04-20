@@ -96,12 +96,18 @@ public class VedioDataAdapter extends BaseAdapter {
         if (list.size() > 1) {
             vedioName.setText(key);
             vedioNO.setText(list.size() + context.getResources().getString(R.string.videos_no));
-            fullPath.setText("");
+            if (fullPath != null){
+                fullPath.setText("");
+            }
         } else {
             String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
             vedioName.setLines(2);
             vedioName.setText(displayName);
-            fullPath.setText(String.valueOf(position));
+            if (fullPath != null){
+                fullPath.setText(String.valueOf(position));
+            }else {
+                vedioNO.setText(list.size() + context.getResources().getString(R.string.videos_no));
+            }
         }
 
         String vedioPath = vedio.getPath();

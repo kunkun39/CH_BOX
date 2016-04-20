@@ -61,5 +61,7 @@
     <string name="didnot_enter_any_information">Information can not be empty</string>
     <string name="videos_no">videos</string>
     <string name="music_alert_input">Enter Playlist Name</string>
+    <string name="pictures">Pictures</string>
+    <string name="videos">Videos</string>
 
 </resources>

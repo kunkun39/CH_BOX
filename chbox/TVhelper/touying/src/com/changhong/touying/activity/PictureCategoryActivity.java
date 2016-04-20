@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.Utils;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 
@@ -81,7 +83,8 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-        back = (Button) findViewById(R.id.btn_back);        
+        back = (Button) findViewById(R.id.btn_back);
+
         
 
         /**
@@ -110,7 +113,27 @@ public class PictureCategoryActivity extends Activity {
         /**
          * IP连接部分
          */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));       
+        if (AppConfig.PROJECT_NAME == AppConfig.PROJECT_INDIA_DAS){
+            findViewById(R.id.picture_base).setBackgroundResource(R.drawable.bk_das);
+            findViewById(R.id.banner).setBackgroundResource(R.drawable.das_pic_title);
+            findViewById(R.id.title_expand).setVisibility(View.GONE);
+            TextView title = ((TextView) findViewById(R.id.title));
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)title.getLayoutParams();
+            layoutParams.setMargins(16,0,0,0);
+            title.setLayoutParams(layoutParams);
+            title.setText(R.string.pictures);
+            title.setTextColor(getResources().getColor(R.color.white));
+            Button back = ((Button) findViewById(R.id.btn_back));
+            back.setBackgroundResource(R.drawable.das_title_back);
+            layoutParams = (ViewGroup.MarginLayoutParams)back.getLayoutParams();
+            layoutParams.setMargins(16,0,0,0);
+            layoutParams.width = Utils.dip2px(this, 40);
+            layoutParams.height = Utils.dip2px(this, 40);
+            back.setLayoutParams(layoutParams);
+        }else {
+            ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));
+        }
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -228,10 +251,15 @@ public class PictureCategoryActivity extends Activity {
             View view = convertView;
 
             if (view == null || ((PackageViewHolder)(view.getTag())).index != position) {
-                view = getLayoutInflater().inflate(R.layout.activity_picture_category_item, parent, false);
+                int resid = R.layout.activity_picture_category_item;
+                if (AppConfig.PROJECT_NAME == AppConfig.PROJECT_INDIA_DAS){
+                    resid = R.layout.activity_picture_category_item_das;
+                }
+                view = getLayoutInflater().inflate(resid, parent, false);
                 holder = new PackageViewHolder();
 
                 holder.packageName = (TextView) view.findViewById(R.id.package_name);
+                holder.pictureCount = (TextView)view.findViewById(R.id.pic_count);
                 holder.imageView1 = (ImageView) view.findViewById(R.id.package_picture_1);
                 holder.imageView2 = (ImageView) view.findViewById(R.id.package_picture_2);
                 holder.imageView3 = (ImageView) view.findViewById(R.id.package_picture_3);
@@ -246,29 +274,35 @@ public class PictureCategoryActivity extends Activity {
                 int size = images.size();
 
                 //设置文字
-                holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + getResources().getString(R.string.picture_no));
+                if (holder.pictureCount != null){
+                    holder.pictureCount.setText(size + getResources().getString(R.string.picture_no));
+                    holder.packageName.setText(StringUtils.getShortString(packageName, 12));
+                }else {
+                    holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + getResources().getString(R.string.picture_no));
+                }
+
 
                 //设置图片
                 try {
                     if (images.size() == 1) {
                         displayImage(holder.imageView1, images.get(0));
-                        holder.imageView2.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView3.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
+                        setDefaultBitmap(holder.imageView2);
+                        setDefaultBitmap(holder.imageView3);
+                        setDefaultBitmap(holder.imageView4);
                     }
 
                     if (images.size() == 2) {
                         displayImage(holder.imageView1, images.get(0));
                         displayImage(holder.imageView2, images.get(1));
-                        holder.imageView3.setBackground(getResources().getDrawable(R.drawable.ic_stub));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
+                        setDefaultBitmap(holder.imageView3);
+                        setDefaultBitmap(holder.imageView4);
                     }
 
                     if (images.size() == 3) {
                         displayImage(holder.imageView1, images.get(0));
                         displayImage(holder.imageView2, images.get(1));
                         displayImage(holder.imageView3, images.get(2));
-                        holder.imageView4.setBackground(getResources().getDrawable(R.drawable.ic_stub));
+                        setDefaultBitmap(holder.imageView4);
 
                     }
 
@@ -292,6 +326,8 @@ public class PictureCategoryActivity extends Activity {
 
         TextView packageName;
 
+        TextView pictureCount;
+
         ImageView imageView1;
 
         ImageView imageView2;
@@ -304,7 +340,15 @@ public class PictureCategoryActivity extends Activity {
     }
 
     private void displayImage(ImageView imageView, String path) {
-        MyApplication.imageLoader.displayImage("file://" + path, imageView, MyApplication.viewOptions);
+        if (imageView != null){
+            MyApplication.imageLoader.displayImage("file://" + path, imageView, MyApplication.viewOptions);
+        }
+    }
+
+    private void setDefaultBitmap(ImageView imageView){
+        if (imageView != null){
+            imageView.setBackground(getResources().getDrawable(R.drawable.ic_stub));
+        }
     }
 
     /**********************************************系统发发重载*********************************************************/
