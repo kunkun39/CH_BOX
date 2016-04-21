@@ -46,6 +46,7 @@ public class AppConfig {
      * Intent
      */
     public final static String BROADCAST_INTENT_EPGDB_UPDATE = "com.changhong.epg.db.update";
+    public final static String BROADCAST_INTENT_SERVER_VOL = "com.changhong.server.vol";
 
     /**
      * Project For
