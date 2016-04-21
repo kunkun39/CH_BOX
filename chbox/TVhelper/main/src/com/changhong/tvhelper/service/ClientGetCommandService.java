@@ -14,6 +14,7 @@ import com.changhong.common.service.ClientSocketInterface;
 import com.changhong.common.utils.CaVerifyUtil;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
+import com.changhong.common.utils.QuickQuireMessageUtil;
 import com.changhong.common.utils.StringUtils;
 import com.changhong.common.widgets.IpSelectorDataServer;
 
@@ -102,7 +103,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
                         break;
                     case HANDLER_MESSAGE_WHAT_CA:
                     {
-                    	CaVerifyUtil.getInstance().feedback((String)msg.obj);
+                    	QuickQuireMessageUtil.getInstance().feedback((String)msg.obj);
                     }break;
                     default:
                         break;

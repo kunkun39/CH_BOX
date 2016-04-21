@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.media.MediaScannerConnection;
@@ -81,7 +82,6 @@ import com.changhong.tvhelper.service.AppLogService;
 public class TVHelperMainActivity extends Activity {
 
     private static final String TAG = "TVHelperMainActivity";
-
     /**************************************************IP连接部分*******************************************************/
 
     private BoxSelecter ipSelecter = null;
@@ -109,7 +109,7 @@ public class TVHelperMainActivity extends Activity {
         
         //setContentView(R.layout.activity_maim_new);
         setContentView(R.layout.activity_maim_muil_lang_pan);
-
+        initHelpDialog();
         initViewAndEvent();
 
         initUpdateThread();
@@ -751,8 +751,11 @@ public class TVHelperMainActivity extends Activity {
     private void initHelpDialog() {
         AppLogService service = new AppLogService(this);
         if (!service.isUserAlreadyEntrance()) {
-            AppHelpDialog dialog = new AppHelpDialog(this);
-            dialog.show();
+//            AppHelpDialog dialog = new AppHelpDialog(this);
+//            dialog.show();
+            Intent intent = new Intent();
+            intent.setClass(this, TVGuide.class);
+            startActivity(intent);
         }
     }
 

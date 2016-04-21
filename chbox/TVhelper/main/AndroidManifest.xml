@@ -102,6 +102,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
+        <activity android:name=".activity.TVGuide"/>
         <activity
             android:name=".activity.TVChannelPlayActivity"
             android:launchMode="singleTask"

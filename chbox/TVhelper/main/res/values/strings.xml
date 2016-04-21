@@ -541,5 +541,6 @@
     <string name="home">Home</string>
     <string name="vol">VOL</string>
     <string name="fwrw">Fw/Rw</string>
+    <string name="getstarted">Get Started</string>
 
 </resources>
