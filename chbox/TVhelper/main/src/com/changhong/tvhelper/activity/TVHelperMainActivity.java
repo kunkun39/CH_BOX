@@ -41,6 +41,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.JsonReader;
 import android.util.Log;
@@ -131,6 +132,15 @@ public class TVHelperMainActivity extends Activity {
         View vedioTouYing =  findViewById(R.id.main_vedio_touying);
         View pictureTouYing =  findViewById(R.id.main_picture_touying);
         View otherTouTing =  findViewById(R.id.main_other_touying);
+        View screenMirror = findViewById(R.id.screen_mirror);
+        if (screenMirror != null){
+            screenMirror.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startMirrcast();
+                }
+            });
+        }
 //        Button power = (Button) findViewById(R.id.power);
 //        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.banner);
         
@@ -756,6 +766,14 @@ public class TVHelperMainActivity extends Activity {
             Intent intent = new Intent();
             intent.setClass(this, TVGuide.class);
             startActivity(intent);
+        }
+    }
+
+    private void startMirrcast(){
+        try {
+            startActivity(new Intent("android.settings.WIFI_DISPLAY_SETTINGS"));
+        } catch (Exception e) {
+            Toast.makeText(this,"Please open miracast in 'Settings->Wifi Display'",Toast.LENGTH_LONG).show();
         }
     }
 
