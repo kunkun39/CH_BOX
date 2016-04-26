@@ -17,8 +17,11 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.Instrumentation;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.hardware.input.InputManager;
+import android.media.AudioManager;
 import android.os.*;
 import android.os.Process;
 
@@ -40,15 +43,21 @@ import com.ots.deviceinfoprovide.DeviceInfo;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
+import android.provider.Settings;
 import android.util.JsonReader;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
 
 
 public class TVSocketControllerService extends Service {
     private static final String TAG = "TVSocketControlService";
 
     virtualkey t = new virtualkey();
+    Instrumentation instrumentation = new Instrumentation();
 
     /**
      * heart internal time which stand for server send info to clients for this value
@@ -90,7 +99,6 @@ public class TVSocketControllerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         /**
          * 系统默认启动是不启动activity, 而是启动Service, 所以Service也需要从新读一下名称
          */
@@ -123,6 +131,7 @@ public class TVSocketControllerService extends Service {
                                 t.vkey_input(28, 1);
                             } else if (msgCpy.equals("key:back")) {
                                 Log.e(TAG, "key:back");
+                                //sendKey(KeyEvent.KEYCODE_BACK);
                                 t.vkey_input(158, 1);
                             } else if (msgCpy.equals("key:menu")) {
                                 Log.e(TAG, "key:menu");
@@ -142,10 +151,12 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:power")) {
                                 Log.e(TAG, "key:power");
                                 if (Config.PLATFORM == Config.PLATFORM_S805) {
+                                    Runtime.getRuntime().exec("echo wh > /sys/power/wake_lock");
                                     t.vkey_input(116, 1);
                                 } else {
                                     t.vkey_input(0x7f01, 1);
                                 }
+                                //sendKey(KeyEvent.KEYCODE_POWER);
                             } else if (msgCpy.equals("key:0")) {
                                 Log.e(TAG, "key:0");
                                 t.vkey_input(11, 1);
@@ -176,7 +187,25 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:9")) {
                                 Log.e(TAG, "key:9");
                                 t.vkey_input(10, 1);
+                            } else if (msgCpy.equals("key:search")) {
+                                Log.e(TAG, "key:9");
+                                //sendKey(KeyEvent.KEYCODE_SEARCH);
+                                t.vkey_input(127, 1);
+                            } else if (msgCpy.equals("key:media_forward")) {
+                                Log.e(TAG, "key:9");
+                                //sendKey(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD);
+                                t.vkey_input(120, 1);
+                            } else if (msgCpy.equals("key:media_backward")) {
+                                Log.e(TAG, "key:9");
+                                t.vkey_input(121, 1);
+                            }else if (msgCpy.equals("key:media_play_pause")) {
+                                Log.e(TAG, "key:9");
+                                //sendKey(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
+                                t.vkey_input(119, 1);
                                 //投影歌曲部分
+                            } else if(msgCpy.contains("system_vol")){
+                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+                                sendbackSmallMessage(targetIp,msgCpy,String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
                             } else if (msgCpy.contains("music_play")) {
                                 Log.e(TAG, msgCpy);
                                 Intent intent = new Intent(TVSocketControllerService.this, MusicViewPlayingActivity.class);
@@ -328,7 +357,6 @@ public class TVSocketControllerService extends Service {
                             }
                             else if (msgCpy.contains(CaVerifyUtil.TAG)) {
                             	sendbackSmallMessage(targetIp,msgCpy,new CaVerifyUtil());
-                            	
 							}
                             break;
                         case 2:
@@ -422,7 +450,7 @@ public class TVSocketControllerService extends Service {
                             /**
                              * 发送心跳
                              */
-                            Log.i(TAG, ">>>" + serverInfo);
+//                            Log.i(TAG, ">>>" + serverInfo);
                             byte[] b = serverInfo.getBytes();
                             dgPacket = new DatagramPacket(b, b.length, InetAddress.getByName("255.255.255.255"), 9001);
                             dgSocket.send(dgPacket);
@@ -681,25 +709,32 @@ public class TVSocketControllerService extends Service {
             e.printStackTrace();
         }
     }
-    
-    public static void sendbackSmallMessage(final String ip,final String param,final QuickSendBackClass object)
+    public static void sendbackSmallMessage(final String ip,String object){
+        sendbackSmallMessage(ip,null,object);
+    }
+    public static void sendbackSmallMessage(final String ip,final String param,final Object object)
     {
     	final int NEW_BACK_PORT = 10014;
     	
     	AsyncTask.execute(new Runnable() {			
 			@Override
 			public void run() {
-				if (object != null) {
-					String resultString = object.update(param);
-					if (resultString == null
-							|| resultString.length() <= 0) {
-						return ;
-					}
-					
+				if (object != null && param.indexOf(":") != -1) {
+                    String resultString = null;
+                    if (object instanceof QuickSendBackClass){
+                        resultString = ((QuickSendBackClass)object).update(param);
+                    }else if (object instanceof String){
+                        resultString = (String)object;
+                    }
+                    if (resultString == null
+                            || resultString.length() <= 0) {
+                        return ;
+                    }
+                    resultString = param.substring(0, param.indexOf(":")) + ":" + resultString;
+
 					byte message[] = resultString.getBytes();
 					DatagramSocket socket = null;
 					try {
-						
 						socket = new DatagramSocket();						
 						socket.send(new DatagramPacket(message, message.length, InetAddress.getByName(ip), NEW_BACK_PORT));
 						socket.close();
@@ -726,4 +761,13 @@ public class TVSocketControllerService extends Service {
     	public String update(String param); 
     }
 
+    private void sendKey(final int keycode){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                instrumentation.sendKeyDownUpSync(keycode);
+            }
+        });
+
+    }
 }

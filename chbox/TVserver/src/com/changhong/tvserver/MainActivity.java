@@ -3,6 +3,7 @@ package com.changhong.tvserver;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,11 +12,16 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.changhong.tvserver.touying.video.VideoViewPlayingActivity;
 import com.changhong.tvserver.utils.StringUtils;
 
+import java.io.File;
 import java.util.Date;
 
 public class MainActivity extends Activity {
@@ -44,7 +50,9 @@ public class MainActivity extends Activity {
 
         chboxName = (EditText) findViewById(R.id.ch_box_name);
         chboxSave = (Button) findViewById(R.id.ch_box_save);
-
+        chboxName.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.restartInput(chboxName);
         CH_BOX_NAME = getString(R.string.stb_title);
         CH_BOX_NAME = getBoxName(MainActivity.this);
         chboxName.setText(CH_BOX_NAME);
@@ -67,11 +75,12 @@ public class MainActivity extends Activity {
                         }
                         Toast.makeText(MainActivity.this, getString(R.string.save_successful), 3000).show();
                     } catch (Exception e) {
-                        Toast.makeText(MainActivity.this,getString(R.string.save_failure), 3000).show();
+                        Toast.makeText(MainActivity.this, getString(R.string.save_failure), 3000).show();
                     }
                 }
             }
         });
+
     }
 
     public static void saveBoxName(Context context, String name) {

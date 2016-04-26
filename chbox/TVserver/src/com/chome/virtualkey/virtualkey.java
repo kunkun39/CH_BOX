@@ -1,7 +1,8 @@
 package com.chome.virtualkey;
 
-public class virtualkey {
+import android.view.KeyEvent;
 
+public class virtualkey {
 	static {
 		System.loadLibrary("virtualkey_cv200_std");
 	}
