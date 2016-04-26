@@ -776,5 +776,4 @@ public class TVHelperMainActivity extends Activity {
             Toast.makeText(this,"Please open miracast in 'Settings->Wifi Display'",Toast.LENGTH_LONG).show();
         }
     }
-
 }

@@ -33,6 +33,7 @@
                 
                 <!--第二部分  -->
                 <ImageView
+                    android:id="@+id/screen_mirror"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
