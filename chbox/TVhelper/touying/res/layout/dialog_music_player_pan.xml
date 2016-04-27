@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:visibility="invisible"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/music_play"
+            android:orientation="vertical">      
+             
+      <SeekBar
+             android:id="@+id/music_seek"
+             android:layout_width="fill_parent"
+             android:layout_height="30dp"
+             android:paddingLeft="20dp"
+             android:paddingTop="18dp"
+             android:paddingRight="20dp"
+             android:progressDrawable="@drawable/time_progress_holo_light"
+             android:thumb="@drawable/detail_icon_schedule_ball2"
+             android:thumbOffset="0dp"/> 
+                    
+      <RelativeLayout 
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingLeft="20dp"
+          android:paddingRight="20dp"
+          android:paddingTop="5dp">
+          
+           <TextView
+              android:id="@+id/music_showtime_going"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" 
+              android:layout_alignParentLeft="true"           
+              
+              />
+
+	       <TextView
+	               android:id="@+id/music_showtime_total"
+	               android:layout_width="wrap_content"
+	               android:layout_height="wrap_content"
+	               android:layout_alignParentRight="true"               
+	               
+	               />
+      </RelativeLayout>
+
+           
+            
+      <LinearLayout
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              >
+
+          <RelativeLayout
+                  android:layout_width="0dp"
+                  android:layout_height="match_parent"   
+                  android:gravity="center_vertical"    
+                  android:layout_marginBottom="10dp"
+                  android:layout_weight="1"
+                  >
+              <ImageButton
+                  android:id="@+id/control_song_previous"
+                  android:layout_width="25dp"
+                  android:layout_height="25dp"
+                  android:layout_alignParentRight="true"
+                  android:background="@drawable/control_song_previous"/>
+          </RelativeLayout>
+
+            
+	
+	        <RelativeLayout
+	                android:layout_width="0dp"
+	                android:layout_height="match_parent"
+	                android:gravity="center_vertical"
+	                android:layout_marginBottom="10dp"
+	                android:layout_weight="1"
+	                >
+	            <ImageButton
+	                android:id="@+id/music_control_button"
+	                android:layout_width="35dp"
+	                android:layout_height="35dp"
+	                android:background="@drawable/control_pause1"
+	                android:layout_centerVertical="true"
+	                android:layout_centerHorizontal="true"/>
+	        </RelativeLayout>            
+
+           <RelativeLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:gravity="center_vertical"
+                   android:layout_marginBottom="10dp"
+                   android:layout_weight="1"
+                   >
+                <ImageButton
+                   android:id="@+id/control_song_next"
+                   android:layout_width="25dp"
+                   android:layout_height="25dp"
+                   android:layout_alignParentLeft="true"
+                   android:background="@drawable/control_song_next"/> 
+           </RelativeLayout>
+
+            
+        </LinearLayout>
+
+</LinearLayout>

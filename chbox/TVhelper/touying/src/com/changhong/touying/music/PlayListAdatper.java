@@ -78,7 +78,7 @@ public class PlayListAdatper extends BaseAdapter
 		if (convertView == null) {
 			hoder = new ListItemHoder();
 			
-			convertView = activity.getLayoutInflater().inflate(R.layout.playlist_list_item, null);
+			convertView = activity.getLayoutInflater().inflate(R.layout.playlist_list_item_pan, null);
 			hoder.mIndexText = (TextView) convertView.findViewById(R.id.playlist_listitem_index);
 			hoder.mPlayListName = (TextView) convertView.findViewById(R.id.playlist_listitem_name);
 			hoder.mPlayListComment = (TextView) convertView.findViewById(R.id.playlist_listitem_comment);			

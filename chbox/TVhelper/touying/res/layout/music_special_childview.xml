@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
+    android:layout_marginTop="15dp"
     android:orientation="horizontal"
-    android:background="@drawable/transparent_line_bg"
     android:layout_gravity="center"
     android:paddingBottom="15dp"
-    android:paddingLeft="5dip" >
+    android:paddingLeft="5dip"
+     >
 
     <ImageView
         android:id="@+id/music_item_image"
@@ -29,6 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:text="@string/album_name" />
 
         <TextView
@@ -40,6 +41,10 @@
             android:text="@string/nullsong" />
 
     </RelativeLayout>
+    
+    <View android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/music_title_body_deliver"/>
 
     <TextView 
         android:id="@+id/music_item_path"

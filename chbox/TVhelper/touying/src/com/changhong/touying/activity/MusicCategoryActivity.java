@@ -33,10 +33,10 @@ public class MusicCategoryActivity extends FragmentActivity {
 	/************************************************** IP连接部分 *******************************************************/
 
 	public static TextView title = null;
-	private Button listClients;
+//	private Button listClients;
 	private Button back;
-	private ListView clients = null;
-	private BoxSelecter ipSelecter;
+//	private ListView clients = null;
+//	private BoxSelecter ipSelecter;
 	private TextView allMusicBtn, specialBtn, playlistBtn;
 	private Fragment fragmentAll = null;
 	private Fragment fragmentSpecial = null;
@@ -75,15 +75,15 @@ public class MusicCategoryActivity extends FragmentActivity {
 	
 
 	private void initView() {
-		setContentView(R.layout.activity_music_category);
+		setContentView(R.layout.activity_music_category_pan);
 
 		/**
 		 * IP连接部分
 		 */
 		title = (TextView) findViewById(R.id.title);
 		back = (Button) findViewById(R.id.btn_back);
-		clients = (ListView) findViewById(R.id.clients);
-		listClients = (Button) findViewById(R.id.btn_list);
+		//clients = (ListView) findViewById(R.id.clients);
+		//listClients = (Button) findViewById(R.id.btn_list);
 
 		fragmentAll = new MusicCategoryAllTab();
 		// fragmentSpecial = new MusicCategorySpecialTab();
@@ -99,7 +99,8 @@ public class MusicCategoryActivity extends FragmentActivity {
 				// myTransaction.add(R.id.realtabcontent, fragmentAll,
 				// MusicCategoryAllTab.TAG).show(fragmentAll);
 				// myTransaction.commitAllowingStateLoss();
-
+       
+				//启动manager:用framentAll替换realtabcontent
 				getSupportFragmentManager()
 						.beginTransaction()
 						.add(R.id.realtabcontent, fragmentAll,
@@ -177,6 +178,8 @@ public class MusicCategoryActivity extends FragmentActivity {
 	}
 
 	private void showFragment(int i) {
+		
+		//开启frament事务
 		FragmentTransaction myTransaction = getSupportFragmentManager()
 				.beginTransaction();
 		if (1 == i) {
@@ -184,9 +187,9 @@ public class MusicCategoryActivity extends FragmentActivity {
 			fragmentAll = getSupportFragmentManager().findFragmentByTag(
 					MusicCategoryAllTab.TAG);
 			if (null == fragmentAll) {
-				fragmentAll = new MusicCategoryAllTab();
+				fragmentAll = new MusicCategoryAllTab();  //创新一个MusicCategoryAllTab对象
 				myTransaction.add(R.id.realtabcontent, fragmentAll,
-						MusicCategoryAllTab.TAG);
+						MusicCategoryAllTab.TAG);                 //加载替换Fragment
 			}
 			myTransaction.show(fragmentAll);
 
@@ -241,7 +244,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 		/**
 		 * IP连接部分
 		 */
-		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));
+//		ipSelecter = new BoxSelecter(this, (TextView)findViewById(R.id.title), (ListView)findViewById(R.id.clients), (Button)findViewById(R.id.btn_list), new Handler(getMainLooper()));
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -253,11 +256,11 @@ public class MusicCategoryActivity extends FragmentActivity {
 	}
 
 	private void changeTextColor(TextView tv) {
-		allMusicBtn.setTextColor(getResources().getColor(R.color.white));
+		allMusicBtn.setTextColor(getResources().getColor(R.color.Grey_500));
 		;
-		specialBtn.setTextColor(getResources().getColor(R.color.white));
+		specialBtn.setTextColor(getResources().getColor(R.color.Grey_500));
 		;
-		playlistBtn.setTextColor(getResources().getColor(R.color.white));
+		playlistBtn.setTextColor(getResources().getColor(R.color.Grey_500));
 		;
 		tv.setTextColor(getResources().getColor(R.color.orange));
 
@@ -288,9 +291,9 @@ public class MusicCategoryActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (ipSelecter != null) {
+		/*if (ipSelecter != null) {
 			ipSelecter.release();
-		}
+		}*/
 		
 	}
 	@Override

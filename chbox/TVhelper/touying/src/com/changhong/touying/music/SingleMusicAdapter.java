@@ -2,6 +2,8 @@ package com.changhong.touying.music;
 
 import java.util.List;
 
+import javax.xml.datatype.Duration;
+
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -54,26 +56,28 @@ public class SingleMusicAdapter extends BaseAdapter {
 
  			TextView fullPath = null;
  			TextView artist = null;
+ 			TextView durationTime = null;
  			ImageView playBtn = null;
  			ImageView defaultImage = null;
  			DataWapper wapper = null;
 
  			if (convertView == null) {
  				// 获得view
- 				convertView = inflater.inflate(R.layout.music_list_item, null);
+ 				convertView = inflater.inflate(R.layout.music_list_item_pan, null);
  				musicName = (TextView) convertView
  						.findViewById(R.id.music_item_name);
  				fullPath = (TextView) convertView
  						.findViewById(R.id.music_item_path);
  				artist = (TextView) convertView
  						.findViewById(R.id.music_item_artist_duration);
+ 				durationTime = (TextView)convertView.findViewById(R.id.music_item_time);
  				playBtn = (ImageView) convertView
  						.findViewById(R.id.music_list_play);
  				defaultImage = (ImageView) convertView
  						.findViewById(R.id.music_list_image);
 
  				// 组装view
- 				wapper = new DataWapper(musicName, fullPath, artist, playBtn,
+ 				wapper = new DataWapper(musicName, fullPath, artist,durationTime, playBtn,
  						defaultImage);
  				convertView.setTag(wapper);
  			} else {
@@ -82,14 +86,15 @@ public class SingleMusicAdapter extends BaseAdapter {
  				fullPath = wapper.fullPath;
  				playBtn = wapper.playBtn;
  				artist = wapper.artist;
+ 				durationTime = wapper.durationTime;
  				defaultImage = wapper.defaultImage;
  			}
 
  			final Music music = musics.get(position);
-// 			Log.i("mmmm", "SingleMusicAdapter=music=" + music);
  			musicName.setText(music.getTitle());
- 			artist.setText(music.getArtist() + "  ["
- 					+ DateUtils.getTimeShow(music.getDuration() / 1000) + "]");
+ 			artist.setText(music.getArtist());
+ 			
+ 			durationTime.setText(DateUtils.getTimeShow(music.getDuration() / 1000));
 
  			fullPath.setText(music.getPath());
 
@@ -127,13 +132,15 @@ public class SingleMusicAdapter extends BaseAdapter {
  			public ImageView playBtn;
  			public ImageView defaultImage;
  			public TextView artist;
+ 			public TextView durationTime;
 
  			private DataWapper(TextView musicName, TextView fullPath,
- 					TextView artist, ImageView playBtn, ImageView defaultImage) {
+ 					TextView artist,TextView durationTime, ImageView playBtn, ImageView defaultImage) {
  				this.musicName = musicName;
  				this.fullPath = fullPath;
  				this.playBtn = playBtn;
  				this.artist = artist;
+ 				this.durationTime = durationTime;
  				this.defaultImage = defaultImage;
  			}
  		}

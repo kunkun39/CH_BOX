@@ -1,11 +1,15 @@
 package com.changhong.touying.activity;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
+import android.R.string;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,6 +24,7 @@ import android.widget.Toast;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.widgets.BoxSelecter;
+import com.changhong.common.utils.*;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
@@ -29,11 +34,11 @@ import com.changhong.touying.music.SingleMusicAdapter;
 /**
  * Created by Jack Wang
  */
-public class MusicViewActivity extends FragmentActivity {
+public class MusicViewActivity extends FragmentActivity implements QuickQuireMessageUtil.OnFeedBackListener{
 
     /**************************************************IP连接部分*******************************************************/
     private Button back;
-    private BoxSelecter ipBoxSelecter;
+  //  private BoxSelecter ipBoxSelecter;
 
     /************************************************music basic related info******************************************/
 
@@ -41,6 +46,7 @@ public class MusicViewActivity extends FragmentActivity {
      * 从上个Activity传过来的musics
      */
     private List<Music> musics;
+    private ArrayList<Music> musicsPlay;
 
     private String playlistName;
     /**
@@ -65,6 +71,8 @@ public class MusicViewActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         initData();
+        Utils.requireServerVolume();
+        QuickQuireMessageUtil.getInstance().setFeedbackListener(this, this);
 
         initViews();
 
@@ -74,6 +82,13 @@ public class MusicViewActivity extends FragmentActivity {
     private void initData() {
         musics = (List<Music>) getIntent().getSerializableExtra("musics");
         playlistName = getIntent().getStringExtra("name");
+        
+      //musics序列化,便于在activity之间传递数据
+      		musicsPlay = new ArrayList<Music>();  		
+      		for (Music music : musics) {
+      			musicsPlay.add(music);
+      		}
+      		
         if (playlistName == null) {
         	playlistName = musics.get(0).getArtist();
 		}          
@@ -114,6 +129,7 @@ public class MusicViewActivity extends FragmentActivity {
 			
 			@Override
 			public void OnPlayBegin(String path, String name, String artist) {
+				
 				if (musics.get(musics.size() -1).getPath().equals(path)) {
 					isLastSong = true;
 				}
@@ -130,7 +146,7 @@ public class MusicViewActivity extends FragmentActivity {
          * IP part
          */
         
-    	ipBoxSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+//    	ipBoxSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
         back.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,10 +166,13 @@ public class MusicViewActivity extends FragmentActivity {
                 Music music = musics.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("selectedMusic", music);
+                bundle.putSerializable("musics", musicsPlay);
                 intent.putExtras(bundle);
                 intent.setClass(MusicViewActivity.this, MusicDetailsActivity.class);
                 startActivity(intent);
 
+                //启动MusicDetailsActivity的同时,也启动音乐播放器的播放
+                player.playMusic(music);
             }
         });
     }
@@ -179,9 +198,9 @@ public class MusicViewActivity extends FragmentActivity {
     protected void onDestroy() {
     
     	super.onDestroy();
-    	if (ipBoxSelecter != null) {
+    	/*if (ipBoxSelecter != null) {
 			ipBoxSelecter.release();
-		}
+		}*/
     }
 
     @Override
@@ -196,4 +215,8 @@ public class MusicViewActivity extends FragmentActivity {
         return super.onKeyDown(keyCode, event);
     }
     
+    @Override
+    public void onFinish(QuickQuireMessageUtil vervify, Object result){
+    	
+    }
 }

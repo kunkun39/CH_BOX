@@ -4,6 +4,7 @@
 package com.changhong.touying.dialog;
 
 import java.io.Serializable;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import cn.sharesdk.wechat.utils.m;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -93,6 +96,11 @@ public class MusicPlayer extends DialogFragment{
     private List<Music> musics = new ArrayList<Music>();
     
     private Music music;
+    
+    /*
+     * 当前歌曲索引
+     * */
+  //  private int currentListItem=0;
 
     /**
      * 歌曲名
@@ -133,13 +141,19 @@ public class MusicPlayer extends DialogFragment{
      * 播放暂停按钮
      */
     private ImageButton controlButton;
+    
+    /*
+     * 上下歌曲切换
+     * */
+    private ImageButton nextButton;
+    private ImageButton previousButton;
 
     /**
      * 音量控制按钮
      */
-    private ImageView volUpBtn;
+ /*   private ImageView volUpBtn;
     private ImageView volDownBtn;
-
+*/
     /**
      *  歌词服务
      */
@@ -171,13 +185,14 @@ public class MusicPlayer extends DialogFragment{
     /**
      * 回调监听者
      */
-    OnPlayListener listener;   
+    OnPlayListener listener;  //listener之所以为空,是因为该对象没被创建 
 
 /**====================================================回调函数===================*/
     public interface OnPlayListener
 	{
     	public void OnPlayBegin(String path,String name,String artist);    	
     	public void OnPlayFinished();
+    	//public void getNewMusic(Music music);
 	}
     
     public void setOnPlayListener(OnPlayListener listener)
@@ -267,8 +282,8 @@ public class MusicPlayer extends DialogFragment{
     		return this;		
     	
     	this.playlistName = null;
-    	this.musics.clear();
-    	this.musics.addAll(musics);
+    	this.musics.clear();    //清空原来的播放列表
+    	this.musics.addAll(musics); //给播放列表重新加载新值
     	music = this.musics.get(0);
     	
     	return this;
@@ -307,7 +322,7 @@ public class MusicPlayer extends DialogFragment{
     	
     	if (listener != null) {
         	try {
-        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());
+        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());  //回调给实现部分
 			} catch (Exception e) {
 				e.printStackTrace();    				
 			}			
@@ -318,6 +333,9 @@ public class MusicPlayer extends DialogFragment{
     		this.music = music;
 
             List<Music> list = new ArrayList<Music>();
+            
+            //currentListItem = musics.indexOf(music);   //获取当前播放音乐的索引
+     //       Log.d(TAG, "currentListItem:"+currentListItem);
             for(int i = musics.indexOf(music);i < musics.size();i ++)
             	list.add(musics.get(i));
             touYing(list, playlistName);
@@ -393,15 +411,15 @@ public class MusicPlayer extends DialogFragment{
     
     public void stopTVPlayer()
     {
-    	
+    	super.onStop();
     	//ClientSendCommandService.sendMessage(CMD_STOP);
-    	if (view.getVisibility() == View.VISIBLE) {
+    	/*if (view.getVisibility() == View.VISIBLE) {
     		Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
             view.startAnimation(animation);
             view.setVisibility(View.INVISIBLE);
 			getActivity().getSupportFragmentManager().beginTransaction()
 					.hide(this).commitAllowingStateLoss();
-		}
+		}*/
     	
     }
     
@@ -413,7 +431,7 @@ public class MusicPlayer extends DialogFragment{
     	super.onCreate(savedInstanceState);
     	musicService = new MusicServiceImpl(this.getActivity());
     	setCancelable(false);    	
-    	setStyle(DialogFragment.STYLE_NO_TITLE, 0);
+    	setStyle(DialogFragment.STYLE_NO_TITLE, 0);  //去掉dialog默认的标题
     }
 
 
@@ -425,7 +443,7 @@ public class MusicPlayer extends DialogFragment{
 			view = inflater.inflate(R.layout.dialog_music_player_simple, container, false);
 		}
 		else {
-			view = inflater.inflate(R.layout.dialog_music_player, container, false);
+			view = inflater.inflate(R.layout.dialog_music_player_pan, container, false);
 		}
 		initialViews(view);		
 		initialEvents();
@@ -454,13 +472,13 @@ public class MusicPlayer extends DialogFragment{
 	public void onPause() {
 		super.onPause();
 		//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1"); 	
-		if (view.getVisibility() == View.VISIBLE) {
-			//Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
-	        //view.startAnimation(animation);
+		/*if (view.getVisibility() == View.VISIBLE) {
+			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
+	        view.startAnimation(animation);
 	        view.setVisibility(View.INVISIBLE);
 			getActivity().getSupportFragmentManager().beginTransaction()
 					.hide(MusicPlayer.this).commitAllowingStateLoss();
-		}
+		}*/
 		
 	}
 
@@ -504,20 +522,21 @@ public class MusicPlayer extends DialogFragment{
 	                    //判断当前的页面是否为在播放的歌曲
 	                    if (key != null && key.equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
 	                        int progress = Integer.parseInt(content[1]);
-	                        if (view.getVisibility() == View.INVISIBLE 
+	                        if (view.getVisibility() == View.VISIBLE 
+//	                        		if (view.getVisibility() == View.INVISIBLE 
 	                        		&& progress > 0
 	                        		&& seekBar.getMax() - seekBar.getProgress() > 5) {
 								getActivity().getSupportFragmentManager().beginTransaction()
 										.show(MusicPlayer.this).commitAllowingStateLoss();
 
-	                            Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
+	                           /* Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
 								view.startAnimation(animation);
-	                            view.setVisibility(View.VISIBLE);
+	                            view.setVisibility(View.VISIBLE);*/
 
 	                            int totalTime = music.getDuration() / 1000;
 	                            seekBar.setMax(totalTime);
 	                            String musicTotalTime = DateUtils.getTimeShow(totalTime);
-	                            showTimeGoing.setText("00:00");
+	                          //  showTimeGoing.setText("00:00");
 	                            showTimeTotal.setText( musicTotalTime);
 	                        }
 	                        if (progress > 0 && isSeeking == 0) {
@@ -530,11 +549,11 @@ public class MusicPlayer extends DialogFragment{
 	                    if ("true".equals(status)) {
 	                        isPlaying = true;
 	                        isPausing = false;
-	                        controlButton.setBackgroundResource(R.drawable.control_pause);
+	                        controlButton.setBackgroundResource(R.drawable.control_play1);
 	                    } else {
 	                        isPlaying = false;
 	                        isPausing = true;
-	                        controlButton.setBackgroundResource(R.drawable.control_play);
+	                        controlButton.setBackgroundResource(R.drawable.control_pause1);
 	                    }                   	
 	                }
                     else {
@@ -565,17 +584,20 @@ public class MusicPlayer extends DialogFragment{
 
 /**=======================================================私有函数=====================*/    
     private void initialViews(View v) {        	            	
-        seekBar  = (SeekBar)v.findViewById(R.id.music_seek);
-        controlButton = (ImageButton)v.findViewById(R.id.music_control_button);        
-        showTimeGoing = (TextView) v.findViewById(R.id.music_showtime_going);
+        seekBar  = (SeekBar)v.findViewById(R.id.music_seek); //时间进度条
+        controlButton = (ImageButton)v.findViewById(R.id.music_control_button); //暂停与播放按键       
+        showTimeGoing = (TextView) v.findViewById(R.id.music_showtime_going);   //当前时间
         showTimeGoing.setText("00:00");
-        showTimeTotal = (TextView) v.findViewById(R.id.music_showtime_total);
+        showTimeTotal = (TextView) v.findViewById(R.id.music_showtime_total);   //总时间
         showTimeTotal.setText("00:00");
         
-        musicName = (TextView)v.findViewById(R.id.music_name_singer);   
-        volUpBtn = (ImageView)v.findViewById(R.id.control_volume_bigger);
-        volDownBtn = (ImageView)v.findViewById(R.id.control_volume_small);
-        seekbarContainer = v.findViewById(R.id.music_seek_container);
+        previousButton = (ImageButton)v.findViewById(R.id.control_song_previous);
+        nextButton = (ImageButton)v.findViewById(R.id.control_song_next);
+        
+        musicName = (TextView)v.findViewById(R.id.music_name_singer);         //忽略
+        /*volUpBtn = (ImageView)v.findViewById(R.id.control_volume_bigger);     //放大音量键
+        volDownBtn = (ImageView)v.findViewById(R.id.control_volume_small);    //减小音量键
+*/        seekbarContainer = v.findViewById(R.id.music_seek_container);         
         if (isTitleHide) {
         	if (musicName != null) {
         		musicName.setVisibility(View.GONE);
@@ -585,7 +607,8 @@ public class MusicPlayer extends DialogFragment{
         else {
         	view.setMinimumHeight(100);        	
 		}
-		view.setVisibility(View.INVISIBLE);
+	//	view.setVisibility(View.INVISIBLE);
+		view.setVisibility(View.VISIBLE);      //显示播放器
         view.invalidate();
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
@@ -639,22 +662,70 @@ public class MusicPlayer extends DialogFragment{
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
                 if (isPausing) {
-                	controlButton.setBackgroundResource(R.drawable.control_pause);
+                	controlButton.setBackgroundResource(R.drawable.control_play1);
                 	ClientSendCommandService.sendMessage(CMD_PLAY);
                     isPausing = false;
                     isPlaying = true;
                 } else {
-                	controlButton.setBackgroundResource(R.drawable.control_play);
+                	controlButton.setBackgroundResource(R.drawable.control_pause1);
                 	ClientSendCommandService.sendMessage(CMD_PAUSE);
                     isPausing = true;
                     isPlaying = false;
                 }
             }
         });
+        
+        
+        nextButton.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		MyApplication.vibrator.vibrate(100); //点击按钮震动
+        		
+        	//	Log.d(TAG, "进入nextButton");
+        		
+        		int index = musics.indexOf(music);
+            	
+            	if (++index < musics.size()) {
+            		music = musics.get(index);
+            		playMusic(music);
+            		
+            		
+        		}
+            	else {    		
+            		
+            		Toast.makeText(getActivity(), "当前已是最后一首歌曲,没有下一首了", Toast.LENGTH_SHORT).show();
+        		}    	    	
+        		        		
+        	}
+        });
+        
+ 
+        
+        previousButton.setOnClickListener(new View.OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		MyApplication.vibrator.vibrate(100);
+        		
+                int index = musics.indexOf(music);
+                index = index -1;
+                
+            	if (index >=0) {
+            		
+            		music = musics.get(index);
+            		playMusic(music);
+        		}
+            	else {    		
+            		
+            		Toast.makeText(getActivity(), "当前已是第一首歌曲,没有上一首了", Toast.LENGTH_SHORT).show();
+        		}    	    	
+                
+        		
+        	}
+        });
 		
 		/**
          * 视频投影音量控制
-         */
+         *//*
 		if(volUpBtn != null)
 		{
 	        volUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -674,7 +745,7 @@ public class MusicPlayer extends DialogFragment{
 	                ClientSendCommandService.sendMessage("key:volumedown");	                
 	            }
 	        }); 
-		} 
+		} */
 				
 		view.setOnKeyListener(new View.OnKeyListener() {
 			
@@ -734,7 +805,8 @@ public class MusicPlayer extends DialogFragment{
                 //    Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
                 //    view.startAnimation(animation);
                 //}
-
+                
+                //播放器即将播放的状态显示
                 int  totalTime = music.getDuration() / 1000;
                 seekBar.setMax(totalTime);
                 String musicTotalTime = DateUtils.getTimeShow(totalTime);

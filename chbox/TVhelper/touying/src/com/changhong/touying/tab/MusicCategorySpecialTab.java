@@ -4,6 +4,7 @@
 package com.changhong.touying.tab;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -39,6 +40,8 @@ public class MusicCategorySpecialTab extends Fragment {
 	 * Image List adapter
 	 */
 	private MusicDataAdapter musicAdapter = null;
+	
+	private ArrayList<Music> musicsPlay;
 	/**
 	 * 视频浏览部分
 	 */
@@ -103,7 +106,14 @@ public class MusicCategorySpecialTab extends Fragment {
 						Bundle bundle = new Bundle();
 						List<Music> musics = MusicDataAdapter
 								.getPositionMusics(position);
-						bundle.putSerializable("musics", (Serializable) musics);
+						
+						//musics序列化,便于在activity之间传递数据
+			      		musicsPlay = new ArrayList<Music>();  		
+			      		for (Music music : musics) {
+			      			musicsPlay.add(music);
+			      		}
+			      		
+						bundle.putSerializable("musics", musicsPlay);
 						intent.putExtras(bundle);
 						startActivity(intent);
 					}

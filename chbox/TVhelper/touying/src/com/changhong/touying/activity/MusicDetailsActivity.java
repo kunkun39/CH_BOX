@@ -1,16 +1,24 @@
 package com.changhong.touying.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
 import com.changhong.thirdpart.sharesdk.ShareFactory;
@@ -18,6 +26,7 @@ import com.changhong.thirdpart.sharesdk.util.L;
 import com.changhong.thirdpart.test.ThirdpartTestActivity;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
+import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
 import com.changhong.touying.music.MediaUtil;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
@@ -29,15 +38,41 @@ import com.changhong.touying.service.MusicServiceImpl;
  */
 public class MusicDetailsActivity extends FragmentActivity {
 
+	private final static String TAG = "MusicDetailsActivity";
+	
 	/**
 	 * 消息处理
 	 */
 	public static Handler handler;
+	
+	private final static String CMD_TAG = "music:";
+	
+	private final static String CMD_SEEK = CMD_TAG + "seekto";
 
+	
+	public int position;
 	/**
 	 * 被选中的音乐文件
 	 */
 	private Music selectedMusic;
+	
+	/**
+	 * 
+	 * 所有的音乐信息
+	 */
+	private ArrayList<Music> receiverMusics=null;
+	private List<Music> musics=null;
+	
+	private SeekBar seekBarVolum;
+	public AudioManager audioManager;
+	
+	 /**
+     * 音量控制按钮
+     */
+ //   private ImageView volUpBtn;
+ //   private ImageView volDownBtn;
+    private int maxVolume,currentVolume;
+
 
 	/**
 	 * 图片
@@ -50,7 +85,7 @@ public class MusicDetailsActivity extends FragmentActivity {
 	private TextView musicName;
 
 	/**
-	 * 歌曲名
+	 * 歌手
 	 */
 	private TextView musicAuthor;
 
@@ -67,7 +102,7 @@ public class MusicDetailsActivity extends FragmentActivity {
 	/**
 	 * 播放按钮
 	 */
-	private ImageView playImage;
+//	private ImageView playImage;
 
 	/**
 	 * 播放器
@@ -87,6 +122,15 @@ public class MusicDetailsActivity extends FragmentActivity {
 
 		Intent intent = getIntent();
 		selectedMusic = (Music) intent.getSerializableExtra("selectedMusic");
+		receiverMusics = (ArrayList<Music>)intent.getSerializableExtra("musics");
+		
+		musics = new ArrayList<Music>();
+		
+		for(Music music :receiverMusics){
+			musics.add(music);
+		}
+		
+	
 		musicService = new MusicServiceImpl(MusicDetailsActivity.this);
 		
 
@@ -98,7 +142,21 @@ public class MusicDetailsActivity extends FragmentActivity {
 
 	private void initialViews() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_music_details);
+		setContentView(R.layout.activity_music_details_pan);
+		
+		initPlayer();
+		
+		//初始化音量
+		seekBarVolum = (SeekBar)findViewById(R.id.music_seek_volue);
+		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);    //获取音频服务
+		seekBarVolum.setMax(audioManager.getStreamMaxVolume(audioManager.STREAM_MUSIC)); //进度条设置最大音量
+		currentVolume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);  //获取当前音频音量
+		seekBarVolum.setProgress(currentVolume);  //设置初始值
+		
+	//	volUpBtn = (ImageView)findViewById(R.id.control_volume_bigger);     //放大音量键
+    //    volDownBtn = (ImageView)findViewById(R.id.control_volume_small);    //减小音量键
+        
+        
 
 		musicImage = (ImageView) findViewById(R.id.details_image);
 		musicName = (TextView) findViewById(R.id.music_name);
@@ -107,7 +165,8 @@ public class MusicDetailsActivity extends FragmentActivity {
 		String musicAuthorStr=selectedMusic.getArtist();
 		musicAuthor = (TextView) findViewById(R.id.music_author);
 		if (!TextUtils.isEmpty(musicAuthorStr)) {
-			musicAuthor.setText("—— " + musicAuthorStr + " ——");
+			musicAuthor.setText(musicAuthorStr);
+//			musicAuthor.setText("—— " + musicAuthorStr + " ——");
 		}else {
 			musicAuthor.setVisibility(View.GONE);
 		}
@@ -116,25 +175,122 @@ public class MusicDetailsActivity extends FragmentActivity {
 		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
 		returnImage = (ImageView) findViewById(R.id.d_btn_return);
-		playImage = (ImageView) findViewById(R.id.d_btn_play);
+	//	playImage = (ImageView) findViewById(R.id.d_btn_play);
 		
-		musicPlayer = new MusicPlayer();        
+		musicPlayer = new MusicPlayer(); 
+		
+		//往activity中添加一个fragment
         getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
 	}
+	
+	private void initPlayer(){
+		musicPlayer = new MusicPlayer();
+        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).hide(musicPlayer).commitAllowingStateLoss();
+        musicPlayer.setOnPlayListener(new OnPlayListener() {
+			boolean isLastSong = false;
+			@Override
+			public void OnPlayFinished() {
+				if (isLastSong) {
+					musicPlayer.stopTVPlayer();
+					isLastSong = false;
+				}
+				else {
+					musicPlayer.nextMusic();					
+				}
+			}
+			
+			@Override
+			public void OnPlayBegin(String path, String name, String artist) {
+								
+				if (musics.get(musics.size() -1).getPath().equals(path)) {
+					isLastSong = true;
+				}
+				else {
+					isLastSong = false;
+				}
+			}
+
+		});
+        musicPlayer.attachMusics(musics).autoPlaying(true);  //添加播放列表歌曲
+    }
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		musicPlayer.attachMusic(selectedMusic).autoPlaying(true);
+		musicPlayer.attachMusics(musics).autoPlaying(true);  //添加播放列表歌曲
 	}
 	private void initialEvents() {
 
-		playImage.setOnClickListener(new View.OnClickListener() {
+		/*playImage.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				musicPlayer.playMusic(selectedMusic);				
 			}
-		});
+		});*/
+		
+		/**
+         * 视频投影音量控制
+         */
+		/*if(volUpBtn != null)
+		{
+	        volUpBtn.setOnClickListener(new View.OnClickListener() {
+	            @Override
+	            public void onClick(View v) {
+	                MyApplication.vibrator.vibrate(100);
+	                ClientSendCommandService.sendMessage("key:volumeup");
+	                seekBarVolum.setProgress(seekBarVolum.getProgress()+5); 
+	                
+	                
+	            }
+	        });
+		}
+		if(volDownBtn != null)
+		{
+	        volDownBtn.setOnClickListener(new View.OnClickListener() {
+	            @Override
+	            public void onClick(View v) {
+	                MyApplication.vibrator.vibrate(100);
+	                ClientSendCommandService.sendMessage("key:volumedown");	
+	                seekBarVolum.setProgress(seekBarVolum.getProgress()-5); 
+	            }
+	        }); 
+		} */
+		
+		/*
+		 * 
+		 * 手动拖动进度条时执行
+		 * */
+		
+		seekBarVolum.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			
+			/*
+		     * SeekBar开始滚动的回调函数
+		     */
+			 @Override
+	            public void onStartTrackingTouch(SeekBar seekBar) {
+	            }
+			 
+			 
+			 /*
+			  * SeekBar停止滚动的回调函数
+			  */
+			 @Override
+	            public void onStopTrackingTouch(SeekBar seekBar) {
+	            				
+	            }
+			 
+			 
+			 /*
+			  * SeekBar滚动时的回调函数
+			  */
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				audioManager.adjustStreamVolume(audioManager.STREAM_MUSIC, progress, 0); //设置系统音量
+				
+			}
+		});		
 
 		returnImage.setOnClickListener(new View.OnClickListener() {
 			@Override

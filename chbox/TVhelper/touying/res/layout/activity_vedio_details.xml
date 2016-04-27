@@ -108,7 +108,7 @@
                 android:paddingRight="10dp"
                 android:paddingTop="16dp"
                 android:layout_centerInParent="true"
-                android:progressDrawable="@drawable/progress_holo_light"
+                android:progressDrawable="@drawable/time_progress_holo_light"
                 android:thumb="@drawable/detail_icon_schedule_ball" />
         </RelativeLayout>
 

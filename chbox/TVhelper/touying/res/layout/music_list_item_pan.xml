@@ -25,15 +25,29 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_gravity="center"
+            android:background="@android:color/background_dark"
+            android:paddingBottom="10dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="10dp"
+            android:src="@drawable/playlist_play"
+            android:visibility="gone" />
+        <TextView 
+            android:id="@+id/music_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:paddingBottom="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="10dp"
-            android:src="@drawable/playlist_play" />
-
+            android:text="时间"/>
+        
+            
         <TextView
-            android:id="@+id/music_item_name"
+            android:id="@+id/music_item_artist_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -46,16 +60,22 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/music_item_artist_duration"
+            android:id="@+id/music_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/music_item_name"
+            android:layout_below="@id/music_item_artist_duration"
             android:paddingLeft="50dp"
             android:textColor="@color/grey"
             android:textSize="12sp" />
 
         
     </RelativeLayout>
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/music_title_body_deliver"/>
 
     <TextView
         android:id="@+id/music_item_path"
