@@ -68,7 +68,7 @@ public class SettingActivity extends Activity {
 		setContentView(R.layout.activity_setting);
 
 		// 初始化按钮和事件
-//		settingReturn = (Button) findViewById(R.id.btn_back);
+		settingReturn = (Button) findViewById(R.id.btn_back);
 		updateInfo = (TextView) findViewById(R.id.update_info);
 		updateBtn = (LinearLayout) findViewById(R.id.update_info_btn);
 		
@@ -125,13 +125,13 @@ public class SettingActivity extends Activity {
 		};
 		
 
-		/*settingReturn.setOnClickListener(new View.OnClickListener() {
+		settingReturn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				MyApplication.vibrator.vibrate(100);
 				finish();
 			}
-		});*/
+		});
 
 		updateBtn.setOnClickListener(new View.OnClickListener() {
 			@Override

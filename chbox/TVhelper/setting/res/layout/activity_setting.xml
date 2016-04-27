@@ -27,26 +27,26 @@
             android:layout_height="65dip"
             android:background="@drawable/title_background"
             android:focusable="false"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:gravity="center" >
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
-                android:layout_height="64.3dip"
-                android:layout_marginLeft="55dip"
-                android:ellipsize="marquee"
-                android:gravity="center_vertical"
+                android:layout_height="wrap_content"               
+                android:ellipsize="marquee"               
                 android:singleLine="true"
                 android:text="@string/setting"
                 android:textSize="20sp" />
         </LinearLayout>
 
-      <!--   <Button
+        <Button
             android:id="@+id/btn_back"
             android:layout_width="70.5dip"
             android:layout_height="65dip"
             android:layout_marginLeft="0dip"
-            android:background="@drawable/title_btn_back_selector" /> -->
+            android:layout_marginTop="6dp"
+            android:background="@drawable/title_btn_back_selector" />
         
         <ImageButton
             android:id="@+id/setting_sidemunubutton"
