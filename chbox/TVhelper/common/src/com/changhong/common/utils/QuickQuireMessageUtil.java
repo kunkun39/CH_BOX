@@ -48,7 +48,7 @@ public class QuickQuireMessageUtil {
 	 */
 	public void feedback(String result)
 	{
-		if (result != null
+		if (result == null
 				|| result.indexOf(":") == -1){
 			return;
 		}
