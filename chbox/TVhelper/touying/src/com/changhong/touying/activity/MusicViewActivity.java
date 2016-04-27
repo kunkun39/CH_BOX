@@ -71,7 +71,7 @@ public class MusicViewActivity extends FragmentActivity implements QuickQuireMes
         super.onCreate(savedInstanceState);
 
         initData();
-        Utils.requireServerVolume();
+        Utils.requireServerVolume(this);
         QuickQuireMessageUtil.getInstance().setFeedbackListener(this, this);
 
         initViews();
