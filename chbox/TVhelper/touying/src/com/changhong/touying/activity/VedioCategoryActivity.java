@@ -82,7 +82,7 @@ public class VedioCategoryActivity extends Activity {
          */
         if (AppConfig.PROJECT_NAME == AppConfig.PROJECT_INDIA_DAS){
             findViewById(R.id.vedio_base).setBackgroundResource(R.drawable.bk_das);
-            findViewById(R.id.banner).setBackgroundResource(R.drawable.das_pic_title);
+            findViewById(R.id.banner).setBackgroundResource(R.drawable.video_title_background);
             findViewById(R.id.title_expand).setVisibility(View.GONE);
             TextView title = ((TextView) findViewById(R.id.title));
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)title.getLayoutParams();
