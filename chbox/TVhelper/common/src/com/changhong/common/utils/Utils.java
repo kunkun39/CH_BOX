@@ -25,7 +25,7 @@ public class Utils {
         return (int) (pxValue / scale + 0.5f);
     }
 
-    public static void requireServerVolume(){
-        ClientSendCommandService.sendMessage(MESSAGE_SYSTEM_VOL);
+    public static void requireServerVolume(Context context){
+        QuickQuireMessageUtil.getInstance().doAction(context,MESSAGE_SYSTEM_VOL);
     }
 }

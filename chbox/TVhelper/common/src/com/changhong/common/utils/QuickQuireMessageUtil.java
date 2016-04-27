@@ -57,7 +57,7 @@ public class QuickQuireMessageUtil {
 		String className = tempResult.substring(0,tempResult.indexOf(":"));
 		OnFeedBackListener listener = mVerifyListeners.get(className);
 		if (listener != null){
-			listener.onFinish(this, tempResult.substring(tempResult.indexOf(";"),tempResult.length()));
+			listener.onFinish(this, tempResult.substring(tempResult.indexOf(":") + 1,tempResult.length()));
 		}
 	}	
 	
