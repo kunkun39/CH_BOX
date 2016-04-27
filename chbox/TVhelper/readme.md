@@ -16,7 +16,7 @@
 **5.common**
 > git@git.coding.net:yvesyang-yy/TVHelper_Common_Resource.git
 
-**用来替代xdpi的资源文件夹**
+**用来替代xhdpi的资源文件夹**
 
 ##密码:##
 > 1357924680

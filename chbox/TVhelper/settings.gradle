@@ -1,6 +1,7 @@
-include ':common', ':vitamio4.21'
+include ':common', ':vitamio4.21', ':appcompatv7'
 include ':setting'
 include ':thirdpart'
 include ':touying'
 include ':main'
 project(':vitamio4.21').projectDir = new File('vitamio4.2')
+project(':appcompatv7').projectDir = new File('appcompat-v7')
