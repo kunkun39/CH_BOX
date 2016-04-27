@@ -180,7 +180,7 @@
                 android:paddingRight="10dp"
                 android:layout_above="@+id/tv_soundimg"
                 android:layout_centerHorizontal="true"
-                android:progressDrawable="@drawable/progress_holo_light"
+                android:progressDrawable="@drawable/time_progress_holo_light"
                 android:thumb="@drawable/detail_icon_schedule_ball" />
 
             <TextView

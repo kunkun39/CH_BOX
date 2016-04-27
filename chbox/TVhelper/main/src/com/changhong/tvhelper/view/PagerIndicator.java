@@ -19,11 +19,9 @@ import java.util.List;
  */
 public class PagerIndicator extends LinearLayout{
     List<ImageView> mIndicators = new ArrayList<ImageView>();
-    Context mContext;
 
     public PagerIndicator(Context context) {
         super(context);
-        mContext = context;
     }
 
     public PagerIndicator(Context context, AttributeSet attrs) {
@@ -36,7 +34,14 @@ public class PagerIndicator extends LinearLayout{
 
     public void setCurrent(int index){
         clearStatus();
-        mIndicators.get(index).setSelected(true);
+        View view = this.getChildAt(index);
+        if (view == null)
+            return;
+
+        view.setSelected(true);
+        LinearLayout.LayoutParams  layoutParams = (LinearLayout.LayoutParams)view.getLayoutParams();
+        layoutParams.height = layoutParams.width = Utils.dip2px(getContext(), 15);
+        view.setLayoutParams(layoutParams);
     }
 
     public void setIndicatorCount(int count){
@@ -44,15 +49,19 @@ public class PagerIndicator extends LinearLayout{
         this.removeAllViews();
 
         for(int i  = 0 ; i < count; i ++ ){
-            ImageView indicator = new ImageView(mContext);
+            ImageView indicator = new ImageView(getContext());
             indicator.setImageResource(R.drawable.indicator_item);
-            indicator.setLayoutParams(new ViewGroup.LayoutParams(Utils.px2dip(mContext,8),Utils.px2dip(mContext,8)));
+            LinearLayout.LayoutParams linearLayout = new LinearLayout.LayoutParams(Utils.dip2px(getContext(), 10),Utils.dip2px(getContext(), 10));
+            linearLayout.setMargins(Utils.dip2px(getContext(), 10),0,0,0);
+            indicator.setLayoutParams(linearLayout);
+
             mIndicators.add(indicator);
             this.addView(indicator);
         }
         if (count > 0){
             mIndicators.get(0).setSelected(true);
         }
+        requestLayout();
     }
 
     public int getIndicatorCount(){
@@ -62,6 +71,9 @@ public class PagerIndicator extends LinearLayout{
     public void clearStatus(){
         for (ImageView view : mIndicators){
             view.setSelected(false);
+            LinearLayout.LayoutParams  layoutParams = (LinearLayout.LayoutParams)view.getLayoutParams();
+            layoutParams.height = layoutParams.width = Utils.dip2px(getContext(), 10);
+            view.setLayoutParams(layoutParams);
         }
     }
 }

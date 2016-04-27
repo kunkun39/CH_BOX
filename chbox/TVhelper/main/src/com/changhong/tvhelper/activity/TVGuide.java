@@ -6,6 +6,8 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,9 +63,10 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         mTitle.setText(guidesTitle[0]);
         mContent.setText(guidesContent[0]);
         mViewpager.setAdapter(new GuideAdapter());
-        mIndicator = new PagerIndicator(this);
+        mIndicator = (PagerIndicator)findViewById(R.id.indicator);
         mViewpager.setOnPageChangeListener(this);
         mIndicator.setIndicatorCount(mViewpager.getAdapter().getCount());
+        mIndicator.setCurrent(0);
     }
 
     class GuideAdapter extends PagerAdapter{
@@ -102,10 +105,22 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         mIndicator.setCurrent(i);
         mTitle.setText(guidesTitle[i]);
         mContent.setText(guidesContent[i]);
+        Animation animationOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+        Animation animationIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
         if (i == mViewpager.getAdapter().getCount() - 1){
+            mNext.setAnimation(animationOut);
+            mSkip.setAnimation(animationOut);
+            mStart.setAnimation(animationIn);
             mNext.setVisibility(View.GONE);
             mSkip.setVisibility(View.GONE);
             mStart.setVisibility(View.VISIBLE);
+        }else {
+            mNext.setAnimation(animationIn);
+            mSkip.setAnimation(animationIn);
+            mStart.setAnimation(animationOut);
+            mNext.setVisibility(View.VISIBLE);
+            mSkip.setVisibility(View.VISIBLE);
+            mStart.setVisibility(View.GONE);
         }
     }
 
