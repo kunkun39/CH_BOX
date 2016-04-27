@@ -150,7 +150,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         initData();
 
         initEvent();
-        initShare();
+        //initShare();
     }
 
     private void initView() {
@@ -176,6 +176,12 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         textLeft = (TextView) findViewById(R.id.text_left);
         textRight = (TextView) findViewById(R.id.text_right);
         textScale = (TextView) findViewById(R.id.text_scale);
+        findViewById(R.id.btn_back).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         currentShow = false;
     }
@@ -760,19 +766,19 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
      */
     
     public void initShare() {
-        View v = findViewById(R.id.bt_sharepic);
-        if (!AppConfig.USE_SHARE)
-        {
-            v.setVisibility(View.INVISIBLE);
-            return ;
-        }
-        v.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                doShare();
-            }
-        });
+//        View v = findViewById(R.id.bt_sharepic);
+//        if (!AppConfig.USE_SHARE)
+//        {
+//            v.setVisibility(View.INVISIBLE);
+//            return ;
+//        }
+//        v.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                doShare();
+//            }
+//        });
 		
 	}
     public void doShare() {

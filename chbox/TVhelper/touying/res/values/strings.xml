@@ -63,5 +63,7 @@
     <string name="music_alert_input">Enter Playlist Name</string>
     <string name="pictures">Pictures</string>
     <string name="videos">Videos</string>
+    <string name="nnext">Next</string>
+    <string name="skip">Skip</string>
 
 </resources>

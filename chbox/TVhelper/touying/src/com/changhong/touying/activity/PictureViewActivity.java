@@ -73,7 +73,7 @@ public class PictureViewActivity extends Activity {
         /**
         * IP连接部分
          */
-    	ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));        
+    	//ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list), new Handler(getMainLooper()));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
