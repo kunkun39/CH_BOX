@@ -67,7 +67,7 @@
             android:layout_centerInParent="true"
             android:layout_toLeftOf="@id/music_showtime_going"
             android:layout_toRightOf="@id/music_control_button"
-            android:progressDrawable="@drawable/progress_holo_light"
+            android:progressDrawable="@drawable/time_progress_holo_light"
             android:thumbOffset="0dp" />
     </RelativeLayout>
 
