@@ -143,6 +143,7 @@ public class MusicDetailsActivity extends FragmentActivity {
 	private void initialViews() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_music_details_pan);
+		musicPlayer = new MusicPlayer();
 		
 		initPlayer();
 		
@@ -174,18 +175,19 @@ public class MusicDetailsActivity extends FragmentActivity {
 		defaultImage=(ImageView)findViewById(R.id.iv_music_ablum);
 		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
+	
 		returnImage = (ImageView) findViewById(R.id.d_btn_return);
 	//	playImage = (ImageView) findViewById(R.id.d_btn_play);
 		
-		musicPlayer = new MusicPlayer(); 
+	//	musicPlayer = new MusicPlayer(); 
 		
 		//往activity中添加一个fragment
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
+       // getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
 	}
 	
 	private void initPlayer(){
-		musicPlayer = new MusicPlayer();
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).hide(musicPlayer).commitAllowingStateLoss();
+		//musicPlayer = new MusicPlayer();
+        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
         musicPlayer.setOnPlayListener(new OnPlayListener() {
 			boolean isLastSong = false;
 			@Override
@@ -195,15 +197,25 @@ public class MusicDetailsActivity extends FragmentActivity {
 					isLastSong = false;
 				}
 				else {
+					Log.d(TAG, "OnPlayFinished被执行了!!!");
 					musicPlayer.nextMusic();					
 				}
 			}
 			
 			@Override
-			public void OnPlayBegin(String path, String name, String artist) {
+			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
+				//public void OnPlayBegin(String path, String name, String artist) {
+				
+				//歌曲更换,歌曲的信息UI也要跟着改变
+				musicName.setText(name);
+				musicAuthor.setText(artist);
+				defaultImage.setImageBitmap(MediaUtil.getArtwork(getApplicationContext(), id, artistId, true, false));
+				
+				//defaultImage.setIma
 								
 				if (musics.get(musics.size() -1).getPath().equals(path)) {
 					isLastSong = true;
+					Log.d(TAG, "OnPlayBegin被执行了!!!");
 				}
 				else {
 					isLastSong = false;
@@ -211,14 +223,15 @@ public class MusicDetailsActivity extends FragmentActivity {
 			}
 
 		});
-        musicPlayer.attachMusics(musics).autoPlaying(true);  //添加播放列表歌曲
+      //  musicPlayer.attachMusics(musics).autoPlaying(true);  //添加播放列表歌曲
     }
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		musicPlayer.attachMusic(selectedMusic).autoPlaying(true);
-		musicPlayer.attachMusics(musics).autoPlaying(true);  //添加播放列表歌曲
+	//	musicPlayer.attachMusics(musics);  //添加播放列表歌曲
+		musicPlayer.attachMusics(musics).autoPlaying(false);  //添加播放列表歌曲
 	}
 	private void initialEvents() {
 

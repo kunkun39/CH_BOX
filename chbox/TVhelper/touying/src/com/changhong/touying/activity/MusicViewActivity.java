@@ -128,7 +128,8 @@ public class MusicViewActivity extends FragmentActivity implements QuickQuireMes
 			}
 			
 			@Override
-			public void OnPlayBegin(String path, String name, String artist) {
+//			public void OnPlayBegin(String path, String name, String artist) {
+			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
 				
 				if (musics.get(musics.size() -1).getPath().equals(path)) {
 					isLastSong = true;

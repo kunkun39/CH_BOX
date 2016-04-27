@@ -101,7 +101,7 @@ public class MusicCategoryAllTab extends Fragment {
 
 	private void initView(View v) {
 
-		//initPlayer();
+		initPlayer();
 
 		/**
 		 * 歌曲部分:自定义list样式绑定数据到布局中
@@ -142,11 +142,9 @@ public class MusicCategoryAllTab extends Fragment {
 			}
 
 			@Override
-			public void OnPlayBegin(String path, String name, String artist) {
+//			public void OnPlayBegin(String path, String name, String artist) {
+			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {	
 				
-				int i=1;
-				
-				Log.d(TAG, "OnPlayBegin被执行次数:"+i);
 				if (musics.get(musics.size() - 1).getPath().equals(path)) {
 					isLastSong = true;
 				}

@@ -190,7 +190,7 @@ public class MusicPlayer extends DialogFragment{
 /**====================================================回调函数===================*/
     public interface OnPlayListener
 	{
-    	public void OnPlayBegin(String path,String name,String artist);    	
+    	public void OnPlayBegin(String path,String name,String artist,long id,long artistId);    	
     	public void OnPlayFinished();
     	//public void getNewMusic(Music music);
 	}
@@ -322,7 +322,7 @@ public class MusicPlayer extends DialogFragment{
     	
     	if (listener != null) {
         	try {
-        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());  //回调给实现部分
+        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist(),music.getId(),music.getArtistId());  //回调给实现部分
 			} catch (Exception e) {
 				e.printStackTrace();    				
 			}			
@@ -363,7 +363,8 @@ public class MusicPlayer extends DialogFragment{
         
         if (listener != null) {
         	try {
-        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());
+        		//listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());
+        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist(),music.getId(),music.getArtistId());
 			} catch (Exception e) {
 				e.printStackTrace();				
 			}			
@@ -411,7 +412,7 @@ public class MusicPlayer extends DialogFragment{
     
     public void stopTVPlayer()
     {
-    	super.onStop();
+    	//super.onStop();
     	//ClientSendCommandService.sendMessage(CMD_STOP);
     	/*if (view.getVisibility() == View.VISIBLE) {
     		Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
