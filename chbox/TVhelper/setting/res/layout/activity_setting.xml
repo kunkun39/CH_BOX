@@ -13,7 +13,6 @@
         android:layout_alignParentRight="true"
         android:background="#00ffcc"
         android:visibility="gone" >
-
         <include layout="@layout/sidemenu" />
     </RelativeLayout>
 
@@ -28,7 +27,16 @@
             android:background="@drawable/title_background"
             android:focusable="false"
             android:orientation="horizontal"
-            android:gravity="center" >
+             >
+            
+             <Button
+	            android:id="@+id/btn_back"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="16dip"
+	            android:layout_centerVertical="true"
+	            android:background="@drawable/das_title_back" 
+	            android:layout_gravity="center_vertical"/>
 
             <TextView
                 android:id="@+id/title"
@@ -37,16 +45,13 @@
                 android:ellipsize="marquee"               
                 android:singleLine="true"
                 android:text="@string/setting"
-                android:textSize="20sp" />
+                android:textSize="20sp" 
+                android:textColor="@color/white"
+                android:layout_marginLeft="16dip"
+                android:layout_gravity="center_vertical"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_back"
-            android:layout_width="70.5dip"
-            android:layout_height="65dip"
-            android:layout_marginLeft="0dip"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/title_btn_back_selector" />
+       
         
         <ImageButton
             android:id="@+id/setting_sidemunubutton"
