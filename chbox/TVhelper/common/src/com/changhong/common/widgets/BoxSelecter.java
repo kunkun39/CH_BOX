@@ -47,7 +47,7 @@ public class BoxSelecter implements Observer
 	 */
 	TextView mTitle = null;
 	ListView mView = null;
-	Button mDropDownBtn = null;
+	View mDropDownBtn = null;
 	LinearLayout mLinearLayout = null;
 	ImageView mImageView = null;
 	
@@ -64,7 +64,7 @@ public class BoxSelecter implements Observer
 	Handler mHandler = null;
 	
 	
-	public BoxSelecter(final Activity activity,TextView title,ListView view,Button dropDownBtn,Handler handler)
+	public BoxSelecter(final Activity activity,TextView title,ListView view,View dropDownBtn,Handler handler)
 	{
 		if (view == null){
 			return;
@@ -94,10 +94,10 @@ public class BoxSelecter implements Observer
         //listView Item 选择		
 		mView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {								
-                IpSelectorDataServer.getInstance().setCurrentIp(mAdapter.ipList.get(arg2));                
-                mView.setVisibility(View.GONE);
-                mImageView.setVisibility(View.GONE);
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				IpSelectorDataServer.getInstance().setCurrentIp(mAdapter.ipList.get(arg2));
+				mView.setVisibility(View.GONE);
+				mImageView.setVisibility(View.GONE);
 			}
 		});
 		
@@ -116,18 +116,25 @@ public class BoxSelecter implements Observer
 				}
 			}
 		});
+
 		
 		IpSelectorDataServer.getInstance().addViewObserver(this);
 	}
 	
-	public BoxSelecter(Activity activity,TextView title,ListView view,Button dropDownBtn,LinearLayout linearLayout,ImageView imageView,Handler handler)
+	public BoxSelecter(Activity activity,TextView title,ListView view,View dropDownBtn,LinearLayout linearLayout,ImageView imageView,Handler handler)
 	{
 		
 		
 		this(activity,title,view,dropDownBtn,handler);
 		mLinearLayout = linearLayout;
 		mImageView = imageView;
-		
+		mImageView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mView.setVisibility(View.INVISIBLE);
+				mImageView.setVisibility(View.INVISIBLE);
+			}
+		});
 		if(IpSelectorDataServer.getInstance().getCurrentIp() != null){
 			mLinearLayout.setBackgroundResource(R.drawable.ip_connect_title);
 		}else {

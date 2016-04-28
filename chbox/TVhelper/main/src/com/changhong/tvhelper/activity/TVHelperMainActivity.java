@@ -294,8 +294,7 @@ public class TVHelperMainActivity extends Activity {
         /**
          * Ip部分
          */
-        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients), (Button) findViewById(R.id.btn_list),(LinearLayout)findViewById(R.id.banner),(ImageView)findViewById(R.id.ip_list_item_bg),new Handler(getMainLooper()));        
-
+        ipSelecter = new BoxSelecter(this, (TextView) findViewById(R.id.title), (ListView) findViewById(R.id.clients),  findViewById(R.id.banner),(LinearLayout)findViewById(R.id.banner),(ImageView)findViewById(R.id.ip_list_item_bg),new Handler(getMainLooper()));
         mhandler = new Handler() {
             @Override
             public void handleMessage(Message msg1) {

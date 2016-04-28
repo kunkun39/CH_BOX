@@ -280,8 +280,6 @@ public class PictureCategoryActivity extends Activity {
                 }else {
                     holder.packageName.setText(StringUtils.getShortString(packageName, 12)+"    "+size + getResources().getString(R.string.picture_no));
                 }
-
-
                 //设置图片
                 try {
                     if (images.size() == 1) {
