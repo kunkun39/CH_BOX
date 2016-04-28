@@ -10,7 +10,6 @@
             android:id="@+id/vedio_item_image"
             android:layout_height="80dp"
             android:layout_width="150dp"
-            android:layout_marginTop="5dp"
             android:layout_alignParentLeft="true">
     </ImageView>
 
@@ -23,7 +22,7 @@
             android:ellipsize="end"
             android:gravity="bottom"
             android:lines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_alignParentLeft="true">
     </TextView>
     
@@ -37,7 +36,7 @@
             android:ellipsize="end"
             android:gravity="top"
             android:lines="1"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:layout_alignParentLeft="true">
     </TextView>
 
@@ -45,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/vedio_item_path"
+            android:textColor="@color/black"
             android:visibility="invisible">
     </TextView>
 </RelativeLayout>
