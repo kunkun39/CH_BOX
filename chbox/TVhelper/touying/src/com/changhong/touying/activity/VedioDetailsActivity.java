@@ -133,6 +133,15 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     private ImageView volUpBtn;
     private ImageView volDownBtn;
 
+    Runnable mRunableDelayPlay = new Runnable() {
+        @Override
+        public void run() {
+            if (isWantoPlay){
+                showOnTV();
+            }
+        }
+    };
+
     int volCurrent = 0;
     int volMax = 1;
 
@@ -182,6 +191,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
 
         handler = new Handler() {
             public void handleMessage(Message msg) {
+                handler.removeCallbacks(mRunableDelayPlay);
                 //服务端消息的处理消息的处理
                 if (msg.what == 0) {
                     //HTTPD的使用状态
@@ -224,10 +234,12 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                         }else {
                             controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
                         }
+                        if (isWantoPlay){
+                            doPlay();
+                        }
                     }else if (isWantoPlay){
                         showOnTV();
                     }
-                    isWantoPlay = false;
                 }
 
 
@@ -242,6 +254,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
 //                    Animation animation = AnimationUtils.loadAnimation(VedioDetailsActivity.this, R.anim.music_seekbar_out);
 //                    seekbarLayout.startAnimation(animation);
                 }
+                isWantoPlay = false;
             }
         };
     }
@@ -324,33 +337,16 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                if (isPausing == false){
+                if (isPlaying == false){
                     isWantoPlay = true;
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (isWantoPlay){
-                                showOnTV();
-                            }
-                        }
-                    },500);
+                    controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
+                    handler.removeCallbacks(mRunableDelayPlay);
+                    handler.postDelayed(mRunableDelayPlay,500);
                 }else{
                     if (isPausing) {
-                        ClientSendCommandService.msg = "vedio:start";
-                        ClientSendCommandService.handler.sendEmptyMessage(4);
-
-                        isPlaying = true;
-                        isPausing = false;
-
-                        controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
+                        doPlay();
                     } else {
-                        ClientSendCommandService.msg = "vedio:stop";
-                        ClientSendCommandService.handler.sendEmptyMessage(4);
-
-                        isPlaying = false;
-                        isPausing = true;
-
-                        controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
+                        doStop();
                     }
                 }
             }
@@ -471,5 +467,25 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
             e.printStackTrace();
             Toast.makeText(VedioDetailsActivity.this, getResources().getString(R.string.get_video_failed), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void doPlay(){
+        ClientSendCommandService.msg = "vedio:start";
+        ClientSendCommandService.handler.sendEmptyMessage(4);
+
+        isPlaying = true;
+        isPausing = false;
+
+        controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
+    }
+
+    private void doStop(){
+        ClientSendCommandService.msg = "vedio:stop";
+        ClientSendCommandService.handler.sendEmptyMessage(4);
+
+        isPlaying = false;
+        isPausing = true;
+
+        controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
     }
 }
