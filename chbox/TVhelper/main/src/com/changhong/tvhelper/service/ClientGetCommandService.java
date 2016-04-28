@@ -379,7 +379,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
     	public void run()
     	{
     		DatagramSocket socket = null;
-    		byte[] by = new byte[1024];
+
             
     		while(true)
     		{
@@ -388,6 +388,7 @@ public class ClientGetCommandService extends Service implements ClientSocketInte
     				socket = new DatagramSocket(NEW_BACK_PORT);    			
     				while(true)
     				{
+                        byte[] by = new byte[1024];
     					DatagramPacket dgPacket = new DatagramPacket(by, by.length);
     					try {    						
     						socket.receive(dgPacket);
