@@ -119,14 +119,14 @@ public class PictureCategoryActivity extends Activity {
             findViewById(R.id.title_expand).setVisibility(View.GONE);
             TextView title = ((TextView) findViewById(R.id.title));
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)title.getLayoutParams();
-            layoutParams.setMargins(16,0,0,0);
+            layoutParams.setMargins(Utils.dip2px(this, 16),0,0,0);
             title.setLayoutParams(layoutParams);
             title.setText(R.string.pictures);
             title.setTextColor(getResources().getColor(R.color.white));
             Button back = ((Button) findViewById(R.id.btn_back));
             back.setBackgroundResource(R.drawable.das_title_back);
             layoutParams = (ViewGroup.MarginLayoutParams)back.getLayoutParams();
-            layoutParams.setMargins(16,0,0,0);
+            layoutParams.setMargins(Utils.dip2px(this, 16),0,0,0);
             layoutParams.width = Utils.dip2px(this, 40);
             layoutParams.height = Utils.dip2px(this, 40);
             back.setLayoutParams(layoutParams);
