@@ -30,10 +30,10 @@
     <string name="music">music</string>
     <string name="cancel_projection">Cancel projection</string>
     <string name="cancel">cancel</string>
-    <string name="upslide_began_to_projection">Upslide to project</string>
-    <string name="previous">previous</string>
-    <string name="next">next</string>
-    <string name="scaling_pictures">Scaling pictures</string>
+    <string name="upslide_began_to_projection">Share it on TV</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="scaling_pictures">Pictures Scaling</string>
     <string name="album_name">Album name</string>
     <string name="nullsong">0 song</string>
     <string name="picture_no">" Images"</string>
