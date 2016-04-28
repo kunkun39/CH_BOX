@@ -45,6 +45,7 @@ import com.changhong.common.utils.DateUtils;
 import com.changhong.common.utils.MobilePerformanceUtils;
 import com.changhong.common.utils.NetworkUtils;
 import com.changhong.common.utils.StringUtils;
+import com.changhong.common.utils.Utils;
 import com.changhong.common.utils.WebUtils;
 import com.changhong.common.widgets.IpSelectorDataServer;
 import com.changhong.touying.R;
@@ -382,10 +383,12 @@ public class MusicPlayer extends DialogFragment{
     	
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			ClientSendCommandService.sendMessage("key:volumedown");				
+			ClientSendCommandService.sendMessage("key:volumedown");
+			Utils.requireServerVolume(getActivity());
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			ClientSendCommandService.sendMessage("key:volumeup");		
+			ClientSendCommandService.sendMessage("key:volumeup");
+			Utils.requireServerVolume(getActivity());
 			return true;
 
 		default:

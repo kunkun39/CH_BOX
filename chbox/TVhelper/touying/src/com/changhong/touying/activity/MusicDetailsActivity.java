@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.QuickQuireMessageUtil;
+import com.changhong.common.utils.Utils;
 import com.changhong.thirdpart.sharesdk.ShareFactory;
 import com.changhong.thirdpart.sharesdk.util.L;
 import com.changhong.thirdpart.test.ThirdpartTestActivity;
@@ -36,7 +38,7 @@ import com.changhong.touying.service.MusicServiceImpl;
 /**
  * Created by maren on 2015/4/9.
  */
-public class MusicDetailsActivity extends FragmentActivity {
+public class MusicDetailsActivity extends FragmentActivity implements QuickQuireMessageUtil.OnFeedBackListener{
 
 	private final static String TAG = "MusicDetailsActivity";
 	
@@ -69,9 +71,8 @@ public class MusicDetailsActivity extends FragmentActivity {
 	 /**
      * 音量控制按钮
      */
- //   private ImageView volUpBtn;
- //   private ImageView volDownBtn;
-    private int maxVolume,currentVolume;
+    private ImageView volUpBtn;
+    private ImageView volDownBtn;
 
 
 	/**
@@ -132,7 +133,8 @@ public class MusicDetailsActivity extends FragmentActivity {
 		
 	
 		musicService = new MusicServiceImpl(MusicDetailsActivity.this);
-		
+		QuickQuireMessageUtil.getInstance().setFeedbackListener(this,this);
+		Utils.requireServerVolume(this);
 
 		initialViews();
 
@@ -149,13 +151,9 @@ public class MusicDetailsActivity extends FragmentActivity {
 		
 		//初始化音量
 		seekBarVolum = (SeekBar)findViewById(R.id.music_seek_volue);
-		audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);    //获取音频服务
-		seekBarVolum.setMax(audioManager.getStreamMaxVolume(audioManager.STREAM_MUSIC)); //进度条设置最大音量
-		currentVolume = audioManager.getStreamVolume(audioManager.STREAM_MUSIC);  //获取当前音频音量
-		seekBarVolum.setProgress(currentVolume);  //设置初始值
 		
-	//	volUpBtn = (ImageView)findViewById(R.id.control_volume_bigger);     //放大音量键
-    //    volDownBtn = (ImageView)findViewById(R.id.control_volume_small);    //减小音量键
+		volUpBtn = (ImageView)findViewById(R.id.control_volume_bigger);     //放大音量键
+        volDownBtn = (ImageView)findViewById(R.id.control_volume_small);    //减小音量键
         
         
 
@@ -245,16 +243,14 @@ public class MusicDetailsActivity extends FragmentActivity {
 		/**
          * 视频投影音量控制
          */
-		/*if(volUpBtn != null)
+		if(volUpBtn != null)
 		{
 	        volUpBtn.setOnClickListener(new View.OnClickListener() {
 	            @Override
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
 	                ClientSendCommandService.sendMessage("key:volumeup");
-	                seekBarVolum.setProgress(seekBarVolum.getProgress()+5); 
-	                
-	                
+					Utils.requireServerVolume(MusicDetailsActivity.this);
 	            }
 	        });
 		}
@@ -264,46 +260,16 @@ public class MusicDetailsActivity extends FragmentActivity {
 	            @Override
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
-	                ClientSendCommandService.sendMessage("key:volumedown");	
-	                seekBarVolum.setProgress(seekBarVolum.getProgress()-5); 
+	                ClientSendCommandService.sendMessage("key:volumedown");
+					Utils.requireServerVolume(MusicDetailsActivity.this);
 	            }
-	        }); 
-		} */
+	        });
+		}
 		
 		/*
 		 * 
 		 * 手动拖动进度条时执行
 		 * */
-		
-		seekBarVolum.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-			
-			/*
-		     * SeekBar开始滚动的回调函数
-		     */
-			 @Override
-	            public void onStartTrackingTouch(SeekBar seekBar) {
-	            }
-			 
-			 
-			 /*
-			  * SeekBar停止滚动的回调函数
-			  */
-			 @Override
-	            public void onStopTrackingTouch(SeekBar seekBar) {
-	            				
-	            }
-			 
-			 
-			 /*
-			  * SeekBar滚动时的回调函数
-			  */
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				audioManager.adjustStreamVolume(audioManager.STREAM_MUSIC, progress, 0); //设置系统音量
-				
-			}
-		});		
 
 		returnImage.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -341,5 +307,21 @@ public class MusicDetailsActivity extends FragmentActivity {
     	String text=getResources().getString(R.string.share_song_tag)+"\n"+ getResources().getString(R.string.singer)+"："+artist+"\n"+getResources().getString(R.string.album)+"："+album+"\n "+getResources().getString(R.string.song_name)+"："+musicname;
     	L.d("sharepic "+text+"  ");
 		ShareFactory.getShareCenter(MusicDetailsActivity.this).showShareMenu(title, "  ",text, "");
+	}
+
+	@Override
+	public void onFinish(QuickQuireMessageUtil vervify, Object result) {
+		if (result == null
+				|| !(result instanceof String)
+				|| ((String)result).isEmpty()
+				|| ((String)result).indexOf("/") == -1){
+			return;
+		}
+		String value = (String)result;
+
+		int volCurrent = Integer.parseInt(value.substring(0,value.indexOf("/")));
+		int volMax  = Integer.parseInt(value.substring(value.indexOf("/") + 1,value.length()));
+		seekBarVolum.setMax(volMax);
+		seekBarVolum.setProgress(volCurrent);
 	}
 }
