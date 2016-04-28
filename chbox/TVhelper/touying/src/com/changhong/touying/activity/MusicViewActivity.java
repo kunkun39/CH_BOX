@@ -34,7 +34,7 @@ import com.changhong.touying.music.SingleMusicAdapter;
 /**
  * Created by Jack Wang
  */
-public class MusicViewActivity extends FragmentActivity implements QuickQuireMessageUtil.OnFeedBackListener{
+public class MusicViewActivity extends FragmentActivity{
 
     /**************************************************IP连接部分*******************************************************/
     private Button back;
@@ -71,8 +71,6 @@ public class MusicViewActivity extends FragmentActivity implements QuickQuireMes
         super.onCreate(savedInstanceState);
 
         initData();
-        Utils.requireServerVolume(this);
-        QuickQuireMessageUtil.getInstance().setFeedbackListener(this, this);
 
         initViews();
 
@@ -214,10 +212,5 @@ public class MusicViewActivity extends FragmentActivity implements QuickQuireMes
                 break;
         }
         return super.onKeyDown(keyCode, event);
-    }
-    
-    @Override
-    public void onFinish(QuickQuireMessageUtil vervify, Object result){
-    	
     }
 }
