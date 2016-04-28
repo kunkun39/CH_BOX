@@ -1,61 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bk_das" >
+    android:background="@drawable/bk_das"
+    android:orientation="vertical">
 
     <!-- 标题栏 -->
     <RelativeLayout
         android:id="@+id/title"
         android:layout_width="fill_parent"
-        android:layout_height="60dp"
+        android:layout_height="67.6dip"
         android:background="@drawable/video_title_background"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <ImageButton
             android:id="@+id/d_btn_return"
-            android:layout_width="80.5dip"
-            android:layout_height="77.3dip"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/title_btn_back_selector" />
+            android:layout_width="40dip"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:background="@drawable/das_title_back" />
     </RelativeLayout>
 
     <!-- 内容 -->
     
     <RelativeLayout
                 android:id="@+id/music_volue_info"
-                android:layout_width="290dp"
-                android:layout_height="40dp"
-                android:layout_below="@id/title"
-                android:layout_marginTop="25dp"
-                android:layout_centerHorizontal="true"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:clipChildren="false"
                 >
 
             <ImageView
                     android:id="@+id/control_volume_small"
                     android:layout_width="40dp"
-                    android:layout_height="20dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="24dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
                     android:layout_centerVertical="true"
                     android:src="@drawable/control_volume_small1"/>
 
             <ImageView
                     android:id="@+id/control_volume_bigger"
                     android:layout_width="40dp"
-                    android:layout_height="20dp"
+                    android:layout_height="40dp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginRight="24dp"
                     android:layout_centerVertical="true"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
                     android:src="@drawable/control_volume_bigger1"/>
             
             <com.changhong.touying.vedio.VolumeSeekBar
                     android:id="@+id/vedio_seek_volue"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
-                    android:paddingTop="2dp"
                     android:paddingRight="5dp"
                     android:focusable="false"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:maxHeight="4dp"
+                    android:minHeight="4dp"
                     android:focusableInTouchMode="false"
                     android:progressDrawable="@drawable/volue_progress_holo_light"
                     android:thumb="@drawable/detail_icon_schedule_ball3"
@@ -73,14 +82,17 @@
         android:layout_below="@id/music_volue_info"
         android:orientation="vertical" 
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="4"
         >
 
         <FrameLayout
-            android:layout_width="260dp"
-            android:layout_height="260dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="65dp">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_weight="12">
 
             <ImageView
                 android:id="@+id/details_image"
@@ -91,14 +103,13 @@
                 android:scaleType="fitXY"
                 android:src="@drawable/default_album" 
                 />
-
-           
         </FrameLayout>
         
         <TextView
 	        android:id="@+id/vedio_name"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="0dp"
+            android:layout_weight="1"
 	        android:layout_marginTop="20dp"
 	        android:gravity="center"
 	        android:textSize="18sp" />
@@ -106,7 +117,8 @@
 	    <TextView
 	        android:id="@+id/vedio_author"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
 	        android:layout_marginTop="10dp"
 	        android:gravity="center"
 	        android:textSize="14sp"
@@ -182,4 +194,4 @@
             
         </LinearLayout>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>

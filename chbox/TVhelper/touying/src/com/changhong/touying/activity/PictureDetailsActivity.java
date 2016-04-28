@@ -575,6 +575,7 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 relativeLayout.setVisibility(View.INVISIBLE);
+                relativeLayout.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_out));
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (currentShow && !isImageContinueMove && event.getPointerCount() == 2) {

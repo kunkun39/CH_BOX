@@ -6,6 +6,6 @@
         <scale android:drawable="@drawable/volue_progress_bck" android:scaleWidth="100%" />
     </item>
     <item android:id="@android:id/progress">
-        <scale android:drawable="@drawable/volue_progress_bar" android:scaleWidth="100%" />
+        <scale android:drawable="@drawable/volue_progress_bar" android:scaleWidth="100%"/>
     </item>
 </layer-list>
