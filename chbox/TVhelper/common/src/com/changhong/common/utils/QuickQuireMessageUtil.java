@@ -82,7 +82,7 @@ public class QuickQuireMessageUtil {
 			return;
 		}
 		
-		ClientSendCommandService.sendMessage(packetMessage(context.getClass().getName(),action));
+		ClientSendCommandService.sendMessageNew(packetMessage(context.getClass().getName(),action));
 	}
 	
 	/**
