@@ -24,10 +24,10 @@
             
          <TextView android:layout_width="80dip"
             android:layout_height="64.3dip"
-            android:text="@string/video"
+            android:text="@string/videos"
             android:textSize="20sp"
             android:singleLine="true"
-            android:layout_marginLeft="80dip"
+            android:layout_marginLeft="16dip"
              android:textColor="@color/white"
             android:gravity="center_vertical"/>
          
