@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/boder_black"
                 android:layout_gravity="center"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/default_album" 
                 />
         </FrameLayout>

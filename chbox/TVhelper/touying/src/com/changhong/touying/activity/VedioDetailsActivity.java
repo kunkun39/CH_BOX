@@ -252,6 +252,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                     isPausing = false;
 
                     seekBar.setProgress(0);
+                    controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
 //                    seekbarLayout.setVisibility(View.INVISIBLE);
 //                    Animation animation = AnimationUtils.loadAnimation(VedioDetailsActivity.this, R.anim.music_seekbar_out);
 //                    seekbarLayout.startAnimation(animation);
@@ -268,10 +269,10 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     	
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			ClientSendCommandService.sendMessage("key:volumedown");				
+            QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumedown");
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			ClientSendCommandService.sendMessage("key:volumeup");		
+            QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumeup");
 			return true;
 
 		default:
@@ -288,11 +289,11 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     	
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-			ClientSendCommandService.sendMessage("key:volumedown");
+            QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumedown");
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
-			ClientSendCommandService.sendMessage("key:volumeup");
-			return true;
+            QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumeup");
+            return true;
 
 		default:
 			break;
@@ -367,8 +368,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                ClientSendCommandService.msg = "key:volumeup";
-                ClientSendCommandService.handler.sendEmptyMessage(4);
+                QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumeup");
             }
         });
 
@@ -376,8 +376,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                ClientSendCommandService.msg = "key:volumedown";
-                ClientSendCommandService.handler.sendEmptyMessage(4);
+                QuickQuireMessageUtil.getInstance().doAction(VedioDetailsActivity.this, "key:volumedown");
             }
         });
     }
