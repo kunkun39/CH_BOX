@@ -229,13 +229,13 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                             isPlaying = false;
                             isPausing = true;
                         }
-                        if (isPlaying){
+
+                        if (isWantoPlay){
+                            doPlay();
+                        }else if (isPlaying){
                             controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
                         }else {
                             controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
-                        }
-                        if (isWantoPlay){
-                            doPlay();
                         }
                     }else if (isWantoPlay){
                         showOnTV();

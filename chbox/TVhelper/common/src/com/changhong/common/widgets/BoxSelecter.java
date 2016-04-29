@@ -76,7 +76,7 @@ public class BoxSelecter implements Observer
 		
 		mHandler = handler;
 		if (mTitle != null){
-			mTitle.setText(IpSelectorDataServer.getInstance().getName());
+			mTitle.setText(mActivity.getString(R.string.yupptvscope) + " " + IpSelectorDataServer.getInstance().getName());
 		}
 
 		mAdapter = new BoxSelectAdapter(activity);
@@ -164,7 +164,7 @@ public class BoxSelecter implements Observer
 					
 					// Update Name
 					if(mTitle != null){
-						mTitle.setText(dataServer.getName());
+						mTitle.setText(mActivity.getString(R.string.yupptvscope) + " " + dataServer.getName());
 					}
 
 					
@@ -241,7 +241,7 @@ public class BoxSelecter implements Observer
 	        String serverIP = ipList.get(position);
 
 //            vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP) +  " [" + serverIP + "]");
-            vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP));
+            vh.boxInfo.setText(mActivity.getString(R.string.yupptvscope) + " " + ClientSendCommandService.getConnectBoxName(serverIP));
             vh.boxInfo.setTextSize(16);
 	        return convertView;
 	    }

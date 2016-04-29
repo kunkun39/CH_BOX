@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="yupptvscope">YuppTV Scope</string>
     <string name="menu_controller">Remoter</string>
     <string name="menu_faq">User feedback </string>
     <string name="menu_search">Search</string>
