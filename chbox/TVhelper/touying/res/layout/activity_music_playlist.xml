@@ -4,14 +4,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              android:background="@android:color/transparent">    
+              android:background="@drawable/main_background">    
 	        
     <Button
        android:id="@+id/muslic_playlist_comfirm"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_alignParentBottom="true"
-       android:textColor="@color/white"
+       android:textColor="@color/black"
        android:layout_marginTop="10dp"
 	   android:layout_marginBottom="10dp"
        android:textSize="27sp"

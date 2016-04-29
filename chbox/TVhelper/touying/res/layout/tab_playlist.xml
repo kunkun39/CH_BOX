@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/list_tab"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingLeft="10dp" >
     <RelativeLayout 
 	        android:layout_width="match_parent"
 	        android:layout_height="0dp"
@@ -34,7 +35,7 @@
 	            android:layout_height="match_parent"
 	            android:layout_alignParentTop="true"
 	            android:layout_above="@id/divider_line"	    
-	            android:layout_marginTop="10dp"        	            
+	                    	            
 	            />
 	         
     	</RelativeLayout>

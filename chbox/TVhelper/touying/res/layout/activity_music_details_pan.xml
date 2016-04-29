@@ -62,13 +62,15 @@
                     android:layout_centerVertical="true"
                     android:src="@drawable/control_volume_bigger1"/>
             
-            <SeekBar
+            <com.changhong.touying.vedio.VolumeSeekBar
                     android:id="@+id/music_seek_volue"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:paddingLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="5dp"
+                    android:maxHeight="4dp"
+                    android:minHeight="4dp"
                     android:progressDrawable="@drawable/volue_progress_holo_light"
                     android:thumb="@drawable/detail_icon_schedule_ball3"
                     android:thumbOffset="0dip" 
@@ -85,26 +87,24 @@
         android:layout_below="@id/music_volue_info"
         android:orientation="vertical" 
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        >
+        android:layout_marginTop="40dp"
+       >
 
         <FrameLayout
             android:layout_width="260dp"
             android:layout_height="260dp"
-            android:background="@drawable/das_ablumlayout_bg"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="65dp">
+            android:layout_marginLeft="65dp"
+            >
 
             <ImageView
                 android:id="@+id/iv_music_ablum"
-                android:layout_width="255dp"
-                android:layout_height="250dp"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/boder_black"
                 android:scaleType="fitXY"
-                android:src="@drawable/default_album" 
-                />
-
-           
+                android:layout_gravity="center" />
+       
         </FrameLayout>
         
         <TextView
@@ -125,6 +125,8 @@
 	        android:textColor="@color/black" />
     
     </LinearLayout>
+    
+    
 
     <!-- 歌曲播放控制部分:使用fragment加载MP3Player -->
 

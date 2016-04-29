@@ -6,14 +6,10 @@
     android:orientation="vertical" >
 
     <ListView
-                android:id="@+id/music_special_listview"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"               
-                android:layout_marginTop="10dp"
-                android:background="@android:color/transparent"		
-                />
-    <View android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/music_title_body_deliver"/>
+        android:id="@+id/music_special_listview"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"               
+        android:background="@android:color/transparent"	
+        android:divider="#00FFFFFF"/>
     
 </LinearLayout>

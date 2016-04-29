@@ -75,8 +75,8 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     /**
      * 播放的进度条
      */
-    private SeekBar seekBar;
-    private SeekBar volBar;
+    private SeekBar seekBar;  //视频播放进度
+    private SeekBar volBar;   //音频播放进度
 
     /**
      * 时间显示信息
@@ -100,7 +100,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     private String currentime;
 
     /**
-     * 判断是否正在播放，可以用来防止用户连续点击播放按钮，导致系统创建信的线程
+     * 判断是否正在播放，可以用来防止用户连续点击播放按钮，导致系统创建线程
      */
     private boolean isPlaying = false;
 

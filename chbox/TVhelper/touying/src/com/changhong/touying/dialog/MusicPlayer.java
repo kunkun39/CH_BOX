@@ -697,7 +697,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "当前已是最后一首歌曲,没有下一首了", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "Currently is the last song, there is no next song!", Toast.LENGTH_SHORT).show();
         		}    	    	
         		        		
         	}
@@ -720,7 +720,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "当前已是第一首歌曲,没有上一首了", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "Currently is the first song, there is no previous song!", Toast.LENGTH_SHORT).show();
         		}    	    	
                 
         		

@@ -23,7 +23,7 @@ public class Music implements Serializable {
 
     private long createTime;
 
-    public Music(long id, String title, String path, long albumId, String artist, long artistId, int duration, long createTime) {
+    public Music(long id, String title, String path, long albumId, String artist, long artistId, int duration, long createTime) {    	
         this.id = id;
         this.title = title;
         this.path = path;
