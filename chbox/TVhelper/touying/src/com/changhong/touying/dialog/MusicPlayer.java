@@ -384,11 +384,9 @@ public class MusicPlayer extends DialogFragment{
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
 			ClientSendCommandService.sendMessage("key:volumedown");
-			Utils.requireServerVolume(getActivity());
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			ClientSendCommandService.sendMessage("key:volumeup");
-			Utils.requireServerVolume(getActivity());
 			return true;
 
 		default:

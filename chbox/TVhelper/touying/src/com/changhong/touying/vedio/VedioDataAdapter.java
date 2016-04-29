@@ -101,7 +101,7 @@ public class VedioDataAdapter extends BaseAdapter {
             }
         } else {
             String displayName = StringUtils.hasLength(vedio.getDisplayName()) ? StringUtils.getShortString(vedio.getDisplayName(), 20) : vedio.getTitle();
-            vedioName.setLines(2);
+            //vedioName.setLines(2);
             vedioName.setText(displayName);
             if (fullPath != null){
                 fullPath.setText(String.valueOf(position));

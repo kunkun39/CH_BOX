@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.changhong.common.system.MyApplication;
 import com.changhong.common.utils.DateUtils;
+import com.changhong.common.utils.Debug;
 import com.changhong.touying.R;
 import com.changhong.touying.dialog.MusicPlayer;
 import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;

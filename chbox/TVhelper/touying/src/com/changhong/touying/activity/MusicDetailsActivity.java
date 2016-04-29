@@ -250,7 +250,6 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
 	                ClientSendCommandService.sendMessage("key:volumeup");
-					Utils.requireServerVolume(MusicDetailsActivity.this);
 	            }
 	        });
 		}
@@ -261,7 +260,6 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
 	                ClientSendCommandService.sendMessage("key:volumedown");
-					Utils.requireServerVolume(MusicDetailsActivity.this);
 	            }
 	        });
 		}

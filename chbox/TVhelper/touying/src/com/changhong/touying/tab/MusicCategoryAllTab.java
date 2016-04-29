@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.Debug;
 import com.changhong.touying.R;
 import com.changhong.touying.activity.MusicDetailsActivity;
 import com.changhong.touying.dialog.MusicPlayer;

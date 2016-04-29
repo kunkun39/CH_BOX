@@ -287,11 +287,9 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
     	switch (keyCode) {
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
 			ClientSendCommandService.sendMessage("key:volumedown");
-            Utils.requireServerVolume(this);
 			return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			ClientSendCommandService.sendMessage("key:volumeup");
-            Utils.requireServerVolume(this);
 			return true;
 
 		default:
@@ -369,7 +367,6 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                 MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:volumeup";
                 ClientSendCommandService.handler.sendEmptyMessage(4);
-                Utils.requireServerVolume(VedioDetailsActivity.this);
             }
         });
 
@@ -379,7 +376,6 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                 MyApplication.vibrator.vibrate(100);
                 ClientSendCommandService.msg = "key:volumedown";
                 ClientSendCommandService.handler.sendEmptyMessage(4);
-                Utils.requireServerVolume(VedioDetailsActivity.this);
             }
         });
     }

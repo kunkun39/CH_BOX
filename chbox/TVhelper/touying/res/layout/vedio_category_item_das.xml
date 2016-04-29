@@ -20,23 +20,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="Image"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/vedio_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="30dp"
         android:layout_marginTop="5dp"
+        android:singleLine="true"
+        android:ellipsize="marquee"
         android:textColor="@color/black"
         android:textSize="15sp" />
     <TextView
         android:id="@+id/vedio_item_NO"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="30dp"
         android:textColor="@color/Grey_500"
+        android:singleLine="true"
         android:textSize="15sp"
         />
 

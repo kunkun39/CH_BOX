@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.changhong.common.service.ClientSendCommandService;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.Debug;
 import com.changhong.common.widgets.BoxSelecter;
 import com.changhong.touying.R;
 import com.changhong.touying.service.MusicService;
