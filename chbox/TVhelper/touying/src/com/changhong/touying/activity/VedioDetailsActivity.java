@@ -170,6 +170,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
 
         vedioName = (TextView) findViewById(R.id.vedio_name);
         String displayName = StringUtils.hasLength(selectedVedio.getDisplayName()) ? selectedVedio.getDisplayName() : selectedVedio.getTitle();
+        displayName = displayName.substring(0,displayName.lastIndexOf("."));
         vedioName.setText(displayName);
 
         returnImage = (ImageView) findViewById(R.id.d_btn_return);
@@ -218,24 +219,25 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                             isSeeking = isSeeking - 1;
                         }
 
-                        /**
-                         * set play status
-                         */
-                        String status = content[2];
-                        if ("true".equals(status)) {
-                            isPlaying = true;
-                            isPausing = false;
-                        } else {
-                            isPlaying = false;
-                            isPausing = true;
-                        }
-
                         if (isWantoPlay){
                             doPlay();
-                        }else if (isPlaying){
-                            controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
                         }else {
-                            controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
+                            /**
+                             * set play status
+                             */
+                            String status = content[2];
+                            if ("true".equals(status)) {
+                                isPlaying = true;
+                                isPausing = false;
+                            } else {
+                                isPlaying = false;
+                                isPausing = true;
+                            }
+//                            if (isPlaying){
+//                                controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
+//                            }else {
+//                                controlButton.setBackground(getResources().getDrawable(R.drawable.control_play1));
+//                            }
                         }
                     }else if (isWantoPlay){
                         showOnTV();
@@ -339,7 +341,7 @@ public class VedioDetailsActivity extends Activity implements QuickQuireMessageU
                     isWantoPlay = true;
                     controlButton.setBackground(getResources().getDrawable(R.drawable.control_pause1));
                     handler.removeCallbacks(mRunableDelayPlay);
-                    handler.postDelayed(mRunableDelayPlay,500);
+                    handler.postDelayed(mRunableDelayPlay,1000);
                 }else{
                     if (isPausing) {
                         doPlay();
