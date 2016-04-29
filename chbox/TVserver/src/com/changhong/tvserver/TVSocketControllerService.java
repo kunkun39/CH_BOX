@@ -142,9 +142,13 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:volumeup")) {
                                 Log.e(TAG, "key:volumeup");
                                 t.vkey_input(115, 1);
+                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+                                sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
                             } else if (msgCpy.equals("key:volumedown")) {
                                 Log.e(TAG, "key:volumedown");
                                 t.vkey_input(114, 1);
+                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+                                sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
                             } else if (msgCpy.equals("key:volume_mute")) {
                                 Log.e(TAG, "key:volume_mute");
                                 t.vkey_input(113, 1);
