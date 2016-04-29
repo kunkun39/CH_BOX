@@ -574,8 +574,10 @@ public class PictureDetailsActivity extends Activity implements OnGestureListene
         DragImageView imageView = (DragImageView) flipper.getChildAt(currentImagePosistion);
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
-                relativeLayout.setVisibility(View.INVISIBLE);
-                relativeLayout.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_out));
+                if (relativeLayout.getVisibility() == View.VISIBLE){
+                    relativeLayout.setAnimation(AnimationUtils.loadAnimation(this,android.R.anim.fade_out));
+                    relativeLayout.setVisibility(View.INVISIBLE);
+                }
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (currentShow && !isImageContinueMove && event.getPointerCount() == 2) {

@@ -263,7 +263,6 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	            }
 	        });
 		}
-		
 		/*
 		 * 
 		 * 手动拖动进度条时执行
