@@ -86,7 +86,8 @@
 
                     <TextView
                         style="@style/usertext"
-                        android:text="@string/version" />
+                        android:text="@string/version"
+                        android:clickable="false"/>
 
                     <TextView
                         android:id="@+id/update_info"
