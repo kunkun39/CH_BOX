@@ -133,7 +133,7 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 		
 	
 		musicService = new MusicServiceImpl(MusicDetailsActivity.this);
-		QuickQuireMessageUtil.getInstance().setFeedbackListener(this,this);
+		QuickQuireMessageUtil.getInstance().setFeedbackListener(this, this);
 		Utils.requireServerVolume(this);
 
 		initialViews();
@@ -188,34 +188,33 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
         getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,musicPlayer,MusicPlayer.TAG).show(musicPlayer).commitAllowingStateLoss();
         musicPlayer.setOnPlayListener(new OnPlayListener() {
 			boolean isLastSong = false;
+
 			@Override
 			public void OnPlayFinished() {
 				if (isLastSong) {
 					musicPlayer.stopTVPlayer();
 					isLastSong = false;
-				}
-				else {
+				} else {
 					Log.d(TAG, "OnPlayFinished被执行了!!!");
-					musicPlayer.nextMusic();					
+					musicPlayer.nextMusic();
 				}
 			}
-			
+
 			@Override
-			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
+			public void OnPlayBegin(String path, String name, String artist, long id, long artistId) {
 				//public void OnPlayBegin(String path, String name, String artist) {
-				
+
 				//歌曲更换,歌曲的信息UI也要跟着改变
 				musicName.setText(name);
 				musicAuthor.setText(artist);
 				defaultImage.setImageBitmap(MediaUtil.getArtwork(getApplicationContext(), id, artistId, true, false));
-				
+
 				//defaultImage.setIma
-								
-				if (musics.get(musics.size() -1).getPath().equals(path)) {
+
+				if (musics.get(musics.size() - 1).getPath().equals(path)) {
 					isLastSong = true;
 					Log.d(TAG, "OnPlayBegin被执行了!!!");
-				}
-				else {
+				} else {
 					isLastSong = false;
 				}
 			}
@@ -229,7 +228,7 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 		super.onResume();
 //		musicPlayer.attachMusic(selectedMusic).autoPlaying(true);
 	//	musicPlayer.attachMusics(musics);  //添加播放列表歌曲
-		musicPlayer.attachMusics(musics,selectedMusic).autoPlaying(true);  //添加播放列表歌曲
+		musicPlayer.attachMusics(musics, selectedMusic);//.autoPlaying(true);  //添加播放列表歌曲
 	}
 	private void initialEvents() {
 
@@ -249,19 +248,19 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	            @Override
 	            public void onClick(View v) {
 	                MyApplication.vibrator.vibrate(100);
-	                ClientSendCommandService.sendMessage("key:volumeup");
+					QuickQuireMessageUtil.getInstance().doAction(MusicDetailsActivity.this, "key:volumeup");
 	            }
 	        });
 		}
 		if(volDownBtn != null)
 		{
 	        volDownBtn.setOnClickListener(new View.OnClickListener() {
-	            @Override
-	            public void onClick(View v) {
-	                MyApplication.vibrator.vibrate(100);
-	                ClientSendCommandService.sendMessage("key:volumedown");
-	            }
-	        });
+				@Override
+				public void onClick(View v) {
+					MyApplication.vibrator.vibrate(100);
+					QuickQuireMessageUtil.getInstance().doAction(MusicDetailsActivity.this, "key:volumedown");
+				}
+			});
 		}
 		/*
 		 * 
@@ -302,8 +301,8 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
     	String album=new MusicProvider(MusicDetailsActivity.this).getAlbumName(selectedMusic.getAlbumId());
     	
     	String text=getResources().getString(R.string.share_song_tag)+"\n"+ getResources().getString(R.string.singer)+"："+artist+"\n"+getResources().getString(R.string.album)+"："+album+"\n "+getResources().getString(R.string.song_name)+"："+musicname;
-    	L.d("sharepic "+text+"  ");
-		ShareFactory.getShareCenter(MusicDetailsActivity.this).showShareMenu(title, "  ",text, "");
+    	L.d("sharepic " + text + "  ");
+		ShareFactory.getShareCenter(MusicDetailsActivity.this).showShareMenu(title, "  ", text, "");
 	}
 
 	@Override

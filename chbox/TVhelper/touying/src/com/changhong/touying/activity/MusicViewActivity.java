@@ -62,9 +62,9 @@ public class MusicViewActivity extends FragmentActivity{
     /**
      * 数据适配器
      */
-    private SingleMusicAdapter singleMusicAdapter;
+    //private SingleMusicAdapter singleMusicAdapter;
     
-    private MusicPlayer player;
+    //private MusicPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,8 +101,8 @@ public class MusicViewActivity extends FragmentActivity{
 
         back = (Button) findViewById(R.id.btn_back);
         musicListView = (ListView) findViewById(R.id.music_list_view);
-        singleMusicAdapter = new SingleMusicAdapter(this,musics,player);
-        musicListView.setAdapter(singleMusicAdapter);
+//        singleMusicAdapter = new SingleMusicAdapter(this,musics,player);
+//        musicListView.setAdapter(singleMusicAdapter);
 
         musicSinger = (TextView) findViewById(R.id.music_singer);
         musicSinger.setText(playlistName + getResources().getString(R.string.space_total) + musics.size()+ getResources().getString(R.string.song_unit));
@@ -110,33 +110,33 @@ public class MusicViewActivity extends FragmentActivity{
     }
     
     private void initPlayer(){
-    	player = new MusicPlayer();
-        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).hide(player).commitAllowingStateLoss();
-        player.setOnPlayListener(new OnPlayListener() {
-			boolean isLastSong = false;
-			@Override
-			public void OnPlayFinished() {
-				if (isLastSong) {
-					player.stopTVPlayer();
-					isLastSong = false;
-				}
-				else {
-						player.nextMusic();					
-				}
-			}
-			
-			@Override
-//			public void OnPlayBegin(String path, String name, String artist) {
-			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
-				
-				if (musics.get(musics.size() -1).getPath().equals(path)) {
-					isLastSong = true;
-				}
-				else {
-					isLastSong = false;
-				}
-			}
-		});
+//    	player = new MusicPlayer();
+//        getSupportFragmentManager().beginTransaction().add(R.id.music_seek_layout,player,MusicPlayer.TAG).hide(player).commitAllowingStateLoss();
+//        player.setOnPlayListener(new OnPlayListener() {
+//			boolean isLastSong = false;
+//			@Override
+//			public void OnPlayFinished() {
+//				if (isLastSong) {
+//					player.stopTVPlayer();
+//					isLastSong = false;
+//				}
+//				else {
+//						player.nextMusic();
+//				}
+//			}
+//
+//			@Override
+////			public void OnPlayBegin(String path, String name, String artist) {
+//			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
+//
+//				if (musics.get(musics.size() -1).getPath().equals(path)) {
+//					isLastSong = true;
+//				}
+//				else {
+//					isLastSong = false;
+//				}
+//			}
+//		});
     }
 
     private void initEvents() {
@@ -171,7 +171,7 @@ public class MusicViewActivity extends FragmentActivity{
                 startActivity(intent);
 
                 //启动MusicDetailsActivity的同时,也启动音乐播放器的播放
-                player.playMusic(music);
+//                player.playMusic(music);
             }
         });
     }
@@ -189,7 +189,7 @@ public class MusicViewActivity extends FragmentActivity{
 //            title.setText(ClientSendCommandService.titletxt);
 //        }    
         
-		player.attachMusics(musics,playlistName).autoPlaying(true);
+//		player.attachMusics(musics,playlistName).autoPlaying(true);
 		
 		
     }

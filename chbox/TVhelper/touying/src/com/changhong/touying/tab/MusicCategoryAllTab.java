@@ -53,7 +53,7 @@ public class MusicCategoryAllTab extends Fragment {
 	/**
 	 * 视频浏览部分
 	 */
-	private MusicPlayer player=null;
+//	private MusicPlayer player=null;
 	
 
 	private View v=null;
@@ -110,7 +110,7 @@ public class MusicCategoryAllTab extends Fragment {
 		SetDefaultImage.getInstance().setContext(getActivity());
 		lv = (ListView) v.findViewById(R.id.music_list_view_all);
 		singleMusicAdapter = new SingleMusicAdapter(getActivity(), musics,
-				player);
+				/*player*/null);
 		lv.setAdapter(singleMusicAdapter);
 	}
 
@@ -118,43 +118,43 @@ public class MusicCategoryAllTab extends Fragment {
 	 * 播放控制栏
 	 */
 	private void initPlayer() {
-		player = new MusicPlayer();
+//		player = new MusicPlayer();
 		
 		Log.d(TAG, "initPlayer()被执行了");
 		
 		//开启fragment事务,使用播放器填充fragment
-		getActivity().getSupportFragmentManager().beginTransaction()
-				.add(R.id.music_seek_layout_all, player, MusicPlayer.TAG)
-				.hide(player).commitAllowingStateLoss();
+//		getActivity().getSupportFragmentManager().beginTransaction()
+//				.add(R.id.music_seek_layout_all, player, MusicPlayer.TAG)
+//				.hide(player).commitAllowingStateLoss();
 		
 		//给播放器设置监听事件
-		player.setOnPlayListener(new OnPlayListener() {
-			boolean isLastSong = false;
-
-			
-			@Override
-			public void OnPlayFinished() {
-				if (isLastSong) {
-					player.stopTVPlayer();
-					isLastSong = false;
-				} else {
-					player.nextMusic();
-				}
-			}
-
-			@Override
-//			public void OnPlayBegin(String path, String name, String artist) {
-			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {	
-				
-				if (musics.get(musics.size() - 1).getPath().equals(path)) {
-					isLastSong = true;
-				}
-
-			}
-
-			
-		});
-		player.attachMusics(musics).autoPlaying(true);  //给播放列表播放器添加待播放的音乐
+//		player.setOnPlayListener(new OnPlayListener() {
+//			boolean isLastSong = false;
+//
+//
+//			@Override
+//			public void OnPlayFinished() {
+//				if (isLastSong) {
+//					player.stopTVPlayer();
+//					isLastSong = false;
+//				} else {
+//					player.nextMusic();
+//				}
+//			}
+//
+//			@Override
+////			public void OnPlayBegin(String path, String name, String artist) {
+//			public void OnPlayBegin(String path,String name,String artist,long id,long artistId) {
+//
+//				if (musics.get(musics.size() - 1).getPath().equals(path)) {
+//					isLastSong = true;
+//				}
+//
+//			}
+//
+//
+//		});
+//		player.attachMusics(musics).autoPlaying(true);  //给播放列表播放器添加待播放的音乐
 	}
 
 	
@@ -178,7 +178,7 @@ public class MusicCategoryAllTab extends Fragment {
 				startActivity(intent);
 				
 				//播放选中的音乐单曲
-				player.playMusic(music);
+//				player.playMusic(music);
 
 			}
 		});
@@ -189,7 +189,7 @@ public class MusicCategoryAllTab extends Fragment {
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		player.attachMusics(musics).autoPlaying(true);  //该activity启动后在oncreateView()后首先被执行
+//		player.attachMusics(musics).autoPlaying(true);  //该activity启动后在oncreateView()后首先被执行
 	}
 
 }

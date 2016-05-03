@@ -148,6 +148,9 @@ public class SingleMusicAdapter extends BaseAdapter {
     
     
     private void playMusics(List<Music> musics, Music music) {
+		if (player == null)
+			return;
+
 		if (music != null) {
 			player.playMusics(music);
 		} else {

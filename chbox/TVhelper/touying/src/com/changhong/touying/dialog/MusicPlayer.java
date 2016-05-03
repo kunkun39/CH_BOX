@@ -295,7 +295,7 @@ public class MusicPlayer extends DialogFragment{
     	this.playlistName = null;
     	this.musics.clear();    //清空原来的播放列表
     	this.musics.addAll(musics); //给播放列表重新加载新值
-    	//music = this.musics.get(0);
+    	music = this.musics.get(0);
     	
     	return this;
     }
@@ -580,8 +580,6 @@ public class MusicPlayer extends DialogFragment{
                 }
 	        }
         };
-        autoPlaying(true);
-        
     }
 	
 	
@@ -626,7 +624,8 @@ public class MusicPlayer extends DialogFragment{
         view.invalidate();
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
-        view.requestFocus();          
+        view.requestFocus();
+		controlButton.setBackgroundResource(R.drawable.control_play1);
     }
     
     private void initialEvents() {
