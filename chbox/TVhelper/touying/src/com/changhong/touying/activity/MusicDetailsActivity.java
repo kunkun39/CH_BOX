@@ -227,9 +227,9 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	@Override
 	protected void onResume() {
 		super.onResume();
-		musicPlayer.attachMusic(selectedMusic).autoPlaying(true);
+//		musicPlayer.attachMusic(selectedMusic).autoPlaying(true);
 	//	musicPlayer.attachMusics(musics);  //添加播放列表歌曲
-		musicPlayer.attachMusics(musics).autoPlaying(false);  //添加播放列表歌曲
+		musicPlayer.attachMusics(musics,selectedMusic).autoPlaying(true);  //添加播放列表歌曲
 	}
 	private void initialEvents() {
 

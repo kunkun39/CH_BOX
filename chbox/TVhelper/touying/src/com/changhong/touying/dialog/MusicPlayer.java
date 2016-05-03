@@ -176,6 +176,8 @@ public class MusicPlayer extends DialogFragment{
     boolean isAutoPlaying = false;
     Runnable autoPlayRunnable;
     
+    boolean start_player = false;
+    
     /**
      * 当前正在播放的歌曲名字 
      */
@@ -276,6 +278,14 @@ public class MusicPlayer extends DialogFragment{
     	return this;    	
     }
     
+    public MusicPlayer attachMusics(List<Music> musics,Music music)
+    {
+    	
+    	attachMusics(musics);
+    	this.music = music;
+    	return this;
+    }
+    
     public MusicPlayer attachMusics(List<Music> musics)
     {
     	if (musics == null
@@ -285,7 +295,7 @@ public class MusicPlayer extends DialogFragment{
     	this.playlistName = null;
     	this.musics.clear();    //清空原来的播放列表
     	this.musics.addAll(musics); //给播放列表重新加载新值
-    	music = this.musics.get(0);
+    	//music = this.musics.get(0);
     	
     	return this;
     }
@@ -525,7 +535,6 @@ public class MusicPlayer extends DialogFragment{
 	                    if (key != null && key.equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
 	                        int progress = Integer.parseInt(content[1]);
 	                        if (view.getVisibility() == View.VISIBLE 
-//	                        		if (view.getVisibility() == View.INVISIBLE 
 	                        		&& progress > 0
 	                        		&& seekBar.getMax() - seekBar.getProgress() > 5) {
 								getActivity().getSupportFragmentManager().beginTransaction()
@@ -551,11 +560,11 @@ public class MusicPlayer extends DialogFragment{
 	                    if ("true".equals(status)) {
 	                        isPlaying = true;
 	                        isPausing = false;
-	                        controlButton.setBackgroundResource(R.drawable.control_play1);
+	                        controlButton.setBackgroundResource(R.drawable.control_pause1);
 	                    } else {
 	                        isPlaying = false;
 	                        isPausing = true;
-	                        controlButton.setBackgroundResource(R.drawable.control_pause1);
+	                        controlButton.setBackgroundResource(R.drawable.control_play1);
 	                    }                   	
 	                }
                     else {
@@ -574,6 +583,9 @@ public class MusicPlayer extends DialogFragment{
         autoPlaying(true);
         
     }
+	
+	
+	
 
 
 	@Override
@@ -663,17 +675,28 @@ public class MusicPlayer extends DialogFragment{
             @Override
             public void onClick(View v) {
                 MyApplication.vibrator.vibrate(100);
-                if (isPausing) {
+                
+                if(start_player == false){
+                	
+                	start_player = true;
+                	playMusic(music);
+                	///playMusics(music);
                 	controlButton.setBackgroundResource(R.drawable.control_play1);
-                	ClientSendCommandService.sendMessage(CMD_PLAY);
-                    isPausing = false;
-                    isPlaying = true;
-                } else {
-                	controlButton.setBackgroundResource(R.drawable.control_pause1);
-                	ClientSendCommandService.sendMessage(CMD_PAUSE);
-                    isPausing = true;
-                    isPlaying = false;
-                }
+                	
+                }else {
+                	if (isPausing) {
+                    	controlButton.setBackgroundResource(R.drawable.control_pause1);
+                    	ClientSendCommandService.sendMessage(CMD_PLAY);
+                        isPausing = false;
+                        isPlaying = true;
+                    } else {
+                    	controlButton.setBackgroundResource(R.drawable.control_play1);
+                    	ClientSendCommandService.sendMessage(CMD_PAUSE);
+                        isPausing = true;
+                        isPlaying = false;
+                    }
+				}
+                
             }
         });
         
@@ -695,7 +718,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "Currently is the last song, there is no next song!", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "no next song!", Toast.LENGTH_SHORT).show();
         		}    	    	
         		        		
         	}
@@ -718,7 +741,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "Currently is the first song, there is no previous song!", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "no previous song!", Toast.LENGTH_SHORT).show();
         		}    	    	
                 
         		
