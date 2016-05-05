@@ -26,9 +26,9 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
     int[] guides = new int[]{R.drawable.guide1,R.drawable.guide2,R.drawable.guide3};
     String[] guidesTitle = new String[]{"Mobile Remote","Cast Media","Screen Mirroring"};
     String[] guidesContent = new String[]{"Use your phone as a remote","Cast local photos,music and \nvideos from your phone to TV","Mirror phone screen on \nyour TV Screen"};
-    ViewPager mViewpager;
-    PagerIndicator mIndicator;
-    Button mSkip,mNext,mStart;
+    ViewPager mViewpager;         
+    PagerIndicator mIndicator;    
+    Button mSkip,mNext,mStart;    
     TextView mTitle,mContent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
