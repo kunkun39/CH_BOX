@@ -1,7 +1,9 @@
 package com.changhong.setting.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,11 +16,13 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.changhong.common.system.AppConfig;
 import com.changhong.common.system.MyApplication;
+import com.changhong.common.utils.DialogUtil;
 import com.changhong.common.widgets.BidirSlidingLayout;
 import com.changhong.setting.R;
 import com.changhong.setting.service.UserUpdateService;
@@ -43,7 +47,7 @@ public class SettingActivity extends Activity {
 	 */
 	private TextView updateInfo;
 	private LinearLayout updateBtn;
-	private ProgressDialog m_pDialog;
+	private Dialog m_pDialog;
 	private UserUpdateService updateService;
 
 	/**
@@ -76,11 +80,22 @@ public class SettingActivity extends Activity {
 		/**
 		 * 进度条初始化
 		 */
-		m_pDialog = new ProgressDialog(SettingActivity.this);
-		m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		m_pDialog.setMessage(getResources().getString(R.string.downloading));
-		m_pDialog.setIndeterminate(false);
+		ProgressBar progressBar = new ProgressBar(this);
+		progressBar.setIndeterminate(false);
+		progressBar.setVisibility(View.VISIBLE);
+		setProgressBarVisibility(true);
+
+		m_pDialog = DialogUtil.showEditDialog(this,getResources().getString(R.string.downloading),progressBar,null,null,null);
+		//m_pDialog = DialogUtil.//new ProgressDialog(SettingActivity.this);
+		//m_pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+		//m_pDialog.setMessage(getResources().getString(R.string.downloading));
+		//m_pDialog.setIndeterminate(false);
 		m_pDialog.setCancelable(false);
+		m_pDialog.hide();
+
+		View v = m_pDialog.getWindow().getDecorView();
+
 		// m_pDialog.setProgress(0);
 	}
 

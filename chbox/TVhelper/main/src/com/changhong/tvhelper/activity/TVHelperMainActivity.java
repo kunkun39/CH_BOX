@@ -718,7 +718,7 @@ public class TVHelperMainActivity extends Activity {
                  * 如果用户点击的是直接下载，下载后直接更新，如果下载文件已经存在，就询问用户时候安�?
                  */
 
-                Dialog  dialog =DialogUtil.showAlertDialog(TVHelperMainActivity.this,
+                Dialog  dialog =DialogUtil.showEditDialog(TVHelperMainActivity.this,
                  		getApplicationContext().getString(R.string.update_prepared),getApplicationContext().getString(R.string.setup_prompt),new DialogBtnOnClickListener() {
  					
  					@Override

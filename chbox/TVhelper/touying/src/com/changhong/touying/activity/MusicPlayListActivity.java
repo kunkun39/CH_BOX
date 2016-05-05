@@ -140,15 +140,14 @@ public class MusicPlayListActivity extends Activity{
 		mFileListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// TODO 自动生成的方法存根					
-				Map<String, Object> checkBox = mPlayList.get(arg2);
-				boolean checked = (Boolean)mPlayList.get(arg2).get(BTN_SELECTED);
+				Map<String, Object> checkBox = mPlayList.get(position);
+				boolean checked = (Boolean)mPlayList.get(position).get(BTN_SELECTED);
 				checkBox.put(BTN_SELECTED, !checked);
-				onSelectedChanged(((TextView)arg1.findViewById(R.id.playlist_item_name)).getText().toString()
+				onSelectedChanged(musics.get(position).getPath()
 						,!checked);
-				((SimpleAdapter)(arg0.getAdapter())).notifyDataSetChanged();
+				((SimpleAdapter)(parent.getAdapter())).notifyDataSetChanged();
 			}
 		});
 		
@@ -208,16 +207,16 @@ public class MusicPlayListActivity extends Activity{
 
 	/**************************************************************自定义方法************************/			
 	
-	private void onSelectedChanged(String name,boolean isSelected)
+	private void onSelectedChanged(String path,boolean isSelected)
 	{		
 		Music music = null;
 		
-		String nameTrimed = name.trim();
+		String pathTrimed = path.trim();
 		
 		// 根据名字找歌
 		try {
 			for (Music m : musics) {
-				if (m.getTitle().trim().equals(nameTrimed)) {
+				if (m.getPath().trim().equals(pathTrimed)) {
 					music = m;					
 					break;
 				}

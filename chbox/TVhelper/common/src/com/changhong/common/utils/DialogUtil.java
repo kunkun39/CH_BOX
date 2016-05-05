@@ -8,10 +8,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -209,8 +211,25 @@ public class DialogUtil {
 	}
 
 	public static Dialog showEditDialog(Context context, String title,
+										final DialogBtnOnClickListener listener){
+		return showEditDialog(context,title,null,context.getString(R.string.confrim), context.getString(R.string.cancel),listener);
+	}
+
+	public static Dialog showEditDialog(Context context, String title,
+										String positiveBtnName, String negtiveBtnName,
+										final DialogBtnOnClickListener listener){
+		return showEditDialog(context,title,null,positiveBtnName,negtiveBtnName,listener);
+	}
+
+	public static Dialog showEditDialog(Context context, String title,Object content,
+										final DialogBtnOnClickListener listener) {
+		return showEditDialog(context,title,content,context.getString(R.string.confrim), context.getString(R.string.cancel),listener);
+	}
+
+	public static Dialog showEditDialog(Context context, String title,Object content,
 			String positiveBtnName, String negtiveBtnName,
 			final DialogBtnOnClickListener listener) {
+
 		final Dialog dialog = new Dialog(context, R.style.Dialog_nowindowbg);
 
 		View view = LayoutInflater.from(context).inflate(
@@ -225,9 +244,23 @@ public class DialogUtil {
 		final Button bt_cancel = (Button) view.findViewById(R.id.bt_editdia_cancel);
 		if (!TextUtils.isEmpty(positiveBtnName)) {
 			bt_submit.setText(positiveBtnName);
+		}else {
+			bt_submit.setVisibility(View.GONE);
 		}
 		if (!TextUtils.isEmpty(negtiveBtnName)) {
 			bt_cancel.setText(negtiveBtnName);
+		}else {
+			bt_cancel.setVisibility(View.GONE);
+		}
+		if (bt_cancel.getVisibility() == View.GONE
+			&& bt_submit.getVisibility() == View.GONE){
+			view.findViewById(R.id.bt_editdia_hide).setVisibility(View.VISIBLE);
+			view.findViewById(R.id.bt_editdia_hide).setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					dialog.hide();
+				}
+			});
 		}
 		final EditText edText=(EditText)view.findViewById(R.id.edt_editdia_content);
 		bt_submit.setOnClickListener(new OnClickListener() {
@@ -257,7 +290,25 @@ public class DialogUtil {
 		if (!TextUtils.isEmpty(title)) {
 			tv_title.setText(title);
 		}
-
+		TextView tv_content = (TextView) view.findViewById(R.id.edt_editdia_content);
+		if (content != null){
+			if (content instanceof String){
+				tv_content.setText((String)content);
+				tv_content.setSingleLine(false);
+				tv_content.setEnabled(false);
+				view.findViewById(R.id.iv_editdia_dilver).setVisibility(View.GONE);
+			}else if(content instanceof ProgressBar){
+				view.findViewById(R.id.iv_editdia_dilver).setVisibility(View.GONE);
+				View current = view.findViewById(R.id.edt_editdia_content);
+				ViewGroup.LayoutParams layoutParams = current.getLayoutParams();
+				View perpared = (ProgressBar)content;
+				perpared.setId(R.id.edt_editdia_content);
+				perpared.setLayoutParams(layoutParams);
+				((ViewGroup)view).removeView(current);
+				((ViewGroup)view).addView(perpared);
+				view.requestLayout();
+			}
+		}
 		dialog.getWindow().setAttributes(param);
 		dialog.getWindow()
 				.setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
@@ -267,6 +318,26 @@ public class DialogUtil {
 			// TODO: handle exception
 		}
 		return dialog;
+	}
+
+	public static void setMax(Dialog dialog,int max){
+		View v = dialog.findViewById(R.id.edt_editdia_content);
+		if (v == null
+				|| !(v instanceof ProgressBar))
+			return;
+
+		ProgressBar progressBar = (ProgressBar) v;
+		progressBar.setMax(max);
+	}
+
+	public static void setProgress(Dialog dialog,int progress){
+		View v = dialog.findViewById(R.id.edt_editdia_content);
+		if (v == null
+				|| !(v instanceof ProgressBar))
+			return;
+
+		ProgressBar progressBar = (ProgressBar) v;
+		progressBar.setProgress(progress);
 	}
 
 	/**

@@ -323,8 +323,8 @@ public class TVRemoteControlActivity extends TVInputDialogActivity implements On
                 break;
             case R.id.power: {
                 MyApplication.vibrator.vibrate(100);
-                Dialog dialog = DialogUtil.showAlertDialog(
-                        TVRemoteControlActivity.this, "", getString(R.string.close_stb_tip) + "?",
+                Dialog dialog = DialogUtil.showEditDialog(
+                        TVRemoteControlActivity.this, getString(R.string.notice), getString(R.string.close_stb_tip) + "?",
                         new DialogBtnOnClickListener() {
 
                             @Override

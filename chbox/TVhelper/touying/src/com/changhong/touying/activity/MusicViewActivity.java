@@ -62,7 +62,7 @@ public class MusicViewActivity extends FragmentActivity{
     /**
      * 数据适配器
      */
-    //private SingleMusicAdapter singleMusicAdapter;
+    private SingleMusicAdapter singleMusicAdapter;
     
     //private MusicPlayer player;
 
@@ -101,8 +101,8 @@ public class MusicViewActivity extends FragmentActivity{
 
         back = (Button) findViewById(R.id.btn_back);
         musicListView = (ListView) findViewById(R.id.music_list_view);
-//        singleMusicAdapter = new SingleMusicAdapter(this,musics,player);
-//        musicListView.setAdapter(singleMusicAdapter);
+        singleMusicAdapter = new SingleMusicAdapter(this,musics,/*player*/null);
+        musicListView.setAdapter(singleMusicAdapter);
 
         musicSinger = (TextView) findViewById(R.id.music_singer);
         musicSinger.setText(playlistName + getResources().getString(R.string.space_total) + musics.size()+ getResources().getString(R.string.song_unit));

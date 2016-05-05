@@ -274,7 +274,7 @@ public class MusicCategoryPlaylistTab extends Fragment {
     }
 
     private void addPlayList() {
-        Dialog dialog = DialogUtil.showEditDialog(getActivity(),getResources().getString(R.string.create_playlist), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
+        Dialog dialog = DialogUtil.showEditDialog(getActivity(), getResources().getString(R.string.create_playlist), getResources().getString(R.string.confirm_space), getResources().getString(R.string.cancel_space), new DialogBtnOnClickListener() {
 
             @Override
             public void onSubmit(DialogMessage dialogMessage) {
@@ -297,18 +297,19 @@ public class MusicCategoryPlaylistTab extends Fragment {
 
                 startActivityForResult(intent, RETURN_ACTIVITY_ADD);
                 if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                	dialogMessage.dialog.cancel();
-				}
+                    dialogMessage.dialog.cancel();
+                }
             }
 
             @Override
             public void onCancel(DialogMessage dialogMessage) {
-            	if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
-                	dialogMessage.dialog.cancel();
-				}
+                if (dialogMessage.dialog != null && dialogMessage.dialog.isShowing()) {
+                    dialogMessage.dialog.cancel();
+                }
             }
 
         });
+        dialog.show();
     }
 
     private void modifyPlayList(int index) {

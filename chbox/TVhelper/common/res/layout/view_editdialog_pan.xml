@@ -28,11 +28,13 @@
            android:id="@+id/edt_editdia_content"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
+           android:layout_marginLeft="8dp"
+           android:layout_marginRight="8dp"
            android:layout_below="@id/edit_dialog_title_deliver"
            android:layout_marginTop="20dp"
            android:gravity="center"
            android:background="@android:color/white"
-           android:singleLine="true" 
+           android:singleLine="true"
            android:hint="@string/music_add_playlist_alert"/>
        
        <ImageView
@@ -47,8 +49,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/edt_editdia_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <Button
@@ -78,5 +80,16 @@
             android:background="@drawable/music_dialog_btn_selector"       
             android:textSize="@dimen/dialog_btn_textsize" />
     </LinearLayout>
+    <TextView
+        android:id="@+id/bt_editdia_hide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="@string/hide"
+        android:textSize="@dimen/dialog_btn_textsize"
+        android:layout_marginBottom="4dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

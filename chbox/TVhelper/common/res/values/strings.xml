@@ -27,4 +27,5 @@
     <string name="edit_dialog_title">Create Playlist</string>
     <string name="music_add_playlist_alert">Enter Playlist Name</string>
     <string name="tv_remote">TV Remote</string>
+    <string name="hide">Hide</string>
 </resources>
