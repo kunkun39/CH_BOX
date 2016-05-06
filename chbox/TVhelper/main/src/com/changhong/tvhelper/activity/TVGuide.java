@@ -67,9 +67,11 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         mViewpager.setOnPageChangeListener(this);
         mIndicator.setIndicatorCount(mViewpager.getAdapter().getCount());
         mIndicator.setCurrent(0);
+        mViewpager.setOffscreenPageLimit(3);
     }
 
     class GuideAdapter extends PagerAdapter{
+        List<ImageView> items = new ArrayList<ImageView>();
         @Override
         public int getCount() {
             return guides.length;
@@ -82,9 +84,18 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            ImageView imageView = new ImageView(TVGuide.this);
-            imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            imageView.setImageResource(guides[position]);
+            ImageView imageView;
+            if (items.size() > position){
+                imageView = items.get(position);
+            }else {
+                imageView = new ImageView(TVGuide.this);
+                imageView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setImageResource(guides[position]);
+                items.add(imageView);
+            }
+            if (imageView.getParent() != null){
+                ((ViewGroup)imageView.getParent()).removeView(imageView);
+            }
             container.addView(imageView);
             return imageView;
         }
@@ -92,6 +103,11 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View)object);
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return items.indexOf(object);
         }
     }
 
@@ -107,21 +123,21 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         mContent.setText(guidesContent[i]);
         Animation animationOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
         Animation animationIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-        if (i == mViewpager.getAdapter().getCount() - 1){
-            mNext.setAnimation(animationOut);
-            mSkip.setAnimation(animationOut);
-            mStart.setAnimation(animationIn);
-            mNext.setVisibility(View.GONE);
-            mSkip.setVisibility(View.GONE);
-            mStart.setVisibility(View.VISIBLE);
-        }else {
-            mNext.setAnimation(animationIn);
-            mSkip.setAnimation(animationIn);
-            mStart.setAnimation(animationOut);
-            mNext.setVisibility(View.VISIBLE);
-            mSkip.setVisibility(View.VISIBLE);
-            mStart.setVisibility(View.GONE);
-        }
+//        if (i == mViewpager.getAdapter().getCount() - 1){
+//            mNext.setAnimation(animationOut);
+//            mSkip.setAnimation(animationOut);
+//            mStart.setAnimation(animationIn);
+//            mNext.setVisibility(View.GONE);
+//            mSkip.setVisibility(View.GONE);
+//            mStart.setVisibility(View.VISIBLE);
+//        }else {
+//            mNext.setAnimation(animationIn);
+//            mSkip.setAnimation(animationIn);
+//            mStart.setAnimation(animationOut);
+//            mNext.setVisibility(View.VISIBLE);
+//            mSkip.setVisibility(View.VISIBLE);
+//            mStart.setVisibility(View.GONE);
+//        }
     }
 
     @Override

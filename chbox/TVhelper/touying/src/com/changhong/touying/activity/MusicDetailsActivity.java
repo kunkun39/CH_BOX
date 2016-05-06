@@ -32,8 +32,10 @@ import com.changhong.touying.dialog.MusicPlayer.OnPlayListener;
 import com.changhong.touying.music.MediaUtil;
 import com.changhong.touying.music.Music;
 import com.changhong.touying.music.MusicProvider;
+import com.changhong.touying.music.SetDefaultImage;
 import com.changhong.touying.service.MusicService;
 import com.changhong.touying.service.MusicServiceImpl;
+import com.nostra13.universalimageloader.cache.disc.utils.DiskCacheFileManager;
 
 /**
  * Created by maren on 2015/4/9.
@@ -171,7 +173,18 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 		}
 		
 		defaultImage=(ImageView)findViewById(R.id.iv_music_ablum);
-		defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
+		String musicImagePath = DiskCacheFileManager
+				.isSmallImageExist(selectedMusic.getPath());
+		if (!musicImagePath.equals("")) {
+			MyApplication.imageLoader.displayImage("file://"
+							+ musicImagePath, defaultImage,
+					MyApplication.musicPicOptions);
+			defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
+		} else {
+			SetDefaultImage.getInstance()
+					.startExecutor(defaultImage, selectedMusic);
+		}
+		//defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
 	
 		returnImage = (ImageView) findViewById(R.id.d_btn_return);

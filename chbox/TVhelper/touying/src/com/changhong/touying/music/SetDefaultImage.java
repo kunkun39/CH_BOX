@@ -42,7 +42,7 @@ public class SetDefaultImage {
 			public void run() {
 				// TODO Auto-generated method stub
 				final Bitmap bitmap = MediaUtil.getArtwork(context,
-						music.getId(), music.getArtistId(),
+						music.getId(), music.getAlbumId(),
 						true, false);
 				
 				if (bitmap != null && iv != null) {
