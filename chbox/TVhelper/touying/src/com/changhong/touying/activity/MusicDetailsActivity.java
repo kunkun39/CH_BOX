@@ -173,17 +173,7 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 		}
 		
 		defaultImage=(ImageView)findViewById(R.id.iv_music_ablum);
-		String musicImagePath = DiskCacheFileManager
-				.isSmallImageExist(selectedMusic.getPath());
-		if (!musicImagePath.equals("")) {
-			MyApplication.imageLoader.displayImage("file://"
-							+ musicImagePath, defaultImage,
-					MyApplication.musicPicOptions);
-			defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
-		} else {
-			SetDefaultImage.getInstance()
-					.startExecutor(defaultImage, selectedMusic);
-		}
+		loadImage(selectedMusic);
 		//defaultImage.setImageBitmap(MediaUtil.getArtwork(this, selectedMusic.getId(), selectedMusic.getArtistId(), true, false));
 
 	
@@ -214,17 +204,17 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 			}
 
 			@Override
-			public void OnPlayBegin(String path, String name, String artist, long id, long artistId) {
+			public void OnPlayBegin(Music music) {
 				//public void OnPlayBegin(String path, String name, String artist) {
 
 				//歌曲更换,歌曲的信息UI也要跟着改变
-				musicName.setText(name);
-				musicAuthor.setText(artist);
-				defaultImage.setImageBitmap(MediaUtil.getArtwork(getApplicationContext(), id, artistId, true, false));
+				musicName.setText(music.getTitle());
+				musicAuthor.setText(music.getArtist());
 
+				loadImage(music);
 				//defaultImage.setIma
 
-				if (musics.get(musics.size() - 1).getPath().equals(path)) {
+				if (musics.get(musics.size() - 1).getPath().equals(music.getPath())) {
 					isLastSong = true;
 					Log.d(TAG, "OnPlayBegin被执行了!!!");
 				} else {
@@ -328,9 +318,23 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 		}
 		String value = (String)result;
 
-		int volCurrent = Integer.parseInt(value.substring(0,value.indexOf("/")));
+		int volCurrent = Integer.parseInt(value.substring(0, value.indexOf("/")));
 		int volMax  = Integer.parseInt(value.substring(value.indexOf("/") + 1,value.length()));
 		seekBarVolum.setMax(volMax);
 		seekBarVolum.setProgress(volCurrent);
+	}
+
+	private void loadImage(Music music){
+		String musicImagePath = DiskCacheFileManager
+				.isSmallImageExist(music.getPath());
+		if (!musicImagePath.equals("")) {
+			MyApplication.imageLoader.displayImage("file://"
+							+ musicImagePath, defaultImage,
+					MyApplication.musicPicOptions);
+			defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
+		} else {
+			SetDefaultImage.getInstance()
+					.startExecutor(defaultImage, music);
+		}
 	}
 }

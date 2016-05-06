@@ -193,7 +193,7 @@ public class MusicPlayer extends DialogFragment{
 /**====================================================回调函数===================*/
     public interface OnPlayListener
 	{
-    	public void OnPlayBegin(String path,String name,String artist,long id,long artistId);    	
+    	public void OnPlayBegin(Music music);
     	public void OnPlayFinished();
     	//public void getNewMusic(Music music);
 	}
@@ -333,7 +333,7 @@ public class MusicPlayer extends DialogFragment{
     	
     	if (listener != null) {
         	try {
-        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist(),music.getId(),music.getArtistId());  //回调给实现部分
+        		listener.OnPlayBegin(music);  //回调给实现部分
 			} catch (Exception e) {
 				e.printStackTrace();    				
 			}			
@@ -375,7 +375,7 @@ public class MusicPlayer extends DialogFragment{
         if (listener != null) {
         	try {
         		//listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist());
-        		listener.OnPlayBegin(music.getPath(), music.getTitle(), music.getArtist(),music.getId(),music.getArtistId());
+        		listener.OnPlayBegin(music);
 			} catch (Exception e) {
 				e.printStackTrace();				
 			}			
