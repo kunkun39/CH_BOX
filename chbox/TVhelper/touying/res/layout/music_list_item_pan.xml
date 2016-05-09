@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="45dp"
+    android:layout_height="61dp"
     android:descendantFocusability="blocksDescendants"
-    android:orientation="vertical"     
-    android:paddingLeft="5dp" 
-    android:paddingTop="6dp">
+    android:orientation="vertical">
     
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:layout_marginTop="10dp"
         android:paddingRight="15dp"
          >
 
 		<ImageView 
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
         android:id="@+id/music_list_image"
         />
         <ImageButton
@@ -47,25 +46,27 @@
         
             
         <TextView
-            android:id="@+id/music_item_artist_duration"
+            android:id="@+id/music_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
             android:ellipsize="end"
             android:lines="1"
-            android:paddingLeft="50dp"
+            android:paddingLeft="54dp"
+            android:typeface="serif"
             android:layout_toLeftOf="@id/music_list_play"
-            android:textColor="@color/black"
+            android:textColor="#494748"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/music_item_name"
+            android:id="@+id/music_item_artist_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/music_item_artist_duration"
-            android:paddingLeft="50dp"
-            android:textColor="@color/grey"
+            android:layout_below="@id/music_item_name"
+            android:typeface="serif"
+            android:paddingLeft="54dp"
+            android:textColor="#cc494748"
             android:textSize="12sp" />
 
         
@@ -73,9 +74,9 @@
     
     <View 
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/music_title_body_deliver"/>
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="#66494748"/>
 
     <TextView
         android:id="@+id/music_item_path"

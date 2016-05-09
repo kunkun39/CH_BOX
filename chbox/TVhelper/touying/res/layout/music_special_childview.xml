@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="15dp"
+    android:layout_marginTop="8dp"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:paddingLeft="5dip"
      >
      
     <LinearLayout 
@@ -14,8 +13,8 @@
         android:orientation="horizontal">
          <ImageView
 	        android:id="@+id/music_item_image"
-	        android:layout_width="45dp"
-	        android:layout_height="45dp"
+	        android:layout_width="41dp"
+	        android:layout_height="41dp"
 	        android:layout_marginTop="5dp" 
 	        android:layout_gravity="center_vertical">
          </ImageView>
@@ -23,7 +22,7 @@
 	    <RelativeLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="45dp"
-	        android:layout_marginLeft="5dp"
+	        android:layout_marginLeft="13dp"
 	        android:layout_marginTop="5dp"
 	        android:gravity="center_vertical" >
 	
@@ -32,7 +31,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:textSize="16sp"
-	            android:textColor="@color/black"
+	            android:textColor="#494748"
+				android:typeface="serif"
 	            android:text="@string/album_name" />
 	
 	        <TextView
@@ -40,6 +40,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_below="@id/special_name"
+				android:textColor="#cc494748"
+				android:typeface="serif"
 	            android:textSize="12sp"
 	            android:text="@string/nullsong" />
 	
@@ -49,8 +51,8 @@
     
     <View android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/music_title_body_deliver"/>
+        android:layout_marginTop="8dp"
+        android:background="#66494748"/>
 
     <TextView 
         android:id="@+id/music_item_path"

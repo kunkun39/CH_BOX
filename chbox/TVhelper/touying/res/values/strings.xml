@@ -65,5 +65,7 @@
     <string name="videos">Videos</string>
     <string name="nnext">Next</string>
     <string name="skip">Skip</string>
+    <string name="all_songs">All songs</string>
+    <string name="artists">Artists</string>
 
 </resources>
