@@ -9,7 +9,9 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/banner">
+            android:layout_below="@id/banner"
+            android:layout_marginLeft="17dp"
+            android:layout_marginRight="17dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -20,9 +22,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="4"
+                    android:layout_weight="3"
                     android:gravity="center_horizontal"
-                    android:layout_marginTop="16dp">
+                    android:layout_marginTop="26dp">
                     
                     <ImageView 
                       android:layout_width="wrap_content"
@@ -37,10 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="4"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="26dp"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:src="@drawable/screen_mirror"/>
                               
 
@@ -49,8 +49,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginBottom="10dp"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
                         android:orientation="vertical"
                         android:layout_weight="12">
 
@@ -58,7 +56,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
-                        android:layout_marginRight="4dp"
                         android:layout_weight="1">
 
                         <LinearLayout
@@ -71,36 +68,35 @@
                                 android:id="@+id/main_music_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="4dp"
                                 android:layout_weight="1"
+                                android:layout_marginRight="9dp"
                                 android:background="@drawable/multi_music"/>
                             <Button
                                 android:id="@+id/main_vedio_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginLeft="4dp"
                                 android:layout_weight="1"
+                                android:layout_marginLeft="9dp"
                                 android:background="@drawable/multi_video"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            
                             android:orientation="horizontal">
                             <Button
                                 android:id="@+id/main_picture_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginRight="4dp"
                                 android:layout_weight="1"
+                                android:layout_marginRight="9dp"
                                 android:background="@drawable/multi_pic"/>
                             <Button
                                 android:id="@+id/main_setting"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_marginLeft="4dp"
                                 android:layout_weight="1"
+                                android:layout_marginLeft="9dp"
                                 android:background="@drawable/multi_settings"/>
                         </LinearLayout>
 
@@ -112,10 +108,8 @@
                     android:id="@+id/main_control"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="8"
+                    android:layout_weight="7"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:background="@drawable/multi_controller"/>
 		</LinearLayout>
 
@@ -132,52 +126,43 @@
      <LinearLayout
          android:id="@+id/banner"
          android:layout_width="fill_parent"
-         android:layout_height="67.6dip"
+         android:layout_height="55dp"
          android:focusable="false" 
          android:orientation="horizontal"
-         android:layout_marginTop="10dp"
-         android:layout_marginLeft="16dp"
-         android:layout_marginRight="16dp" >
+         android:layout_marginTop="18dp"
+         android:layout_marginLeft="17dp"
+         android:layout_marginRight="17dp" >
 
          <TextView
              android:id="@+id/title"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:ellipsize="marquee"
-             android:layout_marginLeft="50dp"
-             android:layout_marginTop="30dp"
+             android:layout_marginLeft="45dp"
+             android:layout_marginTop="25dp"
              android:singleLine="true"
              android:text="@string/disconnected"
-             android:textSize="16sp" 
-             android:textColor="#000000"/>   
+             android:textSize="13sp"
+             android:typeface="serif"
+             android:textColor="#ff4b4b4b"/>   
      </LinearLayout>
         
-	<!--  <Button
-			android:id="@+id/power"
-			android:layout_width="80.5dip"
-			android:layout_height="77.3dip"
-			android:layout_alignParentRight="true"
-			android:layout_marginRight="5dip"
-			android:background="@drawable/btn_power_selector" /> -->
-
-        
-        
      <ImageView
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content"
-     android:src="@drawable/title_ip_select1"
-     android:layout_alignParentRight="true"
-     android:layout_marginRight="40dp"
-     android:layout_marginTop="40dp"
-     android:layout_gravity="center_vertical"/>
+	     android:layout_width="wrap_content"
+	     android:layout_height="wrap_content"
+	     android:src="@drawable/title_ip_select1"
+	     android:layout_alignParentRight="true"
+	     android:layout_marginRight="35dp"
+	     android:layout_marginTop="45dp"
+	     android:layout_gravity="center_vertical"/>
                  
      <ListView
          android:id="@+id/clients"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:layout_marginTop="74dip"
-         android:layout_marginLeft="19dp"
-         android:layout_marginRight="19dp"
+         android:layout_marginTop="70dip"
+         android:layout_marginLeft="20dp"
+         android:layout_marginRight="20dp"
          android:background="#ffffffff"
          android:listSelector="@drawable/title_ip_list"
          android:visibility="gone" 

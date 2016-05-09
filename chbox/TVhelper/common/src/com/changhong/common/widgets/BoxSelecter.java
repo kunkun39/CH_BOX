@@ -242,7 +242,7 @@ public class BoxSelecter implements Observer
 
 //            vh.boxInfo.setText(ClientSendCommandService.getConnectBoxName(serverIP) +  " [" + serverIP + "]");
             vh.boxInfo.setText(mActivity.getString(R.string.yupptvscope) + " " + ClientSendCommandService.getConnectBoxName(serverIP));
-            vh.boxInfo.setTextSize(16);
+            vh.boxInfo.setTextSize(13);
 	        return convertView;
 	    }
 	    
