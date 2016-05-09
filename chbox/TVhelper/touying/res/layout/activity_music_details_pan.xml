@@ -51,25 +51,26 @@
     
     <RelativeLayout
                 android:id="@+id/music_volue_info"
-                android:layout_width="290dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/title"
-                android:layout_marginTop="25dp"
-                android:layout_centerHorizontal="true"
-                >
+                android:layout_marginTop="33dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_centerHorizontal="true">
 
             <ImageView
                     android:id="@+id/control_volume_small"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
+                    android:layout_width="12dp"
+                    android:layout_height="14dp"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/control_volume_small1"/>
 
             <ImageView
                     android:id="@+id/control_volume_bigger"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
+                    android:layout_width="17dp"
+                    android:layout_height="15dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:src="@drawable/control_volume_bigger1"/>
@@ -81,8 +82,8 @@
                     android:paddingLeft="5dp"
                     android:paddingTop="2dp"
                     android:paddingRight="5dp"
-                    android:maxHeight="4dp"
-                    android:minHeight="4dp"
+                    android:maxHeight="3dp"
+                    android:minHeight="3dp"
                     android:progressDrawable="@drawable/volue_progress_holo_light"
                     android:thumb="@drawable/detail_icon_schedule_ball3"
                     android:thumbOffset="0dip" 
@@ -97,16 +98,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/music_volue_info"
-        android:orientation="vertical" 
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-       >
+        android:orientation="vertical"    
+        android:layout_marginTop="47dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
 
         <FrameLayout
-            android:layout_width="260dp"
-            android:layout_height="260dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="65dp"
+            android:layout_width="282dp"
+            android:layout_height="282dp"
             >
 
             <ImageView
@@ -125,7 +124,9 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="20dp"
 	        android:gravity="center"
-	        android:textSize="18sp" />
+	        android:singleLine="true"
+	        android:textSize="15sp" 
+	        android:textColor="#ff201f20"/>
 
 	    <TextView
 	        android:id="@+id/music_author"
@@ -133,8 +134,9 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="10dp"
 	        android:gravity="center"
-	        android:textSize="14sp"
-	        android:textColor="@color/black" />
+	        android:textSize="12sp"
+	        android:singleLine="true"
+	        android:textColor="#ff494748" />
     
     </LinearLayout>
     
