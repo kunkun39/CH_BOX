@@ -36,7 +36,7 @@
            android:typeface="serif"
            android:singleLine="true"
            android:hint="@string/music_add_playlist_alert"
-           android:textColorHint="#777472"/>
+           android:textColorHint="#40777472"/>
        
        <ImageView
         android:id="@+id/iv_editdia_dilver"
