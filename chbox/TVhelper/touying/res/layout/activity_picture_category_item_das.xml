@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="140dp"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical" >
 
@@ -27,17 +27,19 @@
         android:id="@+id/package_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="37dp"
         android:layout_marginTop="5dp"
         android:textColor="@color/black"
-        android:textSize="15sp" />
+        android:typeface="serif"
+        android:textSize="13sp" />
     <TextView
         android:id="@+id/pic_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="37dp"
         android:textColor="@color/Grey_500"
-        android:textSize="15sp"
+        android:typeface="serif"
+        android:textSize="13sp"
         />
 
 </LinearLayout>

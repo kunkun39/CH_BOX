@@ -6,14 +6,17 @@
     
     <!-- 标题 -->
     <TextView android:id="@+id/edit_dialog_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:singleLine="true"
         android:text="@string/playlist_operate"
         android:textSize="16dp"
+        android:background="@color/LightBlue_500"
         android:textColor="@android:color/black"
-        android:layout_marginTop="2dp"/>
+        android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"/>
     
     <ImageView android:id="@+id/edit_dialog_title_deliver"
         android:layout_width="match_parent"
@@ -23,7 +26,7 @@
     
     <!-- 内容 -->
        
-    <TextView android:id="@+id/edt_editdia_content"
+    <!--TextView android:id="@+id/edt_editdia_content"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@id/edit_dialog_title_deliver"
@@ -32,59 +35,54 @@
       android:singleLine="true"
       android:text="@string/whatdoyouwanttodo"
       android:textSize="@dimen/dialog_title_textsize"
-      android:textColor="@android:color/black"/>
+      android:textColor="@android:color/black"/-->
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/edt_editdia_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_dialog_title_deliver"
+        android:orientation="vertical">
 
         <Button
             android:id="@+id/bt_modifydia_delete"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"  
-            android:layout_marginTop="25dp"        
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/playlist_del"
             android:background="@drawable/music_dialog_btn_selector"         
-            android:textSize="@dimen/dialog_btn_textsize" />
+            android:textSize="@dimen/dialog_btn_textsize"
+            style="@style/dialog_playlist_button" />
         
         <View
-              android:layout_width="1px"
-              android:layout_height="34dp"
-              android:background="#f0000000"
-              android:layout_marginTop="26dp" />
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/Grey_500"/>
 
         <Button
             android:id="@+id/bt_modifydia_modify"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="1" 
-            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/PlayList_modify" 
             android:background="@drawable/music_dialog_btn_selector"        
-            android:textSize="@dimen/dialog_btn_textsize" />
+            android:textSize="@dimen/dialog_btn_textsize"
+            style="@style/dialog_playlist_button"/>
         
         <View
-              android:layout_width="1px"
-              android:layout_height="34dp"
-              android:background="#f0000000"
-              android:layout_marginTop="26dp" />
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:background="@color/Grey_500" />
         
         <Button
             android:id="@+id/bt_modifydia_cancel"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_weight="1" 
-            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/cancel_space" 
             android:focusable="true"
             android:background="@drawable/music_dialog_btn_selector"        
-            android:textSize="@dimen/dialog_btn_textsize" />
+            android:textSize="@dimen/dialog_btn_textsize"
+            style="@style/dialog_playlist_button"/>
     </LinearLayout>
 
 </RelativeLayout>
