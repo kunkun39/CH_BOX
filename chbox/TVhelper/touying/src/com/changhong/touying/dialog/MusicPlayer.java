@@ -8,6 +8,7 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
@@ -122,7 +123,7 @@ public class MusicPlayer extends DialogFragment{
     private TextView showTimeTotal;
 
     /**
-     * 判断是否正在播放，可以用来防止用户连续点击播放按钮，导致系统创建信的线程
+     * 判断是否正在播放，可以用来防止用户连续点击播放按钮，导致系统创建新的线程
      */
     public boolean isPlaying = false;
 
@@ -195,7 +196,6 @@ public class MusicPlayer extends DialogFragment{
 	{
     	public void OnPlayBegin(Music music);
     	public void OnPlayFinished();
-    	//public void getNewMusic(Music music);
 	}
     
     public void setOnPlayListener(OnPlayListener listener)
@@ -218,7 +218,10 @@ public class MusicPlayer extends DialogFragment{
     {
     	isAutoPlaying = isAuto;   
     	
-    	autoPlayRunnable = new Runnable() {			
+    	//创建一个线程
+    	autoPlayRunnable = new Runnable() {	
+    		
+    		//线程执行体
 			@Override
 			public void run() {				
 				if (playingMusic != null) {
@@ -227,6 +230,7 @@ public class MusicPlayer extends DialogFragment{
 							&& !playingMusic.contains(playlistName)) 
 						return ;
 					
+					//
 					if (!musics.isEmpty()) {
 						for (Music m : musics) {
 							if (playingMusic.contains(m.getTitle())
@@ -252,6 +256,8 @@ public class MusicPlayer extends DialogFragment{
 			}
 			
 		};
+		
+		
 		
     	if (handler != null) {
     		
@@ -281,6 +287,7 @@ public class MusicPlayer extends DialogFragment{
     public MusicPlayer attachMusics(List<Music> musics,Music music)
     {
     	
+    	Log.d(TAG, "attachMusics(List<Music> musics,Music music)");
     	attachMusics(musics);
     	this.music = music;
     	return this;
@@ -295,7 +302,7 @@ public class MusicPlayer extends DialogFragment{
     	this.playlistName = null;
     	this.musics.clear();    //清空原来的播放列表
     	this.musics.addAll(musics); //给播放列表重新加载新值
-    	music = this.musics.get(0);
+    	//music = this.musics.get(0);
     	
     	return this;
     }
@@ -409,9 +416,21 @@ public class MusicPlayer extends DialogFragment{
     public boolean nextMusic()
     {    	
         
-    	int index = musics.indexOf(music);
+    	//int index = musics.indexOf(music);
+    	int index = 0;
     	
-    	if (++index < musics.size()) {
+    	for(Music m : musics){
+			Log.d(TAG, m.getArtist());
+			Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
+			if(m.getId() == music.getId())
+				{
+				  index = musics.indexOf(m);
+				  break;
+				}
+		}   	
+    	
+    	index = index + 1;
+    	if (index < musics.size()) {
     		music = musics.get(index);
 		}
     	else {    		
@@ -441,6 +460,7 @@ public class MusicPlayer extends DialogFragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	Log.d(TAG, "--------onCreate()--------");
     	musicService = new MusicServiceImpl(this.getActivity());
     	setCancelable(false);    	
     	setStyle(DialogFragment.STYLE_NO_TITLE, 0);  //去掉dialog默认的标题
@@ -466,6 +486,8 @@ public class MusicPlayer extends DialogFragment{
 	@Override
     public void onHiddenChanged(boolean hidden) {
     	super.onHiddenChanged(hidden);
+    	
+    	Log.d(TAG, "onHiddenChanged");
     	if (view != null) {
     		if (hidden) {  
     			//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1"); 	
@@ -474,7 +496,7 @@ public class MusicPlayer extends DialogFragment{
 				}
 			}
     		else {
-    			autoPlaying(isAutoPlaying);
+    			//autoPlaying(isAutoPlaying);
     			//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "0"); 	        
 			}			
 		}
@@ -483,6 +505,7 @@ public class MusicPlayer extends DialogFragment{
 	@Override
 	public void onPause() {
 		super.onPause();
+		Log.d(TAG, "--------onPause()--------");
 		//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1"); 	
 		/*if (view.getVisibility() == View.VISIBLE) {
 			Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_out);
@@ -493,10 +516,19 @@ public class MusicPlayer extends DialogFragment{
 		}*/
 		
 	}
+	
+	@Override
+	public void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		Log.d(TAG, "--------onStop()--------");
+	}
 
 	@Override
     public void onResume() {
     	super.onResume();
+    	    	
+    	Log.d(TAG, "-----------onResume()----------");
     	
     	handler = new Handler() {
             @Override
@@ -505,14 +537,16 @@ public class MusicPlayer extends DialogFragment{
             		if(getActivity() == null)
             			return ;
             		
+            		//通过网络获取机顶盒端信息
             		String[] content = StringUtils.delimitedListToStringArray(((String) msg.obj), "|");
             		
+            		/*处理机顶盒端消息*/
 	                if (msg.what == 0) {
 	                    //HTTPD的使用状态
 	                    MobilePerformanceUtils.httpServerUsing = true;
 	
 	                    String key = null;
-	                    playingMusic = content[0];
+	                    playingMusic = content[0];    //获取机顶盒上正在播放的音乐名字
 	                    if(playlistName == null)
                     	{
 	                    	key = (music != null) ? music.getTitle() + "-" +music.getArtist() : null;
@@ -524,62 +558,70 @@ public class MusicPlayer extends DialogFragment{
 						}
 	                    
 	                    
-	                    if (isAutoPlaying) {
+	                   /* if (isAutoPlaying) {
 	                    	if(autoPlayRunnable != null)	              
 	                    	{
 	                    		handler.removeCallbacks(autoPlayRunnable);
 	                    		handler.post(autoPlayRunnable);
 	                    	}
-						}		
+						}	*/	
 	                    //判断当前的页面是否为在播放的歌曲
+	                    //如果选择要播放的音乐与机顶盒正在播放的音乐相同,同时在音乐播放过程中一直在更新UI与机顶盒端保持同步
 	                    if (key != null && key.equals(WebUtils.convertHttpURLToLocalFile(content[0]))) {
-	                        int progress = Integer.parseInt(content[1]);
-	                        if (view.getVisibility() == View.VISIBLE 
-	                        		&& progress > 0
-	                        		&& seekBar.getMax() - seekBar.getProgress() > 5) {
-								getActivity().getSupportFragmentManager().beginTransaction()
-										.show(MusicPlayer.this).commitAllowingStateLoss();
-
-	                           /* Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.music_seekbar_in);
-								view.startAnimation(animation);
-	                            view.setVisibility(View.VISIBLE);*/
-
-	                            int totalTime = music.getDuration() / 1000;
-	                            seekBar.setMax(totalTime);
-	                            String musicTotalTime = DateUtils.getTimeShow(totalTime);
-	                          //  showTimeGoing.setText("00:00");
-	                            showTimeTotal.setText( musicTotalTime);
-	                        }
-	                        if (progress > 0 && isSeeking == 0) {
-	                            seekBar.setProgress(progress);
-	                        }
-	                        if (isSeeking > 0) {
-	                            isSeeking = isSeeking - 1;
-	                        }
-	                    String status = content[2];
-	                    if ("true".equals(status)) {
-	                        isPlaying = true;
-	                        isPausing = false;
-	                        controlButton.setBackgroundResource(R.drawable.control_pause1);
-	                    } else {
-	                        isPlaying = false;
-	                        isPausing = true;
-	                        controlButton.setBackgroundResource(R.drawable.control_play1);
-	                    }                   	
+	                        int progress = Integer.parseInt(content[1]);  //获取机顶盒当前播放音乐进度
+	                        
+		                        /*如果当前机顶盒播放的音乐还没播放完*/
+		                        if (view.getVisibility() == View.VISIBLE 
+		                        		&& progress > 0
+		                        		&& seekBar.getMax() - seekBar.getProgress() > 5) {
+									getActivity().getSupportFragmentManager().beginTransaction()
+											.show(MusicPlayer.this).commitAllowingStateLoss();
+	
+		                            int totalTime = music.getDuration() / 1000;
+		                            seekBar.setMax(totalTime);
+		                            String musicTotalTime = DateUtils.getTimeShow(totalTime);
+		                            showTimeTotal.setText( musicTotalTime);
+		                        }
+		                        
+		                        //未发生进度条拖动
+		                        if (progress > 0 && isSeeking == 0) {
+		                            seekBar.setProgress(progress);  //手机进度与服务器进度保持同步
+		                        }
+		                        if (isSeeking > 0) {
+		                            isSeeking = isSeeking - 1;
+		                        }
+		                        
+		                        //播放音乐状态
+			                    String status = content[2];
+			                    
+			                    if ("true".equals(status)) {
+			                    	//音乐正在播放状态
+			                        isPlaying = true;
+			                        isPausing = false;
+			                        controlButton.setBackgroundResource(R.drawable.control_pause1);
+			                    } else {
+			                    	//音乐暂停状态
+			                        isPlaying = false;
+			                        isPausing = true;
+			                        controlButton.setBackgroundResource(R.drawable.control_play1);
+			                    }                   	
 	                }
                     else {
                     	// 当finish UDP包掉了后，实现自动检测歌曲播放，切换到正确的进度        
-                    	if(handler != null && autoPlayRunnable != null)
-                    		handler.postAtFrontOfQueue(autoPlayRunnable);
+//                    	if(handler != null && autoPlayRunnable != null)
+//                    		handler.postAtFrontOfQueue(autoPlayRunnable);
 						
 					}
 	            }
+	                
+	            //一首歌曲播放完成,判断是切歌还是暂停
                 if ((msg.what == 1 && seekBar.getMax() - seekBar.getProgress() <= 5)) {
-                		Log.e("MusicViewActivity", "music stop play");
-                		playFinish();	                                                                    
+                		playFinish();	                                                                     
                 }
 	        }
         };
+    //    autoPlaying(true);
+        
     }
 	
 	
@@ -590,6 +632,7 @@ public class MusicPlayer extends DialogFragment{
 	public void onDestroy() {
 
 		super.onDestroy();
+		Log.d(TAG, "-----------onDestroy()----------");
 		//ClientSendCommandService.sendMessage(CMD_AUTO + ":" + "1");
 
 	}   
@@ -598,9 +641,9 @@ public class MusicPlayer extends DialogFragment{
     private void initialViews(View v) {        	            	
         seekBar  = (SeekBar)v.findViewById(R.id.music_seek); //时间进度条
         controlButton = (ImageButton)v.findViewById(R.id.music_control_button); //暂停与播放按键       
-        showTimeGoing = (TextView) v.findViewById(R.id.music_showtime_going);   //当前时间
+        showTimeGoing = (TextView) v.findViewById(R.id.music_showtime_going);   //当前时间初始化
         showTimeGoing.setText("00:00");
-        showTimeTotal = (TextView) v.findViewById(R.id.music_showtime_total);   //总时间
+        showTimeTotal = (TextView) v.findViewById(R.id.music_showtime_total);   //总时间初始化
         showTimeTotal.setText("00:00");
         
         previousButton = (ImageButton)v.findViewById(R.id.control_song_previous);
@@ -624,8 +667,7 @@ public class MusicPlayer extends DialogFragment{
         view.invalidate();
         view.setFocusable(true);
         view.setFocusableInTouchMode(true);
-        view.requestFocus();
-		controlButton.setBackgroundResource(R.drawable.control_play1);
+        view.requestFocus();          
     }
     
     private void initialEvents() {
@@ -647,7 +689,9 @@ public class MusicPlayer extends DialogFragment{
     				return false;
     			}
     		});
-		}            	
+		}
+    	
+    	//拖动滑动条监听事件
     	seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -683,12 +727,14 @@ public class MusicPlayer extends DialogFragment{
                 	controlButton.setBackgroundResource(R.drawable.control_play1);
                 	
                 }else {
-                	if (isPausing) {
+                	if (isPausing) {     
+                		//由暂停状态变为播放状态
                     	controlButton.setBackgroundResource(R.drawable.control_pause1);
                     	ClientSendCommandService.sendMessage(CMD_PLAY);
                         isPausing = false;
                         isPlaying = true;
                     } else {
+                    	//由播放状态转化为暂停状态
                     	controlButton.setBackgroundResource(R.drawable.control_play1);
                     	ClientSendCommandService.sendMessage(CMD_PAUSE);
                         isPausing = true;
@@ -707,9 +753,24 @@ public class MusicPlayer extends DialogFragment{
         		
         	//	Log.d(TAG, "进入nextButton");
         		
-        		int index = musics.indexOf(music);
+        		//int index = musics.indexOf(music);
+        		
+        		
+        		
+        		int index=0;
+        		for(Music m : musics){
+        			Log.d(TAG, m.getArtist());
+        			Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
+        			if(m.getId() == music.getId())
+        				{
+        				  index = musics.indexOf(m);
+        				  break;
+        				}
+        		}
+        		
             	
-            	if (++index < musics.size()) {
+        		index = index + 1;
+            	if (index < musics.size()) {
             		music = musics.get(index);
             		playMusic(music);
             		
@@ -717,7 +778,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "no next song!", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "not next song!", Toast.LENGTH_SHORT).show();
         		}    	    	
         		        		
         	}
@@ -740,7 +801,7 @@ public class MusicPlayer extends DialogFragment{
         		}
             	else {    		
             		
-            		Toast.makeText(getActivity(), "no previous song!", Toast.LENGTH_SHORT).show();
+            		Toast.makeText(getActivity(), "not previous song!", Toast.LENGTH_SHORT).show();
         		}    	    	
                 
         		
@@ -789,7 +850,7 @@ public class MusicPlayer extends DialogFragment{
         
         if (listener != null) {
         	try {
-        		listener.OnPlayFinished();
+        		listener.OnPlayFinished();  
 			} catch (Exception e) {
 				e.printStackTrace();
 			}        	
@@ -797,7 +858,8 @@ public class MusicPlayer extends DialogFragment{
         else {
 			if(!nextMusic())
 			{						        
-		        stopTVPlayer();			 
+		        stopTVPlayer();	
+		        
 		        return ;
 			}
 		}
@@ -961,6 +1023,7 @@ public class MusicPlayer extends DialogFragment{
 
                 MyApplication.vibrator.vibrate(100);
 
+                long start_time = System.currentTimeMillis();
                 /**
                  * 开始投影播放
                  */
@@ -1006,6 +1069,9 @@ public class MusicPlayer extends DialogFragment{
                     e.printStackTrace();
                 }                
 
+                long end_time = System.currentTimeMillis();
+                
+                long duration = end_time - start_time;
                 //发送播放地址
                 ClientSendCommandService.sendMessage(o.toString());                
 
