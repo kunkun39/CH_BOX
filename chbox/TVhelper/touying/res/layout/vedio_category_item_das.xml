@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="140dp"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:layout_marginTop="8dp"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/pic_category_border"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_gravity="center"
         android:background="@drawable/das_item_bg"
         android:layout_marginTop="8dp"
@@ -27,18 +28,20 @@
         android:id="@+id/vedio_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="37dp"
         android:layout_marginTop="5dp"
         android:singleLine="true"
         android:ellipsize="marquee"
-        android:textColor="@color/black"
+        android:typeface="serif"
+        android:textColor="#494748"
         android:textSize="15sp" />
     <TextView
         android:id="@+id/vedio_item_NO"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:textColor="@color/Grey_500"
+        android:layout_marginLeft="37dp"
+        android:textColor="#cc494748"
+        android:typeface="serif"
         android:singleLine="true"
         android:textSize="15sp"
         />
