@@ -54,49 +54,84 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
-        
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/music_category_all"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
                 android:gravity="center"
                 android:text="@string/single"
                 android:textColor="@color/orange"
-                android:textAppearance="?android:attr/textAppearanceMedium" 
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 />
+            <View
+                android:id="@+id/music_category_all_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/orange"
+                />
+        </LinearLayout>
+
                 
             <ImageView android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/music_category_deliver"/>
 
-            <TextView
-                android:id="@+id/music_category_specail"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/singer"
-                android:textColor="@color/Grey_500"
-                android:textAppearance="?android:attr/textAppearanceMedium" 
-                />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/music_category_specail"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:gravity="center"
+                    android:text="@string/singer"
+                    android:textColor="@color/Grey_500"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+                <View
+                    android:id="@+id/music_category_specail_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/orange"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
 
            <ImageView android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/music_category_deliver"/>
 
-            <TextView
-                android:id="@+id/music_category_playlist"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/songlist" 
-                android:textColor="@color/Grey_500"             
-                android:textAppearance="?android:attr/textAppearanceMedium" 
-                />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/music_category_playlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:gravity="center"
+                    android:text="@string/songlist"
+                    android:textColor="@color/Grey_500"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    />
+                <View
+                    android:id="@+id/music_category_playlist_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/orange"
+                    android:visibility="gone"/>
+            </LinearLayout>
+
         
         </LinearLayout>
 

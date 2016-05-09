@@ -414,31 +414,28 @@ public class MusicPlayer extends DialogFragment{
     }
    
     public boolean nextMusic()
-    {    	
-        
-    	//int index = musics.indexOf(music);
-    	int index = 0;
-    	
-    	for(Music m : musics){
+    {
+		int index = 0;
+
+		for(Music m : musics){
 			Log.d(TAG, m.getArtist());
 			Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
-			if(m.getId() == music.getId())
-				{
-				  index = musics.indexOf(m);
-				  break;
-				}
-		}   	
-    	
-    	index = index + 1;
-    	if (index < musics.size()) {
-    		music = musics.get(index);
+			if(m.getId() == music.getId()) {
+				index = musics.indexOf(m);
+				break;
+			}
 		}
-    	else {    		
+
+		index = index + 1;
+		if (index < musics.size()) {
+			music = musics.get(index);
+		}
+		else {
 			return false;
-		}    	    	
-        
-    	return playMusics(music);    	 
-    }
+		}
+
+		return playMusics(music);
+	}
     
     public void stopTVPlayer()
     {
@@ -745,43 +742,30 @@ public class MusicPlayer extends DialogFragment{
             }
         });
         
-        
         nextButton.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		MyApplication.vibrator.vibrate(100); //点击按钮震动
-        		
-        	//	Log.d(TAG, "进入nextButton");
-        		
-        		//int index = musics.indexOf(music);
-        		
-        		
-        		
-        		int index=0;
-        		for(Music m : musics){
-        			Log.d(TAG, m.getArtist());
-        			Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
-        			if(m.getId() == music.getId())
-        				{
-        				  index = musics.indexOf(m);
-        				  break;
-        				}
-        		}
-        		
-            	
-        		index = index + 1;
-            	if (index < musics.size()) {
-            		music = musics.get(index);
-            		playMusic(music);
-            		
-            		
-        		}
-            	else {    		
-            		
-            		Toast.makeText(getActivity(), "not next song!", Toast.LENGTH_SHORT).show();
-        		}    	    	
-        		        		
-        	}
+				int index=0;
+				for(Music m : musics){
+					Log.d(TAG, m.getArtist());
+					Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
+					if(m.getId() == music.getId())
+					{
+						index = musics.indexOf(m);
+						break;
+					}
+				}
+
+				index = index + 1;
+				if (index < musics.size()) {
+					music = musics.get(index);
+					playMusic(music);
+				}
+				else {
+					Toast.makeText(getActivity(), "not next song!", Toast.LENGTH_SHORT).show();
+				}
+			}
         });
         
  

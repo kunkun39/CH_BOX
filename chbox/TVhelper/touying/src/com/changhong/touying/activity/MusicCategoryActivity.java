@@ -179,7 +179,9 @@ public class MusicCategoryActivity extends FragmentActivity {
 	}
 
 	private void showFragment(int i) {
-		
+		findViewById(R.id.music_category_all_line).setVisibility(View.GONE);
+		findViewById(R.id.music_category_specail_line).setVisibility(View.GONE);
+		findViewById(R.id.music_category_playlist_line).setVisibility(View.GONE);
 		//开启frament事务
 		FragmentTransaction myTransaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -201,6 +203,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 			if (fragmentList.isVisible()) {
 				myTransaction.hide(fragmentList);
 			}
+			findViewById(R.id.music_category_all_line).setVisibility(View.VISIBLE);
 
 		} else if (2 == i) {
 
@@ -219,6 +222,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 			if (fragmentList.isVisible()) {
 				myTransaction.hide(fragmentList);
 			}
+			findViewById(R.id.music_category_specail_line).setVisibility(View.VISIBLE);
 		} else if (3 == i) {
 
 			fragmentList = getSupportFragmentManager().findFragmentByTag(
@@ -236,6 +240,7 @@ public class MusicCategoryActivity extends FragmentActivity {
 			if (fragmentSpecial.isVisible()) {
 				myTransaction.hide(fragmentSpecial);
 			}
+			findViewById(R.id.music_category_playlist_line).setVisibility(View.VISIBLE);
 		}
 		myTransaction.commitAllowingStateLoss();
 	}

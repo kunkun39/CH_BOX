@@ -20,19 +20,16 @@
             android:layout_marginLeft="16dip"
             android:background="@drawable/das_title_back" 
             android:layout_gravity="center_vertical"/>
-        
-        <TextView        
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="@string/music"
-            android:textSize="20sp" 
+            android:layout_marginLeft="16dp"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
             android:textColor="@color/white"
-            android:layout_marginLeft="16dip"
-            android:gravity="center_vertical"/>
-        
-
+            android:text="@string/music"
+            android:layout_toRightOf="@id/d_btn_return"/>
         <Button 
 		    android:id="@+id/bt_sharemusic"
 		    android:layout_width="40dp"
