@@ -6,20 +6,19 @@
     
     <!-- 标题 -->
     <TextView android:id="@+id/edit_dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
+        android:gravity="center"
         android:singleLine="true"
-        
-        android:textSize="16dp"
-        android:textColor="@android:color/black"
-        android:layout_marginTop="5dp"/>
+        android:textSize="14dp"
+        android:textColor="@android:color/white"
+        android:background="#43afcb" />
     
     <ImageView android:id="@+id/edit_dialog_title_deliver"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_dialog_title"
-        android:layout_marginTop="3dp"
         android:src="@drawable/view_editdialog_title_dilver"/>
     
     <!-- 内容 -->  
@@ -34,8 +33,10 @@
            android:layout_marginTop="20dp"
            android:gravity="center"
            android:background="@android:color/white"
+           android:typeface="serif"
            android:singleLine="true"
-           android:hint="@string/music_add_playlist_alert"/>
+           android:hint="@string/music_add_playlist_alert"
+           android:textColorHint="#777472"/>
        
        <ImageView
         android:id="@+id/iv_editdia_dilver"
@@ -60,6 +61,8 @@
             android:layout_weight="1"  
             android:layout_marginTop="55dp"        
             android:gravity="center"
+            android:typeface="serif"
+            android:textColor="#494748"
             android:text="@string/cancel"
             android:background="@drawable/music_dialog_btn_selector"         
             android:textSize="@dimen/dialog_btn_textsize" />
@@ -75,7 +78,9 @@
             android:layout_height="40dp"
             android:layout_weight="1" 
             android:layout_marginTop="55dp"
+            android:typeface="serif"
             android:gravity="center"
+            android:textColor="#494748"
             android:text="@string/confrim" 
             android:background="@drawable/music_dialog_btn_selector"       
             android:textSize="@dimen/dialog_btn_textsize" />
@@ -85,7 +90,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="#494748"
+        android:typeface="serif"
         android:text="@string/hide"
         android:textSize="@dimen/dialog_btn_textsize"
         android:layout_marginBottom="4dp"
