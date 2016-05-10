@@ -13,11 +13,13 @@
         <ImageButton
 	            android:id="@+id/music_list_add"
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"  
-	            android:background="@drawable/add_playlist"
+	            android:layout_height="20dp"
+	            android:src="@drawable/add_playlist"
 	            android:layout_centerHorizontal="true"
-	            android:layout_marginTop="30dp"
-	            android:layout_marginBottom="50dp"	            
+				android:scaleType="centerInside"
+				android:background="@android:color/transparent"
+	            android:layout_marginTop="24dp"
+	            android:layout_marginBottom="24dp"
 	            android:layout_alignParentBottom="true"
 	        /> 
 	        
