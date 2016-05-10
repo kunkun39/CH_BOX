@@ -78,7 +78,8 @@
                 android:id="@+id/power"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="32dip"
+                android:layout_marginLeft="24dip"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/das_btn_power_selector"
                 style="@style/das_remote_small_btn" />
             <TextView
@@ -94,7 +95,8 @@
                 android:id="@+id/search"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="32dip"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="24dip"
                 android:background="@drawable/das_btn_search_selector"
                 style="@style/das_remote_small_btn"/>
             <TextView
@@ -251,7 +253,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@drawable/das_vol"
-                android:layout_margin="16dp"
+                android:layout_margin="24dp"
                 android:orientation="vertical">
                 <View
                     android:id="@+id/volumeup"
@@ -295,7 +297,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_margin="16dp"
+                android:layout_margin="24dp"
                 android:background="@drawable/das_media_contoller"
                 android:orientation="vertical">
                 <View

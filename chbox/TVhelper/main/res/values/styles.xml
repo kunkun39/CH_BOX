@@ -2,8 +2,8 @@
 <resources>
 
     <style name="das_remote_small_btn">
-        <item name="android:layout_width">80dip</item>
-        <item name="android:layout_height">80dip</item>
+        <item name="android:layout_width">70dip</item>
+        <item name="android:layout_height">70dip</item>
     </style>
 
     <style name="remote_text_das">
