@@ -17,8 +17,8 @@
     <dimen name="dialog_baidudia_content_textsize">14sp</dimen>
     <dimen name="dialog_baidudia_title_margintop">10dp</dimen>
     <!-- 歌单编辑对话框（三个按钮） -->
-    <dimen name="dialog_modify_width">330dp</dimen>
-    <dimen name="dialog_modify_height">130dp</dimen>
+    <dimen name="dialog_modify_width">300dp</dimen>
+    <dimen name="dialog_modify_height">200dp</dimen>
     <dimen name="dialog_modifybtn_width">85dp</dimen>
     <dimen name="dialog_modifybtn_height">40dp</dimen>
     <dimen name="dialog_modifybtn_marginLeftright">20dp</dimen>
