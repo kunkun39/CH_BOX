@@ -100,20 +100,22 @@
         android:layout_below="@id/music_volue_info"
         android:orientation="vertical"    
         android:layout_marginTop="47dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_centerHorizontal="true"
+        >
 
         <FrameLayout
-            android:layout_width="282dp"
-            android:layout_height="282dp"
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:background="@drawable/boder_black"
+            android:layout_gravity="center"
             >
 
             <ImageView
                 android:id="@+id/iv_music_ablum"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/boder_black"
                 android:scaleType="fitXY"
+                android:layout_margin="1dp"
                 android:layout_gravity="center" />
        
         </FrameLayout>
