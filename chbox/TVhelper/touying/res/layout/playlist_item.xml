@@ -1,45 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+<LinearLayout
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:descendantFocusability="blocksDescendants"
               android:layout_height="wrap_content">
-    
     <CheckBox
             android:id="@+id/playlist_radio_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:focusable="false"
             android:clickable="false"
             android:layout_marginLeft="15dp"
-            android:layout_gravity="center_vertical"            
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:button="@drawable/playlist_selector"
             android:textSize="18sp"/>
-    
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="9"
-        >
 	    <TextView
 	            android:id="@+id/playlist_item_name"
-	            android:layout_width="match_parent"
+	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textSize="20sp"
-	            android:textColor="@color/black"/>
+	            android:textSize="15sp"
+                android:typeface="serif"
+                android:singleLine="true"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
+            android:textColor="#494748"/>
 	    <TextView
 	            android:id="@+id/playlist_item_comment"
-	            android:layout_width="match_parent"
+	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textSize="13sp"/>
-	    
-	     <View 
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dp"
-	        android:background="@drawable/music_title_body_deliver"/>
-    
-    
-	</LinearLayout>
+                android:typeface="serif"
+                android:singleLine="true"
+            android:layout_marginLeft="2dp"
+            android:textColor="#cc494748"
+            android:layout_gravity="center_vertical"
+            android:textSize="13sp"/>
+</LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_marginLeft="15dp"
+        android:layout_height="1dp"
+        android:background="#66494748"/>
 </LinearLayout>
