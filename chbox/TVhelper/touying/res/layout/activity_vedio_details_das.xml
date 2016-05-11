@@ -43,24 +43,27 @@
 
             <ImageView
                     android:id="@+id/control_volume_small"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="24dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                    android:layout_marginLeft="4dp"
+                    android:paddingTop="17dp"
+                    android:paddingBottom="17dp"
+                    android:paddingLeft="40dp"
+
                     android:layout_centerVertical="true"
                     android:src="@drawable/control_volume_small1"/>
 
             <ImageView
                     android:id="@+id/control_volume_bigger"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="24dp"
+                    android:layout_marginRight="4dp"
                     android:layout_centerVertical="true"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                    android:paddingTop="17dp"
+                    android:paddingBottom="17dp"
+                    android:paddingRight="40dp"
                     android:src="@drawable/control_volume_bigger1"/>
             
             <com.changhong.touying.vedio.VolumeSeekBar
@@ -101,17 +104,25 @@
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:layout_weight="12">
 
-            <ImageView
-                android:id="@+id/details_image"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/boder_black"
+            android:layout_weight="12">
+            <LinearLayout
+                android:layout_width="270dp"
+                android:layout_height="270dp"
                 android:layout_gravity="center"
-                android:scaleType="fitCenter"
-                android:src="@drawable/default_album" 
-                />
+                android:background="@drawable/boder_black">
+                <ImageView
+                    android:id="@+id/details_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="1dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/default_album"
+                    />
+            </LinearLayout>
+
+
         </FrameLayout>
         
         <TextView
@@ -120,7 +131,11 @@
 	        android:layout_height="0dp"
             android:layout_weight="1"
 	        android:layout_marginTop="20dp"
+            android:singleLine="true"
+            android:ellipsize="end"
 	        android:gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
 	        android:textSize="18sp" />
 
 	    <TextView
@@ -130,6 +145,10 @@
             android:layout_weight="1"
 	        android:layout_marginTop="10dp"
 	        android:gravity="center"
+            android:singleLine="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
 	        android:textSize="14sp"
 	        android:textColor="@color/black" />
     

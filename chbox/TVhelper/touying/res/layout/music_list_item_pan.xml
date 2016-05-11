@@ -52,11 +52,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_gravity="center_vertical"
+            android:singleLine="true"
             android:ellipsize="end"
             android:lines="1"
             android:paddingLeft="54dp"
             android:typeface="serif"
-            android:layout_toLeftOf="@id/music_list_play"
+            android:layout_toLeftOf="@id/music_item_time"
             android:textColor="#494748"
             android:textSize="16sp" />
 

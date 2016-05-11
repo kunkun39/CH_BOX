@@ -12,6 +12,7 @@ import android.R.integer;
 import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -185,6 +186,13 @@ public class MusicPlayer extends DialogFragment{
     String playingMusic;    
     
     String playlistName = null;
+
+	long currentTime = 0l;
+	static final int DELAY_TIME = 500;
+	String pendingMusicPath;
+	String pendingMusicName;
+	String pendingArtist;
+	Runnable pendingRunable = null;
 
     /**
      * 回调监听者
@@ -671,21 +679,20 @@ public class MusicPlayer extends DialogFragment{
 
     	if (seekbarContainer != null) {
         	seekbarContainer.setOnTouchListener(new OnTouchListener() {
-    			@Override
-    			public boolean onTouch(View v, MotionEvent event) {
-    				switch (event.getAction()) {
-    				case MotionEvent.ACTION_DOWN:
-    				case MotionEvent.ACTION_MOVE:
-    				case MotionEvent.ACTION_UP:
-    				{
-    					return seekBar.onTouchEvent(event);					
-    				}				    				
-    				default:
-    					break;
-    				}
-    				return false;
-    			}
-    		});
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+						case MotionEvent.ACTION_MOVE:
+						case MotionEvent.ACTION_UP: {
+							return seekBar.onTouchEvent(event);
+						}
+						default:
+							break;
+					}
+					return false;
+				}
+			});
 		}
     	
     	//拖动滑动条监听事件
@@ -712,46 +719,45 @@ public class MusicPlayer extends DialogFragment{
         });
 
         controlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyApplication.vibrator.vibrate(100);
-                
-                if(start_player == false){
-                	
-                	start_player = true;
-                	playMusic(music);
-                	///playMusics(music);
-                	controlButton.setBackgroundResource(R.drawable.control_play1);
-                	
-                }else {
-                	if (isPausing) {     
-                		//由暂停状态变为播放状态
-                    	controlButton.setBackgroundResource(R.drawable.control_pause1);
-                    	ClientSendCommandService.sendMessage(CMD_PLAY);
-                        isPausing = false;
-                        isPlaying = true;
-                    } else {
-                    	//由播放状态转化为暂停状态
-                    	controlButton.setBackgroundResource(R.drawable.control_play1);
-                    	ClientSendCommandService.sendMessage(CMD_PAUSE);
-                        isPausing = true;
-                        isPlaying = false;
-                    }
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+
+				if (start_player == false) {
+
+					start_player = true;
+					playMusic(music);
+					///playMusics(music);
+					controlButton.setBackgroundResource(R.drawable.control_play1);
+
+				} else {
+					if (isPausing) {
+						//由暂停状态变为播放状态
+						controlButton.setBackgroundResource(R.drawable.control_pause1);
+						ClientSendCommandService.sendMessage(CMD_PLAY);
+						isPausing = false;
+						isPlaying = true;
+					} else {
+						//由播放状态转化为暂停状态
+						controlButton.setBackgroundResource(R.drawable.control_play1);
+						ClientSendCommandService.sendMessage(CMD_PAUSE);
+						isPausing = true;
+						isPlaying = false;
+					}
 				}
-                
-            }
-        });
+
+			}
+		});
         
         nextButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		MyApplication.vibrator.vibrate(100); //点击按钮震动
-				int index=0;
-				for(Music m : musics){
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100); //点击按钮震动
+				int index = 0;
+				for (Music m : musics) {
 					Log.d(TAG, m.getArtist());
-					Log.d(TAG, "---------------"+music.getArtist()+"-----------------------");
-					if(m.getId() == music.getId())
-					{
+					Log.d(TAG, "---------------" + music.getArtist() + "-----------------------");
+					if (m.getId() == music.getId()) {
 						index = musics.indexOf(m);
 						break;
 					}
@@ -761,36 +767,34 @@ public class MusicPlayer extends DialogFragment{
 				if (index < musics.size()) {
 					music = musics.get(index);
 					playMusic(music);
-				}
-				else {
+				} else {
 					Toast.makeText(getActivity(), "not next song!", Toast.LENGTH_SHORT).show();
 				}
 			}
-        });
+		});
         
  
         
         previousButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-        		MyApplication.vibrator.vibrate(100);
-        		
-                int index = musics.indexOf(music);
-                index = index -1;
-                
-            	if (index >=0) {
-            		
-            		music = musics.get(index);
-            		playMusic(music);
-        		}
-            	else {    		
-            		
-            		Toast.makeText(getActivity(), "not previous song!", Toast.LENGTH_SHORT).show();
-        		}    	    	
-                
-        		
-        	}
-        });
+			@Override
+			public void onClick(View v) {
+				MyApplication.vibrator.vibrate(100);
+
+				int index = musics.indexOf(music);
+				index = index - 1;
+
+				if (index >= 0) {
+
+					music = musics.get(index);
+					playMusic(music);
+				} else {
+
+					Toast.makeText(getActivity(), "not previous song!", Toast.LENGTH_SHORT).show();
+				}
+
+
+			}
+		});
 		
 		/**
          * 视频投影音量控制
@@ -817,7 +821,7 @@ public class MusicPlayer extends DialogFragment{
 		} */
 				
 		view.setOnKeyListener(new View.OnKeyListener() {
-			
+
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_UP) {
@@ -857,8 +861,6 @@ public class MusicPlayer extends DialogFragment{
     
     private void touYing(List<Music> musics,String playlistName)
     {
-
-
     	List<JsonMusicObject> objectsList = new ArrayList<JsonMusicObject>();
     	
     	try {
@@ -971,12 +973,45 @@ public class MusicPlayer extends DialogFragment{
         }
     }
     private void touYing(String musicPath, String musicName, String artist) {
+		if (NetworkUtils.isWifiConnected(getActivity())) {
+			if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+				Toast.makeText(getActivity(), getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
+				return;
+			}
+			pendingArtist = artist;
+			pendingMusicName = musicName;
+			pendingMusicPath = musicPath;
+
+			if (System.currentTimeMillis() - currentTime < DELAY_TIME){
+				return;
+			}
+			currentTime = System.currentTimeMillis();
+			if (pendingRunable == null){
+				pendingRunable = new Runnable() {
+					@Override
+					public void run() {
+						pendingRunable = null;
+						touYing();
+					}
+				};
+				handler.postDelayed(pendingRunable,DELAY_TIME);
+			}
+			//touYing();
+
+		}
+	}
+	private void touYing(){
+		String musicPath = pendingMusicPath;
+		String musicName = pendingMusicName;
+		String artist = pendingArtist;
         try {
-            if (NetworkUtils.isWifiConnected(getActivity())) {
-                if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
-                    Toast.makeText(getActivity(), getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
-                    return;
-                }
+			if (NetworkUtils.isWifiConnected(getActivity())) {
+				if (!StringUtils.hasLength(IpSelectorDataServer.getInstance().getCurrentIp())) {
+					Toast.makeText(getActivity(), getResources().getString(R.string.phone_disconnect), Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+
   				/**
                  * 设置播放滚动条的状态
                  */
