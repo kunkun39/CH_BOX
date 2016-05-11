@@ -41,6 +41,8 @@
                     android:layout_weight="4"
                     android:layout_marginTop="26dp"
                     android:layout_marginBottom="5dp"
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
                     android:src="@drawable/screen_mirror"/>
                               
 
@@ -62,55 +64,66 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:layout_marginBottom="10dp"
+                            android:layout_marginBottom="5dp"
                             android:orientation="horizontal">
-                            <Button
+                            <ImageButton
                                 android:id="@+id/main_music_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1"
                                 android:layout_marginRight="9dp"
-                                android:background="@drawable/multi_music"/>
-                            <Button
+                                android:layout_weight="1"
+                                android:scaleType="fitCenter"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/multi_music"/>
+                            <ImageButton
                                 android:id="@+id/main_vedio_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_weight="1"
                                 android:layout_marginLeft="9dp"
-                                android:background="@drawable/multi_video"/>
+                                android:scaleType="fitCenter"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/multi_video"/>
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
-                            <Button
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp">
+                            <ImageButton
                                 android:id="@+id/main_picture_touying"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_weight="1"
                                 android:layout_marginRight="9dp"
-                                android:background="@drawable/multi_pic"/>
-                            <Button
+                                android:scaleType="fitCenter"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/multi_pic"/>
+                            <ImageButton
                                 android:id="@+id/main_setting"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
                                 android:layout_weight="1"
                                 android:layout_marginLeft="9dp"
-                                android:background="@drawable/multi_settings"/>
+                                android:scaleType="fitCenter"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/multi_settings" />
                         </LinearLayout>
 
                     </LinearLayout>
 
                 </LinearLayout>
                 <!--第四部分-->
-                <Button
+                <ImageButton
                     android:id="@+id/main_control"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="7"
                     android:layout_marginBottom="10dp"
-                    android:background="@drawable/multi_controller"/>
+                    android:scaleType="fitCenter"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/multi_controller"/>
 		</LinearLayout>
 
      </RelativeLayout>

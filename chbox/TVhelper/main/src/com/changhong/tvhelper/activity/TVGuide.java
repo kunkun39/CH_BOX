@@ -123,21 +123,21 @@ public class TVGuide extends Activity implements ViewPager.OnPageChangeListener{
         mContent.setText(guidesContent[i]);
         Animation animationOut = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
         Animation animationIn = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
-//        if (i == mViewpager.getAdapter().getCount() - 1){
-//            mNext.setAnimation(animationOut);
-//            mSkip.setAnimation(animationOut);
-//            mStart.setAnimation(animationIn);
-//            mNext.setVisibility(View.GONE);
-//            mSkip.setVisibility(View.GONE);
-//            mStart.setVisibility(View.VISIBLE);
-//        }else {
-//            mNext.setAnimation(animationIn);
-//            mSkip.setAnimation(animationIn);
-//            mStart.setAnimation(animationOut);
-//            mNext.setVisibility(View.VISIBLE);
-//            mSkip.setVisibility(View.VISIBLE);
-//            mStart.setVisibility(View.GONE);
-//        }
+        if (i == mViewpager.getAdapter().getCount() - 1){
+            mNext.setAnimation(animationOut);
+            mSkip.setAnimation(animationOut);
+            mStart.setAnimation(animationIn);
+            mNext.setVisibility(View.GONE);
+            mSkip.setVisibility(View.GONE);
+            mStart.setVisibility(View.VISIBLE);
+        }else {
+            mNext.setAnimation(animationIn);
+            mSkip.setAnimation(animationIn);
+            mStart.setAnimation(animationOut);
+            mNext.setVisibility(View.VISIBLE);
+            mSkip.setVisibility(View.VISIBLE);
+            mStart.setVisibility(View.GONE);
+        }
     }
 
     @Override

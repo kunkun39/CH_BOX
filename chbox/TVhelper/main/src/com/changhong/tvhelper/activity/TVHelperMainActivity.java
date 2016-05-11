@@ -123,9 +123,9 @@ public class TVHelperMainActivity extends Activity {
          * init all views
          */
 
-        Button controller = (Button) findViewById(R.id.main_control);
-        Button tvplayer = (Button) findViewById(R.id.main_player);
-        Button setting = (Button) findViewById(R.id.main_setting);
+        View controller = (View) findViewById(R.id.main_control);
+        View tvplayer = (View) findViewById(R.id.main_player);
+        View setting = (View) findViewById(R.id.main_setting);
         Button shoucang = (Button) findViewById(R.id.main_soucang);
         Button sousuo = (Button) findViewById(R.id.main_sousuo);
         View musicTouYing = findViewById(R.id.main_music_touying);
