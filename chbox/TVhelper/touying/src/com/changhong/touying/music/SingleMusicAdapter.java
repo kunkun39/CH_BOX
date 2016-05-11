@@ -99,17 +99,17 @@ public class SingleMusicAdapter extends BaseAdapter {
 
  			fullPath.setText(music.getPath());
 
- 			String musicImagePath = DiskCacheFileManager
- 					.isSmallImageExist(music.getPath());
- 			if (!musicImagePath.equals("")) {
- 				MyApplication.imageLoader.displayImage("file://"
- 						+ musicImagePath, wapper.defaultImage,
- 						MyApplication.musicPicOptions);
- 				wapper.defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
- 			} else {
+// 			String musicImagePath = DiskCacheFileManager
+// 					.isSmallImageExist(music.getPath());
+// 			if (!musicImagePath.equals("")) {
+// 				MyApplication.imageLoader.displayImage("file://"
+// 						+ musicImagePath, wapper.defaultImage,
+// 						MyApplication.musicPicOptions);
+// 				wapper.defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
+// 			} else {
  				SetDefaultImage.getInstance()
- 						.startExecutor(defaultImage, music);
- 			}
+ 						.startExecutor(defaultImage, music,true,true);
+// 			}
 
  			playBtn.setOnClickListener(new OnClickListener() {
 

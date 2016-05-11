@@ -34,8 +34,11 @@ public class SetDefaultImage {
 	public void setContext(Context context){
 		this.context=context;
 	}
-	
 	public void startExecutor(final ImageView iv,final Music music){
+		startExecutor(iv,music,false,false);
+	}
+
+	public void startExecutor(final ImageView iv,final Music music,final boolean isSmall,final boolean isMusic){
 		executorService.submit(new Runnable() {
 			
 			@Override
@@ -43,7 +46,7 @@ public class SetDefaultImage {
 				// TODO Auto-generated method stub
 				final Bitmap bitmap = MediaUtil.getArtwork(context,
 						music.getId(), music.getAlbumId(),
-						true, false);
+						true, isSmall,isMusic);
 				
 				if (bitmap != null && iv != null) {
 //					Activity activity=(Activity)iv.getContext();

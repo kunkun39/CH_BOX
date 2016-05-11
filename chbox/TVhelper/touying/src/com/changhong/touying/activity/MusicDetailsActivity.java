@@ -325,16 +325,16 @@ public class MusicDetailsActivity extends FragmentActivity implements QuickQuire
 	}
 
 	private void loadImage(Music music){
-		String musicImagePath = DiskCacheFileManager
-				.isSmallImageExist(music.getPath());
-		if (!musicImagePath.equals("")) {
-			MyApplication.imageLoader.displayImage("file://"
-							+ musicImagePath, defaultImage,
-					MyApplication.musicPicOptions);
-			defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
-		} else {
+//		String musicImagePath = DiskCacheFileManager
+//				.isSmallImageExist(music.getPath());
+//		if (!musicImagePath.equals("")) {
+//			MyApplication.imageLoader.displayImage("file://"
+//							+ musicImagePath, defaultImage,
+//					MyApplication.musicPicOptions);
+//			defaultImage.setScaleType(ImageView.ScaleType.FIT_XY);
+//		} else {
 			SetDefaultImage.getInstance()
-					.startExecutor(defaultImage, music);
-		}
+					.startExecutor(defaultImage, music,false,true);
+//		}
 	}
 }

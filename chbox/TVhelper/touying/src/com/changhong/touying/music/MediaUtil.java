@@ -131,8 +131,28 @@ public class MediaUtil {
 		}
 		return min + ":" + sec.trim().substring(0, 2);
 	}
-	
-	
+
+
+	public static Bitmap getDefaultArtwork(Context context,boolean small,boolean isMusic) {
+		if (isMusic){
+			return getDefaultArtworkMusic(context,small);
+		}else {
+			return getDefaultArtwork(context,small);
+		}
+	}
+	/**
+	 * 获取默认专辑图片
+	 * @param context
+	 * @return
+	 */
+	public static Bitmap getDefaultArtworkMusic(Context context,boolean small) {
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inPreferredConfig = Bitmap.Config.RGB_565;
+		if(small){	//返回小图片
+			return BitmapFactory.decodeStream(context.getResources().openRawResource(R.drawable.music_small_default), null, opts);
+		}
+		return BitmapFactory.decodeStream(context.getResources().openRawResource(R.drawable.music_default), null, opts);
+	}
 	/**
 	 * 获取默认专辑图片
 	 * @param context
@@ -197,7 +217,10 @@ public class MediaUtil {
 		}
 		return bm;
 	}
-	
+
+	public static Bitmap getArtwork(Context context, long song_id, long album_id, boolean allowdefalut, boolean small){
+		return getArtwork(context, song_id, album_id, allowdefalut, small,false);
+	}
 	/**
 	 * 获取专辑封面位图对象
 	 * @param context
@@ -206,7 +229,7 @@ public class MediaUtil {
 	 * @param allowdefalut
 	 * @return
 	 */
-	public static Bitmap getArtwork(Context context, long song_id, long album_id, boolean allowdefalut, boolean small){
+	public static Bitmap getArtwork(Context context, long song_id, long album_id, boolean allowdefalut, boolean small,boolean isMusic){
 		if(album_id < 0) {
 			if(song_id< 0) {
 				Bitmap bm = getArtworkFromFile(context, song_id, -1);
@@ -215,7 +238,7 @@ public class MediaUtil {
 				}
 			}
 			if(allowdefalut) {
-				return getDefaultArtwork(context, small);
+				return getDefaultArtwork(context, small,isMusic);
 			}
 			return null;
 		}
@@ -251,11 +274,11 @@ public class MediaUtil {
 					if(bm.getConfig() == null) {
 						bm = bm.copy(Bitmap.Config.RGB_565, false);
 						if(bm == null && allowdefalut) {
-							return getDefaultArtwork(context, small);
+							return getDefaultArtwork(context, small,isMusic);
 						}
 					}
 				} else if(allowdefalut) {
-					bm = getDefaultArtwork(context, small);
+					bm = getDefaultArtwork(context, small,isMusic);
 				}
 				return bm;
 			} finally {

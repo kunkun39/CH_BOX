@@ -122,7 +122,8 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
                 android:layout_margin="1dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:src="@drawable/music_default"/>
        
         </FrameLayout>
         

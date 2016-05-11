@@ -96,15 +96,15 @@ public class MusicDataAdapter extends BaseAdapter {
 		musicNO.setText(context.getResources().getString(R.string.total) + list.size() +context.getResources().getString(R.string.song_unit));
 		fullPath.setText("");
 
-		String musicImagePath = DiskCacheFileManager.isSmallImageExist(music
-				.getPath());
-		if (!musicImagePath.equals("")) {
-			MyApplication.imageLoader.displayImage("file://" + musicImagePath,
-					musicImage, MyApplication.viewOptions);
-			musicImage.setScaleType(ImageView.ScaleType.FIT_XY);
-		} else {
-			SetDefaultImage.getInstance().startExecutor(musicImage, music);
-		}
+//		String musicImagePath = DiskCacheFileManager.isSmallImageExist(music
+//				.getPath());
+//		if (!musicImagePath.equals("")) {
+//			MyApplication.imageLoader.displayImage("file://" + musicImagePath,
+//					musicImage, MyApplication.viewOptions);
+//			musicImage.setScaleType(ImageView.ScaleType.FIT_XY);
+//		} else {
+			SetDefaultImage.getInstance().startExecutor(musicImage, music,true,true);
+//		}
 
 
 		return convertView;
