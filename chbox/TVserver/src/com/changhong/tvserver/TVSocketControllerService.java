@@ -2,6 +2,7 @@ package com.changhong.tvserver;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -77,6 +78,11 @@ public class TVSocketControllerService extends Service {
     private String DeviceModel = null;
     private String serverInfo = null;
 
+
+    Runnable music_runnable;
+
+    Runnable vedio_runnable;
+
     /**
      * message for client send
      */
@@ -111,7 +117,7 @@ public class TVSocketControllerService extends Service {
             @Override
             public void handleMessage(Message msg) {
                 try {
-                	String msgCpy = (String)msg.obj;
+                	final String msgCpy = (String)msg.obj;
                     switch (msg.what) {
                         case 1:
                             if (msgCpy.equals("key:up")) {
@@ -139,16 +145,40 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:home")) {
                                 Log.e(TAG, "key:home");
                                 t.vkey_input(102, 1);
-                            } else if (msgCpy.equals("key:volumeup")) {
+                            } else if (msgCpy.contains("key:volumeup")) {
                                 Log.e(TAG, "key:volumeup");
                                 t.vkey_input(115, 1);
-                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
-                                sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
-                            } else if (msgCpy.equals("key:volumedown")) {
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(20);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+                                        //audioManager.setStreamVolume();
+                                        sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+                                    }
+                                });
+                            } else if (msgCpy.contains("key:volumedown")) {
                                 Log.e(TAG, "key:volumedown");
                                 t.vkey_input(114, 1);
-                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
-                                sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(20);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+                                        sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+                                    }
+                                });
+
                             } else if (msgCpy.equals("key:volume_mute")) {
                                 Log.e(TAG, "key:volume_mute");
                                 t.vkey_input(113, 1);
@@ -191,34 +221,73 @@ public class TVSocketControllerService extends Service {
                             } else if (msgCpy.equals("key:9")) {
                                 Log.e(TAG, "key:9");
                                 t.vkey_input(10, 1);
+
                             } else if (msgCpy.equals("key:search")) {
                                 Log.e(TAG, "key:9");
-                                //sendKey(KeyEvent.KEYCODE_SEARCH);
+
                                 t.vkey_input(127, 1);
+                        //        t.vkey_input(KeyEvent.KEYCODE_SEARCH, 1);
                             } else if (msgCpy.equals("key:media_forward")) {
                                 Log.e(TAG, "key:9");
-                                //sendKey(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD);
+                              //  sendKey(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD);
+
                                 t.vkey_input(120, 1);
+                              //  t.vkey_input(KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, 1);
                             } else if (msgCpy.equals("key:media_backward")) {
                                 Log.e(TAG, "key:9");
+
                                 t.vkey_input(121, 1);
+                              //  t.vkey_input(KeyEvent.KEYCODE_MEDIA_REWIND, 1);
                             }else if (msgCpy.equals("key:media_play_pause")) {
                                 Log.e(TAG, "key:9");
                                 //sendKey(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE);
                                 t.vkey_input(119, 1);
+                          //      t.vkey_input(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, 1);
+
                                 //投影歌曲部分
+
                             } else if(msgCpy.contains("system_vol")){
-                                AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
-                                sendbackSmallMessage(targetIp,msgCpy,String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+                                AsyncTask.execute(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            Thread.sleep(20);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        AudioManager audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+                                        sendbackSmallMessage(targetIp, msgCpy, String.valueOf(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC) + "/" + audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)));
+                                    }
+                                });
+
                             } else if (msgCpy.contains("music_play")) {
                                 Log.e(TAG, msgCpy);
+                               /* stopApplication("webview.com.webview");
+
+                                music_runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(TVSocketControllerService.this, MusicViewPlayingActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.setData(Uri.parse(msgCpy));
+                                        startActivity(intent);
+
+                                    }
+                                };
+
+                                this.postDelayed(music_runnable, 500);*/
+
                                 Intent intent = new Intent(TVSocketControllerService.this, MusicViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.setData(Uri.parse(msgCpy));
                                 startActivity(intent);
+
                             }else if (msgCpy.contains(MusicViewPlayingActivity.CMD_TAG)) {
                             	
                             	if (MusicViewPlayingActivity.mEventHandler != null) {
@@ -232,11 +301,29 @@ public class TVSocketControllerService extends Service {
                                 //投影视屏部分
                             } else if (msgCpy.substring(0, 4).equals("http")) {
                                 Log.e(TAG, msgCpy);
+                              //  stopApplication("webview.com.webview");
+                              //  Thread.sleep(500);
+
+                             /*   vedio_runnable = new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent intent = new Intent(TVSocketControllerService.this, VideoViewPlayingActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        intent.setData(Uri.parse(msgCpy));
+                                        startActivity(intent);
+
+                                    }
+                                };
+
+                                this.postDelayed(vedio_runnable, 500);*/
+
                                 Intent intent = new Intent(TVSocketControllerService.this, VideoViewPlayingActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 intent.setData(Uri.parse(msgCpy));
                                 startActivity(intent);
+
                             } else if (msgCpy.equals("vedio:start")) {
                                 if (VideoViewPlayingActivity.mEventHandler != null) {
                                     Log.e(TAG, msgCpy);
@@ -255,6 +342,33 @@ public class TVSocketControllerService extends Service {
                                     message.obj = msgCpy;
                                     VideoViewPlayingActivity.mEventHandler.sendMessage(message);
                                 }
+
+                            }else if (msgCpy.startsWith("vedio:vol:")){
+                                String message = (String) msg.obj;
+                                int currentVol = 0;
+                                try {
+                                   // currentVolPer = double.classvalueOf(message.split(":")[2]);
+
+                                   // Double seekTo = Double.valueOf(message.split(":")[2]) * maxVol;
+                                    currentVol = Integer.valueOf(message.split(":")[2]);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                if(currentVol > 0){
+
+                                    for(int i=0;i< currentVol;i++){
+                                        t.vkey_input(115, 1);
+                                    }
+
+                                }else {
+                                    for(int i=0;i< Math.abs(currentVol);i++){
+                                        t.vkey_input(114, 1);
+                                    }
+
+                                }
+
                                 //投影图片部分
                             } else if (msgCpy.contains("urls")) {
                                 Log.e(TAG, msgCpy);
@@ -764,7 +878,7 @@ public class TVSocketControllerService extends Service {
     {
     	public String update(String param); 
     }
-
+    
     private void sendKey(final int keycode){
         AsyncTask.execute(new Runnable() {
             @Override
@@ -774,4 +888,23 @@ public class TVSocketControllerService extends Service {
         });
 
     }
+
+    private void stopApplication(String packageName){
+        ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        try {
+            Method method = activityManager.getClass().getDeclaredMethod("forceStopPackage",String.class);
+            method.setAccessible(true);
+            method.invoke(activityManager,packageName);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            activityManager.killBackgroundProcesses(packageName);
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+            activityManager.killBackgroundProcesses(packageName);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            activityManager.killBackgroundProcesses(packageName);
+        }
+    }
+
 }

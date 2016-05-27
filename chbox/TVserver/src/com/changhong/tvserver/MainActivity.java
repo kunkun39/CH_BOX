@@ -45,14 +45,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN); //启动activity时不自动弹出软键盘
         setContentView(R.layout.activity_main);
 
         chboxName = (EditText) findViewById(R.id.ch_box_name);
         chboxSave = (Button) findViewById(R.id.ch_box_save);
+
         chboxName.requestFocus();
         InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.restartInput(chboxName);
+
         CH_BOX_NAME = getString(R.string.stb_title);
         CH_BOX_NAME = getBoxName(MainActivity.this);
         chboxName.setText(CH_BOX_NAME);

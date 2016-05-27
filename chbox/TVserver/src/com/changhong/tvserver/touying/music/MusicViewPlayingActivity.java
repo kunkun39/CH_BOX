@@ -308,7 +308,6 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
                     artist = o.getString("artist");
                     musicLrcPath = o.getString("musicLrcPath");
                 }
-                
             } catch (Exception e) {
                 e.printStackTrace();
                 finish();
@@ -554,20 +553,28 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
 	                     */
 	            		if (mVideoSource == null) {
 							return ;
-						}
-	                    Log.v(TAG, mVideoSource);
-	                    mVV.setVideoPath(mVideoSource);
-	                    //mVV.setCacheBufferSize(1*1024*1024);
-	                    /**
-	                     * 显示或者隐藏缓冲提示
-	                     */
-	                    mVV.showCacheInfo(true);
-	                    /**
-	                     * 开始播放
-	                     */
-	                    mVV.start();
-	
-	                    mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARING;
+                        }
+                        Log.v(TAG, mVideoSource);
+                        AsyncTask.execute(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                mVV.pause();
+                                mVV.setVideoPath(mVideoSource);
+                                //mVV.setCacheBufferSize(1*1024*1024);
+                                /**
+                                 * 显示或者隐藏缓冲提示
+                                 */
+                                mVV.showCacheInfo(true);
+                                /**
+                                 * 开始播放
+                                 */
+                                mVV.start();
+
+                                mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARING;
+                            }
+                        });
+
 	                    break;
 	                case EVENT_PLAY:
 	                    mVV.resume();	                    
@@ -736,6 +743,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
              * 结束缓冲
              */
             case BVideoView.MEDIA_INFO_BUFFERING_END:
+                Log.d(TAG,"ID:"+mVV.GetMediaId());
                 break;
             default:
                 break;
@@ -824,7 +832,7 @@ public class MusicViewPlayingActivity extends Activity implements OnPreparedList
      */
     @Override
     public void onPrepared() {
-        Log.v(TAG, "onPrepared");
+        Log.v(TAG, "onPrepared:" + mVV.GetMediaId());
         mPlayerStatus = PLAYER_STATUS.PLAYER_PREPARED;
     }
     
